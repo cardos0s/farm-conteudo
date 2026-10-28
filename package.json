@@ -1,0 +1,45 @@
+{
+  "name": "fabrica-conteudo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Fábrica de conteúdo automatizada para Cockpit, Rebanho e Focca",
+  "type": "module",
+  "scripts": {
+    "estudio": "remotion studio remotion/index.ts",
+    "diario": "tsx src/cli/diario.ts",
+    "bot": "tsx src/cli/bot.ts",
+    "publicar": "tsx src/cli/publicar.ts",
+    "newsletter": "tsx src/cli/newsletter.ts",
+    "render:exemplo": "tsx src/cli/render-exemplo.ts",
+    "checar": "tsx src/cli/checar-config.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.3.0",
+    "@aws-sdk/client-s3": "^3.1158.0",
+    "@fontsource/archivo-black": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/poppins": "^5.3.0",
+    "@fontsource/roboto-slab": "^5.3.0",
+    "@remotion/bundler": "^4.0.539",
+    "@remotion/cli": "^4.0.539",
+    "@remotion/renderer": "^4.0.539",
+    "dotenv": "^18.0.9",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.539",
+    "rss-parser": "^3.13.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
+}

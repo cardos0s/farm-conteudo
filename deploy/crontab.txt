@@ -1,0 +1,9 @@
+# Fábrica de conteúdo — adicione com `crontab -e` (ajuste o caminho do projeto).
+# Os horários seguem o fuso do servidor; use TZ=America/Sao_Paulo.
+CRON_TZ=America/Sao_Paulo
+
+# 07:00 — coleta, escreve, revisa, renderiza e manda os vídeos do dia para o Telegram
+0 7 * * * cd /opt/fabrica-conteudo && npm run diario >> dados/diario.log 2>&1
+
+# 08:00 — newsletter (cada vertical só gera no seu dia da semana)
+0 8 * * * cd /opt/fabrica-conteudo && npm run newsletter >> dados/newsletter.log 2>&1

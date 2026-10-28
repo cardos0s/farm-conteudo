@@ -1,0 +1,15 @@
+# Serviço do bot do Telegram (aprovação + publicação no horário).
+# sudo cp deploy/fabrica-bot.service /etc/systemd/system/ && sudo systemctl enable --now fabrica-bot
+[Unit]
+Description=Fabrica de conteudo - bot de aprovacao e publicacao
+After=network-online.target
+
+[Service]
+WorkingDirectory=/opt/fabrica-conteudo
+ExecStart=/usr/bin/npm run bot
+Restart=always
+RestartSec=10
+Environment=TZ=America/Sao_Paulo
+
+[Install]
+WantedBy=multi-user.target
