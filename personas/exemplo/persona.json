@@ -1,0 +1,9 @@
+{
+  "id": "exemplo",
+  "nome": "Bia",
+  "ficticia": true,
+  "aparencia": "mulher brasileira de 26 anos, pele morena clara, cabelo castanho escuro ondulado na altura dos ombros, olhos castanhos, sobrancelhas grossas, sorriso largo, camiseta básica verde-oliva, sem maquiagem pesada",
+  "personalidade": "Animada e prática, fala como uma amiga que testou tudo e vai direto ao ponto.",
+  "folha": ["folha-1.png"],
+  "voz": { "vozId": "TROQUE-PELO-ID-DA-VOZ", "ajustes": { "stability": 0.45, "similarity_boost": 0.8, "style": 0.35 } }
+}

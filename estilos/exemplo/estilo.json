@@ -1,0 +1,73 @@
+{
+  "nome": "UGC selfie direto",
+  "referencia": "Estilo genérico de partida, não tirado de nenhum perfil. Substitua pelo resultado da skill decupar-perfil.",
+  "resumo": "Uma pessoa fala direto para a câmera do celular, em casa, com energia de quem conta uma descoberta para uma amiga. Cortes secos a cada frase, sem respiros. Legenda grande palavra a palavra no centro inferior. A tela do app aparece quando ela explica como funciona, e o vídeo fecha com a chamada falada e escrita.",
+  "duracaoSeg": { "min": 25, "max": 45 },
+  "ritmo": {
+    "tomadaMediaSeg": 3.5,
+    "palavrasPorMinuto": 175,
+    "pausas": "Corta todos os respiros; entre frases o corte é seco, sem silêncio maior que 0,2 s."
+  },
+  "gancho": {
+    "padroes": [
+      "Afirmação que contraria o senso comum do nicho na primeira frase",
+      "Pergunta direta que o público já se fez",
+      "Mostrar o resultado antes de explicar como chegou nele"
+    ],
+    "visual": "Rosto em close, já falando no primeiro quadro, com headline curta no topo."
+  },
+  "estrutura": [
+    "gancho: 1 frase, até 3 s",
+    "problema: a dor do público em 1 ou 2 frases",
+    "virada: apresenta o app como a forma de resolver",
+    "demonstração: 2 a 3 blocos mostrando telas ou explicando recursos",
+    "CTA: o que fazer agora, falado e escrito"
+  ],
+  "camera": {
+    "enquadramentos": ["selfie de perto segurando o celular com o braço esticado", "plano médio com o celular apoiado na mesa"],
+    "movimento": "Câmera na mão com leve tremor natural, sem movimentos de cinema.",
+    "ambiente": "Quarto ou sala de casa arrumada, fundo com profundidade e um pouco desfocado.",
+    "luz": "Luz natural de janela de lado, suave, tom quente."
+  },
+  "fala": "Coloquial, segunda pessoa (você), frases curtas, energia alta mas sem gritar. Nada de jargão de vendedor.",
+  "legendas": {
+    "usa": true,
+    "modo": "palavra",
+    "palavrasPorVez": 3,
+    "fonte": "Poppins",
+    "tamanho": 84,
+    "cor": "#FFFFFF",
+    "destaque": "#FFD84D",
+    "contorno": true,
+    "caixaAlta": true,
+    "posicao": "inferior"
+  },
+  "headline": {
+    "usa": true,
+    "quando": "Só no gancho e no CTA, nunca em cima da legenda falada.",
+    "fonte": "Inter",
+    "tamanho": 54,
+    "cor": "#111111",
+    "destaque": "#FFFFFF",
+    "contorno": false,
+    "caixaAlta": false,
+    "posicao": "superior"
+  },
+  "imagens": {
+    "quando": "Quando a fala cita um recurso específico do app.",
+    "tipos": ["print de tela do app em tela cheia com fundo desfocado"]
+  },
+  "zoom": { "usa": true, "quando": "Na frase mais forte de cada seção, no máximo 3 vezes no vídeo.", "intensidade": 1.15 },
+  "sfx": [
+    { "nome": "whoosh", "descricao": "short soft whoosh transition sound, clean, no music", "quando": "Na entrada de uma tela do app.", "volume": 0.5 },
+    { "nome": "pop", "descricao": "short bright pop click sound for text appearing", "quando": "Quando entra uma headline.", "volume": 0.45 },
+    { "nome": "ding", "descricao": "short pleasant notification ding", "quando": "No CTA final.", "volume": 0.5 }
+  ],
+  "cor": {
+    "gradacao": "Quente e limpa, contraste levemente acima do natural, pele preservada.",
+    "filtroCss": "contrast(1.05) saturate(1.08) brightness(1.02)",
+    "paleta": ["#FFFFFF", "#FFD84D", "#111111"]
+  },
+  "cta": "Uma ação só, falada e escrita: comentar uma palavra ou ir no link da bio.",
+  "evitar": ["música alta por cima da fala", "mais de 3 efeitos sonoros seguidos", "texto na tela repetindo exatamente a legenda", "transições chamativas"]
+}

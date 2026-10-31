@@ -42,6 +42,17 @@ export interface Vertical {
   };
   newsletter: { nome: string; descricao: string };
   hashtags: string[];
+  /** Vídeos UGC com personagem de IA (npm run ugc). */
+  ugc?: {
+    /** Pasta em personas/. */
+    persona: string;
+    /** Pasta em estilos/ (saída da skill decupar-perfil). */
+    estilo: string;
+    /** Prints ou gravações de tela do app, que podem aparecer no vídeo. Caminhos a partir da raiz do projeto. */
+    telas: { nome: string; arquivo: string; descricao: string }[];
+    /** Fatos verificados que a personagem pode citar (números, recursos, preço). Nada fora daqui vira afirmação. */
+    fatos: string[];
+  };
 }
 
 export function linkRastreado(v: Vertical, canal: "instagram" | "newsletter", campanha = "fabrica"): string {

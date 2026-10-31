@@ -113,6 +113,51 @@ Num servidor pequeno com pelo menos 2 GB de RAM (nos testes, cada vídeo levou m
 
 Se o Remotion não conseguir baixar o navegador dele no servidor, instale o Chromium e aponte `REMOTION_CHROME` para o executável.
 
+## Vídeos UGC com personagem de IA
+
+Além dos Reels de motion graphics, a fábrica faz vídeos no formato UGC: uma personagem fictícia fala para a câmera do celular apresentando o app, com legenda palavra a palavra, headline, zoom e efeitos sonoros, seguindo o formato de um perfil de referência.
+
+```
+briefing ─▶ roteirista ─▶ revisor ─▶ voz (ElevenLabs) ─▶ quadro da personagem (OpenRouter)
+        ─▶ vídeo (Kling 3 pelo OpenRouter) ─▶ sincronia labial (fal) ─▶ render (Remotion) ─▶ Telegram
+```
+
+### 1. O formato: skill `decupar-perfil`
+
+No Claude Code, peça algo como *"decupa os últimos 40 vídeos do perfil @fulana e cria o estilo `selfie-rapido`"*. A skill (`.claude/skills/decupar-perfil/`) baixa os vídeos, roda `npm run decupar` (cortes, tomadas, folhas de contato, gancho, ritmo de fala, silêncios, volume, cores) e o Claude lê as folhas quadro a quadro para escrever `estilos/<id>/estilo.json` e `estilos/<id>/guia.md`. Do perfil vem só a técnica de edição; os vídeos baixados não vão para o git.
+
+`estilos/exemplo/` é um ponto de partida genérico para testar antes de decupar.
+
+### 2. A personagem
+
+1. Copie `personas/exemplo/` para `personas/<id>/` e descreva a aparência em `persona.json`. Ela precisa ser fictícia (`"ficticia": true`): não use rosto nem voz de pessoa real sem autorização.
+2. `npm run persona <id>` gera as 3 folhas de personagem (frente/perfil, expressões, gravando com o celular). Se preferir, gere no ChatGPT e salve como `folha-1.png`, `folha-2.png`... e liste em `folha`.
+3. Escolha uma voz na Voice Library ou crie uma no Voice Design do ElevenLabs e coloque o ID em `voz.vozId`.
+
+### 3. A vertical
+
+Em `verticais/<app>.ts`, preencha `ugc`: a persona, o estilo, os prints do app (`telas`, em `ativos/<app>/`) e os `fatos` verificados que a personagem pode citar. O revisor reprova qualquer número, resultado ou depoimento que não esteja nos fatos, e a personagem não conta experiência pessoal como se fosse real.
+
+### 4. Gerar
+
+```bash
+npm run ugc focca -- --briefing "Mostrar como o Focca monta o cronograma a partir do edital" --so-roteiro
+```
+
+Manda só o roteiro revisado (sem gastar com voz e vídeo). Se gostar:
+
+```bash
+npm run ugc focca -- --continuar <id-que-veio-na-mensagem>
+```
+
+Sem `--so-roteiro`, faz tudo de uma vez. Para briefings longos, use `--briefing-arquivo briefings/x.md`. Tudo que já foi gerado fica em `saida/ugc/<id>/` e não é pago de novo ao continuar. O vídeo chega no Telegram com Aprovar/Rejeitar e segue a mesma fila de publicação dos Reels.
+
+A legenda e o canto do vídeo levam "Personagem criada com IA".
+
+Custos de referência: Kling 3 Standard a partir de US$ 0,126 por segundo gerado; um vídeo de 35 s com 8 blocos fica em torno de US$ 5 a 8 de vídeo, mais voz, imagens e sincronia labial. Comece com `--so-roteiro`.
+
+Para conferir legenda, headline e zoom sem chamar nenhuma API: `npm run render:exemplo-ugc`.
+
 ## Ajustes comuns
 
 - **Volume**: `volume.videosPorDia` em cada arquivo de `verticais/`. Comece com 1 e aumente quando a qualidade estiver boa.
@@ -131,6 +176,10 @@ verticais/          uma configuração por app (fontes, tom, regras, cores, volu
 remotion/           templates de vídeo: cenas, elemento de cada marca, fontes
 src/coleta/         RSS e APIs de dados
 src/agentes/        editor, redator, revisor e editor da newsletter (Claude)
+src/ugc/            vídeos UGC: formato, roteirista/revisor, voz, imagem, vídeo, lipsync
+personas/           personagens fictícias (persona.json + folhas)
+estilos/            guias de estilo decupados de perfis de referência
+.claude/skills/     skill decupar-perfil
 src/video/          render do Reel
 src/publicacao/     Telegram, Instagram, Beehiiv e upload do vídeo
 src/fabrica.ts      o fluxo: produzir, aprovar, agendar, publicar
@@ -143,6 +192,5 @@ O estado fica em `dados/` (um JSON por peça) e os vídeos em `saida/`. As duas 
 
 ## Próximos passos
 
-- Narração por voz (TTS) nos vídeos.
 - Publicação no TikTok e no LinkedIn.
 - Loop de métricas: ler alcance e cliques de cada peça para o editor aprender quais temas trazem usuários para cada app.

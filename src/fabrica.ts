@@ -63,9 +63,11 @@ async function produzirPeca(v: Vertical, pauta: Pauta): Promise<Peca | null> {
   });
 }
 
-async function pedirAprovacao(p: Peca, v: Vertical) {
+export async function pedirAprovacao(p: Peca, v: Vertical, avisos: string[] = []) {
   const fontes = p.fontes.map((f) => `${f.nome}${f.url ? ` (${f.url})` : ""}`).join("\n");
-  const texto = `🎬 ${v.app.nome} · ${p.titulo}\n\n${p.legenda}\n\nFontes:\n${fontes}`;
+  const icone = p.formato === "ugc" ? "🤳 UGC" : "🎬";
+  const alertas = avisos.length ? `\n\n⚠️ ${avisos.join("\n⚠️ ")}` : "";
+  const texto = `${icone} ${v.app.nome} · ${p.titulo}\n\n${p.legenda}\n\nFontes:\n${fontes}${alertas}`;
   if (!telegramConfigurado()) {
     console.log(texto);
     return;

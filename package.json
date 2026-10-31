@@ -10,7 +10,11 @@
     "bot": "tsx src/cli/bot.ts",
     "publicar": "tsx src/cli/publicar.ts",
     "newsletter": "tsx src/cli/newsletter.ts",
+    "ugc": "tsx src/cli/ugc.ts",
+    "persona": "tsx src/cli/persona.ts",
+    "decupar": "tsx .claude/skills/decupar-perfil/scripts/decupar.ts",
     "render:exemplo": "tsx src/cli/render-exemplo.ts",
+    "render:exemplo-ugc": "tsx src/cli/render-exemplo-ugc.ts",
     "checar": "tsx src/cli/checar-config.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"

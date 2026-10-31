@@ -53,6 +53,15 @@ const focca: Vertical = {
     descricao: "Datas de provas, técnicas de estudo e editais abertos, todo domingo.",
   },
   hashtags: ["#ENEM", "#concursos", "#vestibular", "#estudos", "#pomodoro"],
+  ugc: {
+    // TODO: troque pela sua personagem (npm run persona <id>) e pelo estilo decupado (skill decupar-perfil).
+    persona: "exemplo",
+    estilo: "exemplo",
+    // TODO: prints do app em ativos/focca/ (PNG/JPG, ou MP4 de gravação de tela).
+    telas: [],
+    // TODO: só fatos verificados (downloads, avaliação na loja, recursos, preço). A personagem não cita nada fora daqui.
+    fatos: [],
+  },
 };
 
 export default focca;

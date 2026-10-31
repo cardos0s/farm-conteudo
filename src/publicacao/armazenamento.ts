@@ -1,8 +1,10 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { tipoMime } from "../ugc/midia";
 
 // O Instagram busca o vídeo por URL, então o MP4 precisa estar num endereço público.
+// O mesmo bucket serve áudio e vídeo para a sincronia labial dos vídeos UGC.
 // Funciona com qualquer bucket compatível com S3 (Cloudflare R2, AWS S3, Backblaze B2).
 
 let cliente: S3Client | null = null;
@@ -28,7 +30,7 @@ export async function enviarParaPublico(arquivo: string, pasta: string): Promise
       Bucket: S3_BUCKET,
       Key: chave,
       Body: await readFile(arquivo),
-      ContentType: "video/mp4",
+      ContentType: tipoMime(arquivo),
     }),
   );
   return `${S3_PUBLIC_URL.replace(/\/$/, "")}/${chave}`;

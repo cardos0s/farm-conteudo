@@ -19,6 +19,8 @@ export type StatusPeca =
 export interface Peca {
   id: string;
   tipo: "reel" | "newsletter";
+  /** Reel de motion graphics (padrão) ou UGC com personagem de IA. */
+  formato?: "motion" | "ugc";
   vertical: Vertical["id"];
   criadaEm: string;
   status: StatusPeca;

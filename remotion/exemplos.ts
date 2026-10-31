@@ -2,6 +2,8 @@ import cockpit from "../verticais/cockpit";
 import focca from "../verticais/focca";
 import rebanho from "../verticais/rebanho";
 import type { PropsReel } from "../src/core/roteiro";
+import estiloExemplo from "../estilos/exemplo/estilo.json";
+import { palavrasEstimadas, type PropsUgc } from "../src/ugc/formato";
 
 // Roteiros de exemplo para o estúdio e para o teste de render. Os números são ilustrativos.
 
@@ -72,4 +74,32 @@ export const exemplos: Record<string, PropsReel> = {
       ],
     },
   },
+};
+
+// Exemplo de UGC para o estúdio, sem mídia (só legenda e headline sobre o fundo da marca).
+// Para ver com vídeo e áudio de verdade: npm run render:exemplo-ugc
+
+const falasExemplo = [
+  { fala: "Você não precisa estudar dez horas por dia.", headline: "Ninguém te conta isso", zoom: true },
+  { fala: "Você precisa saber o que estudar hoje, e por quanto tempo.", headline: null, zoom: false },
+  { fala: "O Focca lê o edital e monta isso para você.", headline: null, zoom: true },
+];
+
+export const exemploUgc: PropsUgc = {
+  marca: exemplos.focca.marca,
+  estilo: {
+    legendas: estiloExemplo.legendas as PropsUgc["estilo"]["legendas"],
+    headline: estiloExemplo.headline as PropsUgc["estilo"]["headline"],
+    zoom: estiloExemplo.zoom,
+    cor: estiloExemplo.cor,
+  },
+  base: "",
+  rotuloIa: "Personagem criada com IA",
+  blocos: falasExemplo.map((f) => ({
+    audio: "",
+    duracaoSeg: 3,
+    palavras: palavrasEstimadas(f.fala, 2.8),
+    headline: f.headline,
+    zoom: f.zoom,
+  })),
 };

@@ -6,7 +6,7 @@ import { pedir } from "./claude";
 
 const hoje = () => new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
 
-function contextoMarca(v: Vertical): string {
+export function contextoMarca(v: Vertical): string {
   return `Você trabalha na fábrica de conteúdo do app ${v.app.nome}.
 O app: ${v.app.descricao}
 Nicho: ${v.nicho}
