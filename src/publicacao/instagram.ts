@@ -6,13 +6,15 @@ import type { Vertical } from "../core/vertical";
 // Reel: cria o contêiner com a URL do vídeo, espera o processamento e publica.
 // Carrossel: cria um contêiner por imagem, junta todos num contêiner CAROUSEL e publica (conta como 1 post no limite diário da API).
 //
-// Padrão: "API do Instagram com login do Instagram" (graph.instagram.com). Funciona com conta profissional
-// (empresa ou criador de conteúdo) e não precisa de página do Facebook. Quem usa o login pelo Facebook
-// (conta ligada a uma página) define IG_GRAPH_HOST=graph.facebook.com; os passos de publicação são os mesmos.
+// As três formas de acesso da Meta usam os mesmos passos de publicação; muda o host e o token:
+// - Login unificado (padrão, recomendado pela Meta): graph.facebook.com, token de usuário do sistema (SUAT),
+//   que pode nunca vencer. Precisa de portfólio empresarial, não de página do Facebook.
+// - Login do Instagram: IG_GRAPH_HOST=graph.instagram.com, token de 60 dias (a fábrica renova sozinha).
+// - Login do Facebook (legado): graph.facebook.com com IG_<APP>_USER_ID e conta ligada a uma página.
 
 const HOST_INSTAGRAM = "graph.instagram.com";
-const host = () => process.env.IG_GRAPH_HOST || HOST_INSTAGRAM;
-const versao = () => process.env.IG_GRAPH_VERSION || "v23.0";
+const host = () => process.env.IG_GRAPH_HOST || "graph.facebook.com";
+const versao = () => process.env.IG_GRAPH_VERSION || "v26.0";
 const base = () => `https://${host()}/${versao()}`;
 const DIA = 86400_000;
 
@@ -38,7 +40,7 @@ async function graph(metodo: "GET" | "POST", caminho: string, params: Record<str
 }
 
 // ── Token: renovação automática ────────────────────────────────────
-// O token de longa duração do login do Instagram vence em 60 dias. A fábrica renova sozinha a cada 7 dias
+// Só para o login do Instagram: o token de longa duração dele vence em 60 dias. A fábrica renova sozinha a cada 7 dias
 // e guarda o token novo em dados/ (o do .env continua sendo o ponto de partida). Se você trocar o token
 // do .env, a fábrica percebe e recomeça a partir dele.
 
@@ -105,9 +107,20 @@ export async function contaInstagram(v: Vertical): Promise<{ id: string; usernam
   const cred = exigirCredenciais(v);
   const token = await tokenAtual(v);
   if (host() !== HOST_INSTAGRAM) {
-    if (!cred.usuario) throw new Error(`Com o login pelo Facebook, preencha IG_${v.id.toUpperCase()}_USER_ID`);
-    const conta = await graph("GET", cred.usuario, { fields: "username", access_token: token });
-    return { id: cred.usuario, username: conta.username };
+    if (cred.usuario) {
+      const conta = await graph("GET", cred.usuario, { fields: "username", access_token: token });
+      return { id: cred.usuario, username: conta.username };
+    }
+    // Login unificado: /me é o usuário do sistema; as contas do Instagram vêm de assigned_instagram_accounts.
+    const { data = [] } = await graph("GET", "me/assigned_instagram_accounts", { fields: "id,username", access_token: token });
+    if (!data.length) {
+      throw new Error(`o token não dá acesso a nenhuma conta do Instagram. Gere de novo e escolha a conta do ${v.app.nome}, ou preencha IG_${v.id.toUpperCase()}_USER_ID`);
+    }
+    if (data.length > 1) {
+      const lista = data.map((c: { id: string; username?: string }) => `@${c.username} (${c.id})`).join(", ");
+      throw new Error(`o token dá acesso a mais de uma conta: ${lista}. Coloque o número da conta certa em IG_${v.id.toUpperCase()}_USER_ID`);
+    }
+    return { id: String(data[0].id), username: data[0].username };
   }
   const eu = await graph("GET", "me", { fields: "user_id,username", access_token: token });
   return { id: cred.usuario ?? String(eu.user_id ?? eu.id), username: eu.username };
@@ -159,10 +172,10 @@ export async function publicarReel(v: Vertical, videoUrl: string, legenda: strin
   return publicarConteiner(cred.usuario, cred.token, conteiner.id);
 }
 
-/** Publica de 2 a 10 imagens JPEG (URLs públicas) como um carrossel. */
+/** Publica de 2 a 20 imagens JPEG (URLs públicas) como um carrossel. */
 export async function publicarCarrossel(v: Vertical, imagensUrl: string[], legenda: string): Promise<{ id: string; permalink?: string }> {
   const cred = await credenciaisDePublicacao(v);
-  if (imagensUrl.length < 2 || imagensUrl.length > 10) throw new Error(`Carrossel precisa de 2 a 10 imagens (veio com ${imagensUrl.length})`);
+  if (imagensUrl.length < 2 || imagensUrl.length > 20) throw new Error(`Carrossel precisa de 2 a 20 imagens (veio com ${imagensUrl.length})`);
 
   const filhos: string[] = [];
   for (const url of imagensUrl) {

@@ -12,7 +12,7 @@ import { botaoCancelar, enviarMensagem } from "./publicacao/telegram";
 //   entrada/rebanho/reels/01-nome.mp4          o vídeo
 //   entrada/rebanho/reels/01-nome.txt          a legenda (mesmo nome do vídeo)
 //   entrada/rebanho/carrosseis/01-nome/        uma pasta por carrossel
-//       1.jpg, 2.jpg, ... (de 2 a 10 imagens, na ordem do nome)
+//       1.jpg, 2.jpg, ... (de 2 a 20 imagens, na ordem do nome)
 //       legenda.txt
 //
 // A ordem de postagem segue a ordem dos nomes (01, 02, ..., 10). Cada item entra no próximo
@@ -142,8 +142,8 @@ async function itensDoApp(v: Vertical): Promise<Item[]> {
       arquivos: [pasta, ...conteudo.map((a) => path.join(pasta, a))],
       importar: async (id) => {
         const fotos = conteudo.filter((a) => IMAGENS.includes(extensao(a)));
-        if (fotos.length < 2 || fotos.length > 10) {
-          throw new ProblemaNoArquivo(`o carrossel tem ${fotos.length} imagem(ns); o Instagram aceita de 2 a 10 (JPG, PNG ou WebP)`);
+        if (fotos.length < 2 || fotos.length > 20) {
+          throw new ProblemaNoArquivo(`o carrossel tem ${fotos.length} imagem(ns); o Instagram aceita de 2 a 20 (JPG, PNG ou WebP)`);
         }
         const txt = conteudo.find((a) => a.toLowerCase() === "legenda.txt");
         const legenda = txt ? await lerLegenda(path.join(pasta, txt)) : "";

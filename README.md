@@ -25,7 +25,7 @@ entrada/rebanho/
 │   └── 02-pesagem.txt
 └── carrosseis/
     └── 01-chuva-da-semana/       uma pasta por carrossel
-        ├── 1.jpg                 de 2 a 10 imagens (JPG, PNG ou WebP), na ordem do nome
+        ├── 1.jpg                 de 2 a 20 imagens (JPG, PNG ou WebP), na ordem do nome
         ├── 2.jpg
         ├── 3.jpg
         └── legenda.txt
@@ -41,7 +41,7 @@ entrada/rebanho/
 
 O que não passar vai para `entrada/rebanho/com-problema/`, junto com um arquivo `.problema.txt` explicando o motivo, e você recebe um aviso no Telegram. Corrija e coloque de volta na pasta certa.
 
-- Carrossel com menos de 2 ou mais de 10 imagens.
+- Carrossel com menos de 2 ou mais de 20 imagens.
 - Imagem fora da proporção que o Instagram aceita, de 4:5 (1080×1350, retrato) a 1,91:1 (paisagem). Imagem de Stories (9:16) não serve para carrossel.
 - Legenda com mais de 2.200 caracteres ou mais de 30 hashtags.
 
@@ -143,20 +143,20 @@ Preencha o `.env`. Para postar o conteúdo pronto do Rebanho, você só precisa 
 
 **1. Token do Instagram → `IG_REBANHO_TOKEN`**
 
-Antes: a conta do Rebanho precisa ser **profissional** (no app do Instagram: Configurações → Tipo de conta e ferramentas → Mudar para conta profissional; empresa ou criador de conteúdo, tanto faz). Não precisa de página do Facebook.
+O caminho é a **API do Instagram com login unificado**, que é o que a Meta recomenda. Ele não precisa de página do Facebook, e o token pode **nunca vencer**. Antes, a conta do Rebanho precisa ser **profissional** (no app do Instagram: Configurações → Tipo de conta e ferramentas → Mudar para conta profissional; empresa ou criador de conteúdo, tanto faz).
 
-1. Entre em [developers.facebook.com](https://developers.facebook.com) com o seu Facebook e clique em **Meus apps → Criar app**.
-2. No caso de uso, escolha o de **Instagram** ("Gerenciar mensagens e conteúdo no Instagram"). Se pedir tipo de app, escolha **Empresa**.
-3. Dentro do app, abra **Configuração da API com login do Instagram** (o nome pode variar um pouco).
-4. Na parte **Gerar tokens de acesso**, clique em **Adicionar conta** e entre com o Instagram do Rebanho. Se o Instagram pedir para aceitar o convite de testador, aceite em Configurações → Apps e sites.
-5. Ainda em Gerar tokens de acesso, clique em **Gerar token** ao lado da conta e autorize. **Deixe marcada a permissão de publicar conteúdo**: sem ela, o primeiro post falha.
-6. Copie o token e cole em `IG_REBANHO_TOKEN`.
+1. Em [developers.facebook.com](https://developers.facebook.com), **Meus apps → Criar app**, com o caso de uso **"Gerenciar mensagens e conteúdo no Instagram"**. O app precisa pertencer a um **portfólio empresarial**: sem isso, a opção do passo 2 não aparece.
+2. No app: **Casos de uso → Gerenciar mensagens e conteúdo no Instagram → Personalizar → API setup with Unified login**.
+3. Em **Configure seu app**, clique em **Criar nova configuração** e depois em **Usar esta configuração**. Confira na prévia que **Expiração** está como **Nunca** e que a permissão `instagram_content_publish` está na lista. A URL de redirecionamento só serve para quando outras pessoas conectam contas ao app. Se o painel exigir uma para continuar, qualquer endereço HTTPS seu serve.
+4. Em **Gerar tokens de acesso**, clique em **Adicionar conta** e convide o Instagram do Rebanho como **testador do Instagram**.
+5. Aceite o convite no **Instagram pelo navegador** (instagram.com): **Configurações → Permissões do site → Apps e sites → Convites de testador**. A conta aparece na tabela do painel depois de aceita.
+6. Clique em **Gerar token** ao lado da conta, faça o login e autorize. **Copie o token na hora: ele aparece uma vez só.** Cole em `IG_REBANHO_TOKEN`.
 
-O ID da conta é descoberto pelo próprio token (`IG_REBANHO_USER_ID` pode ficar vazio). Para publicar na sua própria conta, que é dona do app, não é preciso passar pela revisão da Meta.
+O ID da conta é descoberto pelo token (`IG_REBANHO_USER_ID` pode ficar vazio, a não ser que o token dê acesso a mais de uma conta). Para publicar na sua própria conta, o app pode continuar **não publicado** e não precisa da revisão da Meta: o acesso padrão basta para quem tem função no app.
 
-**O token vence em 60 dias**, mas o bot renova sozinho a cada 7. Se a renovação falhar (por exemplo, se o bot ficou mais de 60 dias desligado), chega um alerta no Telegram; aí é só gerar um token novo no mesmo lugar e trocar no `.env`.
+O token para de funcionar se o app for removido do portfólio ou se a conta do Instagram mudar de portfólio. Nesse caso chega um alerta no Telegram quando um post falhar; é só gerar outro no mesmo lugar.
 
-> Já tem a conta ligada a uma página do Facebook e um token do login pelo Facebook? Também funciona: preencha `IG_REBANHO_USER_ID`, `IG_REBANHO_TOKEN` e `IG_GRAPH_HOST=graph.facebook.com`. Nesse caso a renovação automática não se aplica: use um token que não vença (de um usuário do sistema no Gerenciador de Negócios).
+> Outros caminhos também funcionam: **login do Instagram** (`IG_GRAPH_HOST=graph.instagram.com`, token de 60 dias que o bot renova sozinho a cada 7) e **login do Facebook**, que é legado (`graph.facebook.com` com `IG_REBANHO_USER_ID` e a conta ligada a uma página).
 
 **2. Bucket público → `S3_*`**
 

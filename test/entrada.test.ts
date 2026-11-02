@@ -140,7 +140,7 @@ describe("pasta de entrada", () => {
     expect(await entrada.importarEntrada([rebanho], DEPOIS_DA_COPIA())).toBe(0);
     const problemas = await readdir(pasta("com-problema"));
     expect(problemas).toEqual(expect.arrayContaining(["01-uma-foto", "02-stories", "03-longo.mp4", "03-longo.txt"]));
-    expect(await readFile(pasta("com-problema", "01-uma-foto.problema.txt"), "utf8")).toContain("de 2 a 10");
+    expect(await readFile(pasta("com-problema", "01-uma-foto.problema.txt"), "utf8")).toContain("de 2 a 20");
     expect(await readFile(pasta("com-problema", "02-stories.problema.txt"), "utf8")).toContain("4:5");
     expect(enviados.mensagens.filter((m) => m.includes("não entrou na agenda"))).toHaveLength(3);
 
