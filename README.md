@@ -8,11 +8,11 @@ Posta Reels e carrosséis no Instagram nos horários certos, todos os dias. Tamb
 
 ### Horários (todo dia, inclusive fim de semana)
 
-| 08:00 | 10:00 | 12:00 | 13:00 | 18:00 | 19:00 |
-|---|---|---|---|---|---|
-| 🎬 Reel | 🖼 Carrossel | 🎬 Reel | 🖼 Carrossel | 🎬 Reel | 🖼 Carrossel |
+| 12:00 | 19:00 |
+|---|---|
+| 🎬 Reel | 🖼 Carrossel |
 
-São 3 Reels e 3 carrosséis por dia. Para mudar, edite `HORARIOS` em `src/core/agenda.ts` (uma lista para cada formato).
+Um de cada por dia: a conta está começando e cresce de forma orgânica. Para mudar, edite `HORARIOS` em `src/core/agenda.ts` (uma lista para cada formato; mais horários na lista = mais posts por dia).
 
 ### Onde colocar os arquivos
 
@@ -33,7 +33,7 @@ entrada/rebanho/
 
 - **A ordem de postagem segue o número no começo do nome**: 01, 02, 03... (o 2 vem antes do 10).
 - **A cada minuto** o bot olha a pasta. Cada item novo entra no próximo horário livre do formato dele e sai da pasta de entrada. No Telegram chega a confirmação com o dia e a hora, e um botão **❌ Cancelar post**.
-- Pode carregar vários dias ou semanas de uma vez: 30 Reels enchem os próximos 10 dias de Reels.
+- Pode carregar vários dias ou semanas de uma vez: 35 Reels enchem os Reels dos próximos 35 dias.
 - Ele espera o arquivo ficar 2 minutos sem mudar antes de pegar, para não postar um vídeo que ainda está sendo copiado.
 - No horário, publica e avisa no Telegram com o link do post.
 

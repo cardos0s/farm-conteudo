@@ -93,8 +93,8 @@ describe("pasta de entrada", () => {
     const r = pecas.find((p) => p.tipo === "reel")!;
     const c = pecas.find((p) => p.tipo === "carrossel")!;
     expect(r.status).toBe("aprovada");
-    expect(["08:00", "12:00", "18:00"]).toContain(hora(r.agendadaPara!));
-    expect(["10:00", "13:00", "19:00"]).toContain(hora(c.agendadaPara!));
+    expect(hora(r.agendadaPara!)).toBe("12:00");
+    expect(hora(c.agendadaPara!)).toBe("19:00");
     expect(r.legenda).toBe("Legenda do Reel #pecuaria");
     expect(c.legenda).toBe("Legenda do carrossel");
 

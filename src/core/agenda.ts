@@ -1,9 +1,9 @@
 // Horários de publicação no Instagram (hora local, definida pela variável TZ).
-// 08:00 🎬 · 10:00 🖼 · 12:00 🎬 · 13:00 🖼 · 18:00 🎬 · 19:00 🖼
-// Para postar mais (ou menos) de um formato por dia, acrescente (ou tire) horários da lista dele.
+// 12:00 🎬 Reel · 19:00 🖼 Carrossel. Um de cada por dia: a conta está começando e cresce de forma orgânica.
+// Para postar mais de um formato por dia, acrescente horários na lista dele (ex.: reel: ["12:00", "18:00"]).
 export const HORARIOS = {
-  reel: ["08:00", "12:00", "18:00"],
-  carrossel: ["10:00", "13:00", "19:00"],
+  reel: ["12:00"],
+  carrossel: ["19:00"],
 } as const;
 
 /** Até onde a agenda vai: dá para carregar vários meses de conteúdo de uma vez. */
