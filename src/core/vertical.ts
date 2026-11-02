@@ -15,6 +15,11 @@ export interface Prova {
 
 export interface Vertical {
   id: "cockpit" | "rebanho" | "focca";
+  /**
+   * Se a fábrica produz para este app quando o comando roda sem nomes (o caso do cron).
+   * Uma vertical pausada continua configurada e ainda roda se for pedida pelo nome: `npm run diario focca`.
+   */
+  ativa: boolean;
   app: {
     nome: string;
     descricao: string;

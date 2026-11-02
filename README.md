@@ -1,6 +1,8 @@
 # Fábrica de conteúdo
 
-Um motor só que produz conteúdo todos os dias para três apps, cada um com a própria marca. Por padrão, cada app recebe **5 Reels e 5 carrosséis por dia, todos os dias da semana**, no Instagram.
+Um motor só que produz conteúdo todos os dias para três apps, cada um com a própria marca. Cada app ativo recebe **5 Reels e 5 carrosséis por dia, todos os dias da semana**, no Instagram.
+
+> **Agora só o Rebanho está ativo.** Cockpit e Focca continuam configurados, mas pausados (`ativa: false`): o cron não produz para eles. Para ligar um deles, veja [Ligar ou pausar um app](#ajustes-comuns).
 
 | Vertical | App | Newsletter | Elemento visual |
 |---|---|---|---|
@@ -91,7 +93,9 @@ Preencha o `.env`. O que cada parte precisa:
 | `IG_<APP>_USER_ID` e `IG_<APP>_TOKEN` | conta profissional do Instagram ligada a uma página do Facebook, com um app na Meta for Developers e permissão `instagram_content_publish`. Use um token de longa duração |
 | `BEEHIIV_API_KEY` e `BEEHIIV_<APP>_PUB_ID` | Beehiiv → Settings → API |
 
-Depois revise os `TODO` em `verticais/`: descrição e link de cada app e o @ de cada perfil.
+Para começar só com o Rebanho, basta `IG_REBANHO_USER_ID`, `IG_REBANHO_TOKEN` e `BEEHIIV_REBANHO_PUB_ID`; as variáveis do Cockpit e do Focca podem ficar vazias.
+
+Depois revise os `TODO` em `verticais/`: descrição e link de cada app e o @ de cada perfil. **O @ aparece em todo vídeo e todo slide**, então confira o do Rebanho em `verticais/rebanho.ts` antes de publicar.
 
 ```bash
 npm run checar
@@ -104,8 +108,10 @@ Nada é obrigatório para começar: sem Instagram, o bot avisa na hora de postar
 ### Teste manual
 
 ```bash
-npm run diario focca
+npm run diario
 ```
+
+Sem nomes, roda os apps ativos (hoje, só o Rebanho). Para rodar um app pausado só para testar, passe o nome: `npm run diario focca`.
 
 ```bash
 npm run bot
@@ -116,7 +122,7 @@ Aprove os Reels e carrosséis no Telegram (um a um ou com `/aprovar_tudo`). No b
 Para testar com menos peças, baixe `reelsPorDia` e `carrosseisPorDia` da vertical para 1 antes de rodar.
 
 ```bash
-npm run newsletter focca -- --agora
+npm run newsletter rebanho -- --agora
 ```
 
 ## Deixar rodando sozinho
@@ -134,7 +140,8 @@ Se o Remotion não conseguir baixar o navegador dele no servidor, instale o Chro
 
 ## Ajustes comuns
 
-- **Volume**: `volume.reelsPorDia` e `volume.carrosseisPorDia` em cada arquivo de `verticais/` (padrão: 5 e 5). Cada peça custa de 2 a 4 chamadas ao Claude (redator, revisor e, se reprovar, reescrita e nova revisão), então 5 + 5 nas três marcas dá de 60 a 120 chamadas por dia. Para mais de 5 de um formato por dia, acrescente horários em `HORARIOS`.
+- **Ligar ou pausar um app**: `ativa: true` ou `false` no arquivo dele em `verticais/`. O cron só roda os ativos; um pausado continua rodando se você pedir pelo nome. Ao ligar, preencha o `IG_<APP>_*` dele no `.env`.
+- **Volume**: `volume.reelsPorDia` e `volume.carrosseisPorDia` em cada arquivo de `verticais/` (padrão: 5 e 5). Cada peça custa de 2 a 4 chamadas ao Claude (redator, revisor e, se reprovar, reescrita e nova revisão), então 5 + 5 dá de 20 a 40 chamadas por dia por app ativo. Para mais de 5 de um formato por dia, acrescente horários em `HORARIOS`.
 - **Aprovação automática**: `volume.aprovacao: "automatica"` faz o que passou no revisor entrar direto na agenda. No Telegram chega só um aviso com o horário e o botão **❌ Cancelar post**. Ligue só depois de algumas semanas aprovando à mão e confiando na qualidade.
 - **Dia da newsletter**: `volume.diaNewsletter` (0 = domingo).
 - **Horários de publicação**: `HORARIOS` em `src/core/agenda.ts`, uma lista para Reels e outra para carrosséis.

@@ -2,6 +2,7 @@ import type { Vertical } from "../src/core/vertical";
 
 const rebanho: Vertical = {
   id: "rebanho",
+  ativa: true,
   app: {
     nome: "Rebanho",
     // TODO: descrição oficial do app em uma frase

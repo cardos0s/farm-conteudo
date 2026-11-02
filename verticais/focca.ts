@@ -2,6 +2,7 @@ import type { Vertical } from "../src/core/vertical";
 
 const focca: Vertical = {
   id: "focca",
+  ativa: false, // pausada: por enquanto só o Rebanho posta
   app: {
     nome: "Focca",
     descricao:

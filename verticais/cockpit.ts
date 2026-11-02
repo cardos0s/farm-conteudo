@@ -2,6 +2,7 @@ import type { Vertical } from "../src/core/vertical";
 
 const cockpit: Vertical = {
   id: "cockpit",
+  ativa: false, // pausada: por enquanto só o Rebanho posta
   app: {
     nome: "Cockpit",
     // TODO: descrição oficial do app em uma frase

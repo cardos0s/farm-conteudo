@@ -1,6 +1,6 @@
 import "./comum";
 import Parser from "rss-parser";
-import { verticais } from "../../verticais";
+import { verticais, verticaisAtivas } from "../../verticais";
 import { linkRastreado } from "../core/vertical";
 import { credenciaisInstagram } from "../publicacao/instagram";
 import { publicacaoBeehiiv } from "../publicacao/beehiiv";
@@ -14,8 +14,11 @@ console.log(`${ok(!!process.env.ANTHROPIC_API_KEY)} ANTHROPIC_API_KEY`);
 console.log(`${ok(telegramConfigurado())} Telegram`);
 console.log(`${ok(!!(process.env.S3_BUCKET && process.env.S3_PUBLIC_URL))} Armazenamento público (S3/R2)`);
 
+const pausadas = verticais.filter((v) => !v.ativa).map((v) => v.app.nome);
+if (pausadas.length) console.log(`⏸  Pausadas (não rodam pelo cron): ${pausadas.join(", ")}`);
+
 let feedsQuebrados = 0;
-for (const v of verticais) {
+for (const v of verticaisAtivas()) {
   console.log(`\n── ${v.app.nome} ──`);
   console.log(`   Link rastreado: ${linkRastreado(v, "instagram")}`);
   console.log(`   Volume: ${v.volume.reelsPorDia} Reels + ${v.volume.carrosseisPorDia} carrosséis por dia · aprovação ${v.volume.aprovacao}`);

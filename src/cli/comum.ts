@@ -1,11 +1,13 @@
 import "dotenv/config";
-import { verticais } from "../../verticais";
+import { verticais, verticaisAtivas } from "../../verticais";
 import { alertar } from "../publicacao/telegram";
 
-/** Lê as verticais pedidas na linha de comando (todas, se nenhuma for passada). */
+/** Lê as verticais pedidas na linha de comando (as ativas, se nenhuma for passada). */
 export function verticaisDaLinha() {
   const ids = process.argv.slice(2).filter((a) => !a.startsWith("--"));
-  return ids.length ? verticais.filter((v) => ids.includes(v.id)) : verticais;
+  const escolhidas = ids.length ? verticais.filter((v) => ids.includes(v.id)) : verticaisAtivas();
+  if (!escolhidas.length) throw new Error(ids.length ? `Vertical desconhecida: ${ids.join(", ")}` : "Nenhuma vertical ativa em verticais/");
+  return escolhidas;
 }
 
 export const temFlag = (f: string) => process.argv.includes(f);

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { FPS, duracaoTotal, normalizarRoteiro, type Roteiro } from "../src/core/roteiro";
 import { MAX_SLIDES, normalizarCarrossel, type Carrossel } from "../src/core/carrossel";
 import { exemplos, exemplosCarrossel } from "../remotion/exemplos";
-import { verticais } from "../verticais";
+import { verticais, verticaisAtivas } from "../verticais";
 import { linkRastreado } from "../src/core/vertical";
 
 describe("roteiro", () => {
@@ -57,6 +57,10 @@ describe("carrossel", () => {
 });
 
 describe("verticais", () => {
+  it("por enquanto só o Rebanho roda pelo cron", () => {
+    expect(verticaisAtivas().map((v) => v.id)).toEqual(["rebanho"]);
+  });
+
   it("as três estão configuradas com marca e link rastreado", () => {
     expect(verticais.map((v) => v.id).sort()).toEqual(["cockpit", "focca", "rebanho"]);
     for (const v of verticais) {
