@@ -185,7 +185,7 @@ O Instagram não recebe o arquivo direto: ele baixa o vídeo e as imagens de um 
 npm run checar
 ```
 
-Mostra o que está configurado. No Instagram, usa o token para buscar a conta e mostra o @: se aparecer o @ do Rebanho, o token está certo. Também testa cada feed RSS (os feeds só importam para a produção automática).
+Testa de verdade o que é preciso para postar: busca a conta do Instagram pelo token (se aparecer o @ do Rebanho, o token está certo) e envia um arquivo de teste ao bucket, conferindo se o link público abre. O Telegram aparece como opcional. Com `npm run checar -- --tudo`, confere também o Claude, o Beehiiv e os feeds RSS da produção automática.
 
 Nada é obrigatório para começar: sem Instagram, o bot avisa na hora de postar para você publicar manualmente; sem Beehiiv, ele manda o HTML pronto da newsletter para colar no editor.
 
@@ -216,11 +216,13 @@ npm run newsletter rebanho -- --agora
 Num servidor pequeno com pelo menos 2 GB de RAM (nos testes, cada vídeo levou menos de 1 minuto para renderizar e cada carrossel, poucos segundos):
 
 1. Copie o projeto para `/opt/fabrica-conteudo`, rode `npm install` e preencha o `.env`.
-2. Instale o serviço do bot. Ele confere a pasta `entrada/` a cada minuto, publica no horário e ouve o Telegram:
-   ```bash
-   sudo cp deploy/fabrica-bot.service /etc/systemd/system/ && sudo systemctl enable --now fabrica-bot
-   ```
-3. Só para postar conteúdo pronto, não precisa de cron. Se um dia ligar a produção automática, veja `deploy/crontab.txt`.
+2. Escolha um dos dois jeitos de deixar o robô rodando (nunca os dois juntos):
+   - **Com Telegram** (confirmações, alertas, botão de cancelar e `/status`): instale o serviço do bot, que confere a pasta `entrada/` a cada minuto e publica no horário.
+     ```bash
+     sudo cp deploy/fabrica-bot.service /etc/systemd/system/ && sudo systemctl enable --now fabrica-bot
+     ```
+   - **Sem Telegram**: adicione com `crontab -e` a linha do `npm run publicar` que está em `deploy/crontab.txt`. Ela faz o mesmo a cada minuto; avisos e erros ficam em `dados/publicar.log`.
+3. A produção automática com o Claude continua desligada; para ligar, veja `deploy/crontab.txt`.
 4. Para colocar os arquivos na pasta `entrada/` do servidor, use o que for mais prático: `scp`/SFTP (FileZilla), ou uma pasta sincronizada do Google Drive ou Dropbox apontada para `entrada/` (com `rclone`, por exemplo).
 
 Se o Remotion não conseguir baixar o navegador dele no servidor, instale o Chromium e aponte `REMOTION_CHROME` para o executável.
