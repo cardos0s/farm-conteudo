@@ -48,7 +48,7 @@ const rebanho: Vertical = {
     fonteTexto: "'Inter', 'Helvetica Neue', Arial, sans-serif",
     elemento: "cerca",
   },
-  volume: { videosPorDia: 1, diaNewsletter: 1 },
+  volume: { reelsPorDia: 5, carrosseisPorDia: 5, diaNewsletter: 1, aprovacao: "manual" },
   newsletter: {
     nome: "Porteira",
     descricao: "Mercado do boi, clima e gestão da fazenda, toda segunda-feira.",

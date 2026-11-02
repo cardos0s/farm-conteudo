@@ -21,6 +21,9 @@ async function chamar<T = any>(metodo: string, corpo: Record<string, unknown> | 
   return j.result;
 }
 
+/** Só o botão de cancelar, para peças que já entraram na agenda pela aprovação automática. */
+export const botaoCancelar = (id: string) => ({ inline_keyboard: [[{ text: "❌ Cancelar post", callback_data: `no:${id}` }]] });
+
 export const botoesAprovacao = (id: string) => ({
   inline_keyboard: [
     [
@@ -49,6 +52,22 @@ export async function enviarVideo(arquivo: string, legenda: string, teclado?: ob
   if (teclado) form.set("reply_markup", JSON.stringify(teclado));
   form.set("video", new Blob([await readFile(arquivo)], { type: "video/mp4" }), path.basename(arquivo));
   return chamar<{ message_id: number }>("sendVideo", form);
+}
+
+/** Envia de 2 a 10 imagens como álbum. O Telegram não aceita botões em álbum, então eles vão numa mensagem logo depois. */
+export async function enviarAlbum(arquivos: string[], legenda: string) {
+  const form = new FormData();
+  form.set("chat_id", chat());
+  const media = arquivos.slice(0, 10).map((a, i) => ({
+    type: "photo",
+    media: `attach://foto${i}`,
+    ...(i === 0 ? { caption: cortar(legenda) } : {}),
+  }));
+  form.set("media", JSON.stringify(media));
+  for (const [i, a] of arquivos.slice(0, 10).entries()) {
+    form.set(`foto${i}`, new Blob([await readFile(a)], { type: "image/jpeg" }), path.basename(a));
+  }
+  return chamar<{ message_id: number }[]>("sendMediaGroup", form);
 }
 
 export async function enviarDocumento(nome: string, conteudo: string, legenda: string, teclado?: object) {

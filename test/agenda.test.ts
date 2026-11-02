@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { proximoHorario } from "../src/core/agenda";
+import { HORARIOS, proximoHorario } from "../src/core/agenda";
 
 const em = (s: string) => new Date(s);
 
@@ -16,5 +16,12 @@ describe("proximoHorario", () => {
 
   it("passa para o dia seguinte depois das 21h", () => {
     expect(proximoHorario(em("2026-10-28T21:30:00"), [])).toEqual(em("2026-10-29T09:00:00"));
+  });
+
+  it("carrosséis usam os próprios horários, intercalados com os Reels", () => {
+    expect(proximoHorario(em("2026-10-28T09:05:00"), [], HORARIOS.carrossel)).toEqual(em("2026-10-28T10:30:00"));
+    expect(proximoHorario(em("2026-10-28T21:55:00"), [], HORARIOS.carrossel)).toEqual(em("2026-10-29T10:30:00"));
+    const todos = [...HORARIOS.reel, ...HORARIOS.carrossel];
+    expect(new Set(todos).size).toBe(10);
   });
 });

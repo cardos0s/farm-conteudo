@@ -1,5 +1,6 @@
 import { mkdir, readdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
+import type { Slide } from "./carrossel";
 import type { Roteiro } from "./roteiro";
 import type { Vertical } from "./vertical";
 
@@ -14,11 +15,12 @@ export type StatusPeca =
   | "aprovada" // aprovada, na fila de publicação
   | "rejeitada"
   | "publicada"
+  | "expirada" // ninguém aprovou a tempo; a próxima produção já traz conteúdo mais novo
   | "erro";
 
 export interface Peca {
   id: string;
-  tipo: "reel" | "newsletter";
+  tipo: "reel" | "carrossel" | "newsletter";
   vertical: Vertical["id"];
   criadaEm: string;
   status: StatusPeca;
@@ -31,6 +33,9 @@ export interface Peca {
   html?: string;
   assunto?: string;
   videoPath?: string;
+  /** Carrossel: os slides escritos e as imagens renderizadas, na ordem. */
+  slides?: Slide[];
+  imagens?: string[];
   agendadaPara?: string;
   publicadaEm?: string;
   idExterno?: string;

@@ -1,9 +1,9 @@
 import "./comum";
-import { aprovar, publicarVencidas, rejeitar, statusTexto } from "../fabrica";
+import { aprovar, aprovarTudo, publicarVencidas, rejeitar, statusTexto } from "../fabrica";
 import { gravarChave, lerChave } from "../core/estado";
 import { alertar, enviarMensagem, receberAtualizacoes, responderClique, telegramConfigurado } from "../publicacao/telegram";
 
-// Processo contínuo: recebe os cliques de Aprovar/Rejeitar e publica no horário marcado.
+// Processo contínuo: recebe os cliques de Aprovar/Rejeitar/Cancelar e publica no horário marcado.
 // Deixe rodando com pm2 ou systemd (veja o README).
 
 if (!telegramConfigurado()) {
@@ -12,7 +12,8 @@ if (!telegramConfigurado()) {
 }
 
 const AJUDA = `Comandos:
-/status — o que está esperando, agendado e publicado
+/status — o que está esperando, agendado e publicado, e os próximos posts
+/aprovar_tudo — aprova todos os Reels e carrosséis esperando e distribui nos horários
 /publicar — publica agora o que já passou do horário`;
 
 let publicando = false;
@@ -42,7 +43,8 @@ for (;;) {
       await responderClique(c, resposta.slice(0, 190), resposta);
     }
     for (const cmd of comandos) {
-      if (cmd.startsWith("/status")) await enviarMensagem(await statusTexto());
+      if (cmd.startsWith("/aprovar_tudo")) await enviarMensagem(await aprovarTudo());
+      else if (cmd.startsWith("/status")) await enviarMensagem(await statusTexto());
       else if (cmd.startsWith("/publicar")) await tickPublicacao();
       else await enviarMensagem(AJUDA);
     }

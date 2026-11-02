@@ -18,6 +18,7 @@ let feedsQuebrados = 0;
 for (const v of verticais) {
   console.log(`\n── ${v.app.nome} ──`);
   console.log(`   Link rastreado: ${linkRastreado(v, "instagram")}`);
+  console.log(`   Volume: ${v.volume.reelsPorDia} Reels + ${v.volume.carrosseisPorDia} carrosséis por dia · aprovação ${v.volume.aprovacao}`);
   console.log(`${ok(!!credenciaisInstagram(v))} Instagram`);
   console.log(`${ok(!!publicacaoBeehiiv(v) && !!process.env.BEEHIIV_API_KEY)} Beehiiv`);
   for (const f of v.fontes.rss) {

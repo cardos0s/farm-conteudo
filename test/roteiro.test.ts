@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { FPS, duracaoTotal, normalizarRoteiro, type Roteiro } from "../src/core/roteiro";
-import { exemplos } from "../remotion/exemplos";
+import { MAX_SLIDES, normalizarCarrossel, type Carrossel } from "../src/core/carrossel";
+import { exemplos, exemplosCarrossel } from "../remotion/exemplos";
 import { verticais } from "../verticais";
 import { linkRastreado } from "../src/core/vertical";
 
@@ -30,6 +31,31 @@ describe("roteiro", () => {
   });
 });
 
+describe("carrossel", () => {
+  it("põe capa no início, fechamento no fim e limita slides e listas", () => {
+    const c: Carrossel = {
+      slides: [
+        { tipo: "fechamento", titulo: "Fim", cta: "Assine" },
+        ...Array.from({ length: 12 }, (_, i) => ({ tipo: "texto" as const, titulo: `${i}`, texto: "t", fonte: null })),
+        { tipo: "lista", titulo: "L", itens: ["1", "2", "3", "4", "5", "6", "7"], fonte: null },
+        { tipo: "capa", titulo: "Capa", subtitulo: null },
+      ],
+    };
+    const n = normalizarCarrossel(c);
+    expect(n.slides).toHaveLength(MAX_SLIDES);
+    expect(n.slides[0].tipo).toBe("capa");
+    expect(n.slides.at(-1)!.tipo).toBe("fechamento");
+  });
+
+  it("os exemplos das três marcas têm de 5 a 8 slides, com capa e fechamento", () => {
+    for (const { carrossel } of Object.values(exemplosCarrossel)) {
+      expect(carrossel.slides.length).toBeGreaterThanOrEqual(5);
+      expect(carrossel.slides.length).toBeLessThanOrEqual(8);
+      expect(normalizarCarrossel(carrossel)).toEqual(carrossel);
+    }
+  });
+});
+
 describe("verticais", () => {
   it("as três estão configuradas com marca e link rastreado", () => {
     expect(verticais.map((v) => v.id).sort()).toEqual(["cockpit", "focca", "rebanho"]);
@@ -38,6 +64,7 @@ describe("verticais", () => {
       expect(url.searchParams.get("utm_campaign")).toBe(`${v.id}-fabrica`);
       expect(v.fontes.rss.length).toBeGreaterThan(0);
       expect(v.regras.length).toBeGreaterThan(0);
+      expect(v.volume.reelsPorDia + v.volume.carrosseisPorDia).toBeGreaterThan(0);
     }
   });
 });

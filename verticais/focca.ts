@@ -47,7 +47,7 @@ const focca: Vertical = {
     fonteTexto: "'Inter', 'Helvetica Neue', Arial, sans-serif",
     elemento: "pomodoro",
   },
-  volume: { videosPorDia: 1, diaNewsletter: 0 },
+  volume: { reelsPorDia: 5, carrosseisPorDia: 5, diaNewsletter: 0, aprovacao: "manual" },
   newsletter: {
     nome: "Foco Total",
     descricao: "Datas de provas, técnicas de estudo e editais abertos, todo domingo.",

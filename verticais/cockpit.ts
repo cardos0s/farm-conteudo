@@ -41,7 +41,7 @@ const cockpit: Vertical = {
     fonteTexto: "'Inter', 'Helvetica Neue', Arial, sans-serif",
     elemento: "zebra",
   },
-  volume: { videosPorDia: 1, diaNewsletter: 2 },
+  volume: { reelsPorDia: 5, carrosseisPorDia: 5, diaNewsletter: 2, aprovacao: "manual" },
   newsletter: {
     nome: "Box Box",
     descricao: "O resumo semanal da F1 em números, sem enrolação.",

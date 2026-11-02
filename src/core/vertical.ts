@@ -36,9 +36,17 @@ export interface Vertical {
   };
   marca: Marca;
   volume: {
-    videosPorDia: number;
+    /** Reels por dia. Cada um ocupa um horário de HORARIOS.reel. */
+    reelsPorDia: number;
+    /** Carrosséis por dia. Cada um ocupa um horário de HORARIOS.carrossel. */
+    carrosseisPorDia: number;
     /** Dia da semana da newsletter, 0 = domingo. */
     diaNewsletter: number;
+    /**
+     * "manual": cada peça espera o seu ✅ no Telegram.
+     * "automatica": o que passa no revisor já entra na agenda; no Telegram chega só um aviso com o botão de cancelar.
+     */
+    aprovacao: "manual" | "automatica";
   };
   newsletter: { nome: string; descricao: string };
   hashtags: string[];

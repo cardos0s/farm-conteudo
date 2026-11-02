@@ -2,8 +2,10 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
-// O Instagram busca o vídeo por URL, então o MP4 precisa estar num endereço público.
+// O Instagram busca vídeos e imagens por URL, então o arquivo precisa estar num endereço público.
 // Funciona com qualquer bucket compatível com S3 (Cloudflare R2, AWS S3, Backblaze B2).
+
+const TIPOS: Record<string, string> = { ".mp4": "video/mp4", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png" };
 
 let cliente: S3Client | null = null;
 
@@ -28,7 +30,7 @@ export async function enviarParaPublico(arquivo: string, pasta: string): Promise
       Bucket: S3_BUCKET,
       Key: chave,
       Body: await readFile(arquivo),
-      ContentType: "video/mp4",
+      ContentType: TIPOS[path.extname(arquivo).toLowerCase()] ?? "application/octet-stream",
     }),
   );
   return `${S3_PUBLIC_URL.replace(/\/$/, "")}/${chave}`;

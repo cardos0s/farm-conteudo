@@ -2,8 +2,9 @@
 # Os horários seguem o fuso do servidor; use TZ=America/Sao_Paulo.
 CRON_TZ=America/Sao_Paulo
 
-# 07:00 — coleta, escreve, revisa, renderiza e manda os vídeos do dia para o Telegram
-0 7 * * * cd /opt/fabrica-conteudo && npm run diario >> dados/diario.log 2>&1
+# 06:00 — coleta, escreve, revisa e renderiza os Reels e carrosséis do dia e manda para o Telegram.
+# Com 5 + 5 por app são 30 peças: começar cedo dá tempo de aprovar antes do primeiro post (09:00).
+0 6 * * * cd /opt/fabrica-conteudo && npm run diario >> dados/diario.log 2>&1
 
 # 08:00 — newsletter (cada vertical só gera no seu dia da semana)
 0 8 * * * cd /opt/fabrica-conteudo && npm run newsletter >> dados/newsletter.log 2>&1
