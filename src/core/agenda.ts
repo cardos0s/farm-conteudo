@@ -1,11 +1,13 @@
 // Horários de publicação no Instagram (hora local, definida pela variável TZ).
-// Reels e carrosséis se alternam a cada 1h30 para a conta não postar dois conteúdos colados:
-// 09:00 🎬 · 10:30 🖼 · 12:00 🎬 · 13:30 🖼 · 15:00 🎬 · 16:30 🖼 · 18:00 🎬 · 19:30 🖼 · 21:00 🎬 · 22:00 🖼
-// Para mais de 5 por dia de um formato, acrescente horários na lista dele.
+// 08:00 🎬 · 10:00 🖼 · 12:00 🎬 · 13:00 🖼 · 18:00 🎬 · 19:00 🖼
+// Para postar mais (ou menos) de um formato por dia, acrescente (ou tire) horários da lista dele.
 export const HORARIOS = {
-  reel: ["09:00", "12:00", "15:00", "18:00", "21:00"],
-  carrossel: ["10:30", "13:30", "16:30", "19:30", "22:00"],
+  reel: ["08:00", "12:00", "18:00"],
+  carrossel: ["10:00", "13:00", "19:00"],
 } as const;
+
+/** Até onde a agenda vai: dá para carregar vários meses de conteúdo de uma vez. */
+const DIAS_DE_AGENDA = 366;
 
 export type FormatoPost = keyof typeof HORARIOS;
 
@@ -16,7 +18,7 @@ export type FormatoPost = keyof typeof HORARIOS;
 export function proximoHorario(agora: Date, ocupados: Date[], horarios: readonly string[] = HORARIOS.reel): Date {
   const minimo = agora.getTime() + 10 * 60_000;
   const tomados = new Set(ocupados.map((d) => d.getTime()));
-  for (let dia = 0; dia < 30; dia++) {
+  for (let dia = 0; dia < DIAS_DE_AGENDA; dia++) {
     for (const h of horarios) {
       const [hh, mm] = h.split(":").map(Number);
       const t = new Date(agora);
@@ -25,5 +27,5 @@ export function proximoHorario(agora: Date, ocupados: Date[], horarios: readonly
       if (t.getTime() >= minimo && !tomados.has(t.getTime())) return t;
     }
   }
-  throw new Error("Agenda cheia pelos próximos 30 dias");
+  throw new Error(`Agenda cheia pelos próximos ${DIAS_DE_AGENDA} dias`);
 }

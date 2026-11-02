@@ -1,9 +1,12 @@
 import "./comum";
 import { aprovar, aprovarTudo, publicarVencidas, rejeitar, statusTexto } from "../fabrica";
 import { gravarChave, lerChave } from "../core/estado";
+import { criarPastasDeEntrada, importarEntrada } from "../entrada";
+import { verticaisAtivas } from "../../verticais";
 import { alertar, enviarMensagem, receberAtualizacoes, responderClique, telegramConfigurado } from "../publicacao/telegram";
 
-// Processo contínuo: recebe os cliques de Aprovar/Rejeitar/Cancelar e publica no horário marcado.
+// Processo contínuo: a cada minuto, agenda o que apareceu na pasta entrada/ e publica o que chegou no horário.
+// Também recebe os cliques de Aprovar/Rejeitar/Cancelar no Telegram.
 // Deixe rodando com pm2 ou systemd (veja o README).
 
 if (!telegramConfigurado()) {
@@ -14,13 +17,14 @@ if (!telegramConfigurado()) {
 const AJUDA = `Comandos:
 /status — o que está esperando, agendado e publicado, e os próximos posts
 /aprovar_tudo — aprova todos os Reels e carrosséis esperando e distribui nos horários
-/publicar — publica agora o que já passou do horário`;
+/publicar — confere a pasta de entrada agora e publica o que já passou do horário`;
 
 let publicando = false;
 async function tickPublicacao() {
   if (publicando) return;
   publicando = true;
   try {
+    await importarEntrada(verticaisAtivas());
     await publicarVencidas();
   } catch (e) {
     await alertar(e, "publicação");
@@ -29,6 +33,7 @@ async function tickPublicacao() {
   }
 }
 
+await criarPastasDeEntrada(verticaisAtivas());
 let offset = await lerChave<number>("telegram-offset", 0);
 setInterval(tickPublicacao, 60_000);
 void tickPublicacao();

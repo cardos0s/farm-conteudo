@@ -124,7 +124,7 @@ async function produzirPeca(v: Vertical, pauta: Pauta): Promise<Peca | null> {
 }
 
 /** Coloca o post no próximo horário livre do formato dele, na conta do app. */
-async function agendar(p: Peca): Promise<Date> {
+export async function agendar(p: Peca): Promise<Date> {
   if (!ehPost(p)) throw new Error(`Só Reels e carrosséis entram na agenda (veio ${p.tipo})`);
   const ocupados = await listarPecas((x) => x.id !== p.id && x.vertical === p.vertical && x.tipo === p.tipo && x.status === "aprovada" && !!x.agendadaPara);
   const quando = proximoHorario(new Date(), ocupados.map((x) => new Date(x.agendadaPara!)), HORARIOS[p.tipo]);

@@ -2,9 +2,13 @@
 # Os horários seguem o fuso do servidor; use TZ=America/Sao_Paulo.
 CRON_TZ=America/Sao_Paulo
 
-# 06:00 — coleta, escreve, revisa e renderiza os Reels e carrosséis do dia e manda para o Telegram.
-# Com 5 + 5 por app são 30 peças: começar cedo dá tempo de aprovar antes do primeiro post (09:00).
-0 6 * * * cd /opt/fabrica-conteudo && npm run diario >> dados/diario.log 2>&1
+# A postagem não precisa de cron: o bot (deploy/fabrica-bot.service) confere a pasta entrada/
+# e publica a cada minuto. Se preferir não usar o bot, troque-o por esta linha (nunca os dois juntos):
+# * * * * * cd /opt/fabrica-conteudo && npm run publicar >> dados/publicar.log 2>&1
 
-# 08:00 — newsletter (cada vertical só gera no seu dia da semana)
-0 8 * * * cd /opt/fabrica-conteudo && npm run newsletter >> dados/newsletter.log 2>&1
+# Produção automática com o Claude — DESLIGADA: hoje o conteúdo vem pronto pela pasta entrada/.
+# Para ligar, tire o # da linha abaixo.
+# 0 6 * * * cd /opt/fabrica-conteudo && npm run diario >> dados/diario.log 2>&1
+
+# Newsletter semanal — também depende da produção automática (usa os blocos que o Claude escreve).
+# 0 8 * * * cd /opt/fabrica-conteudo && npm run newsletter >> dados/newsletter.log 2>&1

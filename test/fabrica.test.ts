@@ -113,10 +113,11 @@ beforeEach(async () => {
 const hora = (iso: string) => new Date(iso).toTimeString().slice(0, 5);
 
 describe("fábrica", () => {
-  it("produz 5 Reels e 5 carrosséis por app e manda tudo para aprovação", async () => {
+  it("produz o volume de Reels e carrosséis de cada app e manda tudo para aprovação", async () => {
     await fabrica.rodarDiario(verticais);
-    expect(enviados.videos).toHaveLength(15);
-    expect(enviados.albuns).toHaveLength(15);
+    const soma = (f: (v: (typeof verticais)[number]) => number) => verticais.reduce((t, v) => t + f(v), 0);
+    expect(enviados.videos).toHaveLength(soma((v) => v.volume.reelsPorDia));
+    expect(enviados.albuns).toHaveLength(soma((v) => v.volume.carrosseisPorDia));
     // O carrossel chega com capa primeiro e fechamento por último, um arquivo por slide.
     expect(enviados.albuns[0]).toHaveLength(3);
 
