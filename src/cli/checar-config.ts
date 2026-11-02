@@ -2,7 +2,7 @@ import "./comum";
 import Parser from "rss-parser";
 import { verticais, verticaisAtivas } from "../../verticais";
 import { linkRastreado } from "../core/vertical";
-import { credenciaisInstagram } from "../publicacao/instagram";
+import { contaInstagram, credenciaisInstagram } from "../publicacao/instagram";
 import { publicacaoBeehiiv } from "../publicacao/beehiiv";
 import { telegramConfigurado } from "../publicacao/telegram";
 
@@ -22,7 +22,15 @@ for (const v of verticaisAtivas()) {
   console.log(`\n── ${v.app.nome} ──`);
   console.log(`   Link rastreado: ${linkRastreado(v, "instagram")}`);
   console.log(`   Volume: ${v.volume.reelsPorDia} Reels + ${v.volume.carrosseisPorDia} carrosséis por dia · aprovação ${v.volume.aprovacao}`);
-  console.log(`${ok(!!credenciaisInstagram(v))} Instagram`);
+  if (!credenciaisInstagram(v)) console.log(`❌ Instagram (falta IG_${v.id.toUpperCase()}_TOKEN)`);
+  else {
+    try {
+      const conta = await contaInstagram(v);
+      console.log(`✅ Instagram: @${conta.username ?? "?"} (conta ${conta.id})`);
+    } catch (e) {
+      console.log(`❌ Instagram: o token não funcionou (${(e as Error).message})`);
+    }
+  }
   console.log(`${ok(!!publicacaoBeehiiv(v) && !!process.env.BEEHIIV_API_KEY)} Beehiiv`);
   for (const f of v.fontes.rss) {
     try {

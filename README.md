@@ -55,7 +55,7 @@ PNG e WebP são convertidos para JPEG automaticamente (a API do Instagram só ac
 
 ### O que precisa estar configurado
 
-No `.env` (veja [Configuração](#configuração)): `IG_REBANHO_USER_ID` e `IG_REBANHO_TOKEN`, o bucket público (`S3_*`, porque o Instagram baixa o vídeo e as imagens de uma URL) e o Telegram. Sem Instagram configurado, no horário o bot avisa para você postar manualmente.
+No `.env` (passo a passo em [Como pegar cada credencial](#como-pegar-cada-credencial)): `IG_REBANHO_TOKEN`, o bucket público (`S3_*`, porque o Instagram baixa o vídeo e as imagens de uma URL) e o Telegram. Sem Instagram configurado, no horário o bot avisa para você postar manualmente.
 
 O servidor precisa estar no fuso de Brasília (`TZ=America/Sao_Paulo`, já definido no serviço do bot), senão os horários saem deslocados.
 
@@ -137,26 +137,55 @@ Renderiza os Reels e os carrosséis de exemplo das três marcas em `saida/exempl
 cp .env.example .env
 ```
 
-Preencha o `.env`. O que cada parte precisa:
+Preencha o `.env`. Para postar o conteúdo pronto do Rebanho, você só precisa de três coisas: o token do Instagram, o bucket público e o bot do Telegram. O resto (Claude, Beehiiv, Cockpit, Focca) pode ficar vazio.
+
+#### Como pegar cada credencial
+
+**1. Token do Instagram → `IG_REBANHO_TOKEN`**
+
+Antes: a conta do Rebanho precisa ser **profissional** (no app do Instagram: Configurações → Tipo de conta e ferramentas → Mudar para conta profissional; empresa ou criador de conteúdo, tanto faz). Não precisa de página do Facebook.
+
+1. Entre em [developers.facebook.com](https://developers.facebook.com) com o seu Facebook e clique em **Meus apps → Criar app**.
+2. No caso de uso, escolha o de **Instagram** ("Gerenciar mensagens e conteúdo no Instagram"). Se pedir tipo de app, escolha **Empresa**.
+3. Dentro do app, abra **Configuração da API com login do Instagram** (o nome pode variar um pouco).
+4. Na parte **Gerar tokens de acesso**, clique em **Adicionar conta** e entre com o Instagram do Rebanho. Se o Instagram pedir para aceitar o convite de testador, aceite em Configurações → Apps e sites.
+5. Ainda em Gerar tokens de acesso, clique em **Gerar token** ao lado da conta e autorize. **Deixe marcada a permissão de publicar conteúdo**: sem ela, o primeiro post falha.
+6. Copie o token e cole em `IG_REBANHO_TOKEN`.
+
+O ID da conta é descoberto pelo próprio token (`IG_REBANHO_USER_ID` pode ficar vazio). Para publicar na sua própria conta, que é dona do app, não é preciso passar pela revisão da Meta.
+
+**O token vence em 60 dias**, mas o bot renova sozinho a cada 7. Se a renovação falhar (por exemplo, se o bot ficou mais de 60 dias desligado), chega um alerta no Telegram; aí é só gerar um token novo no mesmo lugar e trocar no `.env`.
+
+> Já tem a conta ligada a uma página do Facebook e um token do login pelo Facebook? Também funciona: preencha `IG_REBANHO_USER_ID`, `IG_REBANHO_TOKEN` e `IG_GRAPH_HOST=graph.facebook.com`. Nesse caso a renovação automática não se aplica: use um token que não vença (de um usuário do sistema no Gerenciador de Negócios).
+
+**2. Bucket público → `S3_*`**
+
+O Instagram não recebe o arquivo direto: ele baixa o vídeo e as imagens de um link público. O Cloudflare R2 é o mais barato para isso (não cobra pela saída).
+
+1. Crie uma conta em [dash.cloudflare.com](https://dash.cloudflare.com) e abra **R2**. Ativar o R2 pede um cartão, mas o uso de um perfil fica dentro da cota gratuita.
+2. **Criar bucket**, com o nome `fabrica-conteudo` → `S3_BUCKET`.
+3. No bucket, em **Configurações → Acesso público**, ative o **domínio r2.dev**. O endereço que aparecer (`https://pub-....r2.dev`) vai em `S3_PUBLIC_URL`.
+4. Volte ao R2 e abra **Gerenciar tokens de API → Criar token de API**, com permissão **Leitura e gravação de objeto**. Ele mostra uma vez só o **ID da chave de acesso** → `S3_ACCESS_KEY_ID` e a **chave de acesso secreta** → `S3_SECRET_ACCESS_KEY`.
+5. O **ID da conta** aparece na página do R2. Ele entra em `S3_ENDPOINT=https://<id-da-conta>.r2.cloudflarestorage.com`.
+
+**3. Bot do Telegram → `TELEGRAM_*`**
+
+1. No Telegram, abra o **@BotFather**, mande `/newbot` e escolha um nome. Ele responde com o token → `TELEGRAM_BOT_TOKEN`.
+2. Abra o **@userinfobot** e mande qualquer mensagem. O número em "Id" → `TELEGRAM_CHAT_ID`.
+3. Abra o seu bot novo e toque em **Começar**, senão ele não consegue mandar mensagem para você.
+
+**Para a produção automática (desligada hoje)**
 
 | O quê | Onde conseguir |
 |---|---|
 | `ANTHROPIC_API_KEY` | [console.anthropic.com](https://console.anthropic.com) |
-| `TELEGRAM_BOT_TOKEN` | crie um bot com o **@BotFather** |
-| `TELEGRAM_CHAT_ID` | mande uma mensagem para o **@userinfobot** |
-| `S3_*` | um bucket público (Cloudflare R2 é o mais barato). O Instagram baixa os vídeos e as imagens dos carrosséis dessa URL |
-| `IG_<APP>_USER_ID` e `IG_<APP>_TOKEN` | conta profissional do Instagram ligada a uma página do Facebook, com um app na Meta for Developers e permissão `instagram_content_publish`. Use um token de longa duração |
 | `BEEHIIV_API_KEY` e `BEEHIIV_<APP>_PUB_ID` | Beehiiv → Settings → API |
-
-Para começar só com o Rebanho, basta `IG_REBANHO_USER_ID`, `IG_REBANHO_TOKEN` e `BEEHIIV_REBANHO_PUB_ID`; as variáveis do Cockpit e do Focca podem ficar vazias.
-
-Depois revise os `TODO` em `verticais/`: descrição e link de cada app e o @ de cada perfil. **O @ aparece em todo vídeo e todo slide**, então confira o do Rebanho em `verticais/rebanho.ts` antes de publicar.
 
 ```bash
 npm run checar
 ```
 
-Mostra o que está configurado e testa cada feed RSS.
+Mostra o que está configurado. No Instagram, usa o token para buscar a conta e mostra o @: se aparecer o @ do Rebanho, o token está certo. Também testa cada feed RSS (os feeds só importam para a produção automática).
 
 Nada é obrigatório para começar: sem Instagram, o bot avisa na hora de postar para você publicar manualmente; sem Beehiiv, ele manda o HTML pronto da newsletter para colar no editor.
 

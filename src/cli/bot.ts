@@ -3,6 +3,7 @@ import { aprovar, aprovarTudo, publicarVencidas, rejeitar, statusTexto } from ".
 import { gravarChave, lerChave } from "../core/estado";
 import { criarPastasDeEntrada, importarEntrada } from "../entrada";
 import { verticaisAtivas } from "../../verticais";
+import { renovarTokenInstagram } from "../publicacao/instagram";
 import { alertar, enviarMensagem, receberAtualizacoes, responderClique, telegramConfigurado } from "../publicacao/telegram";
 
 // Processo contínuo: a cada minuto, agenda o que apareceu na pasta entrada/ e publica o que chegou no horário.
@@ -33,7 +34,20 @@ async function tickPublicacao() {
   }
 }
 
+/** O token do Instagram vence em 60 dias; a renovação roda a cada 6 h e só chama a API quando passou de 7 dias. */
+async function renovarTokens() {
+  for (const v of verticaisAtivas()) {
+    try {
+      if ((await renovarTokenInstagram(v)) === "renovado") console.log(`Token do Instagram do ${v.app.nome} renovado.`);
+    } catch (e) {
+      await alertar(e, `token do Instagram (${v.app.nome})`);
+    }
+  }
+}
+
 await criarPastasDeEntrada(verticaisAtivas());
+await renovarTokens();
+setInterval(renovarTokens, 6 * 3600_000);
 let offset = await lerChave<number>("telegram-offset", 0);
 setInterval(tickPublicacao, 60_000);
 void tickPublicacao();

@@ -1,17 +1,27 @@
+import { createHash } from "node:crypto";
+import { gravarChave, lerChave } from "../core/estado";
 import type { Vertical } from "../core/vertical";
 
-// Publicação de Reels e carrosséis pela Instagram Graph API (conta profissional ligada a uma página do Facebook).
+// Publicação de Reels e carrosséis pela API do Instagram.
 // Reel: cria o contêiner com a URL do vídeo, espera o processamento e publica.
 // Carrossel: cria um contêiner por imagem, junta todos num contêiner CAROUSEL e publica (conta como 1 post no limite diário da API).
+//
+// Padrão: "API do Instagram com login do Instagram" (graph.instagram.com). Funciona com conta profissional
+// (empresa ou criador de conteúdo) e não precisa de página do Facebook. Quem usa o login pelo Facebook
+// (conta ligada a uma página) define IG_GRAPH_HOST=graph.facebook.com; os passos de publicação são os mesmos.
 
+const HOST_INSTAGRAM = "graph.instagram.com";
+const host = () => process.env.IG_GRAPH_HOST || HOST_INSTAGRAM;
 const versao = () => process.env.IG_GRAPH_VERSION || "v23.0";
-const base = () => `https://graph.facebook.com/${versao()}`;
+const base = () => `https://${host()}/${versao()}`;
+const DIA = 86400_000;
 
+/** O token do .env (e o ID da conta, se informado). Serve para saber se o Instagram do app está configurado. */
 export function credenciaisInstagram(v: Vertical) {
   const prefixo = `IG_${v.id.toUpperCase()}`;
-  const usuario = process.env[`${prefixo}_USER_ID`];
   const token = process.env[`${prefixo}_TOKEN`];
-  return usuario && token ? { usuario, token } : null;
+  const usuario = process.env[`${prefixo}_USER_ID`] || undefined;
+  return token ? { usuario, token } : null;
 }
 
 async function graph(metodo: "GET" | "POST", caminho: string, params: Record<string, string>) {
@@ -25,6 +35,94 @@ async function graph(metodo: "GET" | "POST", caminho: string, params: Record<str
   const j = (await r.json()) as any;
   if (!r.ok || j.error) throw new Error(`Instagram ${caminho}: ${j.error?.message ?? r.status}`);
   return j;
+}
+
+// ── Token: renovação automática ────────────────────────────────────
+// O token de longa duração do login do Instagram vence em 60 dias. A fábrica renova sozinha a cada 7 dias
+// e guarda o token novo em dados/ (o do .env continua sendo o ponto de partida). Se você trocar o token
+// do .env, a fábrica percebe e recomeça a partir dele.
+
+interface TokenGuardado {
+  /** Impressão digital do token do .env de onde este veio. */
+  origem: string;
+  token: string;
+  renovadoEm: string;
+  expiraEm?: string;
+}
+
+export const RENOVAR_TOKEN_A_CADA = 7 * DIA;
+const chaveToken = (v: Vertical) => `token-instagram-${v.id}`;
+const impressao = (t: string) => createHash("sha256").update(t).digest("hex").slice(0, 16);
+
+function exigirCredenciais(v: Vertical) {
+  const cred = credenciaisInstagram(v);
+  if (!cred) throw new Error(`Token do Instagram do ${v.app.nome} não configurado (IG_${v.id.toUpperCase()}_TOKEN)`);
+  return cred;
+}
+
+/** O token mais novo: o renovado, se houver, ou o do .env. */
+async function tokenAtual(v: Vertical): Promise<string> {
+  const cred = exigirCredenciais(v);
+  const guardado = await lerChave<TokenGuardado | null>(chaveToken(v), null);
+  return guardado && guardado.origem === impressao(cred.token) ? guardado.token : cred.token;
+}
+
+/**
+ * Renova o token se a última renovação tiver mais de 7 dias. Só se aplica ao login do Instagram.
+ * Na primeira vez, só registra o token do .env (a API exige que ele tenha pelo menos 24 h para renovar).
+ */
+export async function renovarTokenInstagram(v: Vertical, agora = Date.now()): Promise<"renovado" | "em-dia" | "nao-se-aplica"> {
+  const cred = credenciaisInstagram(v);
+  if (!cred || host() !== HOST_INSTAGRAM) return "nao-se-aplica";
+  const origem = impressao(cred.token);
+  const guardado = await lerChave<TokenGuardado | null>(chaveToken(v), null);
+  if (!guardado || guardado.origem !== origem) {
+    await gravarChave(chaveToken(v), { origem, token: cred.token, renovadoEm: new Date(agora).toISOString() } satisfies TokenGuardado);
+    return "em-dia";
+  }
+  if (agora - Date.parse(guardado.renovadoEm) < RENOVAR_TOKEN_A_CADA) return "em-dia";
+
+  const url = `https://${HOST_INSTAGRAM}/refresh_access_token?${new URLSearchParams({ grant_type: "ig_refresh_token", access_token: guardado.token })}`;
+  const r = await fetch(url, { signal: AbortSignal.timeout(60000) });
+  const j = (await r.json()) as { access_token?: string; expires_in?: number; error?: { message?: string } };
+  if (!r.ok || !j.access_token) {
+    const vence = new Date(Date.parse(guardado.renovadoEm) + 60 * DIA).toLocaleDateString("pt-BR");
+    throw new Error(
+      `não consegui renovar o token do Instagram do ${v.app.nome} (${j.error?.message ?? r.status}). Ele vence por volta de ${vence}: gere um novo no painel da Meta e troque IG_${v.id.toUpperCase()}_TOKEN no .env.`,
+    );
+  }
+  await gravarChave(chaveToken(v), {
+    origem,
+    token: j.access_token,
+    renovadoEm: new Date(agora).toISOString(),
+    expiraEm: j.expires_in ? new Date(agora + j.expires_in * 1000).toISOString() : undefined,
+  } satisfies TokenGuardado);
+  return "renovado";
+}
+
+/** Descobre a conta do token: o ID usado para publicar e o @. */
+export async function contaInstagram(v: Vertical): Promise<{ id: string; username?: string }> {
+  const cred = exigirCredenciais(v);
+  const token = await tokenAtual(v);
+  if (host() !== HOST_INSTAGRAM) {
+    if (!cred.usuario) throw new Error(`Com o login pelo Facebook, preencha IG_${v.id.toUpperCase()}_USER_ID`);
+    const conta = await graph("GET", cred.usuario, { fields: "username", access_token: token });
+    return { id: cred.usuario, username: conta.username };
+  }
+  const eu = await graph("GET", "me", { fields: "user_id,username", access_token: token });
+  return { id: cred.usuario ?? String(eu.user_id ?? eu.id), username: eu.username };
+}
+
+const contas = new Map<string, string>();
+async function credenciaisDePublicacao(v: Vertical) {
+  const cred = exigirCredenciais(v);
+  const token = await tokenAtual(v);
+  let usuario = cred.usuario ?? contas.get(v.id);
+  if (!usuario) {
+    usuario = (await contaInstagram(v)).id;
+    contas.set(v.id, usuario);
+  }
+  return { usuario, token };
 }
 
 const esperar = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -46,14 +144,8 @@ async function publicarConteiner(usuario: string, token: string, conteiner: stri
   return { id: pub.id as string, permalink: info?.permalink as string | undefined };
 }
 
-function exigirCredenciais(v: Vertical) {
-  const cred = credenciaisInstagram(v);
-  if (!cred) throw new Error(`Credenciais do Instagram de ${v.app.nome} não configuradas`);
-  return cred;
-}
-
 export async function publicarReel(v: Vertical, videoUrl: string, legenda: string): Promise<{ id: string; permalink?: string }> {
-  const cred = exigirCredenciais(v);
+  const cred = await credenciaisDePublicacao(v);
   const conteiner = await graph("POST", `${cred.usuario}/media`, {
     media_type: "REELS",
     video_url: videoUrl,
@@ -69,7 +161,7 @@ export async function publicarReel(v: Vertical, videoUrl: string, legenda: strin
 
 /** Publica de 2 a 10 imagens JPEG (URLs públicas) como um carrossel. */
 export async function publicarCarrossel(v: Vertical, imagensUrl: string[], legenda: string): Promise<{ id: string; permalink?: string }> {
-  const cred = exigirCredenciais(v);
+  const cred = await credenciaisDePublicacao(v);
   if (imagensUrl.length < 2 || imagensUrl.length > 10) throw new Error(`Carrossel precisa de 2 a 10 imagens (veio com ${imagensUrl.length})`);
 
   const filhos: string[] = [];
