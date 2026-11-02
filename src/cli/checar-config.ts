@@ -5,7 +5,7 @@ import path from "node:path";
 import Parser from "rss-parser";
 import { verticais, verticaisAtivas } from "../../verticais";
 import { linkRastreado } from "../core/vertical";
-import { contaInstagram, credenciaisInstagram } from "../publicacao/instagram";
+import { contaInstagram, credenciaisInstagram, uploadDiretoDeVideo } from "../publicacao/instagram";
 import { enviarParaPublico } from "../publicacao/armazenamento";
 import { publicacaoBeehiiv } from "../publicacao/beehiiv";
 import { telegramConfigurado } from "../publicacao/telegram";
@@ -21,6 +21,9 @@ let falhas = 0;
 /** Envia um arquivo pequeno ao bucket e confere se o link público abre, do mesmo jeito que o Instagram vai abrir. */
 async function testarArmazenamento() {
   const faltando = ["S3_ENDPOINT", "S3_BUCKET", "S3_ACCESS_KEY_ID", "S3_SECRET_ACCESS_KEY", "S3_PUBLIC_URL"].filter((k) => !process.env[k]);
+  if (faltando.length === 5 && uploadDiretoDeVideo()) {
+    return console.log("⚪ Armazenamento público: não configurado. Reels vão direto do computador; carrosséis precisam dele.");
+  }
   if (faltando.length) {
     falhas++;
     return console.log(`❌ Armazenamento público: falta ${faltando.join(", ")}`);

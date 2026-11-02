@@ -21,6 +21,10 @@ function s3(): S3Client {
   return cliente;
 }
 
+/** Se há um bucket configurado. Sem ele, só dá para postar Reels (com o login unificado). */
+export const armazenamentoConfigurado = () =>
+  ["S3_ENDPOINT", "S3_BUCKET", "S3_ACCESS_KEY_ID", "S3_SECRET_ACCESS_KEY", "S3_PUBLIC_URL"].every((k) => !!process.env[k]);
+
 export async function enviarParaPublico(arquivo: string, pasta: string): Promise<string> {
   const { S3_BUCKET, S3_PUBLIC_URL } = process.env;
   if (!S3_BUCKET || !S3_PUBLIC_URL) throw new Error("Configure S3_BUCKET e S3_PUBLIC_URL no .env");

@@ -55,7 +55,11 @@ PNG e WebP são convertidos para JPEG automaticamente (a API do Instagram só ac
 
 ### O que precisa estar configurado
 
-No `.env` (passo a passo em [Como pegar cada credencial](#como-pegar-cada-credencial)): `IG_REBANHO_TOKEN`, o bucket público (`S3_*`, porque o Instagram baixa o vídeo e as imagens de uma URL) e o Telegram. Sem Instagram configurado, no horário o bot avisa para você postar manualmente.
+No `.env` (passo a passo em [Como pegar cada credencial](#como-pegar-cada-credencial)):
+
+- **Só Reels**: basta `IG_REBANHO_TOKEN`. O vídeo vai direto do computador para o Instagram, sem nada externo.
+- **Carrosséis**: também o bucket público (`S3_*`). A API do Instagram só aceita imagens por link público, sem upload direto. Sem bucket, os carrosséis vão para `com-problema/` com essa explicação.
+- **Telegram** (opcional): confirmações, alertas e botão de cancelar.
 
 O servidor precisa estar no fuso de Brasília (`TZ=America/Sao_Paulo`, já definido no serviço do bot), senão os horários saem deslocados.
 
@@ -137,7 +141,7 @@ Renderiza os Reels e os carrosséis de exemplo das três marcas em `saida/exempl
 cp .env.example .env
 ```
 
-Preencha o `.env`. Para postar o conteúdo pronto do Rebanho, você só precisa de três coisas: o token do Instagram, o bucket público e o bot do Telegram. O resto (Claude, Beehiiv, Cockpit, Focca) pode ficar vazio.
+Preencha o `.env`. Para postar Reels do Rebanho, só o token do Instagram é obrigatório. O bucket público só é preciso para carrosséis, e o Telegram é opcional. O resto (Claude, Beehiiv, Cockpit, Focca) pode ficar vazio.
 
 #### Como pegar cada credencial
 
@@ -158,9 +162,9 @@ O token para de funcionar se o app for removido do portfólio ou se a conta do I
 
 > Outros caminhos também funcionam: **login do Instagram** (`IG_GRAPH_HOST=graph.instagram.com`, token de 60 dias que o bot renova sozinho a cada 7) e **login do Facebook**, que é legado (`graph.facebook.com` com `IG_REBANHO_USER_ID` e a conta ligada a uma página).
 
-**2. Bucket público → `S3_*`**
+**2. Bucket público → `S3_*` (só para carrosséis)**
 
-O Instagram não recebe o arquivo direto: ele baixa o vídeo e as imagens de um link público. O Cloudflare R2 é o mais barato para isso (não cobra pela saída).
+Os Reels vão direto do computador (upload retomável do login unificado). Já as imagens a API do Instagram só aceita por link público: o servidor da Meta baixa cada imagem. O Cloudflare R2 é o mais barato para isso (não cobra pela saída).
 
 1. Crie uma conta em [dash.cloudflare.com](https://dash.cloudflare.com) e abra **R2**. Ativar o R2 pede um cartão, mas o uso de um perfil fica dentro da cota gratuita.
 2. **Criar bucket**, com o nome `fabrica-conteudo` → `S3_BUCKET`.

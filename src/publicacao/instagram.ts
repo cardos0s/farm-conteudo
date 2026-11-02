@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
 import { gravarChave, lerChave } from "../core/estado";
 import type { Vertical } from "../core/vertical";
 
@@ -138,7 +139,9 @@ async function credenciaisDePublicacao(v: Vertical) {
   return { usuario, token };
 }
 
-const esperar = (ms: number) => new Promise((r) => setTimeout(r, ms));
+/** Multiplica as esperas pelo processamento do Instagram. Os testes zeram para não esperar de verdade. */
+export const ritmo = { escala: 1 };
+const esperar = (ms: number) => new Promise((r) => setTimeout(r, ms * ritmo.escala));
 
 /** Espera o contêiner ficar pronto. Vídeo costuma levar de 30 s a 2 min; imagem, poucos segundos. */
 async function esperarConteiner(id: string, token: string, intervalo = 15000, tentativas = 40) {
@@ -157,16 +160,44 @@ async function publicarConteiner(usuario: string, token: string, conteiner: stri
   return { id: pub.id as string, permalink: info?.permalink as string | undefined };
 }
 
-export async function publicarReel(v: Vertical, videoUrl: string, legenda: string): Promise<{ id: string; permalink?: string }> {
+/**
+ * O login unificado e o do Facebook (graph.facebook.com) aceitam o vídeo direto do disco, pelo upload
+ * retomável em rupload.facebook.com. O login do Instagram (graph.instagram.com) só aceita link público.
+ * Imagens, em qualquer login, só por link público.
+ */
+export const uploadDiretoDeVideo = () => host() !== HOST_INSTAGRAM;
+
+/** Envia os bytes do vídeo para o contêiner criado com upload_type=resumable. */
+async function enviarVideoDireto(conteiner: { id: string; uri?: string }, arquivo: string, token: string) {
+  const video = await readFile(arquivo);
+  const uri = conteiner.uri ?? `https://rupload.facebook.com/ig-api-upload/${versao()}/${conteiner.id}`;
+  const r = await fetch(uri, {
+    method: "POST",
+    headers: { Authorization: `OAuth ${token}`, offset: "0", file_size: String(video.byteLength) },
+    body: video,
+    signal: AbortSignal.timeout(15 * 60_000),
+  });
+  const j = (await r.json().catch(() => ({}))) as { success?: boolean; debug_info?: { message?: string } };
+  if (!r.ok || !j.success) throw new Error(`Instagram recusou o envio do vídeo: ${j.debug_info?.message ?? r.status}`);
+}
+
+/** Publica um Reel a partir do arquivo no disco (upload direto) ou de um link público. */
+export async function publicarReel(
+  v: Vertical,
+  video: { arquivo: string } | { url: string },
+  legenda: string,
+): Promise<{ id: string; permalink?: string }> {
   const cred = await credenciaisDePublicacao(v);
+  const origem: Record<string, string> = "url" in video ? { video_url: video.url } : { upload_type: "resumable" };
   const conteiner = await graph("POST", `${cred.usuario}/media`, {
     media_type: "REELS",
-    video_url: videoUrl,
+    ...origem,
     caption: legenda,
     share_to_feed: "true",
     thumb_offset: "1500",
     access_token: cred.token,
   });
+  if ("arquivo" in video) await enviarVideoDireto(conteiner, video.arquivo, cred.token);
   await esperar(15000);
   await esperarConteiner(conteiner.id, cred.token);
   return publicarConteiner(cred.usuario, cred.token, conteiner.id);

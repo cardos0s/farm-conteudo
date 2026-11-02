@@ -59,11 +59,15 @@ vi.mock("../src/video/render", () => ({
   renderizarReel: async (_p: unknown, destino: string) => destino,
   renderizarCarrossel: async (_m: unknown, c: any, pasta: string, id: string) => c.slides.map((_: unknown, i: number) => `${pasta}/${id}-0${i + 1}.jpg`),
 }));
-vi.mock("../src/publicacao/armazenamento", () => ({ enviarParaPublico: async (a: string) => `https://cdn.ex.com/${a}` }));
+vi.mock("../src/publicacao/armazenamento", () => ({
+  armazenamentoConfigurado: () => true,
+  enviarParaPublico: async (a: string) => `https://cdn.ex.com/${a}`,
+}));
 vi.mock("../src/publicacao/instagram", () => ({
   credenciaisInstagram: () => ({ usuario: "1", token: "t" }),
-  publicarReel: async (_v: unknown, url: string) => {
-    enviados.reels.push(url);
+  uploadDiretoDeVideo: () => true,
+  publicarReel: async (_v: unknown, video: { arquivo?: string; url?: string }) => {
+    enviados.reels.push(video.arquivo ?? video.url!);
     return { id: "ig1", permalink: "https://instagram.com/reel/1" };
   },
   publicarCarrossel: async (_v: unknown, urls: string[]) => {

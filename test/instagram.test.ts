@@ -1,4 +1,4 @@
-import { mkdtemp } from "node:fs/promises";
+import { mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
@@ -111,5 +111,43 @@ describe("login unificado (padrão)", () => {
     process.env.IG_REBANHO_USER_ID = "999";
     simularApi({ "/999?": { username: "rebanho" } });
     expect(await ig.contaInstagram(rebanho)).toEqual({ id: "999", username: "rebanho" });
+  });
+
+  it("publica o Reel direto do disco, sem link público (upload retomável)", async () => {
+    const pasta = await mkdtemp(path.join(tmpdir(), "fabrica-reel-"));
+    const arquivo = path.join(pasta, "reel.mp4");
+    await writeFile(arquivo, "bytes-do-video");
+    process.env.IG_REBANHO_USER_ID = "178";
+
+    const pedidos: { url: string; metodo: string; headers: Record<string, string>; corpo: string }[] = [];
+    vi.stubGlobal("fetch", async (url: string | URL, init: RequestInit = {}) => {
+      const u = String(url);
+      const corpo = init.body instanceof URLSearchParams ? init.body.toString() : init.body ? Buffer.from(init.body as Uint8Array).toString() : "";
+      pedidos.push({ url: u, metodo: init.method ?? "GET", headers: (init.headers ?? {}) as Record<string, string>, corpo });
+      let resposta: unknown = {};
+      if (u.endsWith("/178/media")) resposta = { id: "c1", uri: "https://rupload.facebook.com/ig-api-upload/v26.0/c1" };
+      else if (u.startsWith("https://rupload.facebook.com/")) resposta = { success: true, message: "Upload successful." };
+      else if (u.includes("/c1?")) resposta = { status_code: "FINISHED" };
+      else if (u.endsWith("/178/media_publish")) resposta = { id: "m1" };
+      else if (u.includes("/m1?")) resposta = { permalink: "https://instagram.com/reel/m1" };
+      return new Response(JSON.stringify(resposta), { status: 200 });
+    });
+
+    ig.ritmo.escala = 0;
+    try {
+      expect(await ig.publicarReel(rebanho, { arquivo }, "Legenda")).toEqual({ id: "m1", permalink: "https://instagram.com/reel/m1" });
+    } finally {
+      ig.ritmo.escala = 1;
+    }
+
+    const [criar, enviar] = pedidos;
+    expect(criar.url).toBe("https://graph.facebook.com/v26.0/178/media");
+    expect(criar.corpo).toContain("upload_type=resumable");
+    expect(criar.corpo).toContain("media_type=REELS");
+    expect(criar.corpo).not.toContain("video_url");
+    expect(enviar.url).toBe("https://rupload.facebook.com/ig-api-upload/v26.0/c1");
+    expect(enviar.headers).toMatchObject({ Authorization: "OAuth token-suat", offset: "0", file_size: "14" });
+    expect(enviar.corpo).toBe("bytes-do-video");
+    expect(pedidos.some((p) => p.url.endsWith("/178/media_publish"))).toBe(true);
   });
 });

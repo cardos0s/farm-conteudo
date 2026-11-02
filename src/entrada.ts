@@ -5,6 +5,7 @@ import type { FormatoPost } from "./core/agenda";
 import { novoId, salvarPeca, type Peca } from "./core/estado";
 import type { Vertical } from "./core/vertical";
 import { agendar } from "./fabrica";
+import { armazenamentoConfigurado } from "./publicacao/armazenamento";
 import { botaoCancelar, enviarMensagem } from "./publicacao/telegram";
 
 // Conteúdo pronto: você coloca os Reels e carrosséis numa pasta e a fábrica agenda e posta.
@@ -141,6 +142,11 @@ async function itensDoApp(v: Vertical): Promise<Item[]> {
       nome,
       arquivos: [pasta, ...conteudo.map((a) => path.join(pasta, a))],
       importar: async (id) => {
+        if (!armazenamentoConfigurado()) {
+          throw new ProblemaNoArquivo(
+            "carrossel precisa de armazenamento público, porque a API do Instagram só aceita imagens por link, e o S3/R2 não está configurado no .env. Reels funcionam sem ele",
+          );
+        }
         const fotos = conteudo.filter((a) => IMAGENS.includes(extensao(a)));
         if (fotos.length < 2 || fotos.length > 20) {
           throw new ProblemaNoArquivo(`o carrossel tem ${fotos.length} imagem(ns); o Instagram aceita de 2 a 20 (JPG, PNG ou WebP)`);

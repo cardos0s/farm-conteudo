@@ -19,9 +19,9 @@ import { atualizarPeca, gravarChave, lerChave, lerPeca, listarPecas, novoId, sal
 import { normalizarRoteiro } from "./core/roteiro";
 import type { Vertical } from "./core/vertical";
 import { montarHtml } from "./newsletter/html";
-import { enviarParaPublico } from "./publicacao/armazenamento";
+import { armazenamentoConfigurado, enviarParaPublico } from "./publicacao/armazenamento";
 import { publicarNewsletter } from "./publicacao/beehiiv";
-import { credenciaisInstagram, publicarCarrossel, publicarReel } from "./publicacao/instagram";
+import { credenciaisInstagram, publicarCarrossel, publicarReel, uploadDiretoDeVideo } from "./publicacao/instagram";
 import {
   alertar,
   botaoCancelar,
@@ -350,7 +350,20 @@ async function publicarNoInstagram(p: Peca, v: Vertical) {
     for (const img of p.imagens ?? []) urls.push(await enviarParaPublico(img, p.vertical));
     return publicarCarrossel(v, urls, p.legenda!);
   }
-  return publicarReel(v, await enviarParaPublico(p.videoPath!, p.vertical), p.legenda!);
+  if (uploadDiretoDeVideo()) return publicarReel(v, { arquivo: p.videoPath! }, p.legenda!);
+  return publicarReel(v, { url: await enviarParaPublico(p.videoPath!, p.vertical) }, p.legenda!);
+}
+
+/** O que falta para publicar esta peça sem ajuda (null se nada falta). Não adianta tentar de novo enquanto faltar. */
+function faltaParaPublicar(p: Peca, v: Vertical): string | null {
+  if (!credenciaisInstagram(v)) return "o Instagram não está configurado";
+  const precisaDeLink = p.tipo === "carrossel" || !uploadDiretoDeVideo();
+  if (precisaDeLink && !armazenamentoConfigurado()) {
+    return p.tipo === "carrossel"
+      ? "carrossel precisa de armazenamento público (a API do Instagram só aceita imagens por link), e ele não está configurado"
+      : "o armazenamento público não está configurado";
+  }
+  return null;
 }
 
 /** Publica os Reels e carrosséis aprovados cujo horário já chegou. */
@@ -361,10 +374,11 @@ export async function publicarVencidas(): Promise<number> {
   for (const p of vencidas) {
     const v = buscarVertical(p.vertical);
     const nome = NOME[p.tipo as FormatoPost][0];
-    if (!credenciaisInstagram(v)) {
-      await atualizarPeca(p.id, { status: "erro", erro: "Instagram não configurado" });
+    const falta = faltaParaPublicar(p, v);
+    if (falta) {
+      await atualizarPeca(p.id, { status: "erro", erro: falta });
       const onde = p.tipo === "carrossel" ? `as imagens estão em ${path.dirname(p.imagens?.[0] ?? DIR_CARROSSEIS)}` : `ele está em ${p.videoPath}`;
-      await enviarMensagem(`📲 Hora de postar o ${nome} "${p.titulo}" no Instagram do ${v.app.nome}. Como o Instagram não está configurado, publique manualmente: ${onde}.`);
+      await enviarMensagem(`📲 Hora de postar o ${nome} "${p.titulo}" no Instagram do ${v.app.nome}. Como ${falta}, publique manualmente: ${onde}.`);
       continue;
     }
     try {

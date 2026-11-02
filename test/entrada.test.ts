@@ -6,14 +6,19 @@ import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 // Conteúdo pronto: arquivos na pasta de entrada → agenda → Instagram, com as integrações externas simuladas.
 
-const enviados = vi.hoisted(() => ({ mensagens: [] as string[], reels: [] as string[], carrosseis: [] as string[][] }));
+const enviados = vi.hoisted(() => ({ mensagens: [] as string[], reels: [] as { arquivo?: string; url?: string }[], carrosseis: [] as string[][] }));
+const config = vi.hoisted(() => ({ armazenamento: true }));
 
 vi.mock("../src/video/render", () => ({ renderizarReel: async () => "", renderizarCarrossel: async () => [] }));
-vi.mock("../src/publicacao/armazenamento", () => ({ enviarParaPublico: async (a: string) => `https://cdn.ex.com/${path.basename(a)}` }));
+vi.mock("../src/publicacao/armazenamento", () => ({
+  armazenamentoConfigurado: () => config.armazenamento,
+  enviarParaPublico: async (a: string) => `https://cdn.ex.com/${path.basename(a)}`,
+}));
 vi.mock("../src/publicacao/instagram", () => ({
   credenciaisInstagram: () => ({ usuario: "1", token: "t" }),
-  publicarReel: async (_v: unknown, url: string) => {
-    enviados.reels.push(url);
+  uploadDiretoDeVideo: () => true,
+  publicarReel: async (_v: unknown, video: { arquivo?: string; url?: string }) => {
+    enviados.reels.push(video);
     return { id: "ig1" };
   },
   publicarCarrossel: async (_v: unknown, urls: string[]) => {
@@ -70,6 +75,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   for (const lista of Object.values(enviados)) lista.length = 0;
+  config.armazenamento = true;
   for (const d of ["dados", "entrada", "importados"]) await rm(path.join(raiz, d), { recursive: true, force: true });
 });
 
@@ -105,7 +111,8 @@ describe("pasta de entrada", () => {
     const antes = new Date(Date.now() - 1000).toISOString();
     for (const p of pecas) await estado.atualizarPeca(p.id, { agendadaPara: antes });
     expect(await fabrica.publicarVencidas()).toBe(2);
-    expect(enviados.reels).toHaveLength(1);
+    // O Reel vai direto do disco, sem passar pelo armazenamento público.
+    expect(enviados.reels).toEqual([{ arquivo: r.videoPath }]);
     expect(enviados.carrosseis[0]).toHaveLength(3);
     expect(enviados.carrosseis[0][0]).toMatch(/-01\.jpg$/);
   });
@@ -148,5 +155,20 @@ describe("pasta de entrada", () => {
     enviados.mensagens.length = 0;
     await entrada.importarEntrada([rebanho], DEPOIS_DA_COPIA());
     expect(enviados.mensagens).toHaveLength(0);
+  });
+
+  it("sem armazenamento público, posta Reels e separa os carrosséis explicando o motivo", async () => {
+    config.armazenamento = false;
+    await reel("01-pasto", "Legenda");
+    await imagem(pasta("carrosseis", "01-chuva", "1.png"));
+    await imagem(pasta("carrosseis", "01-chuva", "2.png"));
+
+    expect(await entrada.importarEntrada([rebanho], DEPOIS_DA_COPIA())).toBe(1);
+    expect(await readFile(pasta("com-problema", "01-chuva.problema.txt"), "utf8")).toContain("armazenamento público");
+
+    const [r] = await estado.listarPecas();
+    await estado.atualizarPeca(r.id, { agendadaPara: new Date(Date.now() - 1000).toISOString() });
+    expect(await fabrica.publicarVencidas()).toBe(1);
+    expect(enviados.reels).toEqual([{ arquivo: r.videoPath }]);
   });
 });
