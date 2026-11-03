@@ -102,8 +102,16 @@ describe("login unificado (padrão)", () => {
     await expect(ig.contaInstagram(rebanho)).rejects.toThrow(/@a \(1\), @b \(2\).*IG_REBANHO_USER_ID/);
   });
 
+  it("procura a conta pela página do Facebook quando o token não tem contas atribuídas", async () => {
+    simularApi({
+      "me/assigned_instagram_accounts": { data: [] },
+      "me/accounts": { data: [{ id: "pg1" }, { id: "pg2", instagram_business_account: { id: "17841", username: "rebanho" } }] },
+    });
+    expect(await ig.contaInstagram(rebanho)).toEqual({ id: "17841", username: "rebanho" });
+  });
+
   it("explica quando o token não tem nenhuma conta", async () => {
-    simularApi({ "me/assigned_instagram_accounts": { data: [] } });
+    simularApi({ "me/assigned_instagram_accounts": { data: [] }, "me/accounts": { data: [] } });
     await expect(ig.contaInstagram(rebanho)).rejects.toThrow(/nenhuma conta do Instagram/);
   });
 

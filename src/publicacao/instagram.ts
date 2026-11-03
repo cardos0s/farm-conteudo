@@ -113,9 +113,16 @@ export async function contaInstagram(v: Vertical): Promise<{ id: string; usernam
       return { id: cred.usuario, username: conta.username };
     }
     // Login unificado: /me é o usuário do sistema; as contas do Instagram vêm de assigned_instagram_accounts.
-    const { data = [] } = await graph("GET", "me/assigned_instagram_accounts", { fields: "id,username", access_token: token });
+    let { data = [] } = await graph("GET", "me/assigned_instagram_accounts", { fields: "id,username", access_token: token });
     if (!data.length) {
-      throw new Error(`o token não dá acesso a nenhuma conta do Instagram. Gere de novo e escolha a conta do ${v.app.nome}, ou preencha IG_${v.id.toUpperCase()}_USER_ID`);
+      // Login do Facebook (ou token de página): a conta vem pela página ligada a ela.
+      const paginas = await graph("GET", "me/accounts", { fields: "instagram_business_account{id,username}", access_token: token }).catch(() => ({ data: [] }));
+      data = (paginas.data ?? []).map((p: { instagram_business_account?: unknown }) => p.instagram_business_account).filter(Boolean);
+    }
+    if (!data.length) {
+      throw new Error(
+        `o token não dá acesso a nenhuma conta do Instagram. Preencha IG_${v.id.toUpperCase()}_USER_ID com o número da conta (aparece na tabela "Gerar tokens de acesso" do painel da Meta) ou rode npm run diagnostico`,
+      );
     }
     if (data.length > 1) {
       const lista = data.map((c: { id: string; username?: string }) => `@${c.username} (${c.id})`).join(", ");
