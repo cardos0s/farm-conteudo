@@ -215,7 +215,21 @@ Sem nomes, roda os apps ativos (hoje, só o Rebanho). Para rodar um app pausado 
 npm run newsletter rebanho -- --agora
 ```
 
-## Deixar rodando sozinho
+## Deixar rodando sozinho no Mac
+
+Sem servidor e sem Telegram: o próprio Mac roda o robô a cada minuto, mesmo com o Terminal fechado, e ele volta sozinho quando o Mac reinicia.
+
+```bash
+bash deploy/mac/instalar.sh
+```
+
+- **Agenda**: `npm run status` mostra o que já foi ao ar e os próximos posts.
+- **Registro**: `tail -f dados/publicar.log` mostra o que ele fez (agendou, publicou, erros). Ele só escreve quando algo acontece.
+- **Parar**: `bash deploy/mac/desinstalar.sh`. A agenda e os arquivos continuam onde estão.
+- **O Mac precisa estar acordado nos horários.** Com ele dormindo ou desligado, nada sai; um post atrasado sai assim que o Mac acordar. Para não dormir na tomada: Ajustes do Sistema → Bateria (ou Economia de Energia) → Opções → "Impedir repouso automático no adaptador quando a tela estiver desligada".
+- Deixe o projeto fora de Documentos, Mesa e Downloads (por exemplo, em `~/farm-conteudo`): o macOS costuma bloquear robôs nessas pastas.
+
+## Deixar rodando sozinho num servidor
 
 Num servidor pequeno com pelo menos 2 GB de RAM (nos testes, cada vídeo levou menos de 1 minuto para renderizar e cada carrossel, poucos segundos):
 

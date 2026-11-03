@@ -38,7 +38,7 @@ const cortar = (s: string, n = 1000) => (s.length > n ? `${s.slice(0, n - 1)}…
 
 export async function enviarMensagem(texto: string, extra: Record<string, unknown> = {}) {
   if (!telegramConfigurado()) {
-    console.log(`[telegram desativado] ${texto}`);
+    console.log(`[aviso] ${texto}`);
     return null;
   }
   return chamar("sendMessage", { chat_id: chat(), text: cortar(texto, 4000), ...extra });

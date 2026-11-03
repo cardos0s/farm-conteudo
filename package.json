@@ -9,6 +9,7 @@
     "diario": "tsx src/cli/diario.ts",
     "bot": "tsx src/cli/bot.ts",
     "publicar": "tsx src/cli/publicar.ts",
+    "status": "tsx src/cli/status.ts",
     "newsletter": "tsx src/cli/newsletter.ts",
     "render:exemplo": "tsx src/cli/render-exemplo.ts",
     "checar": "tsx src/cli/checar-config.ts",
