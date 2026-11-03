@@ -52,6 +52,8 @@ PNG e WebP são convertidos para JPEG automaticamente (a API do Instagram só ac
 - `/status` no bot: o que já foi ao ar nos últimos 7 dias e os próximos 10 posts.
 - **❌ Cancelar post** na mensagem de confirmação tira o post da agenda e libera o horário. O horário vago não é preenchido de novo: os seguintes não andam para a frente.
 - `/publicar`: confere a pasta e publica agora o que já passou do horário.
+- Sem Telegram: `npm run status` mostra a agenda e `tail -f dados/publicar.log`, o que o robô fez.
+- **Um post falhou** (o registro ou o `npm run status` mostram "com erro")? Corrija a causa (token, permissão) e rode `npm run tentar-de-novo`: os posts com erro saem na próxima rodada, sem mudar o dia dos outros.
 
 ### O que precisa estar configurado
 

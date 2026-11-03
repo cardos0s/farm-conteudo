@@ -11,6 +11,7 @@
     "publicar": "tsx src/cli/publicar.ts",
     "status": "tsx src/cli/status.ts",
     "diagnostico": "tsx src/cli/diagnostico.ts",
+    "tentar-de-novo": "tsx src/cli/tentar-de-novo.ts",
     "newsletter": "tsx src/cli/newsletter.ts",
     "render:exemplo": "tsx src/cli/render-exemplo.ts",
     "checar": "tsx src/cli/checar-config.ts",
