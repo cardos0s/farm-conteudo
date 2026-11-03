@@ -188,6 +188,20 @@ async function enviarVideoDireto(conteiner: { id: string; uri?: string }, arquiv
   if (!r.ok || !j.success) throw new Error(`Instagram recusou o envio do vídeo: ${j.debug_info?.message ?? r.status}`);
 }
 
+/**
+ * Testa se o token pode publicar, sem publicar nada: cria um contêiner de Reel vazio (upload retomável),
+ * que nunca é enviado nem publicado e expira sozinho em 24 h. Não conta no limite de posts por dia.
+ */
+export async function testarPermissaoDePublicacao(v: Vertical): Promise<void> {
+  const cred = await credenciaisDePublicacao(v);
+  await graph("POST", `${cred.usuario}/media`, {
+    media_type: "REELS",
+    upload_type: "resumable",
+    caption: "teste de permissão (não publicado)",
+    access_token: cred.token,
+  });
+}
+
 /** Publica um Reel a partir do arquivo no disco (upload direto) ou de um link público. */
 export async function publicarReel(
   v: Vertical,

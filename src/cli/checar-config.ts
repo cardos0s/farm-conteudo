@@ -5,7 +5,7 @@ import path from "node:path";
 import Parser from "rss-parser";
 import { verticais, verticaisAtivas } from "../../verticais";
 import { linkRastreado } from "../core/vertical";
-import { contaInstagram, credenciaisInstagram, uploadDiretoDeVideo } from "../publicacao/instagram";
+import { contaInstagram, credenciaisInstagram, testarPermissaoDePublicacao, uploadDiretoDeVideo } from "../publicacao/instagram";
 import { enviarParaPublico } from "../publicacao/armazenamento";
 import { publicacaoBeehiiv } from "../publicacao/beehiiv";
 import { telegramConfigurado } from "../publicacao/telegram";
@@ -61,6 +61,17 @@ for (const v of verticaisAtivas()) {
     try {
       const conta = await contaInstagram(v);
       console.log(`✅ Instagram: @${conta.username ?? "?"} (conta ${conta.id})`);
+      if (uploadDiretoDeVideo()) {
+        try {
+          await testarPermissaoDePublicacao(v);
+          console.log("✅ Permissão para publicar: a Meta aceitou um rascunho de teste (não foi publicado; some sozinho em 24 h)");
+        } catch (e) {
+          falhas++;
+          console.log(`❌ Permissão para publicar: ${(e as Error).message}`);
+          console.log("   No login do Facebook, o token precisa de instagram_basic, instagram_content_publish e pages_read_engagement");
+          console.log("   (e ads_management + ads_read se a Página foi atribuída pelo portfólio empresarial).");
+        }
+      }
     } catch (e) {
       falhas++;
       console.log(`❌ Instagram: o token não funcionou (${(e as Error).message})`);

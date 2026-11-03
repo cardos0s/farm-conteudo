@@ -160,6 +160,8 @@ O ID da conta é descoberto pelo token (`IG_REBANHO_USER_ID` pode ficar vazio, a
 
 O token para de funcionar se o app for removido do portfólio ou se a conta do Instagram mudar de portfólio. Nesse caso chega um alerta no Telegram quando um post falhar; é só gerar outro no mesmo lugar.
 
+> **Se o app e a conta do Instagram estão em portfólios empresariais diferentes**, o login unificado não acha a conta (`npm run diagnostico` mostra a lista de contas vazia). Foi o caso do Rebanho. O que funcionou foi o **login do Facebook com token de Página**: a conta ligada a uma Página do Facebook; um token de usuário de longa duração do app com `instagram_basic`, `instagram_content_publish`, `pages_show_list` e `pages_read_engagement` (e `ads_management` + `ads_read` se a Página estiver num portfólio); e, a partir dele, o token da Página em `me/accounts`, que não vence. No `.env`: `IG_GRAPH_HOST=graph.facebook.com`, `IG_REBANHO_USER_ID` com o número da conta e `IG_REBANHO_TOKEN` com o token da Página. O `npm run checar` testa a permissão de publicar criando um rascunho que nunca vai ao ar.
+>
 > Outros caminhos também funcionam: **login do Instagram** (`IG_GRAPH_HOST=graph.instagram.com`, token de 60 dias que o bot renova sozinho a cada 7) e **login do Facebook**, que é legado (`graph.facebook.com` com `IG_REBANHO_USER_ID` e a conta ligada a uma página).
 
 **2. Bucket público → `S3_*` (só para carrosséis)**

@@ -115,6 +115,15 @@ describe("login unificado (padrão)", () => {
     await expect(ig.contaInstagram(rebanho)).rejects.toThrow(/nenhuma conta do Instagram/);
   });
 
+  it("testa a permissão de publicar sem publicar nada", async () => {
+    process.env.IG_REBANHO_USER_ID = "178";
+    simularApi({ "/178/media": { id: "c9" } });
+    await ig.testarPermissaoDePublicacao(rebanho);
+    expect(chamadas).toHaveLength(1);
+    expect(chamadas[0]).toBe("https://graph.facebook.com/v26.0/178/media");
+    expect(chamadas.some((u) => u.includes("media_publish") || u.includes("rupload"))).toBe(false);
+  });
+
   it("usa o ID informado no .env", async () => {
     process.env.IG_REBANHO_USER_ID = "999";
     simularApi({ "/999?": { username: "rebanho" } });
