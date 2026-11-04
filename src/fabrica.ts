@@ -383,7 +383,7 @@ export async function publicarVencidas(): Promise<number> {
     }
     try {
       const r = await publicarNoInstagram(p, v);
-      await atualizarPeca(p.id, { status: "publicada", publicadaEm: new Date().toISOString(), idExterno: r.id, permalink: r.permalink });
+      await atualizarPeca(p.id, { status: "publicada", publicadaEm: new Date().toISOString(), idExterno: r.id, permalink: r.permalink, erro: undefined });
       await enviarMensagem(`📣 ${ICONE[p.tipo]} No ar no Instagram do ${v.app.nome}: ${p.titulo}${r.permalink ? `\n${r.permalink}` : ""}`);
       publicadas++;
     } catch (e) {
@@ -392,8 +392,12 @@ export async function publicarVencidas(): Promise<number> {
         await atualizarPeca(p.id, { status: "erro", tentativas, erro: (e as Error).message });
         await alertar(e, `publicação do ${nome} "${p.titulo}" (${v.app.nome}) após ${tentativas} tentativas`);
       } else {
-        // Tenta de novo em 30 minutos.
-        await atualizarPeca(p.id, { tentativas, agendadaPara: new Date(agora + 30 * 60_000).toISOString() });
+        // Tenta de novo em 30 minutos, deixando o motivo registrado (no Telegram ou no registro do robô).
+        const nova = new Date(agora + 30 * 60_000);
+        await atualizarPeca(p.id, { tentativas, agendadaPara: nova.toISOString(), erro: (e as Error).message });
+        await enviarMensagem(
+          `⚠️ Tentativa ${tentativas} de ${MAX_TENTATIVAS} de publicar o ${nome} "${p.titulo}" (${v.app.nome}) falhou: ${(e as Error).message}\nNova tentativa às ${nova.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}.`,
+        );
       }
     }
   }
@@ -426,7 +430,10 @@ export async function statusTexto(): Promise<string> {
     .slice(0, 10);
   if (proximos.length) {
     linhas.push("", "🗓 Próximos posts");
-    for (const p of proximos) linhas.push(`${horaCurta(p.agendadaPara!)} · ${ICONE[p.tipo]} ${buscarVertical(p.vertical).app.nome} · ${p.titulo}`);
+    for (const p of proximos) {
+      linhas.push(`${horaCurta(p.agendadaPara!)} · ${ICONE[p.tipo]} ${buscarVertical(p.vertical).app.nome} · ${p.titulo}`);
+      if (p.erro) linhas.push(`   ⚠️ tentativa ${p.tentativas ?? 1} falhou: ${p.erro}`);
+    }
   }
   return linhas.join("\n");
 }

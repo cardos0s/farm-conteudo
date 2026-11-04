@@ -13,6 +13,7 @@ const enviados = vi.hoisted(() => ({
   carrosseis: [] as string[][],
 }));
 const revisoes = vi.hoisted(() => ({ fila: [] as boolean[] }));
+const falhas = vi.hoisted(() => ({ publicar: null as string | null }));
 
 vi.mock("../src/coleta", () => ({
   coletar: async () => ({
@@ -67,6 +68,7 @@ vi.mock("../src/publicacao/instagram", () => ({
   credenciaisInstagram: () => ({ usuario: "1", token: "t" }),
   uploadDiretoDeVideo: () => true,
   publicarReel: async (_v: unknown, video: { arquivo?: string; url?: string }) => {
+    if (falhas.publicar) throw new Error(falhas.publicar);
     enviados.reels.push(video.arquivo ?? video.url!);
     return { id: "ig1", permalink: "https://instagram.com/reel/1" };
   },
@@ -111,6 +113,7 @@ beforeAll(async () => {
 beforeEach(async () => {
   for (const lista of Object.values(enviados)) lista.length = 0;
   revisoes.fila = [];
+  falhas.publicar = null;
   await rm(path.join(dir, "pecas"), { recursive: true, force: true });
 });
 
@@ -232,5 +235,29 @@ describe("fábrica", () => {
     await fabrica.rodarDiario([umReel]);
     expect(enviados.videos).toHaveLength(1);
     expect(enviados.mensagens.some((m) => m.includes("descartada"))).toBe(true);
+  });
+
+  it("registra o motivo de cada tentativa que falha e mostra no status", async () => {
+    const [cockpit] = verticais;
+    const umReel = { ...cockpit, volume: { ...cockpit.volume, reelsPorDia: 1, carrosseisPorDia: 0 } };
+    await fabrica.rodarDiario([umReel]);
+    const [r] = await estado.listarPecas((p) => p.tipo === "reel");
+    await fabrica.aprovar(r.id);
+    await estado.atualizarPeca(r.id, { agendadaPara: new Date(Date.now() - 1000).toISOString() });
+
+    falhas.publicar = "(#10) Application does not have permission for this action";
+    expect(await fabrica.publicarVencidas()).toBe(0);
+    expect(enviados.mensagens.at(-1)).toContain("Tentativa 1 de 3");
+    expect(enviados.mensagens.at(-1)).toContain("(#10) Application does not have permission");
+    expect((await estado.lerPeca(r.id))?.erro).toContain("(#10)");
+    expect(await fabrica.statusTexto()).toContain("⚠️ tentativa 1 falhou: (#10)");
+
+    // Corrigido, a próxima tentativa publica e limpa o erro.
+    falhas.publicar = null;
+    await estado.atualizarPeca(r.id, { agendadaPara: new Date(Date.now() - 1000).toISOString() });
+    expect(await fabrica.publicarVencidas()).toBe(1);
+    const publicada = await estado.lerPeca(r.id);
+    expect(publicada?.status).toBe("publicada");
+    expect(publicada?.erro).toBeUndefined();
   });
 });
