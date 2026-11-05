@@ -1,0 +1,216 @@
+{
+ "_doc": "Trechos mantidos de cada clipe, em segundos do arquivo original. snapIn/snapOut = janela onde procurar o ponto mais silencioso para o corte. Pausas internas maiores que maxPausa são encurtadas automaticamente. Entradas 'pausa' inserem um respiro preenchido com tom de sala (tom = [clipe, início]).",
+ "fps": 30,
+ "maxPausa": 0.5,
+ "pausaFinal": 0.28,
+ "trechos": [
+  {
+   "pausa": 1.2,
+   "tom": [
+    "3229",
+    33.96
+   ],
+   "nota": "abertura: título na lousa"
+  },
+  {
+   "clip": "3227",
+   "in": 2.25,
+   "out": 3.0,
+   "nota": "Oi!",
+   "fadeIn": 0.06
+  },
+  {
+   "clip": "3227",
+   "in": 4.36,
+   "out": 8.5,
+   "snapOut": [
+    8.4,
+    8.58
+   ],
+   "nota": "Hoje a gente tá começando ... explicativo"
+  },
+  {
+   "clip": "3227",
+   "in": 10.8,
+   "out": 51.92,
+   "snapIn": [
+    10.7,
+    10.88
+   ],
+   "snapOut": [
+    51.84,
+    52.04
+   ],
+   "nota": "e hoje a gente vai falar sobre algoritmos ... utilizar a IA (sai: sobre aulas e alguma coisa / então, assim)"
+  },
+  {
+   "clip": "3227",
+   "in": 53.9,
+   "out": 64.86,
+   "snapIn": [
+    53.8,
+    53.95
+   ],
+   "nota": "é inevitável ... questioná-la",
+   "snapOut": [
+    64.8,
+    64.95
+   ]
+  },
+  {
+   "clip": "3227",
+   "in": 66.72,
+   "out": 119.98,
+   "snapIn": [
+    66.66,
+    66.78
+   ],
+   "snapOut": [
+    119.92,
+    120.06
+   ],
+   "nota": "A base dos fundamentos ... pra gente desenhar (sai: então, os... / os... + pausa)"
+  },
+  {
+   "clip": "3227",
+   "in": 122.66,
+   "out": 128.1,
+   "snapIn": [
+    122.55,
+    122.72
+   ],
+   "nota": "as estruturas ... tô falando aqui"
+  },
+  {
+   "pausa": 1.0,
+   "tom": [
+    "3229",
+    33.98
+   ],
+   "nota": "transição para a lousa: eficiência"
+  },
+  {
+   "clip": "3229",
+   "in": 0.0,
+   "out": 85.5,
+   "snapOut": [
+    85.42,
+    85.56
+   ],
+   "nota": "Na ciência da computação ... da própria linguagem",
+   "fadeIn": 0.01
+  },
+  {
+   "clip": "3229",
+   "in": 88.02,
+   "out": 89.8,
+   "snapIn": [
+    87.98,
+    88.08
+   ],
+   "snapOut": [
+    89.74,
+    89.86
+   ],
+   "nota": "de programação, que se a gente pegar (sai: de computação... perdão)"
+  },
+  {
+   "clip": "3229",
+   "in": 91.22,
+   "out": 99.12,
+   "snapIn": [
+    91.12,
+    91.27
+   ],
+   "nota": "uma linguagem utilizada ... fala com a máquina mais rápido (sai: uma... repetido; 'fatores ex—' cortado pelo fim da gravação)",
+   "snapOut": [
+    99.0,
+    99.3
+   ]
+  },
+  {
+   "pausa": 0.55,
+   "tom": [
+    "3232",
+    45.7
+   ],
+   "nota": "capítulo: modelo RAM"
+  },
+  {
+   "clip": "3231",
+   "in": 0.6,
+   "out": 11.6,
+   "nota": "operações levam uma unidade de tempo"
+  },
+  {
+   "clip": "3232",
+   "in": 2.78,
+   "out": 110.06,
+   "snapOut": [
+    109.98,
+    110.12
+   ],
+   "nota": "O modelo RAM (2a tomada) ... tô bem tranquila de entender (sai: 1a tomada de 'O modelo RAM', vou fazer um exemplo)"
+  },
+  {
+   "pausa": 0.6,
+   "tom": [
+    "3233",
+    28.0
+   ],
+   "nota": "capítulo: notação Big O"
+  },
+  {
+   "clip": "3233",
+   "in": 1.56,
+   "out": 25.66,
+   "snapOut": [
+    25.6,
+    25.72
+   ],
+   "nota": "Notação Big O ... ainda será a mesma, tá? (sai: não é importante...)"
+  },
+  {
+   "pausa": 0.45,
+   "tom": [
+    "3234",
+    21.2
+   ],
+   "nota": "classes de complexidade"
+  },
+  {
+   "clip": "3234",
+   "in": 4.48,
+   "out": 53.68,
+   "snapIn": [
+    4.42,
+    4.55
+   ],
+   "nota": "entre as notações Big O mais importantes ... de uma vez (sai: entre as operações / setinha / directory)"
+  },
+  {
+   "clip": "3234",
+   "in": 61.62,
+   "out": 80.0,
+   "snapIn": [
+    61.55,
+    61.67
+   ],
+   "snapOut": [
+    79.96,
+    80.05
+   ],
+   "nota": "o dicionário, o hash map ... ou seja, constante (sai: explicação do retroceder)"
+  },
+  {
+   "pausa": 3.4,
+   "tom": [
+    "3233",
+    27.98
+   ],
+   "fadeOut": 1.2,
+   "nota": "encerramento: resumo na lousa",
+   "tomDur": 1.8
+  }
+ ]
+}

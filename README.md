@@ -124,11 +124,24 @@ Se o Remotion não conseguir baixar o navegador dele no servidor, instale o Chro
 - **Nova vertical**: crie `verticais/<nome>.ts` com a mesma estrutura e adicione em `verticais/index.ts`.
 - **Modelo do Claude**: `CLAUDE_MODEL` no `.env` (padrão `claude-opus-5-5`). Se o modelo recusar um pedido por política, a API refaz a chamada automaticamente num modelo de reserva.
 
+## Aulas da comunidade (vídeos com lousa)
+
+Além dos Reels automáticos, o projeto monta aulas gravadas no celular: junta os clipes, corta tropeços e pausas, trata a voz e desenha uma lousa no estilo Excalidraw sincronizada com a fala.
+
+```bash
+npm run render:aula
+```
+
+Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/complexidade/`. O passo a passo completo (baixar do Drive, converter o HDR do iPhone, transcrever, cortar, renderizar) está em `scripts/aulas/README.md`; os componentes da lousa ficam em `remotion/lousa/`.
+
 ## Estrutura
 
 ```
 verticais/          uma configuração por app (fontes, tom, regras, cores, volume)
 remotion/           templates de vídeo: cenas, elemento de cada marca, fontes
+remotion/lousa/     lousa no estilo Excalidraw (formas à mão, texto manuscrito, canvas infinito)
+remotion/aulas/     aulas da comunidade (cenas, cortes e EDL de cada aula)
+scripts/aulas/      pipeline das aulas: Drive, HDR→SDR, transcrição, cortes, voz, rosto
 src/coleta/         RSS e APIs de dados
 src/agentes/        editor, redator, revisor e editor da newsletter (Claude)
 src/video/          render do Reel

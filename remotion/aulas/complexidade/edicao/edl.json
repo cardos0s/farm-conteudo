@@ -1,0 +1,494 @@
+{
+ "fps": 30,
+ "totalF": 12345,
+ "segmentos": [
+  {
+   "clip": "pausa",
+   "inF": 0,
+   "outF": 36,
+   "tomClip": "3229",
+   "tomIn": 33.96,
+   "fadeOut": 0.015,
+   "tomDur": 1.2,
+   "nota": "abertura: título na lousa",
+   "trecho": 0,
+   "startF": 0,
+   "endF": 36
+  },
+  {
+   "clip": "3227",
+   "inF": 68,
+   "outF": 90,
+   "nota": "Oi!",
+   "fadeIn": 0.06,
+   "trecho": 1,
+   "startF": 36,
+   "endF": 58
+  },
+  {
+   "clip": "3227",
+   "inF": 131,
+   "outF": 252,
+   "nota": "Hoje a gente tá começando ... explicativo",
+   "fadeIn": 0.008,
+   "trecho": 2,
+   "startF": 58,
+   "endF": 179
+  },
+  {
+   "clip": "3227",
+   "inF": 322,
+   "outF": 420,
+   "nota": "e hoje a gente vai falar sobre algoritmos ... utilizar a IA (sai: sobre aulas e alguma coisa / então, assim)",
+   "fadeIn": 0.008,
+   "trecho": 3,
+   "startF": 179,
+   "endF": 277
+  },
+  {
+   "clip": "3227",
+   "inF": 442,
+   "outF": 721,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 3,
+   "startF": 277,
+   "endF": 556
+  },
+  {
+   "clip": "3227",
+   "inF": 732,
+   "outF": 1332,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 3,
+   "startF": 556,
+   "endF": 1156
+  },
+  {
+   "clip": "3227",
+   "inF": 1348,
+   "outF": 1559,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 3,
+   "startF": 1156,
+   "endF": 1367
+  },
+  {
+   "clip": "3227",
+   "inF": 1618,
+   "outF": 1949,
+   "nota": "é inevitável ... questioná-la",
+   "fadeIn": 0.008,
+   "trecho": 4,
+   "startF": 1367,
+   "endF": 1698
+  },
+  {
+   "clip": "3227",
+   "inF": 2002,
+   "outF": 2089,
+   "nota": "A base dos fundamentos ... pra gente desenhar (sai: então, os... / os... + pausa)",
+   "fadeIn": 0.008,
+   "trecho": 5,
+   "startF": 1698,
+   "endF": 1785
+  },
+  {
+   "clip": "3227",
+   "inF": 2098,
+   "outF": 2298,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 5,
+   "startF": 1785,
+   "endF": 1985
+  },
+  {
+   "clip": "3227",
+   "inF": 2305,
+   "outF": 2872,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 5,
+   "startF": 1985,
+   "endF": 2552
+  },
+  {
+   "clip": "3227",
+   "inF": 2885,
+   "outF": 3600,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 5,
+   "startF": 2552,
+   "endF": 3267
+  },
+  {
+   "clip": "3227",
+   "inF": 3679,
+   "outF": 3843,
+   "nota": "as estruturas ... tô falando aqui",
+   "fadeIn": 0.008,
+   "trecho": 6,
+   "startF": 3267,
+   "endF": 3431
+  },
+  {
+   "clip": "pausa",
+   "inF": 0,
+   "outF": 30,
+   "tomClip": "3229",
+   "tomIn": 33.98,
+   "fadeOut": 0.015,
+   "tomDur": 1.0,
+   "nota": "transição para a lousa: eficiência",
+   "trecho": 7,
+   "startF": 3431,
+   "endF": 3461
+  },
+  {
+   "clip": "3229",
+   "inF": 0,
+   "outF": 1022,
+   "nota": "Na ciência da computação ... da própria linguagem",
+   "fadeIn": 0.01,
+   "trecho": 8,
+   "startF": 3461,
+   "endF": 4483
+  },
+  {
+   "clip": "3229",
+   "inF": 1082,
+   "outF": 1418,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 8,
+   "startF": 4483,
+   "endF": 4819
+  },
+  {
+   "clip": "3229",
+   "inF": 1427,
+   "outF": 1938,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 8,
+   "startF": 4819,
+   "endF": 5330
+  },
+  {
+   "clip": "3229",
+   "inF": 1945,
+   "outF": 2169,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 8,
+   "startF": 5330,
+   "endF": 5554
+  },
+  {
+   "clip": "3229",
+   "inF": 2197,
+   "outF": 2563,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 8,
+   "startF": 5554,
+   "endF": 5920
+  },
+  {
+   "clip": "3229",
+   "inF": 2641,
+   "outF": 2696,
+   "nota": "de programação, que se a gente pegar (sai: de computação... perdão)",
+   "fadeIn": 0.008,
+   "trecho": 9,
+   "startF": 5920,
+   "endF": 5975
+  },
+  {
+   "clip": "3229",
+   "inF": 2735,
+   "outF": 2977,
+   "nota": "uma linguagem utilizada ... fala com a máquina mais rápido (sai: uma... repetido; 'fatores ex—' cortado pelo fim da gravação)",
+   "fadeIn": 0.008,
+   "trecho": 10,
+   "startF": 5975,
+   "endF": 6217
+  },
+  {
+   "clip": "pausa",
+   "inF": 0,
+   "outF": 16,
+   "tomClip": "3232",
+   "tomIn": 45.7,
+   "fadeOut": 0.015,
+   "tomDur": 0.55,
+   "nota": "capítulo: modelo RAM",
+   "trecho": 11,
+   "startF": 6217,
+   "endF": 6233
+  },
+  {
+   "clip": "3231",
+   "inF": 18,
+   "outF": 348,
+   "nota": "operações levam uma unidade de tempo",
+   "fadeIn": 0.008,
+   "trecho": 12,
+   "startF": 6233,
+   "endF": 6563
+  },
+  {
+   "clip": "3232",
+   "inF": 83,
+   "outF": 1374,
+   "nota": "O modelo RAM (2a tomada) ... tô bem tranquila de entender (sai: 1a tomada de 'O modelo RAM', vou fazer um exemplo)",
+   "fadeIn": 0.008,
+   "trecho": 13,
+   "startF": 6563,
+   "endF": 7854
+  },
+  {
+   "clip": "3232",
+   "inF": 1427,
+   "outF": 1779,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 13,
+   "startF": 7854,
+   "endF": 8206
+  },
+  {
+   "clip": "3232",
+   "inF": 1788,
+   "outF": 1984,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 13,
+   "startF": 8206,
+   "endF": 8402
+  },
+  {
+   "clip": "3232",
+   "inF": 1996,
+   "outF": 2525,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 13,
+   "startF": 8402,
+   "endF": 8931
+  },
+  {
+   "clip": "3232",
+   "inF": 2587,
+   "outF": 2715,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 13,
+   "startF": 8931,
+   "endF": 9059
+  },
+  {
+   "clip": "3232",
+   "inF": 2722,
+   "outF": 2786,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 13,
+   "startF": 9059,
+   "endF": 9123
+  },
+  {
+   "clip": "3232",
+   "inF": 2799,
+   "outF": 3001,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 13,
+   "startF": 9123,
+   "endF": 9325
+  },
+  {
+   "clip": "3232",
+   "inF": 3018,
+   "outF": 3303,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 13,
+   "startF": 9325,
+   "endF": 9610
+  },
+  {
+   "clip": "pausa",
+   "inF": 0,
+   "outF": 18,
+   "tomClip": "3233",
+   "tomIn": 28.0,
+   "fadeOut": 0.015,
+   "tomDur": 0.6,
+   "nota": "capítulo: notação Big O",
+   "trecho": 14,
+   "startF": 9610,
+   "endF": 9628
+  },
+  {
+   "clip": "3233",
+   "inF": 47,
+   "outF": 98,
+   "nota": "Notação Big O ... ainda será a mesma, tá? (sai: não é importante...)",
+   "fadeIn": 0.008,
+   "trecho": 15,
+   "startF": 9628,
+   "endF": 9679
+  },
+  {
+   "clip": "3233",
+   "inF": 111,
+   "outF": 319,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 15,
+   "startF": 9679,
+   "endF": 9887
+  },
+  {
+   "clip": "3233",
+   "inF": 341,
+   "outF": 609,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 15,
+   "startF": 9887,
+   "endF": 10155
+  },
+  {
+   "clip": "3233",
+   "inF": 616,
+   "outF": 771,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 15,
+   "startF": 10155,
+   "endF": 10310
+  },
+  {
+   "clip": "pausa",
+   "inF": 0,
+   "outF": 14,
+   "tomClip": "3234",
+   "tomIn": 21.2,
+   "fadeOut": 0.015,
+   "tomDur": 0.45,
+   "nota": "classes de complexidade",
+   "trecho": 16,
+   "startF": 10310,
+   "endF": 10324
+  },
+  {
+   "clip": "3234",
+   "inF": 137,
+   "outF": 456,
+   "nota": "entre as notações Big O mais importantes ... de uma vez (sai: entre as operações / setinha / directory)",
+   "fadeIn": 0.008,
+   "trecho": 17,
+   "startF": 10324,
+   "endF": 10643
+  },
+  {
+   "clip": "3234",
+   "inF": 463,
+   "outF": 592,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 17,
+   "startF": 10643,
+   "endF": 10772
+  },
+  {
+   "clip": "3234",
+   "inF": 599,
+   "outF": 639,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 17,
+   "startF": 10772,
+   "endF": 10812
+  },
+  {
+   "clip": "3234",
+   "inF": 684,
+   "outF": 904,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 17,
+   "startF": 10812,
+   "endF": 11032
+  },
+  {
+   "clip": "3234",
+   "inF": 920,
+   "outF": 1084,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 17,
+   "startF": 11032,
+   "endF": 11196
+  },
+  {
+   "clip": "3234",
+   "inF": 1093,
+   "outF": 1349,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 17,
+   "startF": 11196,
+   "endF": 11452
+  },
+  {
+   "clip": "3234",
+   "inF": 1361,
+   "outF": 1610,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 17,
+   "startF": 11452,
+   "endF": 11701
+  },
+  {
+   "clip": "3234",
+   "inF": 1850,
+   "outF": 2159,
+   "nota": "o dicionário, o hash map ... ou seja, constante (sai: explicação do retroceder)",
+   "fadeIn": 0.008,
+   "trecho": 18,
+   "startF": 11701,
+   "endF": 12010
+  },
+  {
+   "clip": "3234",
+   "inF": 2169,
+   "outF": 2402,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 18,
+   "startF": 12010,
+   "endF": 12243
+  },
+  {
+   "clip": "pausa",
+   "inF": 0,
+   "outF": 102,
+   "tomClip": "3233",
+   "tomIn": 27.98,
+   "fadeOut": 1.2,
+   "tomDur": 1.8,
+   "nota": "encerramento: resumo na lousa",
+   "trecho": 19,
+   "startF": 12243,
+   "endF": 12345
+  }
+ ]
+}
