@@ -17,8 +17,9 @@ import * as D from "./diagramas.mjs";
 const require = createRequire(import.meta.url);
 const { chromium } = require("playwright");
 
-// Preencha para aparecer na capa e no fim (ex.: "por @seuperfil").
-const AUTOR = process.env.AUTOR ?? "";
+// Autoria: aparece na capa, no rodapé de cada página, no fim e nos metadados do PDF.
+const AUTORA = process.env.AUTORA ?? "Julia Cardoso";
+const PERFIL = process.env.PERFIL ?? "@juliacardoso.dev";
 
 const aqui = path.dirname(fileURLToPath(import.meta.url));
 const raiz = path.resolve(aqui, "../..");
@@ -120,12 +121,15 @@ body { margin: 0; }
 .capa figure svg { max-height: 95mm; }
 .capa .rodape { display: flex; justify-content: space-between; align-items: flex-end; font-size: 10pt; color: var(--suave); border-top: 1pt solid var(--tinta); padding-top: 5mm; }
 .capa .rodape b { color: var(--tinta); }
+.capa .autora { text-align: right; line-height: 1.35; }
+.capa .autora span { display: block; font-family: "Excali"; font-size: 13pt; color: var(--acento); }
+.capa .autora b { display: block; font-size: 15pt; letter-spacing: -0.01em; }
 </style></head><body><div class="capa">
 <div class="rotulo">guia de estudo · entrevista de system design</div>
 <h1>System Design<br>do <span>WhatsApp</span></h1>
 <div class="sub">${subtitulo}.</div>
 <figure>${D.capa()}</figure>
-<div class="rodape"><div><b>14 capítulos + cola de uma página</b><br>requisitos, contas, arquitetura, entrega, tiques,<br>grupos, mídia, banco, falhas e o WhatsApp real</div><div>${AUTOR}</div></div>
+<div class="rodape"><div><b>14 capítulos + cola de uma página</b><br>requisitos, contas, arquitetura, entrega, tiques,<br>grupos, mídia, banco, falhas e o WhatsApp real</div><div class="autora"><span>por</span><b>${AUTORA}</b>${PERFIL}</div></div>
 </div></body></html>`;
 
 const nomesCap = [...capitulos, cola]
@@ -145,12 +149,12 @@ function corpoHtml(paginas, comMarcas) {
 <p class="intro">Os diagramas foram desenhados à mão, no estilo de um quadro branco, para você reproduzir na entrevista. As caixas verdes são dicas, as vermelhas são erros comuns e as amarelas são frases prontas para falar.</p></section>`;
   let corpo = [...capitulos, cola].join("\n");
   if (comMarcas) corpo = corpo.replace(/<h2 data-cap="(\d+)">/g, (m, n) => `${m}<span class="marca">QQCAP${n}QQ</span>`);
-  const fim = `<div class="fim"><div class="grande">bons estudos!</div>${AUTOR ? `<p>${AUTOR}</p>` : ""}</div>`;
+  const fim = `<div class="fim"><div class="grande">bons estudos!</div><p><b>${AUTORA}</b> · ${PERFIL}</p></div>`;
   return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>${titulo}</title><style>${css}</style></head><body>${sumario}${corpo}${fim}</body></html>`;
 }
 
 const rodape = `<div style="font-family: Inter, sans-serif; font-size: 7.5pt; color: #868e96; width: 100%; padding: 0 17mm; display: flex; justify-content: space-between;">
-<span>${titulo}</span><span class="pageNumber"></span></div>`;
+<span>${titulo} · ${AUTORA}</span><span>${PERFIL} · <span class="pageNumber"></span></span></div>`;
 
 async function imprimir(navegador, html, arquivo, comRodape) {
   const htmlArq = arquivo.replace(/\.pdf$/, ".html");
@@ -208,7 +212,7 @@ with open(sys.argv[3], "wb") as o:
   corpoPdf,
   destino,
   titulo,
-  AUTOR || titulo,
+  AUTORA,
 ]);
 const total = texto.split("\f").filter((t) => t.trim()).length + 1;
 console.log(`PDF pronto: ${path.relative(raiz, destino)} (${total} páginas)`);
