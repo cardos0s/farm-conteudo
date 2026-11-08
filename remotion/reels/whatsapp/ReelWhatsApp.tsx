@@ -336,6 +336,8 @@ function Legenda({ blocos, t }: { blocos: Bloco[]; t: number }) {
 // Trilha e efeitos gerados por materiais/whatsapp/sons.py (sintetizados, sem direitos de terceiros).
 const SOM = (nome: string) => staticFile(`materiais/whatsapp/sons/${nome}.wav`);
 type Efeito = { em: number; nome: string; volume: number };
+/** Ajuste geral dos efeitos em relação à voz. */
+const GANHO_EFEITOS = 0.8;
 
 /** Efeitos presos aos acontecimentos do vídeo: troca de cena, itens, ✓/✗, desenho, câmera, preço. */
 function efeitos(cenas: CenaTempo[]): Efeito[] {
@@ -370,7 +372,7 @@ function volumesTrilha(parte: 1 | 2 | 3, quadros: number): number[] {
   const alvo = Array.from({ length: quadros }, (_, f) => {
     const t = f / FPS;
     const falando = ps.some((p) => t >= p.s - 0.25 && t <= p.e + 0.35);
-    return falando ? 0.085 : 0.2;
+    return falando ? 0.055 : 0.15;
   });
   // suaviza (~0,4 s) para a trilha não "pular"
   const janela = 12;
@@ -401,7 +403,7 @@ function Sons({ parte, cenas }: { parte: 1 | 2 | 3; cenas: CenaTempo[] }) {
       />
       {lista.map((e, i) => (
         <Sequence key={i} from={Math.round(e.em * FPS)} durationInFrames={Math.round(2 * FPS)}>
-          <Html5Audio src={SOM(e.nome)} volume={e.volume} />
+          <Html5Audio src={SOM(e.nome)} volume={e.volume * GANHO_EFEITOS} />
         </Sequence>
       ))}
     </>

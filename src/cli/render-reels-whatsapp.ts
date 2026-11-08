@@ -30,7 +30,7 @@ for (const n of [1, 8, 11, 21]) {
 
 function limitar(arquivo: string) {
   const tmp = arquivo.replace(/\.mp4$/, ".tmp.mp4");
-  execFileSync("ffmpeg", ["-v", "error", "-y", "-i", arquivo, "-c:v", "copy", "-af", "alimiter=limit=0.89:attack=5:release=60:level=false", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", tmp]);
+  execFileSync("ffmpeg", ["-v", "error", "-y", "-i", arquivo, "-c:v", "copy", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11,alimiter=limit=0.89:attack=5:release=60:level=false", "-ar", "48000", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", tmp]);
   renameSync(tmp, arquivo);
 }
 
@@ -65,7 +65,7 @@ for (const parte of filtro) {
       }
     },
   });
-  // voz + trilha + efeitos somados podem passar de 0 dBFS: limitador em -1 dBFS e loudness de Reels
+  // volume final no padrão de Reels (-14 LUFS) e limitador em -1 dBFS (voz + trilha + efeitos somados)
   limitar(destino);
   console.log(`ok: ${destino} (${(composition.durationInFrames / composition.fps).toFixed(1)} s)`);
 }
