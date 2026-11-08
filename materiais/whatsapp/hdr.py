@@ -63,7 +63,10 @@ def main() -> None:
     ap.add_argument("--preset", default="medium", help="preset do x265 (fast = mais rápido, arquivo maior)")
     a = ap.parse_args()
     n = a.parte
-    intro = json.loads((RAIZ / f"remotion/reels/whatsapp/intro/parte{n}.json").read_text())
+    # a intro gravada é uma só (parte1.json); as outras partes reaproveitam o mesmo clipe e recorte
+    arq_intro = RAIZ / f"remotion/reels/whatsapp/intro/parte{n}.json"
+    intro = json.loads((arq_intro if arq_intro.exists() else RAIZ / "remotion/reels/whatsapp/intro/parte1.json").read_text())
+    intro.setdefault("pasta", "parte1")
     reel = CAMADAS / f"parte{n}-semIntro.mp4"
     dur = duracao(reel)
     q = intro["quadros"]
@@ -102,7 +105,7 @@ def main() -> None:
         "-ss", str(intro["inicioOriginal"]), "-t", f"{di + 0.2:.3f}", "-i", str(RAIZ / intro["original"]),
         "-i", str(CAMADAS / f"parte{n}-introAtras.mov"),
         "-i", str(CAMADAS / f"parte{n}-introFrente.mov"),
-        "-framerate", str(intro["fps"]), "-i", str(RAIZ / f"public/materiais/whatsapp/intro/parte{n}/frente/%04d.webp"),
+        "-framerate", str(intro["fps"]), "-i", str(RAIZ / f"public/materiais/whatsapp/intro/{intro.get('pasta', f'parte{n}')}/frente/%04d.webp"),
         "-i", str(CAMADAS / f"parte{n}-mascara.mov"),
         "-filter_complex", filtro,
         "-map", "[v]", "-map", "0:a", "-r", str(fps),

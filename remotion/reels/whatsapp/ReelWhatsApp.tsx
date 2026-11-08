@@ -467,17 +467,33 @@ function CenaView({ cena, ultima, adianto = 0, antes = 0 }: { cena: CenaTempo; u
  *  está na tela enquanto a borda passa (sem isso, o lado revelado ficava quase vazio). */
 const ADIANTO_GANCHO = 0.7;
 
-const INTRO = (parte: number, arq: string) => staticFile(`materiais/whatsapp/intro/parte${parte}/${arq}`);
+const INTRO = (parte: 1 | 2 | 3, arq: string) => staticFile(`materiais/whatsapp/intro/${intros[parte]?.pasta ?? `parte${parte}`}/${arq}`);
 
-type Adesivo = { de: number; x: number; y: number; giro: number; grande: string; texto?: string; balao?: boolean };
+type Adesivo = { de: number; x: number; y: number; giro: number; grande: string; texto?: string; balao?: boolean; cor?: string };
 // Cartões que entram atrás da Julia junto com "o WhatsApp comigo". Ficam nas faixas livres ao lado
 // dela (medidas no recorte), para nenhum número ser coberto: um "175" meio escondido viraria "75".
-const ADESIVOS: Adesivo[] = [
-  { de: 1.75, x: 22, y: 688, giro: -6, grande: "5 bi", texto: "mensagens\npor dia" },
-  { de: 1.95, x: 22, y: 868, giro: 4, grande: "175 mil", texto: "por segundo\nno pico" },
-  { de: 2.15, x: 868, y: 905, giro: -3, grande: "oi! ✓✓", balao: true },
-  { de: 2.35, x: 862, y: 688, giro: 5, grande: "1.024", texto: "por grupo" },
-];
+const ADESIVOS: Record<1 | 2 | 3, Adesivo[]> = {
+  1: [
+    { de: 1.75, x: 22, y: 688, giro: -6, grande: "5 bi", texto: "mensagens\npor dia" },
+    { de: 1.95, x: 22, y: 868, giro: 4, grande: "175 mil", texto: "por segundo\nno pico" },
+    { de: 2.15, x: 868, y: 905, giro: -3, grande: "oi! ✓✓", balao: true },
+    { de: 2.35, x: 862, y: 688, giro: 5, grande: "1.024", texto: "por grupo" },
+  ],
+  // parte 2: o caminho da mensagem e os tiquinhos
+  2: [
+    { de: 1.75, x: 22, y: 688, giro: -6, grande: "✓", texto: "o servidor\nguardou", cor: "#868e96" },
+    { de: 1.95, x: 22, y: 868, giro: 4, grande: "✓✓", texto: "chegou no\ncelular", cor: "#868e96" },
+    { de: 2.15, x: 868, y: 905, giro: -3, grande: "oi! ✓✓", balao: true },
+    { de: 2.35, x: 862, y: 688, giro: 5, grande: "✓✓", texto: "lido", cor: "#1971c2" },
+  ],
+  // parte 3: grupos, petabytes e gavetas
+  3: [
+    { de: 1.75, x: 22, y: 688, giro: -6, grande: "1.024", texto: "pessoas\npor grupo" },
+    { de: 1.95, x: 22, y: 868, giro: 4, grande: "2 PB", texto: "de texto\npor ano" },
+    { de: 2.15, x: 868, y: 905, giro: -3, grande: "oi! ✓✓", balao: true },
+    { de: 2.35, x: 862, y: 688, giro: 5, grande: "× mil", texto: "entregas" },
+  ],
+};
 
 function CartaoIntro({ a, t }: { a: Adesivo; t: number }) {
   if (t < a.de) return null;
@@ -504,7 +520,7 @@ function CartaoIntro({ a, t }: { a: Adesivo; t: number }) {
             oi! <span style={{ color: "#1971c2" }}>✓✓</span>
           </>
         ) : (
-          a.grande
+          <span style={{ color: a.cor ?? COR.tinta }}>{a.grande}</span>
         )}
       </div>
       {a.texto && <div style={{ fontSize: 30, fontWeight: 600, color: COR.suave, lineHeight: 1.15, whiteSpace: "pre-line" }}>{a.texto}</div>}
@@ -525,8 +541,8 @@ function mascaraIntro(t: number, intro: Intro): string | undefined {
 }
 
 /** O que entra ATRÁS da Julia: título, rabiscos e cartões. */
-function GraficosIntro({ t }: { t: number }) {
-  const rabiscos = useMemo(() => D.introRabiscos(), []);
+function GraficosIntro({ t, parte }: { t: number; parte: 1 | 2 | 3 }) {
+  const rabiscos = useMemo(() => D.introRabiscos(parte), [parte]);
   const titulo = prog(t, 0.21, 0.35);
   const whats = prog(t, 1.6, 0.55);
   return (
@@ -570,7 +586,7 @@ function GraficosIntro({ t }: { t: number }) {
       <div style={{ position: "absolute", left: 0, top: 0 }}>
         <DiagramaAnimado svg={rabiscos} t={t} de={0.44} dur={1.3} />
       </div>
-      {ADESIVOS.map((a, i) => (
+      {ADESIVOS[parte].map((a, i) => (
         <CartaoIntro key={i} a={a} t={t} />
       ))}
     </>
@@ -590,7 +606,7 @@ function IntroGravada({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
   return (
     <AbsoluteFill style={{ maskImage: mascara, WebkitMaskImage: mascara, overflow: "hidden" }}>
       <OffthreadVideo src={INTRO(parte, "fundo.mp4")} muted style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 1920 }} />
-      <GraficosIntro t={t} />
+      <GraficosIntro t={t} parte={parte} />
       <Img src={INTRO(parte, `frente/${String(quadro).padStart(4, "0")}.webp`)} style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 1920 }} />
       <Legenda blocos={blocos} t={t} />
     </AbsoluteFill>
@@ -620,7 +636,7 @@ function SonsIntro({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
     { em: 0.21, nome: "pop", volume: 0.24 },
     { em: 0.44, nome: "lapis", volume: 0.24 },
     { em: 1.6, nome: "pop", volume: 0.3 },
-    ...ADESIVOS.map((a) => ({ em: a.de, nome: a.balao ? "plim" : "pop", volume: a.balao ? 0.2 : 0.24 })),
+    ...ADESIVOS[parte].map((a) => ({ em: a.de, nome: a.balao ? "plim" : "pop", volume: a.balao ? 0.2 : 0.24 })),
     { em: intro.mao[0] - 0.12, nome: "whoosh", volume: 0.32 },
   ];
   return (
@@ -676,7 +692,7 @@ export const ReelWhatsApp: React.FC<PropsReelWhatsApp> = ({ parte, camada = "tud
   if (camada === "introAtras") {
     return (
       <AbsoluteFill style={FONTE_BASE}>
-        <GraficosIntro t={t} />
+        <GraficosIntro t={t} parte={parte} />
       </AbsoluteFill>
     );
   }

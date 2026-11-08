@@ -38,7 +38,7 @@ function limitar(arquivo: string, duracao: number) {
 
 const filtro = (process.argv[2] ? [Number(process.argv[2])] : [1, 2, 3]) as (1 | 2 | 3)[];
 for (const parte of filtro) {
-  if (intros[parte] && !existsSync(`public/materiais/whatsapp/intro/parte${parte}/fundo.mp4`))
+  if (intros[parte] && !existsSync(`public/materiais/whatsapp/intro/${intros[parte]?.pasta}/fundo.mp4`))
     throw new Error(`Intro da parte ${parte} não encontrada. Rode: python3 materiais/whatsapp/intro.py <video.mov> --parte ${parte}`);
   const natural = duracaoNatural(parte);
   if (natural > MAXIMO)

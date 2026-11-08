@@ -352,8 +352,11 @@ export function achar(n: Narracao, ancora: string, desde = 0): number {
 /** Intro gravada pela Julia (materiais/whatsapp/intro.py): ela fala, os gráficos entram atrás dela
  *  e, quando a mão cruza a tela (`mao`), o Reel narrado entra puxado pela mão. Tempos em segundos
  *  a partir do começo do vídeo. */
-export type Intro = { fps: number; duracao: number; quadros: number; mao: [number, number]; vozAte: number; palavras: Palavra[] };
-export const intros: Partial<Record<1 | 2 | 3, Intro>> = { 1: i1 as unknown as Intro };
+export type Intro = { fps: number; duracao: number; quadros: number; mao: [number, number]; vozAte: number; palavras: Palavra[]; pasta: string };
+// A Julia gravou uma intro só ("Vem construir o WhatsApp comigo"): as 3 partes usam o mesmo clipe e
+// os mesmos arquivos (pasta parte1/); o que muda por parte são os gráficos atrás dela.
+const introGravada = { ...(i1 as unknown as Omit<Intro, "pasta">), pasta: "parte1" };
+export const intros: Partial<Record<1 | 2 | 3, Intro>> = { 1: introGravada, 2: introGravada, 3: introGravada };
 
 /** Segundo do vídeo em que o Reel narrado começa (o gesto da mão), ou 0 sem intro. */
 export const atraso = (parte: 1 | 2 | 3) => intros[parte]?.mao[0] ?? 0;

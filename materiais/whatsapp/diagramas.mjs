@@ -72,7 +72,9 @@ export function txt(x, y, s, o = {}) {
       (l, i) =>
         `<text x="${x}" y="${y0 + i * tam * 1.15}" font-family="Excali" font-size="${tam}" fill="${o.cor ?? cor.tinta}" text-anchor="${
           o.ancora ?? "middle"
-        }" dominant-baseline="middle"${o.peso ? ` font-weight="${o.peso}"` : ""}>${esc(l)}</text>`,
+        }" dominant-baseline="middle"${o.peso ? ` font-weight="${o.peso}"` : ""}${
+          o.halo ? ` stroke="#ffffff" stroke-width="${o.halo}" stroke-linejoin="round" paint-order="stroke"` : ""
+        }>${esc(l)}</text>`,
     )
     .join("");
 }
@@ -469,18 +471,41 @@ export const reconexaoLeigo = () => reconexao({ espera: "espera um pouquinho,\nd
 
 /** Rabiscos que se desenham atrás da Julia na intro: o banco de mensagens à direita, a seta que sai
  *  de trás dela e o fluxo tracejado. Coordenadas da tela do Reel (1080x1920). */
-export function introRabiscos() {
-  semear("introRabiscos");
+export function introRabiscos(parte = 1) {
+  semear(parte === 1 ? "introRabiscos" : `introRabiscos${parte}`); // a parte 1 mantém o traço já publicado
   const e = 3.4; // traço mais grosso: o desenho ocupa a tela inteira
   const o = (x = {}) => ({ espessura: e, gap: 11, ...x });
   let s = "";
-  // banco de mensagens embaixo à direita
-  const bx = 884, by = 1030, bw = 170, bh = 140, ry = 18;
-  s += paths(gen.path(`M${bx},${by + ry} L${bx},${by + bh - ry} A${bw / 2},${ry} 0 0 0 ${bx + bw},${by + bh - ry} L${bx + bw},${by + ry}`, base(o({ preench: claro.violeta }))));
-  s += elipse(bx + bw / 2, by + ry, bw, ry * 2, o({ preench: "#ffffff", hachura: "solid" }));
-  s += txt(1048, by + bh + 30, "banco", { tam: 32, ancora: "end" }); // à direita: o cabelo chega a x≈916 nessa altura
-  // seta que sai de trás dela e chega no banco
-  s += seta(650, 1000, 876, 1080, { espessura: e, ponta: 22, cor: cor.tinta });
+  // o desenho fica embaixo à direita (x 884..1054); o rótulo é alinhado à direita em x=1048,
+  // fora do alcance do cabelo dela (que chega a x≈916 nessa altura)
+  // contorno branco: o rótulo fica em cima do quarto dela (cadeira e mesa escuras)
+  const rotulo = (texto) => txt(1048, 1200, texto, { tam: 32, ancora: "end", halo: parte === 1 ? 0 : 7 });
+  if (parte === 2) {
+    // celular do Bruno, com a conversa e os tiquinhos
+    s += ret(900, 1000, 140, 170, o({ preench: "#ffffff", hachura: "solid" }));
+    s += linha([[950, 1014], [990, 1014]], o({ espessura: 2.6 }));
+    s += ret(912, 1036, 92, 34, o({ preench: claro.cinza, hachura: "solid", espessura: 2.6 }));
+    s += ret(936, 1086, 92, 34, o({ preench: claro.verde, hachura: "solid", espessura: 2.6 }));
+    s += check(1000, 1103, 12, cor.azul) + check(1012, 1103, 12, cor.azul);
+    s += rotulo("bruno");
+    s += seta(650, 1000, 890, 1070, { espessura: e, ponta: 22, cor: cor.tinta });
+  } else if (parte === 3) {
+    // gavetas: cada conversa inteira numa gaveta
+    for (let k = 0; k < 3; k++) {
+      const y = 1000 + k * 58;
+      s += ret(884, y, 170, 52, o({ preench: [claro.verde, claro.amarelo, claro.azul][k], hachura: "solid" }));
+      s += linha([[950, y + 26], [988, y + 26]], o({ espessura: 4 }));
+    }
+    s += rotulo("gavetas");
+    s += seta(650, 1000, 876, 1060, { espessura: e, ponta: 22, cor: cor.tinta });
+  } else {
+    // banco de mensagens
+    const bx = 884, by = 1030, bw = 170, bh = 140, ry = 18;
+    s += paths(gen.path(`M${bx},${by + ry} L${bx},${by + bh - ry} A${bw / 2},${ry} 0 0 0 ${bx + bw},${by + bh - ry} L${bx + bw},${by + ry}`, base(o({ preench: claro.violeta }))));
+    s += elipse(bx + bw / 2, by + ry, bw, ry * 2, o({ preench: "#ffffff", hachura: "solid" }));
+    s += rotulo("banco");
+    s += seta(650, 1000, 876, 1080, { espessura: e, ponta: 22, cor: cor.tinta });
+  }
   // fluxo tracejado por trás, de um lado ao outro
   s += curva([[150, 1060], [420, 1010], [700, 960], [960, 1000]], { espessura: 2.6, cor: cor.cinza, tracejado: true });
   return svg(1080, 1920, s);
