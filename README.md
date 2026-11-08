@@ -164,6 +164,12 @@ O script converte o HDR do iPhone para SDR na resolução original (tone mapping
 
 O vídeo da Julia é HDR (Dolby Vision 8.4 / HLG, do iPhone) e qualquer conversão para SDR muda a cor. Por isso a parte com intro sai em HDR: o render gera camadas (o Reel sem a imagem da intro, os gráficos da intro com fundo transparente e a máscara da passagem) e `materiais/whatsapp/hdr.py` monta o arquivo final em HEVC 10 bits HLG com os pixels originais dela, sem conversão; só os gráficos são levados de SDR para HLG, com o branco no branco de referência (203 nits). As partes sem intro continuam em H.264 SDR.
 
+Nas partes 2 e 3, cada explicação é um diagrama desenhado à mão (`materiais/whatsapp/reels-diagramas/`, um arquivo por diagrama, quadro de 968×690 em tamanho real na tela). Os diagramas são divididos em etapas (`etapa(n, ...)`) e, no roteiro, cada etapa fica presa a uma frase da narração: o desenho vai aparecendo enquanto a Julia fala daquilo. Para ver um diagrama e suas etapas sem renderizar o vídeo:
+
+```bash
+node materiais/whatsapp/previa-diagrama.mjs materiais/whatsapp/reels-diagramas/caminho.mjs caminho saida/previa.png
+```
+
 ## Estrutura
 
 ```
