@@ -431,7 +431,7 @@ function Efeitos({ lista }: { lista: Efeito[] }) {
 
 /* ------------------------------------------------------------------ cena */
 
-function CenaView({ cena, ultima, numero, adianto = 0, antes = 0 }: { cena: CenaTempo; ultima: boolean; numero: number; adianto?: number; antes?: number }) {
+function CenaView({ cena, ultima, adianto = 0, antes = 0 }: { cena: CenaTempo; ultima: boolean; adianto?: number; antes?: number }) {
   const frame = useCurrentFrame();
   // a sequência começa `antes` segundos antes da cena (a dissolução); t = 0 é o começo da cena
   const t = frame / FPS - antes;
@@ -444,7 +444,6 @@ function CenaView({ cena, ultima, numero, adianto = 0, antes = 0 }: { cena: Cena
   const v = cena.visual;
   return (
     <AbsoluteFill style={{ opacity: entra * sai, transform: `translateY(${(1 - entra) * 10 + (1 - sai) * -10}px)` }}>
-      <div style={{ position: "absolute", left: LADO, top: 252, fontFamily: FONTE_LOUSA, fontSize: 40, color: COR.acento }}>system design · parte {numero}/3</div>
       {cena.titulo && (
         <div style={{ position: "absolute", left: LADO, right: LADO, top: 318, fontFamily: "Inter", fontWeight: 800, fontSize: 88, lineHeight: 1.03, letterSpacing: "-0.035em" }}>
           <Marcado texto={cena.titulo} p={prog(t, 0.35, 0.5)} />
@@ -580,9 +579,6 @@ function IntroGravada({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
         ))}
         {/* a Julia, recortada, na frente de tudo */}
         <Img src={INTRO(parte, `frente/${String(quadro).padStart(4, "0")}.webp`)} style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 1920 }} />
-        <div style={{ position: "absolute", left: LADO, top: 252, fontFamily: FONTE_LOUSA, fontSize: 40, color: COR.acento, textShadow: "0 2px 12px rgba(255,255,255,.8)" }}>
-          system design · parte {parte}/3
-        </div>
         <Legenda blocos={blocos} t={t} />
       </AbsoluteFill>
     </AbsoluteFill>
@@ -624,7 +620,7 @@ function Corpo({ parte, cenas }: { parte: 1 | 2 | 3; cenas: CenaTempo[] }) {
         return (
           <Sequence key={i} from={Math.round((c.inicio - antes) * FPS)} durationInFrames={Math.max(1, Math.round((c.fim - c.inicio + antes) * FPS))}>
             {/* depois da intro, a 1ª cena já está montada quando a mão passa (sem fade, animação adiantada) */}
-            <CenaView cena={c} ultima={i === cenas.length - 1} numero={parte} antes={antes} adianto={i === 0 && intros[parte] ? ADIANTO_GANCHO : 0} />
+            <CenaView cena={c} ultima={i === cenas.length - 1} antes={antes} adianto={i === 0 && intros[parte] ? ADIANTO_GANCHO : 0} />
           </Sequence>
         );
       })}
@@ -666,6 +662,10 @@ export const ReelWhatsApp: React.FC<PropsReelWhatsApp> = ({ parte }) => {
       {/* progresso da parte */}
       <div style={{ position: "absolute", left: LADO, right: LADO, top: 222, height: 8, borderRadius: 4, background: "#e9ecef" }}>
         <div style={{ width: `${Math.min(100, (t / fim) * 100)}%`, height: "100%", borderRadius: 4, background: COR.acento }} />
+      </div>
+      {/* rótulo da série fixo (fora das cenas): não pisca nas dissoluções nem na emenda com a intro */}
+      <div style={{ position: "absolute", left: LADO, top: 252, fontFamily: FONTE_LOUSA, fontSize: 40, color: COR.acento, textShadow: "0 2px 12px rgba(255,255,255,.8)" }}>
+        system design · parte {parte}/3
       </div>
       <div style={{ position: "absolute", right: LADO, top: 258, fontSize: 30, color: COR.cinza, fontWeight: 600 }}>{PERFIL}</div>
     </AbsoluteFill>
