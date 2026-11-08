@@ -13,6 +13,7 @@ import { renderMedia, selectComposition } from "@remotion/renderer";
 // Uso: npm run render:reels-whatsapp [1|2|3]
 
 const pdf = "saida/materiais/system-design-whatsapp.pdf";
+if (!existsSync("public/materiais/whatsapp/sons/trilha.wav")) throw new Error("Trilha e efeitos não encontrados. Rode: npm run sons:whatsapp");
 for (const n of [1, 2, 3]) {
   const mp3 = `public/materiais/whatsapp/narracao/parte${n}.mp3`;
   if (!existsSync(mp3)) throw new Error(`Narração não encontrada em ${mp3}. Rode: python3 materiais/whatsapp/narracao.py parte1.mp3 parte2.mp3 parte3.mp3`);

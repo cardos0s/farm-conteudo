@@ -19,7 +19,7 @@ import * as D from "../../../materiais/whatsapp/diagramas.mjs";
 import "../../lousa/fontes";
 import { FONTE_LOUSA } from "../../lousa/fontes";
 import { DiagramaAnimado, analisar } from "./Desenho";
-import { FPS, legendas, linhaDoTempo, total, type Bloco, type CenaTempo, type Foco, type Item, type Visual } from "./roteiro";
+import { FPS, legendas, linhaDoTempo, narracoes, total, type Bloco, type CenaTempo, type Foco, type Item, type Visual } from "./roteiro";
 
 // Reels narrados da série "System Design do WhatsApp" (1080x1920). A narração dita o ritmo:
 // cada cena entra na frase em que começa, os itens aparecem quando são falados e a legenda
@@ -331,6 +331,78 @@ function Legenda({ blocos, t }: { blocos: Bloco[]; t: number }) {
   );
 }
 
+/* ------------------------------------------------------------------ som */
+
+// Trilha e efeitos gerados por materiais/whatsapp/sons.py (sintetizados, sem direitos de terceiros).
+const SOM = (nome: string) => staticFile(`materiais/whatsapp/sons/${nome}.wav`);
+type Efeito = { em: number; nome: string; volume: number };
+
+/** Efeitos presos aos acontecimentos do vídeo: troca de cena, itens, ✓/✗, desenho, câmera, preço. */
+function efeitos(cenas: CenaTempo[]): Efeito[] {
+  const lista: Efeito[] = [];
+  cenas.forEach((c, i) => {
+    const v = c.visual;
+    if (i > 0) lista.push({ em: c.inicio - 0.12, nome: "whoosh", volume: 0.3 });
+    if (v.tipo === "gancho") lista.push({ em: c.inicio + 0.05, nome: "impacto", volume: 0.55 });
+    if (v.tipo === "comparacao") lista.push({ em: c.inicio + 0.08, nome: "pop", volume: 0.35 });
+    if (v.tipo === "lista" || v.tipo === "comparacao") {
+      v.itens.forEach((it, k) => {
+        const nome = it.icone === "x" ? "erro" : it.icone === "check" || it.destaque ? "plim" : "pop";
+        lista.push({ em: c.tempos[k], nome, volume: nome === "erro" ? 0.22 : nome === "plim" ? 0.26 : 0.4 });
+      });
+    }
+    if (v.tipo === "linhas") c.tempos.forEach((tt, k) => lista.push({ em: tt, nome: v.itens[k].destaque ? "plim" : "pop", volume: v.itens[k].destaque ? 0.26 : 0.4 }));
+    if (v.tipo === "diagrama") {
+      if (!v.semDesenho) lista.push({ em: c.inicio + 0.15, nome: "lapis", volume: 0.22 });
+      c.focosT.forEach((f) => lista.push({ em: f.de, nome: "whoosh", volume: 0.14 }));
+    }
+    if (v.tipo === "cta") {
+      [0, 1, 2, 3].forEach((k) => lista.push({ em: c.inicio + 0.15 + k * 0.28, nome: "pop", volume: 0.28 }));
+      lista.push({ em: c.inicio + 1.5, nome: "kaching", volume: 0.5 });
+    }
+  });
+  return lista.filter((e) => e.em >= 0);
+}
+
+/** Volume da trilha quadro a quadro: baixa sob a voz, sobe nas pausas, entra e sai em fade. */
+function volumesTrilha(parte: 1 | 2 | 3, quadros: number): number[] {
+  const ps = narracoes[parte].palavras;
+  const alvo = Array.from({ length: quadros }, (_, f) => {
+    const t = f / FPS;
+    const falando = ps.some((p) => t >= p.s - 0.25 && t <= p.e + 0.35);
+    return falando ? 0.085 : 0.2;
+  });
+  // suaviza (~0,4 s) para a trilha não "pular"
+  const janela = 12;
+  return alvo.map((_, f) => {
+    let soma = 0;
+    let n = 0;
+    for (let k = Math.max(0, f - janela); k <= Math.min(quadros - 1, f + janela); k++) {
+      soma += alvo[k];
+      n++;
+    }
+    const t = f / FPS;
+    const fade = Math.min(1, t / 1.0, (quadros / FPS - t) / 1.5);
+    return Math.max(0, (soma / n) * fade);
+  });
+}
+
+function Sons({ parte, cenas }: { parte: 1 | 2 | 3; cenas: CenaTempo[] }) {
+  const { durationInFrames } = useVideoConfig();
+  const vols = useMemo(() => volumesTrilha(parte, durationInFrames), [parte, durationInFrames]);
+  const lista = useMemo(() => efeitos(cenas), [cenas]);
+  return (
+    <>
+      <Html5Audio src={SOM("trilha")} loop volume={(f) => vols[Math.min(vols.length - 1, Math.max(0, f))]} />
+      {lista.map((e, i) => (
+        <Sequence key={i} from={Math.round(e.em * FPS)} durationInFrames={Math.round(2 * FPS)}>
+          <Html5Audio src={SOM(e.nome)} volume={e.volume} />
+        </Sequence>
+      ))}
+    </>
+  );
+}
+
 /* ------------------------------------------------------------------ cena */
 
 function CenaView({ cena, ultima, numero }: { cena: CenaTempo; ultima: boolean; numero: number }) {
@@ -380,6 +452,7 @@ export const ReelWhatsApp: React.FC<PropsReelWhatsApp> = ({ parte }) => {
       }}
     >
       <Html5Audio src={staticFile(`materiais/whatsapp/narracao/parte${parte}.mp3`)} />
+      <Sons parte={parte} cenas={cenas} />
       {cenas.map((c, i) => (
         <Sequence key={i} from={Math.round(c.inicio * FPS)} durationInFrames={Math.max(1, Math.round((c.fim - c.inicio) * FPS))}>
           <CenaView cena={c} ultima={i === cenas.length - 1} numero={parte} />
