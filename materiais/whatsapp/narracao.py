@@ -133,12 +133,16 @@ def main(mp3s: list[str]) -> None:
         fonte = CRU / f"parte{n}.fonte.mp3"
         destino = AUDIO / f"parte{n}.mp3"
         cru = CRU / f"parte{n}.cru.json"
-        if mp3.resolve() != fonte.resolve():
+        if mp3.resolve() == destino.resolve():
+            # o arquivo em public/ é a saída (talvez já com pausas encurtadas): usa o original guardado
+            if not fonte.exists():
+                sys.exit(f"parte {n}: passe o MP3 original; {destino} é gerado por este script")
+        elif mp3.resolve() != fonte.resolve():
             fonte.write_bytes(mp3.read_bytes())
         chave = sha(fonte)
         dados_cru = json.loads(cru.read_text()) if cru.exists() else None
-        if isinstance(dados_cru, list):  # formato antigo, sem a chave do áudio
-            dados_cru = {"sha": chave, "palavras": dados_cru}
+        if isinstance(dados_cru, list):  # formato antigo, sem a chave do áudio: não dá para confiar
+            dados_cru = None
         if not dados_cru or dados_cru["sha"] != chave:
             print(f"transcrevendo parte {n}...")
             dados_cru = {"sha": chave, "palavras": transcrever(fonte)}

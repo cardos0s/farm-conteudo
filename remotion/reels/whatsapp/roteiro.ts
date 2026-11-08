@@ -14,8 +14,8 @@ import i1 from "./intro/parte1.json";
 export const FPS = 30;
 /** Respiro depois do fim da narração, com a chamada na tela. */
 export const CAUDA = 1.2;
-/** Limite do Instagram para esta série. */
-export const MAXIMO = 150;
+/** Limite desta série (2:30), com margem. */
+export const MAXIMO = 149.8; // margem: o AAC declara a faixa de áudio uns centésimos mais longa
 
 export type Palavra = { w: string; s: number; e: number };
 export type Narracao = { duracao: number; palavras: Palavra[] };
@@ -358,7 +358,9 @@ export const intros: Partial<Record<1 | 2 | 3, Intro>> = { 1: i1 as unknown as I
 /** Segundo do vídeo em que o Reel narrado começa (o gesto da mão), ou 0 sem intro. */
 export const atraso = (parte: 1 | 2 | 3) => intros[parte]?.mao[0] ?? 0;
 
-export const total = (parte: 1 | 2 | 3) => Math.min(MAXIMO, atraso(parte) + narracoes[parte].duracao + CAUDA);
+/** Duração sem o teto: o render avisa se passar de MAXIMO (aí a chamada final é encurtada). */
+export const duracaoNatural = (parte: 1 | 2 | 3) => atraso(parte) + narracoes[parte].duracao + CAUDA;
+export const total = (parte: 1 | 2 | 3) => Math.min(MAXIMO, duracaoNatural(parte));
 /** Duração do Reel narrado (o que vem depois da intro). */
 export const duracaoCorpo = (parte: 1 | 2 | 3) => total(parte) - atraso(parte);
 

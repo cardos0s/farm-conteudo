@@ -356,12 +356,12 @@ type Efeito = { em: number; nome: string; volume: number };
 const GANHO_EFEITOS = 0.8;
 
 /** Efeitos presos aos acontecimentos do vídeo: troca de cena, itens, ✓/✗, desenho, câmera, preço. */
-function efeitos(cenas: CenaTempo[]): Efeito[] {
+function efeitos(cenas: CenaTempo[], comIntro = false): Efeito[] {
   const lista: Efeito[] = [];
   cenas.forEach((c, i) => {
     const v = c.visual;
     if (i > 0) lista.push({ em: c.inicio - 0.12, nome: "whoosh", volume: 0.3 });
-    if (v.tipo === "gancho") lista.push({ em: c.inicio + 0.05, nome: "impacto", volume: 0.55 });
+    if (v.tipo === "gancho" && !comIntro) lista.push({ em: c.inicio + 0.05, nome: "impacto", volume: 0.55 });
     if (v.tipo === "comparacao") lista.push({ em: c.inicio + 0.08, nome: "pop", volume: 0.35 });
     if (v.tipo === "lista" || v.tipo === "comparacao") {
       v.itens.forEach((it, k) => {
@@ -432,11 +432,11 @@ function Efeitos({ lista }: { lista: Efeito[] }) {
 
 /* ------------------------------------------------------------------ cena */
 
-function CenaView({ cena, ultima, numero }: { cena: CenaTempo; ultima: boolean; numero: number }) {
+function CenaView({ cena, ultima, numero, adianto = 0 }: { cena: CenaTempo; ultima: boolean; numero: number; adianto?: number }) {
   const frame = useCurrentFrame();
   const t = frame / FPS;
   const dur = cena.fim - cena.inicio;
-  const entra = prog(t, 0, TRANSICAO);
+  const entra = adianto > 0 ? 1 : prog(t, 0, TRANSICAO);
   const sai = ultima ? 1 : 1 - prog(t, dur - TRANSICAO, TRANSICAO);
   const area = cena.titulo ? AREA.comTitulo : AREA.semTitulo;
   const v = cena.visual;
@@ -449,7 +449,7 @@ function CenaView({ cena, ultima, numero }: { cena: CenaTempo; ultima: boolean; 
         </div>
       )}
       <div style={{ position: "absolute", left: LADO, width: LARG, top: area.top, height: area.h }}>
-        {v.tipo === "gancho" && <Gancho v={v} t={t} />}
+        {v.tipo === "gancho" && <Gancho v={v} t={t + adianto} />}
         {v.tipo === "linhas" && <Linhas v={v} t={t} cena={cena} />}
         {v.tipo === "lista" && <Lista v={v} t={t} cena={cena} />}
         {v.tipo === "comparacao" && <Comparacao v={v} t={t} cena={cena} />}
@@ -462,14 +462,18 @@ function CenaView({ cena, ultima, numero }: { cena: CenaTempo; ultima: boolean; 
 
 /* ------------------------------------------------------------------ intro gravada */
 
+/** Quanto a animação do gancho é adiantada quando ele entra pela mão: assim a pergunta inteira já
+ *  está na tela enquanto a borda passa (sem isso, o lado revelado ficava quase vazio). */
+const ADIANTO_GANCHO = 0.7;
+
 const INTRO = (parte: number, arq: string) => staticFile(`materiais/whatsapp/intro/parte${parte}/${arq}`);
 
 type Adesivo = { de: number; x: number; y: number; giro: number; grande: string; texto?: string; balao?: boolean };
 // Cartões que entram atrás da Julia junto com "o WhatsApp comigo". Ficam nas faixas livres ao lado
 // dela (medidas no recorte), para nenhum número ser coberto: um "175" meio escondido viraria "75".
 const ADESIVOS: Adesivo[] = [
-  { de: 1.75, x: 22, y: 688, giro: -6, grande: "5 bi", texto: "mensagens por dia" },
-  { de: 1.95, x: 22, y: 900, giro: 4, grande: "175 mil", texto: "por segundo" },
+  { de: 1.75, x: 22, y: 688, giro: -6, grande: "5 bi", texto: "mensagens\npor dia" },
+  { de: 1.95, x: 22, y: 868, giro: 4, grande: "175 mil", texto: "por segundo\nno pico" },
   { de: 2.15, x: 868, y: 905, giro: -3, grande: "oi! ✓✓", balao: true },
   { de: 2.35, x: 862, y: 688, giro: 5, grande: "1.024", texto: "por grupo" },
 ];
@@ -477,7 +481,7 @@ const ADESIVOS: Adesivo[] = [
 function CartaoIntro({ a, t }: { a: Adesivo; t: number }) {
   const { fps } = useVideoConfig();
   if (t < a.de) return null;
-  const s = spring({ frame: (t - a.de) * fps, fps, config: { damping: 12, stiffness: 170 } });
+  const s = spring({ frame: (t - a.de) * fps, fps, config: { damping: 18, stiffness: 170 } }); // ~5% de passagem do ponto, para não encostar no cabelo
   return (
     <div
       style={{
@@ -502,7 +506,7 @@ function CartaoIntro({ a, t }: { a: Adesivo; t: number }) {
           a.grande
         )}
       </div>
-      {a.texto && <div style={{ fontSize: 24, fontWeight: 600, color: COR.suave }}>{a.texto}</div>}
+      {a.texto && <div style={{ fontSize: 30, fontWeight: 600, color: COR.suave, lineHeight: 1.15, whiteSpace: "pre-line" }}>{a.texto}</div>}
     </div>
   );
 }
@@ -516,16 +520,16 @@ function IntroGravada({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
   const blocos = useMemo(() => legendasIntro(parte), [parte]);
   const [m0] = intro.mao;
   // a borda acompanha a mão: entra pela esquerda junto com ela e sai pela direita
-  const borda = interpolate(t, [m0, intro.duracao], [-180, 1180], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.bezier(0.3, 0, 0.7, 1) });
+  const borda = interpolate(t, [m0, intro.duracao], [-330, 1500], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.bezier(0.3, 0, 0.7, 1) });
   const arrastando = t >= m0;
   const quadro = Math.min(intro.quadros - 1, Math.max(0, Math.floor(frame)));
   const titulo = prog(t, 0.21, 0.35);
   const whats = prog(t, 1.6, 0.4);
   return (
     <AbsoluteFill style={{ filter: arrastando ? "drop-shadow(-16px 0 24px rgba(0,0,0,.35))" : undefined }}>
-      <AbsoluteFill style={{ clipPath: arrastando ? `polygon(${borda + 70}px 0, 1400px 0, 1400px 1920px, ${borda - 70}px 1920px)` : undefined, overflow: "hidden" }}>
+      <AbsoluteFill style={{ clipPath: arrastando ? `polygon(${borda + 150}px 0, 1600px 0, 1600px 1920px, ${borda - 150}px 1920px)` : undefined, overflow: "hidden" }}>
         {/* quarto desfocado: dá profundidade e deixa os gráficos legíveis */}
-        <AbsoluteFill style={{ transform: "scale(1.02)", filter: "blur(5px) saturate(0.95)" }}>
+        <AbsoluteFill style={{ filter: "blur(5px) saturate(0.95)" }}>
           <OffthreadVideo src={INTRO(parte, "fundo.mp4")} muted style={{ width: 1080, height: 1920 }} />
         </AbsoluteFill>
         <AbsoluteFill style={{ background: "rgba(251,251,248,0.30)" }} />
@@ -590,11 +594,12 @@ function SonsIntro({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
     { em: 0.44, nome: "lapis", volume: 0.24 },
     { em: 1.6, nome: "pop", volume: 0.45 },
     ...ADESIVOS.map((a) => ({ em: a.de, nome: a.balao ? "plim" : "pop", volume: a.balao ? 0.26 : 0.38 })),
-    { em: intro.mao[0] - 0.06, nome: "whoosh", volume: 0.6 },
+    { em: intro.mao[0] - 0.12, nome: "whoosh", volume: 0.32 },
   ];
   return (
     <>
-      <Html5Audio src={INTRO(parte, "voz.wav")} />
+      {/* um pouco abaixo do volume medido: a 1ª frase da narração sintética é mais baixa que a média */}
+      <Html5Audio src={INTRO(parte, "voz.wav")} volume={0.85} />
       <Efeitos lista={lista} />
     </>
   );
@@ -606,14 +611,15 @@ function SonsIntro({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
 function Corpo({ parte, cenas }: { parte: 1 | 2 | 3; cenas: CenaTempo[] }) {
   const frame = useCurrentFrame();
   const blocos = useMemo(() => legendas(parte), [parte]);
-  const lista = useMemo(() => efeitos(cenas), [cenas]);
+  const lista = useMemo(() => efeitos(cenas, !!intros[parte]), [cenas, parte]);
   return (
     <AbsoluteFill>
       <Html5Audio src={staticFile(`materiais/whatsapp/narracao/parte${parte}.mp3`)} />
       <Efeitos lista={lista} />
       {cenas.map((c, i) => (
         <Sequence key={i} from={Math.round(c.inicio * FPS)} durationInFrames={Math.max(1, Math.round((c.fim - c.inicio) * FPS))}>
-          <CenaView cena={c} ultima={i === cenas.length - 1} numero={parte} />
+          {/* depois da intro, a 1ª cena já está montada quando a mão passa (sem fade, animação adiantada) */}
+          <CenaView cena={c} ultima={i === cenas.length - 1} numero={parte} adianto={i === 0 && intros[parte] ? ADIANTO_GANCHO : 0} />
         </Sequence>
       ))}
       <Legenda blocos={blocos} t={frame / FPS} />

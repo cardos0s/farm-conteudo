@@ -64,7 +64,6 @@ const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 
 /** Texto manuscrito. Quebras de linha com \n. */
 export function txt(x, y, s, o = {}) {
-  semear("txt");
   const tam = o.tam ?? 19;
   const linhas = String(s).split("\n");
   const y0 = y - ((linhas.length - 1) * tam * 1.15) / 2;
@@ -86,7 +85,6 @@ export const caminho = (d, o = {}) => paths(gen.path(d, base(o)));
 
 /** Caixa com rótulo centralizado (e uma legenda menor opcional embaixo). */
 export function caixa(x, y, w, h, rotulo, o = {}) {
-  semear("caixa");
   const sub = o.sub ? txt(x + w / 2, y + h / 2 + 15, o.sub, { tam: 14, cor: cor.cinza }) : "";
   return (
     ret(x, y, w, h, { preench: o.preench, cor: o.cor, hachura: o.hachura, tracejado: o.tracejado }) +
@@ -96,7 +94,6 @@ export function caixa(x, y, w, h, rotulo, o = {}) {
 
 /** Banco de dados (cilindro em pé). */
 export function banco(x, y, w, h, rotulo, o = {}) {
-  semear("banco");
   const ry = 9;
   return (
     paths(
@@ -112,7 +109,6 @@ export function banco(x, y, w, h, rotulo, o = {}) {
 
 /** Fila (cilindro deitado com divisórias). */
 export function fila(x, y, w, h, rotulo, o = {}) {
-  semear("fila");
   let s = ret(x, y, w, h, { preench: o.preench ?? claro.laranja });
   for (let i = 1; i < 5; i++) s += linha([[x + (w * i) / 5, y + 4], [x + (w * i) / 5, y + h - 4]], { espessura: 1.1 });
   return s + txt(x + w / 2, y + h + 16, rotulo, { tam: 16 });
@@ -120,7 +116,6 @@ export function fila(x, y, w, h, rotulo, o = {}) {
 
 /** Seta reta com ponta; rótulo opcional perto do meio. */
 export function seta(x1, y1, x2, y2, o = {}) {
-  semear("seta");
   const a = Math.atan2(y2 - y1, x2 - x1);
   const k = o.ponta ?? 13;
   const p1 = [x2 - k * Math.cos(a - 0.45), y2 - k * Math.sin(a - 0.45)];
@@ -483,7 +478,7 @@ export function introRabiscos() {
   const bx = 884, by = 1030, bw = 170, bh = 140, ry = 18;
   s += paths(gen.path(`M${bx},${by + ry} L${bx},${by + bh - ry} A${bw / 2},${ry} 0 0 0 ${bx + bw},${by + bh - ry} L${bx + bw},${by + ry}`, base(o({ preench: claro.violeta }))));
   s += elipse(bx + bw / 2, by + ry, bw, ry * 2, o({ preench: "#ffffff", hachura: "solid" }));
-  s += txt(bx + bw / 2, by + bh + 30, "mensagens", { tam: 32 });
+  s += txt(1048, by + bh + 30, "banco", { tam: 32, ancora: "end" }); // à direita: o cabelo chega a x≈916 nessa altura
   // seta que sai de trás dela e chega no banco
   s += seta(650, 1000, 876, 1080, { espessura: e, ponta: 22, cor: cor.tinta });
   // fluxo tracejado por trás, de um lado ao outro

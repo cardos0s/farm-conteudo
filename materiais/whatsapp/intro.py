@@ -109,13 +109,36 @@ def transcrever(mov: Path, inicio: float, ate: float) -> list[dict]:
     a = np.frombuffer(pcm, dtype=np.float32)
     seg, _ = WhisperModel("medium", device="cpu", compute_type="int8").transcribe(a[: int(ate * 16000)], language="pt", word_timestamps=True, beam_size=5)
     ws = [{"w": w.word.strip(), "s": round(w.start, 2), "e": round(w.end, 2)} for s in seg for w in s.words]
-    # o Whisper costuma esticar a 1ª palavra até o começo do áudio: usa o início real da fala
-    janela = 320
-    energia = 20 * np.log10(np.sqrt(np.convolve(a**2, np.ones(janela) / janela, "same")) + 1e-9)
-    pico = energia[: int(ate * 16000)].max()
-    inicio_fala = float(np.argmax(energia > pico - 22) / 16000)
-    if ws and ws[0]["s"] < inicio_fala:
-        ws[0]["s"] = round(min(inicio_fala, ws[0]["e"] - 0.15), 2)
+    # O Whisper estica palavras por cima de silêncios (a 1ª até o começo do áudio, e um "o" curto por
+    # cima da pausa que vem antes dele). Ajusta as bordas pela energia da fala, em passos de 10 ms:
+    # se a palavra começa (ou termina) com mais de 120 ms de silêncio, a borda vai para onde a voz está.
+    passo = 160
+    n = int(ate * 16000) // passo
+    energia = np.array([20 * np.log10(np.sqrt((a[k * passo : (k + 1) * passo] ** 2).mean()) + 1e-9) for k in range(n)])
+    # referência robusta (percentil 95, não o máximo: a batida da mão no microfone satura o pico)
+    voz = energia > np.percentile(energia, 95) - 15
+    # só conta como voz um trecho de pelo menos 40 ms seguidos (ignora estalos e ruído de mão)
+    k = 0
+    while k < n:
+        if voz[k]:
+            fim = k
+            while fim < n and voz[fim]:
+                fim += 1
+            if fim - k < 4:
+                voz[k:fim] = False
+            k = fim
+        else:
+            k += 1
+    for p in ws:
+        k0, k1 = int(p["s"] * 100), min(n, int(np.ceil(p["e"] * 100)))
+        ativos = np.nonzero(voz[k0:k1])[0]
+        if len(ativos) == 0:
+            continue
+        s0, e0 = (k0 + ativos[0]) / 100, (k0 + ativos[-1] + 1) / 100
+        if s0 - p["s"] > 0.12:
+            p["s"] = round(float(s0), 2)
+        if p["e"] - e0 > 0.12:
+            p["e"] = round(float(e0), 2)
     # tempos relativos ao começo do trecho usado
     return [{**p, "s": round(p["s"] - inicio, 2), "e": round(p["e"] - inicio, 2)} for p in ws if p["e"] > inicio]
 
