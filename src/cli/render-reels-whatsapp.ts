@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, renameSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -26,6 +26,12 @@ await mkdir(paginas, { recursive: true });
 for (const n of [1, 8, 11, 21]) {
   const nome = String(n).padStart(2, "0");
   execFileSync("pdftoppm", ["-r", "90", "-png", "-singlefile", "-f", String(n), "-l", String(n), pdf, `${paginas}/p-${nome}`], { stdio: "ignore" });
+}
+
+function limitar(arquivo: string) {
+  const tmp = arquivo.replace(/\.mp4$/, ".tmp.mp4");
+  execFileSync("ffmpeg", ["-v", "error", "-y", "-i", arquivo, "-c:v", "copy", "-af", "alimiter=limit=0.89:attack=5:release=60:level=false", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", tmp]);
+  renameSync(tmp, arquivo);
 }
 
 const filtro = process.argv[2] ? [Number(process.argv[2])] : [1, 2, 3];
@@ -59,5 +65,7 @@ for (const parte of filtro) {
       }
     },
   });
+  // voz + trilha + efeitos somados podem passar de 0 dBFS: limitador em -1 dBFS e loudness de Reels
+  limitar(destino);
   console.log(`ok: ${destino} (${(composition.durationInFrames / composition.fps).toFixed(1)} s)`);
 }
