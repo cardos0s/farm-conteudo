@@ -197,8 +197,8 @@ export function caminho() {
     s += etapa(
       11,
       seta(x1, Y_VOLTA, x2, Y_VOLTA, { espessura: E, ponta: 18, cor: cor.verde }) +
-        num(x1 - 18, Y_VOLTA - 34, "7", cor.verde) +
-        txt((x1 + x2) / 2 + 4, Y_VOLTA + 28, "chegou!", { tam: 34, cor: cor.verde }),
+        num(x1 - 18, Y_VOLTA + 34, "7", cor.verde) +
+        txt((x1 + x2) / 2 - 2, Y_VOLTA - 30, "chegou!", { tam: 34, cor: cor.verde }),
     );
   }
 

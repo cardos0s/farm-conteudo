@@ -152,182 +152,25 @@ export const roteiros: Record<1 | 2 | 3, Cena[]> = {
   ],
   2: [
     { quando: "O primeiro tiquinho", visual: { tipo: "gancho", apoio: "o primeiro tiquinho ✓ do WhatsApp", texto: "*não* quer dizer que chegou." } },
-    {
-      quando: "Quando você abre o WhatsApp",
-      titulo: "Primeiro: o *servidor*",
-      visual: {
-        tipo: "comparacao",
-        emoji: "📱➜🖥️",
-        frase: "seu celular se conecta a um *servidor*",
-        itens: [
-          { texto: "Servidor = um computador da empresa", quando: "que a gente chama", icone: "🖥️" },
-          { texto: "A conexão fica aberta, como uma ligação", quando: "E essa conexão", icone: "📞" },
-          { texto: "São centenas de servidores", quando: "Só que existem", icone: "🏢" },
-        ],
-      },
-    },
-    {
-      quando: "Então o WhatsApp precisa",
-      titulo: "A *recepção* do prédio",
-      visual: {
-        tipo: "linhas",
-        curta: true,
-        itens: [
-          { grande: "🏢", texto: "uma lista\nquem está em qual servidor" },
-          { grande: "👩", texto: "Ana\nestá na sala 12", quando: "A Ana está" },
-          { grande: "👨", texto: "Bruno\nestá na sala 40", quando: "o Bruno está", destaque: true },
-        ],
-      },
-    },
-    {
-      quando: "Agora a Ana manda",
-      titulo: "Ana manda *\"oi\"* pro Bruno",
-      visual: {
-        tipo: "diagrama",
-        nome: "caminhoLeigo",
-        focoInicial: { x: 0, y: 0, w: 560, h: 250 },
-        focos: [
-          { quando: "E a primeira coisa", foco: { x: 0, y: 60, w: 560, h: 200 } },
-          { quando: "Só depois de anotar", foco: { x: 0, y: 140, w: 560, h: 120 } },
-        ],
-      },
-    },
-    {
-      quando: "Por que nessa ordem",
-      titulo: "Por que *nessa ordem*?",
-      visual: {
-        tipo: "comparacao",
-        emoji: "📝",
-        frase: "✓ = o WhatsApp *guardou*",
-        itens: [
-          { texto: "Se avisasse antes e desse problema, a mensagem sumia", quando: "Porque se o servidor", icone: XIS },
-          { texto: "Guardada e segura. Mas ainda não chegou", quando: "Ela está segura", icone: "🔒", destaque: true },
-        ],
-      },
-    },
-    {
-      quando: "Depois o servidor da Ana",
-      titulo: "Ana manda *\"oi\"* pro Bruno",
-      visual: {
-        tipo: "diagrama",
-        nome: "caminhoLeigo",
-        semDesenho: true,
-        focoInicial: { x: 200, y: 240, w: 845, h: 200 },
-        focos: [{ quando: "O celular do Bruno responde", foco: { x: 0, y: 400, w: 860, h: 170 } }],
-      },
-    },
-    {
-      quando: "E quando o Bruno abre",
-      titulo: "Os *tiquinhos*",
-      visual: {
-        tipo: "linhas",
-        curta: true,
-        itens: [
-          { grande: "✓", texto: "guardado\no WhatsApp anotou", cor: "#868e96" },
-          { grande: "✓✓", texto: "entregue\nchegou no celular", cor: "#868e96" },
-          { grande: "✓✓", texto: "lido\no Bruno abriu a conversa", quando: "os tiquinhos ficam azuis", destaque: true, cor: "#1971c2" },
-        ],
-      },
-    },
-    {
-      quando: "E se o Bruno estiver",
-      titulo: "E se o celular estiver *desligado*?",
-      visual: {
-        tipo: "comparacao",
-        emoji: "📬",
-        frase: "a mensagem espera na *caixa de correio*",
-        itens: [
-          { texto: "A notificação é só um aviso: pode se perder", quando: "O WhatsApp manda uma notificação", icone: "🔔" },
-          { texto: "Ligou o celular: \"o que chegou pra mim?\"", quando: "Quando o Bruno liga", icone: "📲" },
-          { texto: "Por isso, às vezes, um tiquinho só por horas", quando: "É por isso", icone: "✓", destaque: true },
-        ],
-      },
-    },
+    { quando: "Quando você abre o WhatsApp", titulo: "Uma conexão que *não desliga*", visual: { tipo: "diagrama", nome: "reels:conexao", etapas: ["seu celular se conecta", "computador da empresa", "chama de servidor", "conexão fica aberta", "uma ligação que", "existem centenas desses", "um só não aguenta"] } },
+    { quando: "Então o WhatsApp precisa", titulo: "A *recepção* do prédio", visual: { tipo: "diagrama", nome: "reels:recepcao", etapas: ["uma lista", "em qual servidor", "conectada agora", "pensa na recepção", "um prédio", "Ana está na", "Bruno está na"] } },
+    { quando: "Agora a Ana manda", titulo: "Ana manda *\"oi\"* pro Bruno", visual: { tipo: "diagrama", nome: "reels:caminho", etapas: ["oi pro Bruno", "sai do celular", "anotar essa mensagem", "num lugar seguro", "ele avisa o celular", "o primeiro tiquinho"] } },
+    { quando: "Por que nessa ordem", titulo: "Por que *nessa ordem*?", visual: { tipo: "diagrama", nome: "reels:ordem", etapas: ["o servidor avisasse", "desse um problema", "a mensagem sumia", "o primeiro tiquinho", "WhatsApp guardou", "esta segura", "ainda nao chegou"] } },
+    { quando: "Depois o servidor da Ana", titulo: "Até o Bruno: *entregue*", visual: { tipo: "diagrama", nome: "reels:caminho", etapas: [null, null, null, null, null, null, "olha a lista", "Na sala 40", "passa a mensagem", "entrega no celular", "responde chegou", "caminho de volta", "os dois tiquinhos"] } },
+    { quando: "E quando o Bruno abre", titulo: "Os *tiquinhos*", visual: { tipo: "diagrama", nome: "reels:tiquinhos", etapas: ["abre a conversa", "o celular dele", "mais um aviso", "os tiquinhos"] } },
+    { quando: "E se o Bruno estiver", titulo: "Celular *desligado*", visual: { tipo: "diagrama", nome: "reels:offline", etapas: ["fica esperando por ele", "manda uma notificacao", "pode ate se perder", "liga o celular", "o app pergunta", "e pega tudo", "fica ha horas"] } },
     { quando: "No meu guia tem", visual: { tipo: "cta" } },
   ],
   3: [
     { quando: "Quando você manda", visual: { tipo: "gancho", apoio: "num grupo de mil pessoas,", texto: "1 mensagem vira *mil*." } },
-    { quando: "Num grupo, o servidor", titulo: "Grupo: uma *cópia* pra cada um", visual: { tipo: "diagrama", nome: "gruposLeigo" } },
-    {
-      quando: "É como mandar a mesma carta",
-      titulo: "Grupo: uma *cópia* pra cada um",
-      visual: {
-        tipo: "comparacao",
-        emoji: "✉️",
-        frase: "a mesma carta para *mil endereços*",
-        itens: [
-          { texto: "Quanto maior o grupo, mais trabalho", quando: "Quanto maior", icone: "📈" },
-          { texto: "Por isso todo app limita o tamanho", quando: "Por isso", icone: "🚧" },
-          { texto: "WhatsApp: no máximo 1.024 pessoas", quando: "No WhatsApp, o máximo", icone: CHECK, destaque: true },
-        ],
-      },
-    },
-    {
-      quando: "Agora pensa no tamanho",
-      titulo: "Onde guardar *tudo isso*?",
-      visual: {
-        tipo: "comparacao",
-        emoji: "🗄️",
-        frase: "quase *2 petabytes* por ano",
-        itens: [
-          { texto: "Não cabe num computador", quando: "Isso não cabe", icone: XIS },
-          { texto: "Dividido em muitas gavetas", quando: "Precisa ser dividido", icone: "🗂️" },
-          { texto: "A pergunta é: como dividir?", quando: "A pergunta é", icone: "🤔", destaque: true },
-        ],
-      },
-    },
-    {
-      quando: "Se você separar mensagem",
-      titulo: "Como *dividir*?",
-      visual: {
-        tipo: "diagrama",
-        nome: "particoesLeigo",
-        focoInicial: { x: 430, y: 0, w: 410, h: 225 },
-        focos: [{ quando: "O jeito certo", foco: { x: 0, y: 0, w: 410, h: 225 } }],
-      },
-    },
-    {
-      quando: "E como o sistema sabe a ordem",
-      titulo: "Como fica *em ordem*?",
-      visual: {
-        tipo: "comparacao",
-        emoji: "🎫",
-        frase: "uma *senha* com o relógio impresso",
-        itens: [
-          { texto: "Cada mensagem ganha um número que começa pelo horário", quando: "Cada mensagem ganha", icone: "🕐" },
-          { texto: "Número em ordem = mensagem em ordem", quando: "Então, colocar", icone: CHECK },
-          { texto: "+ qual servidor criou: o número nunca repete", quando: "E junto vai", icone: "🖥️", destaque: true },
-        ],
-      },
-    },
-    { quando: "E se um servidor quebrar", titulo: "E se um servidor *quebrar*?", visual: { tipo: "diagrama", nome: "reconexaoLeigo" } },
-    {
-      quando: "É igual quando a luz volta",
-      titulo: "E se um servidor *quebrar*?",
-      visual: {
-        tipo: "comparacao",
-        emoji: "💡",
-        frase: "a luz volta e todo mundo *liga tudo*",
-        itens: [
-          { texto: "Cada celular espera um pouquinho", quando: "Então, cada celular", icone: "⏳" },
-          { texto: "Se não der, espera um pouco mais", quando: "E se não der", icone: "⏳" },
-          { texto: "Nenhuma mensagem se perde", quando: "E nenhuma mensagem", icone: CHECK, destaque: true },
-        ],
-      },
-    },
-    {
-      quando: "E um bônus",
-      titulo: "Bônus: o WhatsApp *de verdade*",
-      visual: {
-        tipo: "lista",
-        itens: [
-          { texto: "Criptografia de ponta a ponta", quando: "as mensagens são criptografadas", icone: "🔒" },
-          { texto: "Nem o WhatsApp consegue ler", quando: "Isso quer dizer", icone: "🙈" },
-          { texto: "Apagada dos servidores depois de entregue", quando: "E depois que a mensagem", icone: "🗑️" },
-          { texto: "Sua conversa fica no seu celular", quando: "A sua conversa", icone: "📱", destaque: true },
-        ],
-      },
-    },
+    { quando: "Num grupo, o servidor", titulo: "Mensagem em *grupo*", visual: { tipo: "diagrama", nome: "reels:grupos", etapas: ["guarda sua mensagem", "uma vez só", "a lista de", "uma cópia para", "o app aberto", "recebe uma notificação", "a mensagem fica"] } },
+    { quando: "É como mandar a mesma carta", titulo: "Por que o grupo tem *limite*?", visual: { tipo: "diagrama", nome: "reels:cartas", etapas: ["mil endereços", "maior o grupo", "mais trabalho", "limita o tamanho", "no whatsapp", "1.024 pessoas"] } },
+    { quando: "Agora pensa no tamanho", titulo: "Onde guardar *tudo isso*?", visual: { tipo: "diagrama", nome: "reels:tamanho", etapas: ["quase dois petabytes", "nao cabe num", "precisa ser dividido", "arquivo gigante", "a pergunta e"] } },
+    { quando: "Se você separar mensagem", titulo: "Guarde por *conversa*", visual: { tipo: "diagrama", nome: "reels:gavetas", etapas: ["espalhada em várias gavetas", "procurar em todas", "fica lento", "separar por conversa", "numa gaveta só", "abriu a conversa"] } },
+    { quando: "E como o sistema sabe a ordem", titulo: "A *senha* com relógio", visual: { tipo: "diagrama", nome: "reels:senha", etapas: ["ganha um número", "senha de atendimento", "relógio impresso", "colocar os números", "identificação do servidor", "dois servidores nunca"] } },
+    { quando: "E se um servidor quebrar", titulo: "E se um servidor *quebrar*?", visual: { tipo: "diagrama", nome: "reels:reconexao", etapas: ["servidor quebrar", "perde a conexao", "se conecta sozinho", "tem um cuidado", "ao mesmo tempo", "derruba o proximo"] } },
+    { quando: "É igual quando a luz volta", titulo: "Cada um espera a *vez*", visual: { tipo: "diagrama", nome: "reels:luz", etapas: ["liga tudo", "cada celular espera", "e se nao der", "espera um pouco mais", "nenhuma mensagem se perde", "primeiro tiquinho", "foi guardada"] } },
+    { quando: "E um bônus", titulo: "Só *você* lê", visual: { tipo: "diagrama", nome: "reels:cripto", etapas: ["criptografadas de ponta", "nem o próprio", "mensagem é entregue", "apagada dos servidores", "a sua conversa", "no seu celular"] } },
     { quando: "Se você curtiu", visual: { tipo: "cta" } },
   ],
 };

@@ -71,7 +71,7 @@ function xisGrosso(x, y, t) {
 }
 
 // montanha de mensagens: fileiras de baixo para cima, centradas em x = MX
-const MX = 176;
+const MX = 184;
 const FILEIRAS = [4, 4, 4, 3, 3, 2, 2, 1];
 const Y_BASE = 620; // centro da fileira de baixo
 const PASSO_Y = 58;
@@ -87,7 +87,7 @@ export function tamanho() {
   FILEIRAS.forEach((n, f) => {
     const cy = Y_BASE - f * PASSO_Y;
     for (let k = 0; k < n; k++) {
-      const cx = MX + (k - (n - 1) / 2) * 74 + ((i * 7) % 11) - 5;
+      const cx = MX + (k - (n - 1) / 2) * 72 + ((i * 7) % 11) - 5;
       const ang = [-9, 6, -4, 11, -12, 4, 8, -7][i % 8];
       e0 += balao(cx, cy + ((i * 5) % 9) - 4, ang, CORES[i % CORES.length], BW, BH);
       i++;
@@ -106,7 +106,7 @@ export function tamanho() {
   // ---------------------------------------------------------------- 2: "não cabe num computador"
   const SX = 450, SY = 160, SW = 176, SH = 140;
   let e2 = "";
-  e2 += seta(272, 236, 432, 210, { espessura: E, ponta: 18 });
+  e2 += seta(278, 236, 432, 210, { espessura: E, ponta: 18 });
   e2 += servidor(SX, SY, SW, SH);
   // mensagens transbordando por cima e caindo dos lados
   e2 += balao(SX + 30, SY - 22, -10, claro.verde, 70, 44);
@@ -114,7 +114,7 @@ export function tamanho() {
   e2 += balao(SX + 154, SY - 18, 14, claro.azul, 70, 44);
   e2 += balao(SX + 56, SY - 70, 9, claro.cinza, 70, 44);
   e2 += balao(SX + 122, SY - 74, -8, claro.verde, 70, 44);
-  e2 += balao(SX + 90, SY - 118, 4, "#ffffff", 70, 44);
+  e2 += balao(SX + 90, SY - 110, 4, "#ffffff", 70, 44);
   e2 += balao(SX + 226, SY + 78, 38, claro.verde, 66, 42);
   e2 += linha([[SX + 208, SY + 22], [SX + 218, SY + 42]], { espessura: 2.6, cor: cor.cinza });
   e2 += linha([[SX + 232, SY + 16], [SX + 244, SY + 36]], { espessura: 2.6, cor: cor.cinza });
@@ -131,7 +131,7 @@ export function tamanho() {
   const GW = 98, GH = 62, GAP = 14;
   const caixa = (c, r) => [AX + GAP + c * (GW + GAP), AY + GAP + r * (GH + GAP)];
   let e3 = "";
-  for (const y of [436, 512, 588]) e3 += seta(354, 548, AX - 12, y, { espessura: E, ponta: 16 });
+  for (const y of [436, 512, 588]) e3 += seta(360, 548, AX - 12, y, { espessura: E, ponta: 16 });
   for (let r = 0; r < 3; r++)
     for (let c = 0; c < 3; c++) {
       const [x, y] = caixa(c, r);

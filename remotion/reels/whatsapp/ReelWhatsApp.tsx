@@ -259,7 +259,8 @@ function Diagrama({ v, t, cena, h }: { v: Extract<Visual, { tipo: "diagrama" }>;
         <DiagramaAnimado
           svg={svg}
           t={v.semDesenho ? 1e6 : t}
-          de={0.15}
+          // diagrama que continua de uma cena anterior: a base (etapa 0) também já entra pronta
+          de={v.etapas?.[0] === null ? -100 : 0.15}
           dur={cena.etapasT ? 1.2 : 2.6}
           etapas={cena.etapasT?.map((x) => x - cena.inicio)}
         />
@@ -384,7 +385,11 @@ function efeitos(cenas: CenaTempo[], comIntro = false): Efeito[] {
     }
     if (v.tipo === "linhas") c.tempos.forEach((tt, k) => lista.push({ em: tt, nome: v.itens[k].destaque ? "plim" : "pop", volume: v.itens[k].destaque ? 0.2 : 0.26 }));
     if (v.tipo === "diagrama") {
-      if (!v.semDesenho) lista.push({ em: c.inicio + 0.15, nome: "lapis", volume: 0.22 });
+      if (!v.semDesenho && v.etapas?.[0] !== null) lista.push({ em: c.inicio + 0.15, nome: "lapis", volume: 0.22 });
+      // um lápis leve a cada etapa que se desenha no ritmo da fala
+      (c.etapasT ?? []).forEach((te) => {
+        if (te > c.inicio) lista.push({ em: te, nome: "lapis", volume: 0.12 });
+      });
       c.focosT.forEach((f) => lista.push({ em: f.de, nome: "whoosh", volume: 0.1 }));
     }
     if (v.tipo === "cta") {
