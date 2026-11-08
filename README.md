@@ -152,7 +152,7 @@ Gera as telas verticais da série de Reels de divulgação (3 partes, chamada se
 npm run render:reels-whatsapp
 ```
 
-Renderiza os três Reels prontos em MP4 (1080×1920, 30 fps, ~80–90 s cada) em `saida/materiais/reels/`. É a versão sem narração do roteiro: o texto aparece em legendas no ritmo de leitura, os diagramas do ebook se desenham sozinhos e cada parte termina na chamada para o ebook. A faixa de áudio vai muda, para pôr uma música do Instagram ou gravar a voz por cima. Cenas e legendas ficam em `remotion/reels/whatsapp/roteiro.ts` (composição `ReelWhatsApp` no estúdio). Também depende do PDF gerado.
+Renderiza os três Reels narrados em MP4 (1080×1920, 30 fps, até 2:30 cada) em `saida/materiais/reels/`. A narração, em linguagem para leigos, está em `materiais/whatsapp/NARRACAO.md`. Antes do render, prepare os áudios com `python3 materiais/whatsapp/narracao.py parte1.mp3 parte2.mp3 parte3.mp3`: o script copia os MP3 para `public/materiais/whatsapp/narracao/` (fora do git) e transcreve cada um com tempo por palavra (faster-whisper). Cada cena e cada item do vídeo entram na frase da narração em que são citados, e a legenda destaca a palavra que está sendo dita. As cenas ficam em `remotion/reels/whatsapp/roteiro.ts` (composição `ReelWhatsApp` no estúdio). Também depende do PDF gerado.
 
 ## Estrutura
 

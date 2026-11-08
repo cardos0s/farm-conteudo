@@ -1,95 +1,57 @@
 # Narração dos Reels: System Design do WhatsApp
 
-Texto para gravar por cima dos três MP4 (`saida/materiais/reels/system-design-whatsapp-parte-N.mp4`).
-Cada fala começa no **tempo** indicado, que é quando a legenda correspondente aparece na tela, e cabe no
-tempo até a próxima legenda num ritmo animado de Reels (~2,8 palavras por segundo).
+Texto narrado nos três vídeos, em linguagem para quem não é da área. Os áudios (voz sintética da
+Julia Cardoso) ficam fora do git, em `public/materiais/whatsapp/narracao/parteN.mp3`. Cada parte tem no máximo
+2:30.
 
-**Como gravar:** importe o vídeo no CapCut (ou no editor do Instagram), dê play e use **Narração**. As
-legendas na tela funcionam como teleprompter: comece cada frase quando a legenda dela aparecer. A narração
-não repete a legenda palavra por palavra (às vezes é mais curta, para caber no tempo), então fale olhando
-para este texto. Os números estão escritos por extenso do jeito que se fala.
+## Parte 1
 
-Se alguma frase ficar apertada, acelere a narração para 1,1× no editor; se sobrar tempo, tudo bem: o
-vídeo segue no ritmo das legendas.
+Se numa entrevista de emprego te pedissem pra explicar como o WhatsApp funciona por dentro, você saberia por onde começar?
 
----
+Isso tem nome: system design. É desenhar o sistema por trás de um aplicativo: quais computadores ele usa, como eles conversam entre si e como aguentam milhões de pessoas ao mesmo tempo. E é uma das perguntas mais comuns em entrevista de tecnologia.
 
-## Parte 1 · Projete o WhatsApp (1:21)
+O primeiro passo não é desenhar. É perguntar. O WhatsApp faz muita coisa: mensagem, grupo, foto, chamada de vídeo, status. Ninguém explica tudo isso em uma hora. Então você escolhe: vou falar de mensagem entre duas pessoas, de grupo e dos tiquinhos de enviado, entregue e lido. Chamada de vídeo fica de fora. E tem uma regra que não se negocia: nenhuma mensagem pode se perder no caminho.
 
-| Tempo | Narração |
-|---|---|
-| 0:00 | Numa entrevista te pedem: projete o WhatsApp. Por onde você começa? |
-| 0:04,5 | É uma das perguntas mais comuns de system design. |
-| 0:07,7 | Dá pra responder em quarenta e cinco minutos, nessa ordem. |
-| 0:12,6 | Primeiro: não desenhe nada. Feche o escopo. |
-| 0:15,5 | O entrevistador quer ver você decidir o que entra e o que sai. |
-| 0:20,3 | E guarde esse requisito: não pode perder mensagem. |
-| 0:24,9 | Quinhentos milhões de pessoas, dez mensagens cada: cinco bilhões por dia. |
-| 0:28,8 | Por segundo, uns cinquenta e oito mil. |
-| 0:31,8 | No pico, o triplo: cento e setenta e cinco mil. |
-| 0:35,5 | Um kilobyte cada: cinco terabytes por dia, quase dois petabytes por ano. |
-| 0:39,7 | Cinquenta milhões conectados: uns quinhentos servidores de chat. |
-| 0:43,5 | Ou seja: banco dividido, e uma fila na frente pra aguentar o pico. |
-| 0:48,8 | Polling: o app pergunta toda hora se tem mensagem. Quase sempre, não. |
-| 0:53,1 | Long polling: o servidor segura a resposta, mas reabre a conexão a cada mensagem. |
-| 0:57,6 | WebSocket: uma conexão aberta, e o servidor manda na hora. |
-| 1:01,6 | É esse que o chat usa. |
-| 1:05,4 | E isso é só o começo. |
-| 1:07,5 | O guia completo tem vinte páginas: diagramas, contas e perguntas com resposta. |
-| 1:11,7 | **System Design do WhatsApp, quinze reais, link na bio.** |
-| 1:15,5 | Na parte dois: o caminho de uma mensagem e o que o tique quer dizer. |
+Segundo passo: fazer as contas, pra entender o tamanho do problema. Imagina quinhentos milhões de pessoas usando o app por dia, cada uma mandando dez mensagens. São cinco bilhões de mensagens por dia. Dividindo pelos segundos do dia, são umas cinquenta e oito mil mensagens chegando a cada segundo. E no horário de pico, à noite, isso triplica.
 
-## Parte 2 · O primeiro tique não quer dizer que chegou (1:30)
+E tudo isso precisa ser guardado. Só de texto, são uns cinco terabytes por dia. Pra ter uma ideia, é o espaço de mais de mil filmes. Todo dia. Nenhum computador sozinho dá conta. Então a resposta já começa a aparecer: são centenas de computadores trabalhando juntos, dividindo o serviço.
 
-| Tempo | Narração |
-|---|---|
-| 0:00 | O primeiro tique do WhatsApp não quer dizer que chegou. Vem comigo seguir uma mensagem. |
-| 0:06,4 | Quando você abre o app, ele conecta num servidor de chat e fica conectado. |
-| 0:11,5 | São centenas deles. Um cache guarda onde cada pessoa está. |
-| 0:15,8 | Por trás tem fila, banco de mensagens, notificação e mídia. |
-| 0:20,3 | Um: a mensagem vai até o servidor de A. |
-| 0:24,3 | Dois: antes de tudo, o servidor grava a mensagem numa fila. |
-| 0:28,3 | Três: só depois de gravar ele responde. É aí que aparece o primeiro tique. |
-| 0:33,1 | Se respondesse antes e caísse, a mensagem sumia. O tique quer dizer: guardei. |
-| 0:37,4 | Depois, o cache diz onde está B, e o servidor de B entrega no celular dele. |
-| 0:43,0 | O celular de B confirma, isso volta pra A, e aparecem dois tiques: entregue. |
-| 0:48,9 | Relógio: a mensagem ainda tá só no seu celular. |
-| 0:52,4 | Um tique: o servidor gravou. |
-| 0:54,5 | Dois tiques: chegou no celular. |
-| 0:57,1 | Dois tiques azuis: a pessoa leu. |
-| 1:00,3 | E se B estiver offline? A mensagem fica pendente, esperando por ele. |
-| 1:04,6 | Vai uma notificação, mas push é só um aviso. Pode se perder. |
-| 1:08,8 | Quando B volta, o app busca tudo que chegou. |
-| 1:12,8 | Por isso fica um tique só até ele aparecer. |
-| 1:17,4 | O fluxo completo e as perguntas do entrevistador estão no guia. |
-| 1:21,7 | **System Design do WhatsApp, quinze reais, link na bio.** |
-| 1:25,4 | Na parte três: grupos, petabytes e servidor caindo. |
+Terceiro passo: como a mensagem chega no celular de quem recebe? Tem dois jeitos. O primeiro é o celular ficar perguntando toda hora pro computador do WhatsApp: tem mensagem nova? Tem mensagem nova? É igual criança no banco de trás perguntando "já chegou?". Quase sempre a resposta é não, e isso gasta bateria e internet à toa.
 
-## Parte 3 · Uma mensagem, 1.024 entregas (1:23)
+O segundo jeito é como uma ligação que fica aberta. O celular conecta uma vez, a linha fica ligada, e quando chega mensagem, ela vem na hora, sem ninguém precisar perguntar. Esse jeito se chama WebSocket, e é o que os apps de mensagem usam.
 
-| Tempo | Narração |
-|---|---|
-| 0:00 | Num grupo cheio do WhatsApp, cada mensagem vira mil e vinte e quatro entregas. |
-| 0:05,4 | O servidor grava a mensagem uma vez e busca quem tá no grupo. |
-| 0:09,6 | Quem tá online recebe na hora. Quem tá offline ganha um push. |
-| 0:14,4 | Isso é o fan-out. E é por isso que todo grupo tem limite. |
-| 0:20,3 | Quase dois petabytes por ano: o banco precisa ser dividido. |
-| 0:24,6 | Dividir pelo id da mensagem espalha a conversa por todas as máquinas. |
-| 0:29,1 | O certo é dividir pela conversa: cada uma inteira num lugar. |
-| 0:34,0 | O id começa pelo horário, então já sai em ordem. |
-| 0:38,0 | Depois, qual máquina gerou e um contador. |
-| 0:40,9 | Assim dois servidores nunca geram o mesmo id. |
-| 0:45,4 | Servidor caiu? Todo mundo reconecta em outro. |
-| 0:48,3 | Mas não todos de uma vez: cada app espera um pouco mais a cada tentativa. |
-| 0:53,7 | E nada se perde, porque o tique só aparece depois de gravar. |
-| 0:58,3 | Bônus: o WhatsApp real tem criptografia de ponta a ponta. |
-| 1:01,7 | E apaga a mensagem do servidor depois de entregar. |
-| 1:04,9 | Falar isso na entrevista impressiona. |
-| 1:09,2 | No guia tem tudo com calma: catorze capítulos e os diagramas. |
-| 1:13,2 | Contas prontas, os erros que reprovam e as perguntas com resposta. |
-| 1:17,4 | **System Design do WhatsApp, quinze reais, link na bio.** |
+E isso é só o começo. No meu guia eu explico o sistema inteiro, com desenhos, as contas prontas e as perguntas que caem em entrevista, com resposta. System Design do WhatsApp, quinze reais, link na bio. Na parte dois, eu te conto o que o primeiro tiquinho do WhatsApp quer dizer de verdade. Spoiler: não é que a mensagem chegou.
 
----
+## Parte 2
 
-Os tempos saem de `remotion/reels/whatsapp/roteiro.ts`. Se mudar alguma legenda lá e renderizar de novo,
-os tempos daqui a seguir mudam junto e precisam ser revistos.
+O primeiro tiquinho do WhatsApp não quer dizer que a sua mensagem chegou. Vem comigo que eu te mostro o caminho que uma mensagem faz.
+
+Quando você abre o WhatsApp, o seu celular se conecta a um computador da empresa, que a gente chama de servidor. E essa conexão fica aberta, como uma ligação que não desliga. Só que existem centenas desses servidores, porque um só não aguenta todo mundo. Então o WhatsApp precisa de uma lista que diz em qual servidor cada pessoa está conectada agora. Pensa na recepção de um prédio: a Ana está na sala doze, o Bruno está na sala quarenta.
+
+Agora a Ana manda "oi" pro Bruno. A mensagem sai do celular dela e chega no servidor dela. E a primeira coisa que o servidor faz é anotar essa mensagem num lugar seguro. Só depois de anotar, ele avisa o celular da Ana: recebi. É aí que aparece o primeiro tiquinho.
+
+Por que nessa ordem? Porque se o servidor avisasse antes de anotar e desse um problema logo em seguida, a mensagem sumia, e ninguém ia saber. Então o primeiro tiquinho quer dizer: o WhatsApp guardou a sua mensagem. Ela está segura. Mas ainda não chegou.
+
+Depois, o servidor da Ana olha a lista da recepção: onde está o Bruno? Na sala quarenta. Ele passa a mensagem pro servidor do Bruno, que entrega no celular dele. O celular do Bruno responde: chegou. Esse aviso faz o caminho de volta até a Ana, e aparecem os dois tiquinhos. Agora sim: entregue. E quando o Bruno abre a conversa, o celular dele manda mais um aviso, e os tiquinhos ficam azuis.
+
+E se o Bruno estiver com o celular desligado? A mensagem já está guardada, então fica esperando por ele, como numa caixa de correio. O WhatsApp manda uma notificação, mas a notificação é só um aviso, e pode até se perder. O que garante a entrega é outra coisa: quando o Bruno liga o celular, o app pergunta "o que chegou pra mim enquanto eu estava fora?" e pega tudo. É por isso que às vezes a sua mensagem fica horas com um tiquinho só: a pessoa ainda não apareceu.
+
+No meu guia tem esse caminho completo, desenhado passo a passo. System Design do WhatsApp, quinze reais, link na bio. Na parte três: o que acontece num grupo de mil pessoas, e quando um servidor quebra.
+
+## Parte 3
+
+Quando você manda uma mensagem num grupo de mil pessoas, o WhatsApp não manda uma mensagem. Manda mil.
+
+Num grupo, o servidor guarda a sua mensagem uma vez só. Depois ele vê a lista de quem está no grupo e entrega uma cópia pra cada pessoa. Quem está com o app aberto recebe na hora. Quem não está recebe uma notificação, e a mensagem fica esperando. É como mandar a mesma carta pra mil endereços: quanto maior o grupo, mais trabalho. Por isso todo app limita o tamanho dos grupos. No WhatsApp, o máximo é mil e vinte e quatro pessoas.
+
+Agora pensa no tamanho disso tudo. Só de texto, são quase dois petabytes por ano. Isso não cabe num computador. Precisa ser dividido em muitos, como um arquivo gigante separado em muitas gavetas. A pergunta é: como dividir?
+
+Se você separar mensagem por mensagem, uma conversa sua fica espalhada em várias gavetas. Aí, pra abrir a conversa, o sistema tem que procurar em todas, e fica lento. O jeito certo é separar por conversa: cada conversa inteira fica numa gaveta só, já em ordem. Abriu a conversa, está tudo ali.
+
+E como o sistema sabe a ordem das mensagens? Cada mensagem ganha um número que começa pelo horário em que ela foi enviada, tipo uma senha de atendimento com o relógio impresso. Então colocar os números em ordem já é colocar as mensagens em ordem. E junto vai a identificação do servidor que criou o número, pra dois servidores nunca darem o mesmo número a mensagens diferentes.
+
+E se um servidor quebrar? Todo mundo que estava conectado nele perde a conexão, e o celular se conecta sozinho em outro. Mas tem um cuidado: se todo mundo tentar ao mesmo tempo, derruba o próximo servidor. É igual quando a luz volta e todo mundo liga tudo de uma vez. Então cada celular espera um pouquinho, e se não der, espera um pouco mais. E nenhuma mensagem se perde, porque o primeiro tiquinho só aparece depois que a mensagem foi guardada.
+
+E um bônus: no WhatsApp de verdade, as mensagens são criptografadas de ponta a ponta. Isso quer dizer que nem o próprio WhatsApp consegue ler o que você escreveu. E depois que a mensagem é entregue, ela é apagada dos servidores. A sua conversa fica guardada no seu celular, não com eles.
+
+Se você curtiu entender isso, no meu guia está tudo explicado com calma, com desenhos de cada parte. System Design do WhatsApp, quinze reais, link na bio.

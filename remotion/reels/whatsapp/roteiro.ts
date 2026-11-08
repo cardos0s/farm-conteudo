@@ -1,302 +1,401 @@
-// Roteiro dos 3 Reels do ebook "System Design do WhatsApp" em versão sem narração: o texto vai
-// na tela, em legendas que trocam no ritmo de leitura, e os diagramas do PDF se desenham sozinhos.
-// *palavra* vira destaque amarelo. O roteiro falado (para gravar com voz) está em
-// materiais/whatsapp/REELS.md.
+// Roteiro dos 3 Reels do ebook "System Design do WhatsApp", narrados (linguagem para leigos).
+//
+// A narração (MP3 em public/materiais/whatsapp/narracao/) foi transcrita com tempo por palavra
+// em narracao/parteN.json (materiais/whatsapp/narracao.py). Cada cena e cada item começam numa
+// frase da narração (`quando`), então o vídeo acompanha a voz sozinho; se a narração for regravada,
+// basta rodar o script de novo. As legendas saem das próprias palavras, destacando a que está
+// sendo falada. *palavra* vira destaque amarelo nos títulos e frases.
+
+import n1 from "./narracao/parte1.json";
+import n2 from "./narracao/parte2.json";
+import n3 from "./narracao/parte3.json";
 
 export const FPS = 30;
+/** Respiro depois do fim da narração, com a chamada na tela. */
+export const CAUDA = 1.2;
+/** Limite do Instagram para esta série. */
+export const MAXIMO = 150;
 
-/** Região do diagrama (em unidades do viewBox) para a câmera enquadrar. */
+export type Palavra = { w: string; s: number; e: number };
+export type Narracao = { duracao: number; palavras: Palavra[] };
 export type Foco = { x: number; y: number; w: number; h: number };
+export type NomeDiagrama = "caminhoLeigo" | "gruposLeigo" | "particoesLeigo" | "reconexaoLeigo";
+
+/** icone: "check", "x" ou um emoji. */
+export type Item = { texto: string; quando?: string; icone?: string; destaque?: boolean };
+export type Linha = { grande: string; texto: string; quando?: string; destaque?: boolean; cor?: string };
 
 export type Visual =
-  | { tipo: "gancho"; texto: string; apoio?: string }
-  | { tipo: "diagrama"; nome: "tempoReal" | "arquitetura" | "caminhoMensagem" | "grupos" | "particoes" | "snowflake" | "reconexao"; focos?: (Foco | null)[] }
-  | { tipo: "passos"; itens: [string, string][] }
-  | { tipo: "linhas"; itens: { grande: string; texto: string; destaque?: boolean; cor?: string }[]; curta?: boolean }
-  | { tipo: "lista"; itens: string[]; sincronizada?: boolean }
+  | { tipo: "gancho"; apoio?: string; texto: string }
+  | { tipo: "diagrama"; nome: NomeDiagrama; focos?: { quando: string; foco: Foco | null }[]; semDesenho?: boolean; focoInicial?: Foco }
+  | { tipo: "linhas"; itens: Linha[]; curta?: boolean }
+  | { tipo: "lista"; itens: Item[] }
+  | { tipo: "comparacao"; emoji: string; frase: string; itens: Item[] }
   | { tipo: "cta" };
 
-export type Cena = { titulo?: string; visual: Visual; legendas: string[] };
+export type Cena = { quando: string; titulo?: string; visual: Visual };
 
-export type Parte = { numero: 1 | 2 | 3; cenas: Cena[] };
+const CHECK = "check";
+const XIS = "x";
 
-const CTA_TEXTO = "*System Design do WhatsApp* · R$ 15 · link na bio";
-
-export const partes: Record<1 | 2 | 3, Parte> = {
-  1: {
-    numero: 1,
-    cenas: [
-      {
-        visual: { tipo: "gancho", apoio: "numa entrevista te pedem:", texto: "Projete o *WhatsApp*." },
-        legendas: ["Você saberia por onde começar?"],
-      },
-      {
-        titulo: "O roteiro de *45 minutos*",
-        visual: {
-          tipo: "passos",
-          itens: [
-            ["Requisitos", "5 min"],
-            ["Estimativas", "5 min"],
-            ["API e protocolo", "5 min"],
-            ["Arquitetura", "10 min"],
-            ["Aprofundar", "15 min"],
-            ["Gargalos e falhas", "5 min"],
-          ],
-        },
-        legendas: ["É uma das perguntas mais comuns de *system design*.", "Dá para responder em 45 minutos seguindo esta ordem. Vamos ao começo."],
-      },
-      {
-        titulo: "1. Pergunte *antes de desenhar*",
-        visual: {
-          tipo: "lista",
-          itens: ["Só 1:1 ou grupos também?", "Só texto ou foto e vídeo?", "Precisa de enviada, entregue e lida?", "O que fica de fora? (ex.: chamadas)"],
-        },
-        legendas: [
-          "Não desenhe nada ainda. Primeiro, *feche o escopo*.",
-          "O entrevistador quer ver você *decidir* o que entra e o que fica de fora.",
-          "E guarde este requisito, que muda tudo: *não pode perder mensagem*.",
+export const roteiros: Record<1 | 2 | 3, Cena[]> = {
+  1: [
+    { quando: "Se numa entrevista", visual: { tipo: "gancho", apoio: "numa entrevista de emprego:", texto: "Como o *WhatsApp* funciona por dentro?" } },
+    {
+      quando: "Isso tem nome",
+      titulo: "Isso tem nome: *System Design*",
+      visual: {
+        tipo: "lista",
+        itens: [
+          { texto: "Quais computadores o app usa", quando: "quais computadores", icone: "🖥️" },
+          { texto: "Como eles conversam entre si", quando: "como eles conversam", icone: "💬" },
+          { texto: "Como aguentam milhões de pessoas", quando: "como aguentam", icone: "👥" },
+          { texto: "Pergunta comum em entrevista", quando: "E é uma das perguntas", icone: "🎯", destaque: true },
         ],
       },
-      {
-        titulo: "2. As *contas*",
-        visual: {
-          tipo: "linhas",
-          itens: [
-            { grande: "5 bi", texto: "mensagens por dia\n(500 mi pessoas × 10)" },
-            { grande: "58 mil/s", texto: "em média\n(÷ 86.400 s)" },
-            { grande: "175 mil/s", texto: "no pico\n(× 3)", destaque: true },
-            { grande: "5 TB/dia", texto: "≈ 1,8 PB por ano\n(1 KB por mensagem)" },
-            { grande: "500", texto: "servidores para\n50 mi conexões" },
-          ],
-        },
-        legendas: [
-          "500 milhões de pessoas × 10 mensagens = *5 bilhões por dia*.",
-          "Dividido por 86.400 segundos: *58 mil por segundo*.",
-          "No horário de pico, 3 vezes isso: *175 mil por segundo*.",
-          "1 KB por mensagem: *5 TB por dia*. Quase 2 PB por ano.",
-          "50 milhões conectados ao mesmo tempo: uns *500 servidores* de chat.",
-          "Conclusão: o banco tem que ser *dividido* e precisa de uma *fila* na frente.",
+    },
+    {
+      quando: "O primeiro passo não é desenhar",
+      titulo: "1. Primeiro, *pergunte*",
+      visual: {
+        tipo: "comparacao",
+        emoji: "📋",
+        frase: "o WhatsApp faz *muita coisa*",
+        itens: [
+          { texto: "Mensagem e grupo", quando: "Mensagem grupo", icone: "💬" },
+          { texto: "Foto", quando: "foto", icone: "📷" },
+          { texto: "Chamada de vídeo e status", quando: "chamada de vídeo", icone: "🎥" },
+          { texto: "Ninguém explica tudo isso em uma hora", quando: "Ninguém explica", icone: "⏱️", destaque: true },
         ],
       },
-      {
-        titulo: "3. Como a mensagem *chega*?",
-        visual: {
-          tipo: "diagrama",
-          nome: "tempoReal",
-          focos: [
-            { x: 0, y: 0, w: 222, h: 360 },
-            { x: 226, y: 0, w: 230, h: 360 },
-            { x: 456, y: 0, w: 204, h: 360 },
-            null,
-          ],
-        },
-        legendas: [
-          "*Polling*: o app pergunta \"tem mensagem?\" a cada poucos segundos. Quase sempre: não.",
-          "*Long polling*: o servidor segura a resposta, mas a conexão reabre a cada mensagem.",
-          "*WebSocket*: uma conexão que fica aberta, e o servidor manda na hora.",
-          "É o WebSocket que o chat usa. ✓",
+    },
+    {
+      quando: "Então você escolhe",
+      titulo: "1. Primeiro, *pergunte*",
+      visual: {
+        tipo: "lista",
+        itens: [
+          { texto: "Mensagem entre duas pessoas", quando: "Vou falar de mensagem", icone: CHECK },
+          { texto: "Grupos", quando: "de grupo", icone: CHECK },
+          { texto: "Os tiquinhos ✓✓", quando: "dos tiquinhos", icone: CHECK },
+          { texto: "Chamada de vídeo fica de fora", quando: "Chamada de vídeo fica", icone: XIS },
+          { texto: "Nenhuma mensagem pode se perder", quando: "Nenhuma mensagem pode", icone: "⚠️", destaque: true },
         ],
       },
-      {
-        visual: { tipo: "cta" },
-        legendas: [
-          "Isso é só o começo.",
-          "O guia completo tem *20 páginas*: diagramas, contas prontas e perguntas com resposta.",
-          CTA_TEXTO,
-          "Parte 2: o caminho de uma mensagem e o que o *tique* quer dizer.",
+    },
+    {
+      quando: "Segundo passo",
+      titulo: "2. As *contas*",
+      visual: {
+        tipo: "linhas",
+        itens: [
+          { grande: "500 mi", texto: "pessoas por dia,\n10 mensagens cada", quando: "Imagina 500" },
+          { grande: "5 bi", texto: "mensagens\npor dia", quando: "São 5 bilhões" },
+          { grande: "58 mil", texto: "mensagens chegando\na cada segundo", quando: "Dividindo pelos segundos" },
+          { grande: "× 3", texto: "no horário de pico,\nà noite", quando: "no horário de pico", destaque: true },
         ],
       },
-    ],
-  },
-  2: {
-    numero: 2,
-    cenas: [
-      {
-        visual: { tipo: "gancho", apoio: "o primeiro tique do WhatsApp", texto: "*não* quer dizer que chegou." },
-        legendas: ["Vamos seguir uma mensagem do seu celular até o da outra pessoa."],
-      },
-      {
-        titulo: "A *arquitetura*",
-        visual: {
-          tipo: "diagrama",
-          nome: "arquitetura",
-          focos: [
-            { x: 0, y: 130, w: 520, h: 280 },
-            { x: 290, y: 10, w: 230, h: 280 },
-            null,
-          ],
-        },
-        legendas: [
-          "Quando você abre o app, ele conecta num *servidor de chat*, e a conexão fica aberta.",
-          "São centenas de servidores. Um *cache* guarda em qual deles cada pessoa está.",
-          "Por trás: uma *fila*, o banco de mensagens, notificações e mídia.",
+    },
+    {
+      quando: "E tudo isso precisa ser guardado",
+      titulo: "2. As *contas*",
+      visual: {
+        tipo: "comparacao",
+        emoji: "🎬",
+        frase: "*5 terabytes* por dia, só de texto",
+        itens: [
+          { texto: "O espaço de mais de mil filmes. Todo dia.", quando: "Para ter uma ideia", icone: "🎞️" },
+          { texto: "Nenhum computador sozinho dá conta", quando: "Nenhum computador sozinho", icone: XIS },
+          { texto: "Centenas de computadores trabalhando juntos", quando: "São centenas", icone: "🖥️", destaque: true },
         ],
       },
-      {
-        titulo: "A manda *\"oi\"* para B",
-        visual: {
-          tipo: "diagrama",
-          nome: "caminhoMensagem",
-          focos: [
-            { x: 0, y: 0, w: 560, h: 250 },
-            { x: 0, y: 60, w: 560, h: 200 },
-            { x: 0, y: 140, w: 560, h: 120 },
-            { x: 0, y: 140, w: 560, h: 120 },
-            { x: 200, y: 240, w: 845, h: 200 },
-            { x: 0, y: 420, w: 1045, h: 150 },
-            null,
-          ],
-        },
-        legendas: [
-          "1. A mensagem vai pela conexão de A até o *servidor A*.",
-          "2. Antes de qualquer coisa, o servidor *grava* a mensagem numa fila.",
-          "3. Só depois de gravar ele responde para A. É aí que aparece o *✓*.",
-          "Se respondesse antes e caísse, a mensagem *sumiria*. ✓ = o servidor *guardou*.",
-          "4 a 6. O cache diz onde está B, e o servidor de B *entrega* no celular dele.",
-          "7 e 8. O celular de B confirma, e a confirmação volta para A: *✓✓ entregue*.",
+    },
+    {
+      quando: "Terceiro passo",
+      titulo: "3. Como a mensagem *chega*?",
+      visual: {
+        tipo: "comparacao",
+        emoji: "📱",
+        frase: "Jeito 1: ficar *perguntando*",
+        itens: [
+          { texto: "\"Tem mensagem nova?\" toda hora", quando: "Tem mensagem nova", icone: "🔁" },
+          { texto: "Igual criança no carro: \"já chegou?\"", quando: "É igual criança", icone: "🚗" },
+          { texto: "Quase sempre: não. Gasta bateria e internet", quando: "Quase sempre", icone: "🔋" },
         ],
       },
-      {
-        titulo: "O que cada *tique* quer dizer",
-        visual: {
-          tipo: "linhas",
-          curta: true,
-          itens: [
-            { grande: "🕓", texto: "pendente\nainda só no seu celular", cor: "#868e96" },
-            { grande: "✓", texto: "enviada\no servidor gravou", cor: "#868e96" },
-            { grande: "✓✓", texto: "entregue\nchegou no celular da pessoa", cor: "#868e96" },
-            { grande: "✓✓", texto: "lida\nela abriu a conversa", destaque: true, cor: "#1971c2" },
-          ],
-        },
-        legendas: [
-          "🕓 *Pendente*: a mensagem ainda está só no seu celular.",
-          "✓ *Enviada*: o servidor gravou.",
-          "✓✓ *Entregue*: chegou no celular da pessoa.",
-          "✓✓ azul: ela *abriu* a conversa.",
+    },
+    {
+      quando: "O segundo jeito",
+      titulo: "3. Como a mensagem *chega*?",
+      visual: {
+        tipo: "comparacao",
+        emoji: "📞",
+        frase: "Jeito 2: uma *ligação aberta*",
+        itens: [
+          { texto: "Conecta uma vez e a linha fica ligada", quando: "O celular conecta uma vez", icone: "🔗" },
+          { texto: "Chegou mensagem? Vem na hora", quando: "E quando chega", icone: "⚡" },
+          { texto: "Esse jeito se chama WebSocket", quando: "Esse jeito se chama", icone: CHECK, destaque: true },
         ],
       },
-      {
-        titulo: "E se B estiver *offline*?",
-        visual: {
-          tipo: "lista",
-          sincronizada: true,
-          itens: ["A mensagem fica pendente", "Vai uma notificação push", "B volta e busca o que chegou", "Só então: ✓✓"],
-        },
-        legendas: [
-          "A mensagem já está gravada, então fica na lista de *pendentes* de B.",
-          "Vai um push. Mas push é só um *aviso*, e pode se perder.",
-          "Quando B volta, o app busca *tudo desde a última* mensagem recebida.",
-          "Por isso A fica com um ✓ só até B aparecer.",
+    },
+    { quando: "E isso é só o começo", visual: { tipo: "cta" } },
+  ],
+  2: [
+    { quando: "O primeiro tiquinho", visual: { tipo: "gancho", apoio: "o primeiro tiquinho ✓ do WhatsApp", texto: "*não* quer dizer que chegou." } },
+    {
+      quando: "Quando você abre o WhatsApp",
+      titulo: "Primeiro: o *servidor*",
+      visual: {
+        tipo: "comparacao",
+        emoji: "📱➜🖥️",
+        frase: "seu celular se conecta a um *servidor*",
+        itens: [
+          { texto: "Servidor = um computador da empresa", quando: "que a gente chama", icone: "🖥️" },
+          { texto: "A conexão fica aberta, como uma ligação", quando: "E essa conexão", icone: "📞" },
+          { texto: "São centenas de servidores", quando: "Só que existem", icone: "🏢" },
         ],
       },
-      {
-        visual: { tipo: "cta" },
-        legendas: [
-          "O fluxo completo, o protocolo e as perguntas do entrevistador estão no guia.",
-          CTA_TEXTO,
-          "Parte 3: grupos, petabytes de mensagens e servidor caindo.",
+    },
+    {
+      quando: "Então o WhatsApp precisa",
+      titulo: "A *recepção* do prédio",
+      visual: {
+        tipo: "linhas",
+        curta: true,
+        itens: [
+          { grande: "🏢", texto: "uma lista\nquem está em qual servidor" },
+          { grande: "👩", texto: "Ana\nestá na sala 12", quando: "A Ana está" },
+          { grande: "👨", texto: "Bruno\nestá na sala 40", quando: "o Bruno está", destaque: true },
         ],
       },
-    ],
-  },
-  3: {
-    numero: 3,
-    cenas: [
-      {
-        visual: { tipo: "gancho", apoio: "num grupo de 1.024 pessoas, cada mensagem vira", texto: "*1.024 entregas*." },
-        legendas: ["O que acontece quando o sistema fica gigante?"],
-      },
-      {
-        titulo: "1 mensagem, *1.024 entregas*",
-        visual: { tipo: "diagrama", nome: "grupos" },
-        legendas: [
-          "O servidor grava a mensagem *uma vez* e pergunta quem está no grupo.",
-          "Quem está online recebe na hora. Quem está offline ganha um *push* e fica pendente.",
-          "Esse \"um vira muitos\" é o *fan-out*. Por isso todo grupo tem limite: no WhatsApp, 1.024.",
+    },
+    {
+      quando: "Agora a Ana manda",
+      titulo: "Ana manda *\"oi\"* pro Bruno",
+      visual: {
+        tipo: "diagrama",
+        nome: "caminhoLeigo",
+        focoInicial: { x: 0, y: 0, w: 560, h: 250 },
+        focos: [
+          { quando: "E a primeira coisa", foco: { x: 0, y: 60, w: 560, h: 200 } },
+          { quando: "Só depois de anotar", foco: { x: 0, y: 140, w: 560, h: 120 } },
         ],
       },
-      {
-        titulo: "Como guardar *petabytes*",
-        visual: {
-          tipo: "diagrama",
-          nome: "particoes",
-          focos: [null, { x: 430, y: 0, w: 410, h: 225 }, { x: 0, y: 0, w: 410, h: 225 }],
-        },
-        legendas: [
-          "Quase 2 PB por ano: o banco precisa ser *dividido* em muitas máquinas.",
-          "Dividir pelo id da mensagem espalha a conversa: abrir uma vira *perguntar a todas*.",
-          "Divida *pela conversa*: cada uma fica inteira num lugar, já em ordem.",
+    },
+    {
+      quando: "Por que nessa ordem",
+      titulo: "Por que *nessa ordem*?",
+      visual: {
+        tipo: "comparacao",
+        emoji: "📝",
+        frase: "✓ = o WhatsApp *guardou*",
+        itens: [
+          { texto: "Se avisasse antes e desse problema, a mensagem sumia", quando: "Porque se o servidor", icone: XIS },
+          { texto: "Guardada e segura. Mas ainda não chegou", quando: "Ela está segura", icone: "🔒", destaque: true },
         ],
       },
-      {
-        titulo: "O *id* da mensagem",
-        visual: { tipo: "diagrama", nome: "snowflake" },
-        legendas: [
-          "Ele começa pelo *horário*: ordenar pelo id já é ordenar pelo tempo.",
-          "Depois vem qual *máquina* gerou e um *contador*.",
-          "Assim dois servidores nunca geram o mesmo id no mesmo milissegundo.",
+    },
+    {
+      quando: "Depois o servidor da Ana",
+      titulo: "Ana manda *\"oi\"* pro Bruno",
+      visual: {
+        tipo: "diagrama",
+        nome: "caminhoLeigo",
+        semDesenho: true,
+        focoInicial: { x: 200, y: 240, w: 845, h: 200 },
+        focos: [{ quando: "O celular do Bruno responde", foco: { x: 0, y: 400, w: 860, h: 170 } }],
+      },
+    },
+    {
+      quando: "E quando o Bruno abre",
+      titulo: "Os *tiquinhos*",
+      visual: {
+        tipo: "linhas",
+        curta: true,
+        itens: [
+          { grande: "✓", texto: "guardado\no WhatsApp anotou", cor: "#868e96" },
+          { grande: "✓✓", texto: "entregue\nchegou no celular", cor: "#868e96" },
+          { grande: "✓✓", texto: "lido\no Bruno abriu a conversa", quando: "os tiquinhos ficam azuis", destaque: true, cor: "#1971c2" },
         ],
       },
-      {
-        titulo: "E se um servidor *cair*?",
-        visual: { tipo: "diagrama", nome: "reconexao" },
-        legendas: [
-          "Todo mundo conectado nele reconecta em *outro* servidor.",
-          "Mas não todos ao mesmo tempo: cada app espera *um pouco mais* a cada tentativa, com sorteio.",
-          "E nada se perde: o ✓ só aparece *depois de gravar*.",
+    },
+    {
+      quando: "E se o Bruno estiver",
+      titulo: "E se o celular estiver *desligado*?",
+      visual: {
+        tipo: "comparacao",
+        emoji: "📬",
+        frase: "a mensagem espera na *caixa de correio*",
+        itens: [
+          { texto: "A notificação é só um aviso: pode se perder", quando: "O WhatsApp manda uma notificação", icone: "🔔" },
+          { texto: "Ligou o celular: \"o que chegou pra mim?\"", quando: "Quando o Bruno liga", icone: "📲" },
+          { texto: "Por isso, às vezes, um tiquinho só por horas", quando: "É por isso", icone: "✓", destaque: true },
         ],
       },
-      {
-        titulo: "O WhatsApp *de verdade*",
-        visual: {
-          tipo: "lista",
-          sincronizada: true,
-          itens: ["Criptografia de ponta a ponta", "Apaga do servidor depois de entregar", "Seu histórico mora no celular"],
-        },
-        legendas: [
-          "Bônus: o WhatsApp real tem *criptografia de ponta a ponta*.",
-          "E apaga a mensagem do servidor *depois de entregar*.",
-          "Seu histórico mora no celular. Falar isso na entrevista *impressiona*.",
+    },
+    { quando: "No meu guia tem", visual: { tipo: "cta" } },
+  ],
+  3: [
+    { quando: "Quando você manda", visual: { tipo: "gancho", apoio: "num grupo de mil pessoas,", texto: "1 mensagem vira *mil*." } },
+    { quando: "Num grupo, o servidor", titulo: "Grupo: uma *cópia* pra cada um", visual: { tipo: "diagrama", nome: "gruposLeigo" } },
+    {
+      quando: "É como mandar a mesma carta",
+      titulo: "Grupo: uma *cópia* pra cada um",
+      visual: {
+        tipo: "comparacao",
+        emoji: "✉️",
+        frase: "a mesma carta para *mil endereços*",
+        itens: [
+          { texto: "Quanto maior o grupo, mais trabalho", quando: "Quanto maior", icone: "📈" },
+          { texto: "Por isso todo app limita o tamanho", quando: "Por isso", icone: "🚧" },
+          { texto: "WhatsApp: no máximo 1.024 pessoas", quando: "No WhatsApp, o máximo", icone: CHECK, destaque: true },
         ],
       },
-      {
-        visual: { tipo: "cta" },
-        legendas: [
-          "No guia está tudo com calma: *14 capítulos* e todos os diagramas.",
-          "Contas prontas, os erros que reprovam e as perguntas do entrevistador *com resposta*.",
-          CTA_TEXTO,
+    },
+    {
+      quando: "Agora pensa no tamanho",
+      titulo: "Onde guardar *tudo isso*?",
+      visual: {
+        tipo: "comparacao",
+        emoji: "🗄️",
+        frase: "quase *2 petabytes* por ano",
+        itens: [
+          { texto: "Não cabe num computador", quando: "Isso não cabe", icone: XIS },
+          { texto: "Dividido em muitas gavetas", quando: "Precisa ser dividido", icone: "🗂️" },
+          { texto: "A pergunta é: como dividir?", quando: "A pergunta é", icone: "🤔", destaque: true },
         ],
       },
-    ],
-  },
+    },
+    {
+      quando: "Se você separar mensagem",
+      titulo: "Como *dividir*?",
+      visual: {
+        tipo: "diagrama",
+        nome: "particoesLeigo",
+        focoInicial: { x: 430, y: 0, w: 410, h: 225 },
+        focos: [{ quando: "O jeito certo", foco: { x: 0, y: 0, w: 410, h: 225 } }],
+      },
+    },
+    {
+      quando: "E como o sistema sabe a ordem",
+      titulo: "Como fica *em ordem*?",
+      visual: {
+        tipo: "comparacao",
+        emoji: "🎫",
+        frase: "uma *senha* com o relógio impresso",
+        itens: [
+          { texto: "Cada mensagem ganha um número que começa pelo horário", quando: "Cada mensagem ganha", icone: "🕐" },
+          { texto: "Número em ordem = mensagem em ordem", quando: "Então, colocar", icone: CHECK },
+          { texto: "+ qual servidor criou: o número nunca repete", quando: "E junto vai", icone: "🖥️", destaque: true },
+        ],
+      },
+    },
+    { quando: "E se um servidor quebrar", titulo: "E se um servidor *quebrar*?", visual: { tipo: "diagrama", nome: "reconexaoLeigo" } },
+    {
+      quando: "É igual quando a luz volta",
+      titulo: "E se um servidor *quebrar*?",
+      visual: {
+        tipo: "comparacao",
+        emoji: "💡",
+        frase: "a luz volta e todo mundo *liga tudo*",
+        itens: [
+          { texto: "Cada celular espera um pouquinho", quando: "Então, cada celular", icone: "⏳" },
+          { texto: "Se não der, espera um pouco mais", quando: "E se não der", icone: "⏳" },
+          { texto: "Nenhuma mensagem se perde", quando: "E nenhuma mensagem", icone: CHECK, destaque: true },
+        ],
+      },
+    },
+    {
+      quando: "E um bônus",
+      titulo: "Bônus: o WhatsApp *de verdade*",
+      visual: {
+        tipo: "lista",
+        itens: [
+          { texto: "Criptografia de ponta a ponta", quando: "as mensagens são criptografadas", icone: "🔒" },
+          { texto: "Nem o WhatsApp consegue ler", quando: "Isso quer dizer", icone: "🙈" },
+          { texto: "Apagada dos servidores depois de entregue", quando: "E depois que a mensagem", icone: "🗑️" },
+          { texto: "Sua conversa fica no seu celular", quando: "A sua conversa", icone: "📱", destaque: true },
+        ],
+      },
+    },
+    { quando: "Se você curtiu", visual: { tipo: "cta" } },
+  ],
 };
+
+export const narracoes: Record<1 | 2 | 3, Narracao> = { 1: n1, 2: n2, 3: n3 };
 
 /* ------------------------------------------------------------------ tempos */
 
-const palavras = (s: string) => s.replace(/\*/g, "").split(/\s+/).filter(Boolean).length;
+const normal = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9 ]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean);
 
-/** Tempo de leitura de uma legenda, em segundos (~3,7 palavras por segundo + respiro). */
-export const duracaoLegenda = (s: string) => Math.max(1.9, palavras(s) * 0.27 + 0.75);
-
-export const TRANSICAO = 0.35;
-
-export type CenaTempo = Cena & { inicio: number; duracao: number; legendasT: { de: number; ate: number; texto: string }[] };
-
-export function tempos(parte: Parte): { cenas: CenaTempo[]; total: number } {
-  let t = 0;
-  const cenas = parte.cenas.map((c) => {
-    let tl = c.visual.tipo === "gancho" ? 1.6 : 0.5; // o gancho fica sozinho na tela antes da legenda
-    const legendasT = c.legendas.map((texto) => {
-      const de = tl;
-      tl += duracaoLegenda(texto);
-      return { de, ate: tl, texto };
-    });
-    const duracao = tl + (c.visual.tipo === "cta" ? 1.5 : TRANSICAO);
-    const cena = { ...c, inicio: t, duracao, legendasT };
-    t += duracao;
-    return cena;
-  });
-  return { cenas, total: t };
+/** Segundo em que a frase `ancora` começa a ser falada, procurando a partir de `desde`. */
+export function achar(n: Narracao, ancora: string, desde = 0): number {
+  const alvo = normal(ancora);
+  const tokens = n.palavras.flatMap((p) => normal(p.w).map((t) => ({ t, s: p.s })));
+  for (let i = 0; i + alvo.length <= tokens.length; i++) {
+    if (tokens[i].s < desde - 0.01) continue;
+    if (alvo.every((a, k) => tokens[i + k].t === a)) return tokens[i].s;
+  }
+  throw new Error(`Frase não encontrada na narração (depois de ${desde.toFixed(1)} s): "${ancora}"`);
 }
 
-export const quadros = (parte: 1 | 2 | 3) => Math.ceil(tempos(partes[parte]).total * FPS);
+export const total = (parte: 1 | 2 | 3) => Math.min(MAXIMO, narracoes[parte].duracao + CAUDA);
+export const quadros = (parte: 1 | 2 | 3) => Math.ceil(total(parte) * FPS);
+
+export type CenaTempo = Cena & { inicio: number; fim: number; tempos: number[]; focosT: { de: number; foco: Foco | null }[] };
+
+/** Resolve o início de cada cena, de cada item e de cada enquadramento da câmera. */
+export function linhaDoTempo(parte: 1 | 2 | 3): CenaTempo[] {
+  const n = narracoes[parte];
+  const cenas = roteiros[parte];
+  const inicios: number[] = [];
+  cenas.forEach((c, i) => inicios.push(i === 0 ? 0 : achar(n, c.quando, inicios[i - 1])));
+  return cenas.map((c, i) => {
+    const inicio = inicios[i];
+    const fim = i + 1 < cenas.length ? inicios[i + 1] : total(parte);
+    const v = c.visual;
+    const itens: { quando?: string }[] = v.tipo === "lista" || v.tipo === "comparacao" || v.tipo === "linhas" ? v.itens : [];
+    let desde = inicio;
+    const tempos = itens.map((it, k) => {
+      if (!it.quando) return inicio + 0.3 + k * 0.35;
+      desde = achar(n, it.quando, desde);
+      return desde;
+    });
+    const focosT = v.tipo === "diagrama" ? (v.focos ?? []).map((f) => ({ de: achar(n, f.quando, inicio), foco: f.foco })) : [];
+    return { ...c, inicio, fim, tempos, focosT };
+  });
+}
+
+/* ------------------------------------------------------------------ legendas */
+
+export type Bloco = { de: number; ate: number; palavras: Palavra[] };
+
+/** Agrupa a narração em blocos curtos de legenda (quebra na pontuação, até 7 palavras). */
+export function legendas(parte: 1 | 2 | 3): Bloco[] {
+  const ps = narracoes[parte].palavras;
+  const blocos: Palavra[][] = [];
+  let atual: Palavra[] = [];
+  ps.forEach((p, i) => {
+    const prox = ps[i + 1];
+    atual.push(p);
+    const fimFrase = /[.?!]$/.test(p.w);
+    const virgula = /[,:;]$/.test(p.w) && atual.length >= 3;
+    const pausa = prox && prox.s - p.e > 0.45;
+    if (fimFrase || virgula || pausa || atual.length >= 7 || !prox) {
+      blocos.push(atual);
+      atual = [];
+    }
+  });
+  return blocos.map((b, i) => ({
+    de: b[0].s,
+    ate: Math.min(blocos[i + 1]?.[0].s ?? Infinity, b[b.length - 1].e + 0.6),
+    palavras: b,
+  }));
+}

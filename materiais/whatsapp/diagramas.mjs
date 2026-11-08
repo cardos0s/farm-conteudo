@@ -256,31 +256,31 @@ export function arquitetura() {
   return svg(970, 560, s);
 }
 
-export function caminhoMensagem() {
+export function caminhoMensagem(L = {}) {
   let s = "";
   const xs = { A: 75, SA: 262, Q: 450, C: 620, SB: 790, B: 970 };
-  const nomes = { A: "A", SA: "servidor A", Q: "fila", C: "cache", SB: "servidor B", B: "B" };
+  const nomes = { A: "A", SA: "servidor A", Q: "fila", C: "cache", SB: "servidor B", B: "B", ...L.nomes };
   const fill = { A: claro.verde, SA: claro.azul, Q: claro.laranja, C: claro.vermelho, SB: claro.azul, B: claro.verde };
   for (const k of Object.keys(xs)) {
-    s += caixa(xs[k] - 62, 10, 124, 44, nomes[k], { preench: fill[k], tam: 16 });
+    s += caixa(xs[k] - 66, 6, 132, 52, nomes[k], { preench: fill[k], tam: nomes[k].includes("\n") ? 15 : 16 });
     s += linha([[xs[k], 56], [xs[k], 560]], { cor: cor.cinza, espessura: 1, tracejado: true });
   }
   const msg = (n, de, para, y, rotulo, o = {}) => {
     const x1 = xs[de], x2 = xs[para];
     return seta(x1, y, x2, y, { rotulo, tam: 14, ...o }) + passo(x1 + (x1 < x2 ? 20 : -20), y - 17, n);
   };
-  s += msg(1, "A", "SA", 100, "\"oi\" (id do cliente)");
-  s += msg(2, "SA", "Q", 150, "grava");
-  s += seta(xs.Q, 180, xs.SA, 180, { rotulo: "ok, gravado", tam: 13, cor: cor.cinza });
-  s += msg(3, "SA", "A", 220, "✓ enviada", { cor: cor.verde });
-  s += msg(4, "SA", "C", 270, "onde está o B?");
-  s += seta(xs.C, 300, xs.SA, 300, { rotulo: "servidor B", tam: 13, cor: cor.cinza });
-  s += msg(5, "SA", "SB", 350, "repassa");
-  s += msg(6, "SB", "B", 400, "entrega");
-  s += msg(7, "B", "SB", 450, "recebi");
-  s += seta(xs.SB, 480, xs.SA, 480, { rotulo: "entregue", tam: 13 });
+  s += msg(1, "A", "SA", 100, L.m1 ?? "\"oi\" (id do cliente)");
+  s += msg(2, "SA", "Q", 150, L.m2 ?? "grava");
+  s += seta(xs.Q, 180, xs.SA, 180, { rotulo: L.ok ?? "ok, gravado", tam: 13, cor: cor.cinza });
+  s += msg(3, "SA", "A", 220, L.m3 ?? "✓ enviada", { cor: cor.verde });
+  s += msg(4, "SA", "C", 270, L.m4 ?? "onde está o B?");
+  s += seta(xs.C, 300, xs.SA, 300, { rotulo: L.resp ?? "servidor B", tam: 13, cor: cor.cinza });
+  s += msg(5, "SA", "SB", 350, L.m5 ?? "repassa");
+  s += msg(6, "SB", "B", 400, L.m6 ?? "entrega");
+  s += msg(7, "B", "SB", 450, L.m7 ?? "recebi");
+  s += seta(xs.SB, 480, xs.SA, 480, { rotulo: L.volta ?? "entregue", tam: 13 });
   s += msg(8, "SA", "A", 520, "✓✓ entregue", { cor: cor.verde });
-  s += txt(xs.Q, 540, "(o status também vai para a fila)", { tam: 12, cor: cor.cinza });
+  if (L.nota !== null) s += txt(xs.Q, 540, L.nota ?? "(o status também vai para a fila)", { tam: 12, cor: cor.cinza });
   return svg(1045, 570, s);
 }
 
@@ -321,21 +321,21 @@ export function presenca() {
   return svg(800, 205, s);
 }
 
-export function grupos() {
+export function grupos(L = {}) {
   let s = "";
   s += caixa(20, 120, 100, 56, "A", { preench: claro.verde, tam: 20 });
   s += caixa(170, 120, 120, 56, "servidor A", { preench: claro.azul, tam: 16 });
   s += seta(122, 148, 168, 148, {});
   s += caixa(170, 10, 120, 50, "grupos", { preench: claro.ciano, tam: 16 });
-  s += seta(230, 118, 230, 62, { rotulo: "membros?", dx: 42, dy: 0, tam: 13, duplo: true });
+  s += seta(230, 118, 230, 62, { rotulo: L.membros ?? "membros?", dx: 42, dy: 0, tam: 13, duplo: true });
   for (let i = 0; i < 7; i++) {
     const y = 20 + i * 42;
     const on = i !== 2 && i !== 5;
     s += elipse(520, y + 12, 26, 26, { preench: on ? claro.verde : claro.cinza, hachura: "solid" });
     s += seta(292, 148, 504, y + 12, { espessura: 1.2, ponta: 9, cor: on ? cor.tinta : cor.cinza, tracejado: !on });
-    s += txt(545, y + 13, on ? "online: entrega" : "offline: push + pendente", { tam: 13, ancora: "start", cor: on ? cor.tinta : cor.cinza });
+    s += txt(545, y + 13, on ? (L.on ?? "online: entrega") : (L.off ?? "offline: push + pendente"), { tam: 13, ancora: "start", cor: on ? cor.tinta : cor.cinza });
   }
-  s += txt(370, 325, "1 mensagem → N entregas (fan-out)", { tam: 17, cor: cor.vermelho });
+  s += txt(370, 325, L.rodape ?? "1 mensagem → N entregas (fan-out)", { tam: 17, cor: cor.vermelho });
   return svg(720, 340, s);
 }
 
@@ -380,9 +380,9 @@ export function snowflake() {
   return svg(790, 155, s);
 }
 
-export function particoes() {
+export function particoes(L = {}) {
   let s = "";
-  s += txt(200, 18, "partição = conversa", { tam: 18, cor: cor.verde });
+  s += txt(200, 18, L.certo ?? "partição = conversa", { tam: 18, cor: cor.verde });
   s += check(320, 18, 16);
   for (let i = 0; i < 3; i++) {
     const x = 20 + i * 125;
@@ -391,7 +391,7 @@ export function particoes() {
     for (let k = 0; k < 4; k++) s += ret(x + 15, 70 + k * 26, 75, 18, { preench: cores, hachura: "solid" });
     s += txt(x + 52, 210, ["conversa 1", "conversa 2", "conversa 3"][i], { tam: 13, cor: cor.cinza });
   }
-  s += txt(610, 18, "partição = id da mensagem", { tam: 18, cor: cor.vermelho });
+  s += txt(610, 18, L.errado ?? "partição = id da mensagem", { tam: 18, cor: cor.vermelho });
   s += xis(770, 18, 14);
   const mix = [claro.verde, claro.amarelo, claro.azul];
   for (let i = 0; i < 3; i++) {
@@ -399,11 +399,11 @@ export function particoes() {
     s += banco(x, 40, 105, 150, "", { preench: claro.violeta });
     for (let k = 0; k < 4; k++) s += ret(x + 15, 70 + k * 26, 75, 18, { preench: mix[(i + k) % 3], hachura: "solid" });
   }
-  s += txt(640, 210, "abrir 1 conversa = perguntar a todos", { tam: 13, cor: cor.cinza });
+  s += txt(640, 210, L.custo ?? "abrir 1 conversa = perguntar a todos", { tam: 13, cor: cor.cinza });
   return svg(840, 225, s);
 }
 
-export function reconexao() {
+export function reconexao(L = {}) {
   let s = "";
   for (let i = 0; i < 3; i++) {
     const x = 30 + i * 170;
@@ -421,6 +421,28 @@ export function reconexao() {
     s += ret(580 + i * 38, 160 - i * 26, 36, 26 + i * 26, { preench: claro.amarelo, gap: 6 });
     s += txt(598 + i * 38, 200, e, { tam: 12 });
   });
-  s += txt(670, 30, "espera crescente\n+ um pouco de sorteio", { tam: 15 });
+  s += txt(670, 30, L.espera ?? "espera crescente\n+ um pouco de sorteio", { tam: 15 });
   return svg(790, 215, s);
 }
+
+/* ------------------------------------------------------------ versões para leigos (Reels) */
+
+export const caminhoLeigo = () =>
+  caminhoMensagem({
+    nomes: { A: "Ana", SA: "servidor\nda Ana", Q: "lugar\nseguro", C: "recepção", SB: "servidor\ndo Bruno", B: "Bruno" },
+    m1: "\"oi\"",
+    m2: "anota",
+    ok: "anotado",
+    m3: "✓ guardei",
+    m4: "onde está o Bruno?",
+    resp: "sala 40",
+    m5: "passa a mensagem",
+    m6: "entrega",
+    m7: "chegou",
+    volta: "chegou",
+    nota: null,
+  });
+export const gruposLeigo = () =>
+  grupos({ membros: "quem está?", on: "app aberto: recebe na hora", off: "fechado: notificação", rodape: "1 mensagem → 1 cópia para cada pessoa" });
+export const particoesLeigo = () => particoes({ certo: "uma gaveta por conversa", errado: "mensagens soltas", custo: "procura em todas as gavetas" });
+export const reconexaoLeigo = () => reconexao({ espera: "espera um pouquinho,\ndepois um pouco mais" });
