@@ -514,74 +514,103 @@ function CartaoIntro({ a, t }: { a: Adesivo; t: number }) {
 
 /** A intro gravada: a Julia na frente, os gráficos atrás dela e o quarto desfocado ao fundo. Quando a
  *  mão cruza a tela, a intro sai "arrastada" da esquerda para a direita e revela o Reel narrado. */
-function IntroGravada({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
-  const frame = useCurrentFrame();
-  const t = frame / FPS;
-  const rabiscos = useMemo(() => D.introRabiscos(), []);
-  const blocos = useMemo(() => legendasIntro(parte), [parte]);
+/** Borda esfumada (240 px) que anda junto com a mão; inclinada (100°): a parte de baixo, onde a mão
+ *  fica parada no fim, é revelada por último. A linha do gradiente tem ~1397 px nesta tela.
+ *  Devolve a máscara CSS (opaco = intro) ou undefined antes do gesto. */
+function mascaraIntro(t: number, intro: Intro): string | undefined {
   const [m0] = intro.mao;
-  // a borda acompanha a mão: entra pela esquerda junto com ela e sai pela direita
-  // borda esfumada (240 px) que anda junto com a mão; inclinada (100°): a parte de baixo, onde a mão
-  // fica parada no fim, é revelada por último. A linha do gradiente tem ~1397 px nesta tela.
+  if (t < m0) return undefined;
   const borda = interpolate(t, [m0, intro.duracao], [-260, 1660], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.bezier(0.3, 0, 0.7, 1) });
-  const mascara = `linear-gradient(100deg, transparent ${borda}px, #000 ${borda + 240}px)`;
-  const arrastando = t >= m0;
-  const quadro = Math.min(intro.quadros - 1, Math.max(0, Math.floor(frame)));
+  return `linear-gradient(100deg, transparent ${borda}px, #000 ${borda + 240}px)`;
+}
+
+/** O que entra ATRÁS da Julia: título, rabiscos e cartões. */
+function GraficosIntro({ t }: { t: number }) {
+  const rabiscos = useMemo(() => D.introRabiscos(), []);
   const titulo = prog(t, 0.21, 0.35);
   const whats = prog(t, 1.6, 0.55);
   return (
-    <AbsoluteFill>
-      <AbsoluteFill style={{ maskImage: arrastando ? mascara : undefined, WebkitMaskImage: arrastando ? mascara : undefined, overflow: "hidden" }}>
-        {/* o vídeo original dela, sem filtro: só os gráficos entram entre ela e o quarto */}
-        <OffthreadVideo src={INTRO(parte, "fundo.mp4")} muted style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 1920 }} />
-        {/* atrás dela: título, rabiscos e cartões */}
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 310,
-            textAlign: "center",
-            fontWeight: 800,
-            fontSize: 112,
-            letterSpacing: "-0.035em",
-            lineHeight: 1,
-            opacity: titulo,
-            transform: `scale(${0.85 + 0.15 * titulo})`,
-            textShadow: "0 4px 28px rgba(255,255,255,.7)",
-          }}
-        >
-          SYSTEM DESIGN
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 416,
-            textAlign: "center",
-            fontWeight: 800,
-            fontSize: 208,
-            letterSpacing: "-0.05em",
-            lineHeight: 1,
-            opacity: whats,
-            transform: `translateY(${(1 - whats) * 28}px)`,
-            textShadow: "0 4px 28px rgba(255,255,255,.6)",
-          }}
-        >
-          <Marcado texto="*WhatsApp*" p={prog(t, 1.85, 0.45)} />
-        </div>
-        <div style={{ position: "absolute", left: 0, top: 0 }}>
-          <DiagramaAnimado svg={rabiscos} t={t} de={0.44} dur={1.3} />
-        </div>
-        {ADESIVOS.map((a, i) => (
-          <CartaoIntro key={i} a={a} t={t} />
-        ))}
-        {/* a Julia, recortada, na frente de tudo */}
-        <Img src={INTRO(parte, `frente/${String(quadro).padStart(4, "0")}.webp`)} style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 1920 }} />
-        <Legenda blocos={blocos} t={t} />
-      </AbsoluteFill>
+    <>
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 310,
+          textAlign: "center",
+          fontWeight: 800,
+          fontSize: 112,
+          letterSpacing: "-0.035em",
+          lineHeight: 1,
+          opacity: titulo,
+          transform: `scale(${0.85 + 0.15 * titulo})`,
+          textShadow: "0 4px 28px rgba(255,255,255,.7)",
+        }}
+      >
+        SYSTEM DESIGN
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 416,
+          textAlign: "center",
+          fontWeight: 800,
+          fontSize: 208,
+          letterSpacing: "-0.05em",
+          lineHeight: 1,
+          opacity: whats,
+          transform: `translateY(${(1 - whats) * 28}px)`,
+          textShadow: "0 4px 28px rgba(255,255,255,.6)",
+        }}
+      >
+        <Marcado texto="*WhatsApp*" p={prog(t, 1.85, 0.45)} />
+      </div>
+      <div style={{ position: "absolute", left: 0, top: 0 }}>
+        <DiagramaAnimado svg={rabiscos} t={t} de={0.44} dur={1.3} />
+      </div>
+      {ADESIVOS.map((a, i) => (
+        <CartaoIntro key={i} a={a} t={t} />
+      ))}
+    </>
+  );
+}
+
+/** Prévia da intro dentro do Remotion (SDR): o vídeo dela, os gráficos atrás, ela recortada na frente
+ *  e a legenda. No arquivo final da parte com intro, essa composição é refeita em HDR pelo
+ *  materiais/whatsapp/hdr.py, com os pixels originais do iPhone (camadas "introAtras",
+ *  "introFrente" e "mascara" abaixo). */
+function IntroGravada({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
+  const frame = useCurrentFrame();
+  const t = frame / FPS;
+  const blocos = useMemo(() => legendasIntro(parte), [parte]);
+  const mascara = mascaraIntro(t, intro);
+  const quadro = Math.min(intro.quadros - 1, Math.max(0, Math.floor(frame)));
+  return (
+    <AbsoluteFill style={{ maskImage: mascara, WebkitMaskImage: mascara, overflow: "hidden" }}>
+      <OffthreadVideo src={INTRO(parte, "fundo.mp4")} muted style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 1920 }} />
+      <GraficosIntro t={t} />
+      <Img src={INTRO(parte, `frente/${String(quadro).padStart(4, "0")}.webp`)} style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 1920 }} />
+      <Legenda blocos={blocos} t={t} />
     </AbsoluteFill>
+  );
+}
+
+/** Barra de progresso, rótulo da série e @: ficam por cima de tudo, do começo ao fim. */
+function Cromo({ parte, t }: { parte: 1 | 2 | 3; t: number }) {
+  const fim = total(parte);
+  return (
+    <>
+      <div style={{ position: "absolute", left: LADO, right: LADO, top: 222, height: 8, borderRadius: 4, background: "#e9ecef" }}>
+        <div style={{ width: `${Math.min(100, (t / fim) * 100)}%`, height: "100%", borderRadius: 4, background: COR.acento }} />
+      </div>
+      {/* rótulo da série fixo (fora das cenas): não pisca nas dissoluções nem na emenda com a intro */}
+      <div style={{ position: "absolute", left: LADO, top: 252, fontFamily: FONTE_LOUSA, fontSize: 40, color: COR.acento, textShadow: "0 2px 12px rgba(255,255,255,.8)" }}>
+        system design · parte {parte}/3
+      </div>
+      <div style={{ position: "absolute", right: LADO, top: 258, fontSize: 30, color: COR.cinza, fontWeight: 600 }}>{PERFIL}</div>
+    </>
   );
 }
 
@@ -629,45 +658,64 @@ function Corpo({ parte, cenas }: { parte: 1 | 2 | 3; cenas: CenaTempo[] }) {
   );
 }
 
-export type PropsReelWhatsApp = { parte: 1 | 2 | 3 };
+/** O que renderizar. "tudo" é o vídeo completo (prévia SDR). Na parte com intro, o arquivo final é
+ *  montado em HDR a partir de: "semIntro" (o Reel com todo o áudio, sem a imagem da intro),
+ *  "introAtras" e "introFrente" (gráficos da intro com fundo transparente) e "mascara" (branco onde
+ *  a intro aparece durante a passagem da mão). */
+export type Camada = "tudo" | "semIntro" | "introAtras" | "introFrente" | "mascara";
+export type PropsReelWhatsApp = { parte: 1 | 2 | 3; camada?: Camada };
 
-export const ReelWhatsApp: React.FC<PropsReelWhatsApp> = ({ parte }) => {
+const FONTE_BASE = { fontFamily: "Inter, sans-serif", color: COR.tinta } as const;
+
+export const ReelWhatsApp: React.FC<PropsReelWhatsApp> = ({ parte, camada = "tudo" }) => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
   const cenas = useMemo(() => linhaDoTempo(parte), [parte]);
+  const blocosIntro = useMemo(() => legendasIntro(parte), [parte]);
   const intro = intros[parte];
-  const fim = total(parte);
+  if (camada === "introAtras") {
+    return (
+      <AbsoluteFill style={FONTE_BASE}>
+        <GraficosIntro t={t} />
+      </AbsoluteFill>
+    );
+  }
+  if (camada === "introFrente") {
+    return (
+      <AbsoluteFill style={FONTE_BASE}>
+        <Legenda blocos={blocosIntro} t={t} />
+        <Cromo parte={parte} t={t} />
+      </AbsoluteFill>
+    );
+  }
+  if (camada === "mascara") {
+    const m = intro ? mascaraIntro(t, intro) : undefined;
+    return (
+      <AbsoluteFill style={{ background: "#000" }}>
+        <AbsoluteFill style={{ background: "#fff", maskImage: m, WebkitMaskImage: m }} />
+      </AbsoluteFill>
+    );
+  }
   return (
     <AbsoluteFill
       style={{
+        ...FONTE_BASE,
         background: COR.fundo,
         backgroundImage: "radial-gradient(#d9d9d2 2.2px, transparent 2.2px)",
         backgroundSize: "38px 38px",
-        fontFamily: "Inter, sans-serif",
-        color: COR.tinta,
       }}
     >
       <Trilha parte={parte} />
       <Sequence from={Math.round(atraso(parte) * FPS)}>
         <Corpo parte={parte} cenas={cenas} />
       </Sequence>
-      {intro && (
-        <>
-          <SonsIntro parte={parte} intro={intro} />
-          <Sequence durationInFrames={Math.round(intro.duracao * FPS)}>
-            <IntroGravada parte={parte} intro={intro} />
-          </Sequence>
-        </>
+      {intro && <SonsIntro parte={parte} intro={intro} />}
+      {intro && camada === "tudo" && (
+        <Sequence durationInFrames={Math.round(intro.duracao * FPS)}>
+          <IntroGravada parte={parte} intro={intro} />
+        </Sequence>
       )}
-      {/* progresso da parte */}
-      <div style={{ position: "absolute", left: LADO, right: LADO, top: 222, height: 8, borderRadius: 4, background: "#e9ecef" }}>
-        <div style={{ width: `${Math.min(100, (t / fim) * 100)}%`, height: "100%", borderRadius: 4, background: COR.acento }} />
-      </div>
-      {/* rótulo da série fixo (fora das cenas): não pisca nas dissoluções nem na emenda com a intro */}
-      <div style={{ position: "absolute", left: LADO, top: 252, fontFamily: FONTE_LOUSA, fontSize: 40, color: COR.acento, textShadow: "0 2px 12px rgba(255,255,255,.8)" }}>
-        system design · parte {parte}/3
-      </div>
-      <div style={{ position: "absolute", right: LADO, top: 258, fontSize: 30, color: COR.cinza, fontWeight: 600 }}>{PERFIL}</div>
+      <Cromo parte={parte} t={t} />
     </AbsoluteFill>
   );
 };

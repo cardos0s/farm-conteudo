@@ -159,6 +159,10 @@ def main() -> None:
     trab = RAIZ / "saida/materiais/intro"
     pub.mkdir(parents=True, exist_ok=True)
     trab.mkdir(parents=True, exist_ok=True)
+    # cópia do original (HDR): o vídeo final da parte é montado com estes pixels, sem conversão
+    original = trab / f"parte{a.parte}-original{a.mov.suffix.lower()}"
+    if a.mov.resolve() != original.resolve():
+        original.write_bytes(a.mov.read_bytes())
     sdr_mp4 = trab / f"parte{a.parte}-sdr.mp4"
     print("convertendo HDR -> SDR...")
     sdr(a.mov, sdr_mp4)
@@ -172,6 +176,8 @@ def main() -> None:
     palavras = transcrever(a.mov, a.inicio, a.voz_ate)
     dados = {
         "fps": FPS,
+        "original": str(original.relative_to(RAIZ)),
+        "inicioOriginal": a.inicio,
         "duracao": round(a.fim - a.inicio, 3),
         "quadros": rec["quadros"],
         "mao": [round(a.mao[0] - a.inicio, 3), round(a.mao[1] - a.inicio, 3)],

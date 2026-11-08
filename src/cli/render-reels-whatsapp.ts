@@ -49,10 +49,12 @@ const navegador = process.env.REMOTION_CHROME || null;
 await mkdir("saida/materiais/reels", { recursive: true });
 const serveUrl = await bundle({ entryPoint: path.resolve("remotion/index.ts"), publicDir: path.resolve("public"), symlinkPublicDir: true });
 
-for (const parte of filtro) {
-  const inputProps = { parte };
+type Camada = "tudo" | "semIntro" | "introAtras" | "introFrente" | "mascara";
+
+/** Renderiza uma camada da composição ReelWhatsApp em 4K (scale 2). */
+async function renderizar(parte: 1 | 2 | 3, camada: Camada, destino: string, extra: Partial<Parameters<typeof renderMedia>[0]> = {}) {
+  const inputProps = { parte, camada };
   const composition = await selectComposition({ serveUrl, id: "ReelWhatsApp", inputProps, browserExecutable: navegador });
-  const destino = `saida/materiais/reels/system-design-whatsapp-parte-${parte}.mp4`;
   const inicio = Date.now();
   let ultimo = -1;
   await renderMedia({
@@ -74,11 +76,33 @@ for (const parte of filtro) {
       const p = Math.floor(progress * 100);
       if (p !== ultimo && p % 10 === 0) {
         ultimo = p;
-        console.log(`parte ${parte}: ${p}% (${((Date.now() - inicio) / 1000).toFixed(0)} s)`);
+        console.log(`parte ${parte} (${camada}): ${p}% (${((Date.now() - inicio) / 1000).toFixed(0)} s)`);
       }
     },
+    ...extra,
   });
-  // volume final no padrão de Reels (-14 LUFS) e limitador em -1 dBFS (voz + trilha + efeitos somados)
-  limitar(destino, composition.durationInFrames / composition.fps);
-  console.log(`ok: ${destino} (${(composition.durationInFrames / composition.fps).toFixed(1)} s)`);
+  return composition.durationInFrames / composition.fps;
+}
+
+for (const parte of filtro) {
+  const destino = `saida/materiais/reels/system-design-whatsapp-parte-${parte}.mp4`;
+  const intro = intros[parte];
+  if (!intro) {
+    const dur = await renderizar(parte, "tudo", destino);
+    // volume final no padrão de Reels (-14 LUFS) e limitador em -1 dBFS (voz + trilha + efeitos somados)
+    limitar(destino, dur);
+    console.log(`ok: ${destino} (${dur.toFixed(1)} s)`);
+    continue;
+  }
+  // Parte com intro gravada: o vídeo dela é HDR. As camadas saem daqui e o materiais/whatsapp/hdr.py
+  // monta o arquivo final em HLG com os pixels originais dela (sem conversão de cor).
+  const pasta = "saida/materiais/reels/.camadas";
+  await mkdir(pasta, { recursive: true });
+  const faixa: [number, number] = [0, intro.quadros - 1];
+  const transparente = { codec: "prores", proResProfile: "4444", imageFormat: "png", pixelFormat: "yuva444p10le", frameRange: faixa, muted: true } as const;
+  await renderizar(parte, "semIntro", `${pasta}/parte${parte}-semIntro.mp4`, { crf: 10 });
+  await renderizar(parte, "introAtras", `${pasta}/parte${parte}-introAtras.mov`, transparente);
+  await renderizar(parte, "introFrente", `${pasta}/parte${parte}-introFrente.mov`, transparente);
+  await renderizar(parte, "mascara", `${pasta}/parte${parte}-mascara.mov`, { codec: "prores", proResProfile: "hq", frameRange: faixa, muted: true });
+  execFileSync("python3", ["-I", "materiais/whatsapp/hdr.py", "--parte", String(parte), "--preset", "fast"], { stdio: "inherit" });
 }

@@ -162,6 +162,8 @@ python3 materiais/whatsapp/intro.py IMG_3366.mov --parte 1 --inicio 0.5 --fim 3.
 
 O script converte o HDR do iPhone para SDR na resolução original (tone mapping "mobius", mais fiel ao que o iPhone mostra), recorta a Julia quadro a quadro com o RobustVideoMatting (o modelo, ~107 MB, é baixado para `saida/modelos/` na primeira vez; precisa de `pip install onnxruntime`), iguala o volume da fala ao da narração e grava os arquivos em `public/materiais/whatsapp/intro/parte1/` (fora do git) e os tempos em `remotion/reels/whatsapp/intro/parte1.json`. `--mao` marca o trecho em que a mão cruza a tela. Para caber em 2:30 com a intro, a narração da parte 1 tem as pausas longas encurtadas para no máximo 0,38 s (`PAUSA_MAX` em `materiais/whatsapp/narracao.py`).
 
+O vídeo da Julia é HDR (Dolby Vision 8.4 / HLG, do iPhone) e qualquer conversão para SDR muda a cor. Por isso a parte com intro sai em HDR: o render gera camadas (o Reel sem a imagem da intro, os gráficos da intro com fundo transparente e a máscara da passagem) e `materiais/whatsapp/hdr.py` monta o arquivo final em HEVC 10 bits HLG com os pixels originais dela, sem conversão; só os gráficos são levados de SDR para HLG, com o branco no branco de referência (203 nits). As partes sem intro continuam em H.264 SDR.
+
 ## Estrutura
 
 ```
