@@ -159,3 +159,7 @@ O estado fica em `dados/` (um JSON por peça) e os vídeos em `saida/`. As duas 
 - Narração por voz (TTS) nos vídeos.
 - Publicação no TikTok e no LinkedIn.
 - Loop de métricas: ler alcance e cliques de cada peça para o editor aprender quais temas trazem usuários para cada app.
+
+## Ebooks
+
+- [`ebooks/engenharia-de-inferencia`](ebooks/engenharia-de-inferencia/): guia de entrevistas de engenharia de inferência em PDF, EPUB e HTML, com o texto em Markdown e o script de build.

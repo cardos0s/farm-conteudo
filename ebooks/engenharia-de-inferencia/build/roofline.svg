@@ -1,0 +1,40 @@
+<svg class="roofline" viewBox="0 0 1120 760" role="img" aria-labelledby="roofline-titulo">
+  <title id="roofline-titulo">Modelo roofline da H100: teto de banda de 3,35 TB/s, teto de cálculo de 989 TFLOPS em BF16, ponto de equilíbrio perto de 295 FLOP por byte, com o decode de batch 1 bem abaixo, o decode de batch 64 sobre a rampa e o prefill perto do teto.</title>
+  <!-- escala log-log: x de 0,1 a 10.000 FLOP/byte; y de 1 a 2.000 TFLOPS -->
+  <g class="grade">
+    <line x1="280" y1="40" x2="280" y2="680"/>
+    <line x1="480" y1="40" x2="480" y2="680"/>
+    <line x1="680" y1="40" x2="680" y2="680"/>
+    <line x1="880" y1="40" x2="880" y2="680"/>
+    <line x1="80" y1="486.1" x2="1080" y2="486.1"/>
+    <line x1="80" y1="292.2" x2="1080" y2="292.2"/>
+    <line x1="80" y1="98.3" x2="1080" y2="98.3"/>
+  </g>
+  <g class="eixos">
+    <line x1="80" y1="680" x2="1080" y2="680"/>
+    <line x1="80" y1="40" x2="80" y2="680"/>
+  </g>
+  <g class="ticks">
+    <text x="280" y="712" text-anchor="middle">1</text>
+    <text x="480" y="712" text-anchor="middle">10</text>
+    <text x="680" y="712" text-anchor="middle">100</text>
+    <text x="880" y="712" text-anchor="middle">1.000</text>
+    <text x="68" y="686" text-anchor="end">1</text>
+    <text x="68" y="492" text-anchor="end">10</text>
+    <text x="68" y="298" text-anchor="end">100</text>
+    <text x="68" y="104" text-anchor="end">1.000</text>
+  </g>
+  <text class="eixo-titulo" x="580" y="750" text-anchor="middle">intensidade aritmética (FLOP/byte, escala log)</text>
+  <text class="eixo-titulo" x="22" y="360" text-anchor="middle" transform="rotate(-90 22 360)">TFLOPS atingíveis (escala log)</text>
+  <line class="equilibrio" x1="774" y1="99.2" x2="774" y2="680"/>
+  <polyline class="teto" points="175.4,679.6 774,99.2 1080,99.2"/>
+  <text class="rotulo-teto" x="1072" y="80" text-anchor="end">teto de cálculo · 989 TFLOPS BF16</text>
+  <text class="rotulo-teto" x="428" y="376" text-anchor="middle" transform="rotate(-44.1 428 376)">banda de memória · 3,35 TB/s</text>
+  <text class="rotulo-equilibrio" x="784" y="664">≈ 295 FLOP/byte</text>
+  <circle class="ponto" cx="280" cy="596.4" r="11"/>
+  <text class="rotulo-ponto" x="300" y="603">decode, batch 1</text>
+  <circle class="ponto" cx="628" cy="258" r="11"/>
+  <text class="rotulo-ponto" x="648" y="265">decode, batch 64</text>
+  <circle class="ponto" cx="975.4" cy="134.6" r="11"/>
+  <text class="rotulo-ponto" x="964" y="172" text-anchor="end">prefill</text>
+</svg>

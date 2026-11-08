@@ -1,0 +1,50 @@
+<title>Engenharia de Inferência</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="$description$">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&amp;display=swap">
+<style>
+/*FONTES*/
+/*ESTILO*/
+/*WEB*/
+</style>
+<div class="pagina">
+  <header class="abertura">
+    <div class="abertura-texto">
+      <p class="sobretitulo">Guia de entrevistas · 1ª edição · $date$</p>
+      <p class="titulo-livro">$title$</p>
+      <p class="subtitulo-livro">$description$</p>
+      <ul class="numeros" aria-label="Conteúdo do livro">
+        <li><strong>14</strong> capítulos</li>
+        <li><strong>50</strong> perguntas comentadas</li>
+        <li><strong>~78 mil</strong> palavras</li>
+        <li>código <strong>testado</strong></li>
+      </ul>
+    </div>
+    <figure class="abertura-grafico">
+      <!--ROOFLINE-->
+      <figcaption>O telhado da H100. O decode com batch 1 fica muito abaixo do teto porque é limitado pela banda de memória; o batching sobe pela rampa; o prefill encosta no teto de cálculo. O livro inteiro é sobre andar neste gráfico.</figcaption>
+    </figure>
+  </header>
+  <div class="corpo">
+    <aside class="lateral" aria-label="Sumário">
+      <nav class="sumario">
+        <p class="sumario-titulo">Sumário</p>
+$toc$
+      </nav>
+    </aside>
+    <main class="conteudo">
+      <details class="sumario-movel">
+        <summary>Sumário</summary>
+        <nav class="sumario">
+$toc$
+        </nav>
+      </details>
+$body$
+      <footer class="creditos">
+        <p>As 50 perguntas vêm do levantamento publicado pelo <a href="https://aiengineeringinsider.substack.com/p/you-should-never-walk-into-an-inference">AI Engineering Insider</a>. Respostas, explicações, diagramas e códigos são originais desta edição. Valores de hardware e desempenho são aproximados.</p>
+      </footer>
+    </main>
+  </div>
+</div>
