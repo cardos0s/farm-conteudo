@@ -9,6 +9,7 @@
 import n1 from "./narracao/parte1.json";
 import n2 from "./narracao/parte2.json";
 import n3 from "./narracao/parte3.json";
+import i1 from "./intro/parte1.json";
 
 export const FPS = 30;
 /** Respiro depois do fim da narração, com a chamada na tela. */
@@ -346,7 +347,28 @@ export function achar(n: Narracao, ancora: string, desde = 0): number {
   throw new Error(`Frase não encontrada na narração (depois de ${desde.toFixed(1)} s): "${ancora}"`);
 }
 
-export const total = (parte: 1 | 2 | 3) => Math.min(MAXIMO, narracoes[parte].duracao + CAUDA);
+/* ------------------------------------------------------------------ intro gravada */
+
+/** Intro gravada pela Julia (materiais/whatsapp/intro.py): ela fala, os gráficos entram atrás dela
+ *  e, quando a mão cruza a tela (`mao`), o Reel narrado entra puxado pela mão. Tempos em segundos
+ *  a partir do começo do vídeo. */
+export type Intro = { fps: number; duracao: number; quadros: number; mao: [number, number]; vozAte: number; palavras: Palavra[] };
+export const intros: Partial<Record<1 | 2 | 3, Intro>> = { 1: i1 as unknown as Intro };
+
+/** Segundo do vídeo em que o Reel narrado começa (o gesto da mão), ou 0 sem intro. */
+export const atraso = (parte: 1 | 2 | 3) => intros[parte]?.mao[0] ?? 0;
+
+export const total = (parte: 1 | 2 | 3) => Math.min(MAXIMO, atraso(parte) + narracoes[parte].duracao + CAUDA);
+/** Duração do Reel narrado (o que vem depois da intro). */
+export const duracaoCorpo = (parte: 1 | 2 | 3) => total(parte) - atraso(parte);
+
+/** Todas as falas do vídeo (intro + narração) em tempo absoluto, para a trilha baixar sob a voz. */
+export function falas(parte: 1 | 2 | 3): Palavra[] {
+  const intro = intros[parte];
+  const d = atraso(parte);
+  const daIntro = intro ? intro.palavras.filter((p) => p.e <= intro.vozAte + 0.05) : [];
+  return [...daIntro, ...narracoes[parte].palavras.map((p) => ({ ...p, s: p.s + d, e: p.e + d }))];
+}
 export const quadros = (parte: 1 | 2 | 3) => Math.ceil(total(parte) * FPS);
 
 export type CenaTempo = Cena & { inicio: number; fim: number; tempos: number[]; focosT: { de: number; foco: Foco | null }[] };
@@ -359,7 +381,7 @@ export function linhaDoTempo(parte: 1 | 2 | 3): CenaTempo[] {
   cenas.forEach((c, i) => inicios.push(i === 0 ? 0 : achar(n, c.quando, inicios[i - 1])));
   return cenas.map((c, i) => {
     const inicio = inicios[i];
-    const fim = i + 1 < cenas.length ? inicios[i + 1] : total(parte);
+    const fim = i + 1 < cenas.length ? inicios[i + 1] : duracaoCorpo(parte);
     const v = c.visual;
     const itens: { quando?: string }[] = v.tipo === "lista" || v.tipo === "comparacao" || v.tipo === "linhas" ? v.itens : [];
     let desde = inicio;
@@ -379,7 +401,13 @@ export type Bloco = { de: number; ate: number; palavras: Palavra[] };
 
 /** Agrupa a narração em blocos curtos de legenda (quebra na pontuação, até 7 palavras). */
 export function legendas(parte: 1 | 2 | 3): Bloco[] {
-  const ps = narracoes[parte].palavras;
+  return agrupar(narracoes[parte].palavras);
+}
+
+/** Legenda da fala da intro. */
+export const legendasIntro = (parte: 1 | 2 | 3): Bloco[] => agrupar(intros[parte]?.palavras ?? []);
+
+function agrupar(ps: Palavra[]): Bloco[] {
   const blocos: Palavra[][] = [];
   let atual: Palavra[] = [];
   ps.forEach((p, i) => {

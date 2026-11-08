@@ -15,3 +15,4 @@ export const caminhoLeigo: Diagrama;
 export const gruposLeigo: Diagrama;
 export const particoesLeigo: Diagrama;
 export const reconexaoLeigo: Diagrama;
+export const introRabiscos: Diagrama;

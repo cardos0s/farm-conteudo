@@ -154,6 +154,14 @@ npm run render:reels-whatsapp
 
 Renderiza os três Reels narrados em MP4 (1080×1920, 30 fps, até 2:30 cada) em `saida/materiais/reels/`. A narração, em linguagem para leigos, está em `materiais/whatsapp/NARRACAO.md`. Antes do render, prepare os áudios com `python3 materiais/whatsapp/narracao.py parte1.mp3 parte2.mp3 parte3.mp3`: o script copia os MP3 para `public/materiais/whatsapp/narracao/` (fora do git) e transcreve cada um com tempo por palavra (faster-whisper). Cada cena e cada item do vídeo entram na frase da narração em que são citados, e a legenda destaca a palavra que está sendo dita. A trilha lo-fi e os efeitos sonoros (whoosh na troca de cena, pop nos itens, plim no ✓, som grave no ✗, lápis no desenho, ka-ching no preço) são sintetizados do zero por `npm run sons:whatsapp`, então não têm direito autoral de terceiros; a trilha baixa sozinha sob a voz e sobe nas pausas. As cenas ficam em `remotion/reels/whatsapp/roteiro.ts` (composição `ReelWhatsApp` no estúdio). Também depende do PDF gerado.
 
+A parte 1 abre com uma intro gravada pela Julia ("Vem construir o WhatsApp comigo"): ela fica na frente, recortada do fundo, e o título, os números e os desenhos entram atrás dela; quando a mão cruza a tela, o Reel narrado entra arrastado pela mão. Para preparar (ou trocar) a intro:
+
+```bash
+python3 materiais/whatsapp/intro.py IMG_3366.mov --parte 1 --inicio 0.5 --fim 3.9 --mao 3.5 3.87
+```
+
+O script converte o HDR do iPhone, recorta a Julia quadro a quadro com o RobustVideoMatting (o modelo, ~107 MB, é baixado para `saida/modelos/` na primeira vez; precisa de `pip install onnxruntime`), iguala o volume da fala ao da narração e grava os arquivos em `public/materiais/whatsapp/intro/parte1/` (fora do git) e os tempos em `remotion/reels/whatsapp/intro/parte1.json`. `--mao` marca o trecho em que a mão cruza a tela. Para caber em 2:30 com a intro, a narração da parte 1 tem as pausas longas encurtadas para no máximo 0,38 s (`PAUSA_MAX` em `materiais/whatsapp/narracao.py`).
+
 ## Estrutura
 
 ```

@@ -6,6 +6,7 @@ import {
   Easing,
   Html5Audio,
   Img,
+  OffthreadVideo,
   Sequence,
   continueRender,
   delayRender,
@@ -19,7 +20,22 @@ import * as D from "../../../materiais/whatsapp/diagramas.mjs";
 import "../../lousa/fontes";
 import { FONTE_LOUSA } from "../../lousa/fontes";
 import { DiagramaAnimado, analisar } from "./Desenho";
-import { FPS, legendas, linhaDoTempo, narracoes, total, type Bloco, type CenaTempo, type Foco, type Item, type Visual } from "./roteiro";
+import {
+  FPS,
+  atraso,
+  falas,
+  intros,
+  legendas,
+  legendasIntro,
+  linhaDoTempo,
+  total,
+  type Bloco,
+  type CenaTempo,
+  type Foco,
+  type Intro,
+  type Item,
+  type Visual,
+} from "./roteiro";
 
 // Reels narrados da série "System Design do WhatsApp" (1080x1920). A narração dita o ritmo:
 // cada cena entra na frase em que começa, os itens aparecem quando são falados e a legenda
@@ -368,7 +384,7 @@ function efeitos(cenas: CenaTempo[]): Efeito[] {
 
 /** Volume da trilha quadro a quadro: baixa sob a voz, sobe nas pausas, entra e sai em fade. */
 function volumesTrilha(parte: 1 | 2 | 3, quadros: number): number[] {
-  const ps = narracoes[parte].palavras;
+  const ps = falas(parte);
   const alvo = Array.from({ length: quadros }, (_, f) => {
     const t = f / FPS;
     const falando = ps.some((p) => t >= p.s - 0.25 && t <= p.e + 0.35);
@@ -389,18 +405,22 @@ function volumesTrilha(parte: 1 | 2 | 3, quadros: number): number[] {
   });
 }
 
-function Sons({ parte, cenas }: { parte: 1 | 2 | 3; cenas: CenaTempo[] }) {
+function Trilha({ parte }: { parte: 1 | 2 | 3 }) {
   const { durationInFrames } = useVideoConfig();
   const vols = useMemo(() => volumesTrilha(parte, durationInFrames), [parte, durationInFrames]);
-  const lista = useMemo(() => efeitos(cenas), [cenas]);
+  return (
+    <Html5Audio
+      src={SOM("trilha")}
+      loop
+      // o Remotion pode pedir quadros fracionários: arredonda e limita ao vetor
+      volume={(f) => vols[Math.min(vols.length - 1, Math.max(0, Math.round(Number.isFinite(f) ? f : 0)))] ?? 0}
+    />
+  );
+}
+
+function Efeitos({ lista }: { lista: Efeito[] }) {
   return (
     <>
-      <Html5Audio
-        src={SOM("trilha")}
-        loop
-        // o Remotion pode pedir quadros fracionários: arredonda e limita ao vetor
-        volume={(f) => vols[Math.min(vols.length - 1, Math.max(0, Math.round(Number.isFinite(f) ? f : 0)))] ?? 0}
-      />
       {lista.map((e, i) => (
         <Sequence key={i} from={Math.round(e.em * FPS)} durationInFrames={Math.round(2 * FPS)}>
           <Html5Audio src={SOM(e.nome)} volume={e.volume * GANHO_EFEITOS} />
@@ -440,13 +460,174 @@ function CenaView({ cena, ultima, numero }: { cena: CenaTempo; ultima: boolean; 
   );
 }
 
+/* ------------------------------------------------------------------ intro gravada */
+
+const INTRO = (parte: number, arq: string) => staticFile(`materiais/whatsapp/intro/parte${parte}/${arq}`);
+
+type Adesivo = { de: number; x: number; y: number; giro: number; grande: string; texto?: string; balao?: boolean };
+// Cartões que entram atrás da Julia junto com "o WhatsApp comigo". Ficam nas faixas livres ao lado
+// dela (medidas no recorte), para nenhum número ser coberto: um "175" meio escondido viraria "75".
+const ADESIVOS: Adesivo[] = [
+  { de: 1.75, x: 22, y: 688, giro: -6, grande: "5 bi", texto: "mensagens por dia" },
+  { de: 1.95, x: 22, y: 900, giro: 4, grande: "175 mil", texto: "por segundo" },
+  { de: 2.15, x: 868, y: 905, giro: -3, grande: "oi! ✓✓", balao: true },
+  { de: 2.35, x: 862, y: 688, giro: 5, grande: "1.024", texto: "por grupo" },
+];
+
+function CartaoIntro({ a, t }: { a: Adesivo; t: number }) {
+  const { fps } = useVideoConfig();
+  if (t < a.de) return null;
+  const s = spring({ frame: (t - a.de) * fps, fps, config: { damping: 12, stiffness: 170 } });
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: a.x,
+        top: a.y,
+        transform: `rotate(${a.giro}deg) scale(${s})`,
+        background: a.balao ? "#d3f9d8" : "#fff",
+        border: `4px solid ${COR.tinta}`,
+        borderRadius: a.balao ? "26px 26px 26px 6px" : 22,
+        padding: a.balao ? "10px 20px" : "10px 18px",
+        boxShadow: "6px 6px 0 #1e1e1e",
+        whiteSpace: "nowrap",
+      }}
+    >
+      <div style={{ fontSize: a.balao ? 46 : 52, fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.05 }}>
+        {a.balao ? (
+          <>
+            oi! <span style={{ color: "#1971c2" }}>✓✓</span>
+          </>
+        ) : (
+          a.grande
+        )}
+      </div>
+      {a.texto && <div style={{ fontSize: 24, fontWeight: 600, color: COR.suave }}>{a.texto}</div>}
+    </div>
+  );
+}
+
+/** A intro gravada: a Julia na frente, os gráficos atrás dela e o quarto desfocado ao fundo. Quando a
+ *  mão cruza a tela, a intro sai "arrastada" da esquerda para a direita e revela o Reel narrado. */
+function IntroGravada({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
+  const frame = useCurrentFrame();
+  const t = frame / FPS;
+  const rabiscos = useMemo(() => D.introRabiscos(), []);
+  const blocos = useMemo(() => legendasIntro(parte), [parte]);
+  const [m0] = intro.mao;
+  // a borda acompanha a mão: entra pela esquerda junto com ela e sai pela direita
+  const borda = interpolate(t, [m0, intro.duracao], [-180, 1180], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.bezier(0.3, 0, 0.7, 1) });
+  const arrastando = t >= m0;
+  const quadro = Math.min(intro.quadros - 1, Math.max(0, Math.floor(frame)));
+  const titulo = prog(t, 0.21, 0.35);
+  const whats = prog(t, 1.6, 0.4);
+  return (
+    <AbsoluteFill style={{ filter: arrastando ? "drop-shadow(-16px 0 24px rgba(0,0,0,.35))" : undefined }}>
+      <AbsoluteFill style={{ clipPath: arrastando ? `polygon(${borda + 70}px 0, 1400px 0, 1400px 1920px, ${borda - 70}px 1920px)` : undefined, overflow: "hidden" }}>
+        {/* quarto desfocado: dá profundidade e deixa os gráficos legíveis */}
+        <AbsoluteFill style={{ transform: "scale(1.02)", filter: "blur(5px) saturate(0.95)" }}>
+          <OffthreadVideo src={INTRO(parte, "fundo.mp4")} muted style={{ width: 1080, height: 1920 }} />
+        </AbsoluteFill>
+        <AbsoluteFill style={{ background: "rgba(251,251,248,0.30)" }} />
+        {/* atrás dela: título, rabiscos e cartões */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 310,
+            textAlign: "center",
+            fontWeight: 800,
+            fontSize: 112,
+            letterSpacing: "-0.035em",
+            lineHeight: 1,
+            opacity: titulo,
+            transform: `scale(${0.85 + 0.15 * titulo})`,
+            textShadow: "0 4px 28px rgba(255,255,255,.7)",
+          }}
+        >
+          SYSTEM DESIGN
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 416,
+            textAlign: "center",
+            fontWeight: 800,
+            fontSize: 208,
+            letterSpacing: "-0.05em",
+            lineHeight: 1,
+            opacity: whats,
+            transform: `translateY(${(1 - whats) * 70}px)`,
+            textShadow: "0 4px 28px rgba(255,255,255,.6)",
+          }}
+        >
+          <Marcado texto="*WhatsApp*" p={prog(t, 1.85, 0.45)} />
+        </div>
+        <div style={{ position: "absolute", left: 0, top: 0 }}>
+          <DiagramaAnimado svg={rabiscos} t={t} de={0.44} dur={1.3} />
+        </div>
+        {ADESIVOS.map((a, i) => (
+          <CartaoIntro key={i} a={a} t={t} />
+        ))}
+        {/* a Julia, recortada, na frente de tudo */}
+        <Img src={INTRO(parte, `frente/${String(quadro).padStart(4, "0")}.webp`)} style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 1920 }} />
+        <div style={{ position: "absolute", left: LADO, top: 252, fontFamily: FONTE_LOUSA, fontSize: 40, color: COR.acento, textShadow: "0 2px 12px rgba(255,255,255,.8)" }}>
+          system design · parte {parte}/3
+        </div>
+        <Legenda blocos={blocos} t={t} />
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+}
+
+/** Sons da intro, em tempo absoluto (fora da sequência visual, para nada ser cortado no fim dela). */
+function SonsIntro({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
+  const lista: Efeito[] = [
+    { em: 0.21, nome: "pop", volume: 0.35 },
+    { em: 0.44, nome: "lapis", volume: 0.24 },
+    { em: 1.6, nome: "pop", volume: 0.45 },
+    ...ADESIVOS.map((a) => ({ em: a.de, nome: a.balao ? "plim" : "pop", volume: a.balao ? 0.26 : 0.38 })),
+    { em: intro.mao[0] - 0.06, nome: "whoosh", volume: 0.6 },
+  ];
+  return (
+    <>
+      <Html5Audio src={INTRO(parte, "voz.wav")} />
+      <Efeitos lista={lista} />
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ vídeo */
+
+/** O Reel narrado (cenas, narração, efeitos e legenda), em tempo relativo ao seu próprio começo. */
+function Corpo({ parte, cenas }: { parte: 1 | 2 | 3; cenas: CenaTempo[] }) {
+  const frame = useCurrentFrame();
+  const blocos = useMemo(() => legendas(parte), [parte]);
+  const lista = useMemo(() => efeitos(cenas), [cenas]);
+  return (
+    <AbsoluteFill>
+      <Html5Audio src={staticFile(`materiais/whatsapp/narracao/parte${parte}.mp3`)} />
+      <Efeitos lista={lista} />
+      {cenas.map((c, i) => (
+        <Sequence key={i} from={Math.round(c.inicio * FPS)} durationInFrames={Math.max(1, Math.round((c.fim - c.inicio) * FPS))}>
+          <CenaView cena={c} ultima={i === cenas.length - 1} numero={parte} />
+        </Sequence>
+      ))}
+      <Legenda blocos={blocos} t={frame / FPS} />
+    </AbsoluteFill>
+  );
+}
+
 export type PropsReelWhatsApp = { parte: 1 | 2 | 3 };
 
 export const ReelWhatsApp: React.FC<PropsReelWhatsApp> = ({ parte }) => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
   const cenas = useMemo(() => linhaDoTempo(parte), [parte]);
-  const blocos = useMemo(() => legendas(parte), [parte]);
+  const intro = intros[parte];
   const fim = total(parte);
   return (
     <AbsoluteFill
@@ -458,14 +639,18 @@ export const ReelWhatsApp: React.FC<PropsReelWhatsApp> = ({ parte }) => {
         color: COR.tinta,
       }}
     >
-      <Html5Audio src={staticFile(`materiais/whatsapp/narracao/parte${parte}.mp3`)} />
-      <Sons parte={parte} cenas={cenas} />
-      {cenas.map((c, i) => (
-        <Sequence key={i} from={Math.round(c.inicio * FPS)} durationInFrames={Math.max(1, Math.round((c.fim - c.inicio) * FPS))}>
-          <CenaView cena={c} ultima={i === cenas.length - 1} numero={parte} />
-        </Sequence>
-      ))}
-      <Legenda blocos={blocos} t={t} />
+      <Trilha parte={parte} />
+      <Sequence from={Math.round(atraso(parte) * FPS)}>
+        <Corpo parte={parte} cenas={cenas} />
+      </Sequence>
+      {intro && (
+        <>
+          <SonsIntro parte={parte} intro={intro} />
+          <Sequence durationInFrames={Math.round(intro.duracao * FPS)}>
+            <IntroGravada parte={parte} intro={intro} />
+          </Sequence>
+        </>
+      )}
       {/* progresso da parte */}
       <div style={{ position: "absolute", left: LADO, right: LADO, top: 222, height: 8, borderRadius: 4, background: "#e9ecef" }}>
         <div style={{ width: `${Math.min(100, (t / fim) * 100)}%`, height: "100%", borderRadius: 4, background: COR.acento }} />

@@ -28,6 +28,13 @@ export const claro = {
 };
 
 let semente = 7;
+/** Cada diagrama começa de uma semente fixa (derivada do nome), para o traço sair igual não importa
+ *  em que ordem os desenhos são gerados (o render do vídeo usa várias abas em paralelo). */
+function semear(nome) {
+  let h = 2166136261;
+  for (const c of nome) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+  semente = (Math.abs(h) % 100000) + 1;
+}
 const base = (o = {}) => ({
   roughness: 1.1,
   bowing: 1,
@@ -57,6 +64,7 @@ const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 
 /** Texto manuscrito. Quebras de linha com \n. */
 export function txt(x, y, s, o = {}) {
+  semear("txt");
   const tam = o.tam ?? 19;
   const linhas = String(s).split("\n");
   const y0 = y - ((linhas.length - 1) * tam * 1.15) / 2;
@@ -78,6 +86,7 @@ export const caminho = (d, o = {}) => paths(gen.path(d, base(o)));
 
 /** Caixa com rótulo centralizado (e uma legenda menor opcional embaixo). */
 export function caixa(x, y, w, h, rotulo, o = {}) {
+  semear("caixa");
   const sub = o.sub ? txt(x + w / 2, y + h / 2 + 15, o.sub, { tam: 14, cor: cor.cinza }) : "";
   return (
     ret(x, y, w, h, { preench: o.preench, cor: o.cor, hachura: o.hachura, tracejado: o.tracejado }) +
@@ -87,6 +96,7 @@ export function caixa(x, y, w, h, rotulo, o = {}) {
 
 /** Banco de dados (cilindro em pé). */
 export function banco(x, y, w, h, rotulo, o = {}) {
+  semear("banco");
   const ry = 9;
   return (
     paths(
@@ -102,6 +112,7 @@ export function banco(x, y, w, h, rotulo, o = {}) {
 
 /** Fila (cilindro deitado com divisórias). */
 export function fila(x, y, w, h, rotulo, o = {}) {
+  semear("fila");
   let s = ret(x, y, w, h, { preench: o.preench ?? claro.laranja });
   for (let i = 1; i < 5; i++) s += linha([[x + (w * i) / 5, y + 4], [x + (w * i) / 5, y + h - 4]], { espessura: 1.1 });
   return s + txt(x + w / 2, y + h + 16, rotulo, { tam: 16 });
@@ -109,6 +120,7 @@ export function fila(x, y, w, h, rotulo, o = {}) {
 
 /** Seta reta com ponta; rótulo opcional perto do meio. */
 export function seta(x1, y1, x2, y2, o = {}) {
+  semear("seta");
   const a = Math.atan2(y2 - y1, x2 - x1);
   const k = o.ponta ?? 13;
   const p1 = [x2 - k * Math.cos(a - 0.45), y2 - k * Math.sin(a - 0.45)];
@@ -157,6 +169,7 @@ const svg = (w, h, corpo) =>
 /* ------------------------------------------------------------------ diagramas */
 
 export function capa() {
+  semear("capa");
   let s = celular(30, 40, "A", [{ lado: "d", tique: "✓✓", azul: true }, { lado: "e" }, { lado: "d", tique: "✓" }]);
   s += celular(480, 40, "B", [{ lado: "e" }, { lado: "d", tique: "✓✓" }, { lado: "e" }]);
   s += caixa(225, 70, 150, 56, "servidor\nde chat", { preench: claro.azul });
@@ -168,6 +181,7 @@ export function capa() {
 }
 
 export function tempoReal() {
+  semear("tempoReal");
   let s = "";
   const col = (x, titulo) =>
     txt(x + 95, 22, titulo, { tam: 21 }) +
@@ -205,6 +219,7 @@ export function tempoReal() {
 }
 
 export function arquitetura() {
+  semear("arquitetura");
   let s = "";
   // cliente e entrada
   s += celular(10, 150, "app", [{ lado: "d", tique: "✓✓" }, { lado: "e" }]);
@@ -257,6 +272,7 @@ export function arquitetura() {
 }
 
 export function caminhoMensagem(L = {}) {
+  semear("caminhoMensagem");
   let s = "";
   const xs = { A: 75, SA: 262, Q: 450, C: 620, SB: 790, B: 970 };
   const nomes = { A: "A", SA: "servidor A", Q: "fila", C: "cache", SB: "servidor B", B: "B", ...L.nomes };
@@ -285,6 +301,7 @@ export function caminhoMensagem(L = {}) {
 }
 
 export function tiques() {
+  semear("tiques");
   let s = "";
   const est = [
     ["relógio", "pendente", claro.cinza, "só no celular de A"],
@@ -304,6 +321,7 @@ export function tiques() {
 }
 
 export function presenca() {
+  semear("presenca");
   let s = "";
   s += linha([[30, 90], [780, 90]], { cor: cor.cinza });
   for (let i = 0; i < 6; i++) {
@@ -322,6 +340,7 @@ export function presenca() {
 }
 
 export function grupos(L = {}) {
+  semear("grupos");
   let s = "";
   s += caixa(20, 120, 100, 56, "A", { preench: claro.verde, tam: 20 });
   s += caixa(170, 120, 120, 56, "servidor A", { preench: claro.azul, tam: 16 });
@@ -340,6 +359,7 @@ export function grupos(L = {}) {
 }
 
 export function midia() {
+  semear("midia");
   let s = "";
   s += celular(10, 40, "A", [{ lado: "d" }]);
   s += caixa(220, 20, 140, 52, "serviço\nde mídia", { preench: claro.verde, tam: 15 });
@@ -359,6 +379,7 @@ export function midia() {
 }
 
 export function snowflake() {
+  semear("snowflake");
   let s = "";
   const blocos = [
     [1, "", claro.cinza],
@@ -381,6 +402,7 @@ export function snowflake() {
 }
 
 export function particoes(L = {}) {
+  semear("particoes");
   let s = "";
   s += txt(200, 18, L.certo ?? "partição = conversa", { tam: 18, cor: cor.verde });
   s += check(320, 18, 16);
@@ -404,6 +426,7 @@ export function particoes(L = {}) {
 }
 
 export function reconexao(L = {}) {
+  semear("reconexao");
   let s = "";
   for (let i = 0; i < 3; i++) {
     const x = 30 + i * 170;
@@ -446,3 +469,24 @@ export const gruposLeigo = () =>
   grupos({ membros: "quem está?", on: "app aberto: recebe na hora", off: "fechado: notificação", rodape: "1 mensagem → 1 cópia para cada pessoa" });
 export const particoesLeigo = () => particoes({ certo: "uma gaveta por conversa", errado: "mensagens soltas", custo: "procura em todas as gavetas" });
 export const reconexaoLeigo = () => reconexao({ espera: "espera um pouquinho,\ndepois um pouco mais" });
+
+/* ------------------------------------------------------------ intro gravada (tela cheia 1080x1920) */
+
+/** Rabiscos que se desenham atrás da Julia na intro: o banco de mensagens à direita, a seta que sai
+ *  de trás dela e o fluxo tracejado. Coordenadas da tela do Reel (1080x1920). */
+export function introRabiscos() {
+  semear("introRabiscos");
+  const e = 3.4; // traço mais grosso: o desenho ocupa a tela inteira
+  const o = (x = {}) => ({ espessura: e, gap: 11, ...x });
+  let s = "";
+  // banco de mensagens embaixo à direita
+  const bx = 884, by = 1030, bw = 170, bh = 140, ry = 18;
+  s += paths(gen.path(`M${bx},${by + ry} L${bx},${by + bh - ry} A${bw / 2},${ry} 0 0 0 ${bx + bw},${by + bh - ry} L${bx + bw},${by + ry}`, base(o({ preench: claro.violeta }))));
+  s += elipse(bx + bw / 2, by + ry, bw, ry * 2, o({ preench: "#ffffff", hachura: "solid" }));
+  s += txt(bx + bw / 2, by + bh + 30, "mensagens", { tam: 32 });
+  // seta que sai de trás dela e chega no banco
+  s += seta(650, 1000, 876, 1080, { espessura: e, ponta: 22, cor: cor.tinta });
+  // fluxo tracejado por trás, de um lado ao outro
+  s += curva([[150, 1060], [420, 1010], [700, 960], [960, 1000]], { espessura: 2.6, cor: cor.cinza, tracejado: true });
+  return svg(1080, 1920, s);
+}
