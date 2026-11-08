@@ -20,7 +20,8 @@ export const MAXIMO = 149.8; // margem: o AAC declara a faixa de áudio uns cent
 export type Palavra = { w: string; s: number; e: number };
 export type Narracao = { duracao: number; palavras: Palavra[] };
 export type Foco = { x: number; y: number; w: number; h: number };
-export type NomeDiagrama = "caminhoLeigo" | "gruposLeigo" | "particoesLeigo" | "reconexaoLeigo";
+/** Nome de um diagrama (função de materiais/whatsapp/diagramas.mjs ou de materiais/whatsapp/reels-diagramas/). */
+export type NomeDiagrama = string;
 
 /** icone: "check", "x" ou um emoji. */
 export type Item = { texto: string; quando?: string; icone?: string; destaque?: boolean };
@@ -28,7 +29,15 @@ export type Linha = { grande: string; texto: string; quando?: string; destaque?:
 
 export type Visual =
   | { tipo: "gancho"; apoio?: string; texto: string }
-  | { tipo: "diagrama"; nome: NomeDiagrama; focos?: { quando: string; foco: Foco | null }[]; semDesenho?: boolean; focoInicial?: Foco }
+  | {
+      tipo: "diagrama";
+      nome: NomeDiagrama;
+      focos?: { quando: string; foco: Foco | null }[];
+      semDesenho?: boolean;
+      focoInicial?: Foco;
+      /** frase da narração em que cada etapa 1..N do desenho começa (null = já desenhada ao entrar) */
+      etapas?: (string | null)[];
+    }
   | { tipo: "linhas"; itens: Linha[]; curta?: boolean }
   | { tipo: "lista"; itens: Item[] }
   | { tipo: "comparacao"; emoji: string; frase: string; itens: Item[] }
@@ -376,7 +385,7 @@ export function falas(parte: 1 | 2 | 3): Palavra[] {
 }
 export const quadros = (parte: 1 | 2 | 3) => Math.ceil(total(parte) * FPS);
 
-export type CenaTempo = Cena & { inicio: number; fim: number; tempos: number[]; focosT: { de: number; foco: Foco | null }[] };
+export type CenaTempo = Cena & { inicio: number; fim: number; tempos: number[]; focosT: { de: number; foco: Foco | null }[]; etapasT?: number[] };
 
 /** Resolve o início de cada cena, de cada item e de cada enquadramento da câmera. */
 export function linhaDoTempo(parte: 1 | 2 | 3): CenaTempo[] {
@@ -396,7 +405,16 @@ export function linhaDoTempo(parte: 1 | 2 | 3): CenaTempo[] {
       return desde;
     });
     const focosT = v.tipo === "diagrama" ? (v.focos ?? []).map((f) => ({ de: achar(n, f.quando, inicio), foco: f.foco })) : [];
-    return { ...c, inicio, fim, tempos, focosT };
+    let desdeEt = inicio;
+    const etapasT =
+      v.tipo === "diagrama" && v.etapas
+        ? v.etapas.map((a) => {
+            if (a === null) return inicio - 100; // já desenhada quando a cena entra
+            desdeEt = achar(n, a, desdeEt);
+            return desdeEt;
+          })
+        : undefined;
+    return { ...c, inicio, fim, tempos, focosT, etapasT };
   });
 }
 

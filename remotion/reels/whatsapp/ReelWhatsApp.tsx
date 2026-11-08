@@ -16,6 +16,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import * as D from "../../../materiais/whatsapp/diagramas.mjs";
+import { diagramasReels } from "../../../materiais/whatsapp/reels-diagramas/index.mjs";
 import "../../lousa/fontes";
 import { FONTE_LOUSA } from "../../lousa/fontes";
 import { DiagramaAnimado, analisar } from "./Desenho";
@@ -49,6 +50,9 @@ if (typeof document !== "undefined") {
 }
 
 export const PERFIL = "@juliacardoso.dev";
+
+/** Diagramas disponíveis para as cenas: os do PDF/vídeo (diagramas.mjs) e os feitos para os Reels. */
+const DIAGRAMAS: Record<string, (() => string) | undefined> = { ...(D as unknown as Record<string, () => string>), ...diagramasReels };
 const COR = { tinta: "#1e1e1e", suave: "#495057", cinza: "#868e96", acento: "#0b7a6b", amarelo: "#ffec99", fundo: "#fbfbf8", vermelho: "#e03131" };
 const LADO = 56;
 const LARG = 1080 - LADO * 2;
@@ -229,7 +233,11 @@ function Linhas({ v, t, cena }: { v: Extract<Visual, { tipo: "linhas" }>; t: num
 }
 
 function Diagrama({ v, t, cena, h }: { v: Extract<Visual, { tipo: "diagrama" }>; t: number; cena: CenaTempo; h: number }) {
-  const svg = useMemo(() => D[v.nome](), [v.nome]);
+  const svg = useMemo(() => {
+    const f = DIAGRAMAS[v.nome];
+    if (!f) throw new Error(`Diagrama desconhecido: ${v.nome}`);
+    return f();
+  }, [v.nome]);
   const { largura, altura } = useMemo(() => analisar(svg), [svg]);
   const enquadrar = (f: Foco | null | undefined) => {
     const r = f ?? { x: 0, y: 0, w: largura, h: altura };
@@ -248,7 +256,13 @@ function Diagrama({ v, t, cena, h }: { v: Extract<Visual, { tipo: "diagrama" }>;
   return (
     <div style={{ position: "relative", width: LARG, height: h, overflow: "hidden" }}>
       <div style={{ position: "absolute", left: 0, top: 0, transformOrigin: "0 0", transform: `translate(${atual.x}px, ${atual.y}px) scale(${atual.s})` }}>
-        <DiagramaAnimado svg={svg} t={v.semDesenho ? 1e6 : t} de={0.15} dur={2.6} />
+        <DiagramaAnimado
+          svg={svg}
+          t={v.semDesenho ? 1e6 : t}
+          de={0.15}
+          dur={cena.etapasT ? 1.2 : 2.6}
+          etapas={cena.etapasT?.map((x) => x - cena.inicio)}
+        />
       </div>
     </div>
   );

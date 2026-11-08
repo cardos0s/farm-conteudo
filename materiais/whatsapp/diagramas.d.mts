@@ -16,3 +16,6 @@ export const gruposLeigo: Diagrama;
 export const particoesLeigo: Diagrama;
 export const reconexaoLeigo: Diagrama;
 export const introRabiscos: (parte?: number) => string;
+export const svg: (w: number, h: number, corpo: string) => string;
+export const etapa: (n: number, corpo: string) => string;
+export const semear: (nome: string) => void;

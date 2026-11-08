@@ -30,7 +30,7 @@ export const claro = {
 let semente = 7;
 /** Cada diagrama começa de uma semente fixa (derivada do nome), para o traço sair igual não importa
  *  em que ordem os desenhos são gerados (o render do vídeo usa várias abas em paralelo). */
-function semear(nome) {
+export function semear(nome) {
   let h = 2166136261;
   for (const c of nome) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
   semente = (Math.abs(h) % 100000) + 1;
@@ -148,7 +148,7 @@ export const xis = (x, y, s = 16, c = cor.vermelho) =>
   linha([[x + s / 2, y - s / 2], [x - s / 2, y + s / 2]], { cor: c, espessura: 2.6 });
 
 /** Celular estilizado com balões. */
-function celular(x, y, nome, baloes = []) {
+export function celular(x, y, nome, baloes = []) {
   let s = ret(x, y, 90, 160, { preench: "#ffffff", hachura: "solid" });
   s += linha([[x + 32, y + 12], [x + 58, y + 12]], { espessura: 2 });
   baloes.forEach((b, i) => {
@@ -160,8 +160,12 @@ function celular(x, y, nome, baloes = []) {
   return s + txt(x + 45, y + 185, nome, { tam: 18 });
 }
 
-const svg = (w, h, corpo) =>
+export const svg = (w, h, corpo) =>
   `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" class="diagrama">${corpo}</svg>`;
+
+/** Agrupa um pedaço do desenho numa etapa: no vídeo, cada etapa começa a se desenhar quando a
+ *  narração fala dela (etapa 0 = o que já aparece no começo da cena). */
+export const etapa = (n, corpo) => `<g data-etapa="${n}">${corpo}</g>`;
 
 /* ------------------------------------------------------------------ diagramas */
 
