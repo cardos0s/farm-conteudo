@@ -1,5 +1,5 @@
 // Renderiza HTML em PDF ou PNG com o Chromium do Playwright.
-// uso: node render.cjs <modo> <entrada.html> <saida>
+// uso: node render.cjs <modo> <entrada.html> <saida> [texto do rodapé]
 //   modo = corpo  → PDF com rodapé numerado e sumário de marcadores
 //          capa   → PDF de página única, sem rodapé
 //          png    → imagem da capa (para o EPUB)
@@ -8,7 +8,8 @@ const { pathToFileURL } = require("node:url");
 const path = require("node:path");
 
 (async () => {
-const [modo, entrada, saida] = process.argv.slice(2);
+const [modo, entrada, saida, textoRodape = ""] = process.argv.slice(2);
+const escapa = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
 const navegador = await chromium.launch();
 const contexto = await navegador.newContext(
   modo === "png"
@@ -27,7 +28,7 @@ if (modo === "png") {
       display:flex; justify-content:space-between;
       font-family:'DejaVu Sans Mono',monospace; font-size:7px;
       color:#4f5a6e; letter-spacing:0.04em;">
-      <span>Engenharia de Inferência · Júlia Cardoso · @juliacardoso.dev</span>
+      <span>${escapa(textoRodape)}</span>
       <span class="pageNumber"></span>
     </div>`;
   await pagina.pdf({

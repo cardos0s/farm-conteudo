@@ -1,0 +1,44 @@
+title: "Engenharia de IA a Fundo"
+subtitle: "17 conceitos explicados para estudar"
+author: "Júlia Cardoso"
+handle: "@juliacardoso.dev"
+lang: pt-BR
+date: "Novembro de 2026"
+description: >-
+  Do pré-treino ao MCP: RLHF, busca vetorial, quantização, contexto
+  longo, saídas estruturadas, LoRA, difusão, RAG e mais 9 conceitos,
+  cada um com teoria, contas, código testado, teste e flashcards.
+rights: >-
+  Lista de conceitos: Parte 2 da série “64 AI Engineering Concepts,
+  Clearly Explained”, de Neo Kim (System Design One). Explicações,
+  exemplos, códigos e exercícios: texto original desta edição.
+
+# usados pelo build (ebooks/_build/build.py)
+arquivo: engenharia-de-ia-a-fundo
+rodape: "Engenharia de IA a Fundo · Júlia Cardoso · @juliacardoso.dev"
+pdf-titulo: "Engenharia de IA a Fundo: 17 conceitos explicados para estudar"
+pdf-assunto: "Pré-treino, RLHF, LoRA, difusão, inferência, quantização, contexto longo, saídas estruturadas, RAG e MCP"
+pdf-palavras: "LLM, RLHF, LoRA, RAG, busca vetorial, quantização, MCP"
+sobretitulo: "Material de estudo · 1ª edição · Novembro de 2026"
+destaques:
+  - "**17** conceitos"
+  - "**4** partes"
+  - "teste e flashcards em **todo** capítulo"
+  - "código **testado**"
+legenda: >-
+  Um modelo de linguagem não escreve frases: a cada passo, ele dá uma
+  probabilidade para cada token do vocabulário, e um deles é sorteado.
+  Quase tudo neste livro muda alguma parte deste gráfico: como as
+  probabilidades foram aprendidas, o que entra no contexto, que tokens
+  são permitidos e quanto custa calculá-las.
+creditos:
+  - >-
+    Os 17 conceitos seguem a Parte 2 da série
+    [“64 AI Engineering Concepts, Clearly Explained”](https://newsletter.systemdesign.one/p/advanced-ai-concepts-explained),
+    de Neo Kim (newsletter System Design One), conceitos 18 a 34. As
+    explicações, exemplos, contas, códigos, testes e flashcards desta
+    edição são originais.
+  - >-
+    Números de modelos, hardware e desempenho são aproximados e servem
+    para raciocínio. Os blocos de código em Python foram executados;
+    os marcados como ilustrativos dependem de bibliotecas externas.

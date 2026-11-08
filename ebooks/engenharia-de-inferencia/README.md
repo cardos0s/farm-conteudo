@@ -15,20 +15,23 @@ De **Júlia Cardoso** (@juliacardoso.dev). Ebook em português com os 14 temas e
 ```text
 capitulos/      texto em Markdown (Pandoc), um arquivo por capítulo
 codigo/         código do livro, executado e testado
-build/          filtro do Pandoc, estilos, modelos, capa e script de build
+livro.yaml      metadados e textos da abertura
+capa.html       capa (a arte vem de arte.svg)
 dist/           saídas geradas
 GUIA-DE-ESTILO.md   regras de escrita e formato dos capítulos
 ```
 
+O script de build, os estilos e as fontes ficam em `ebooks/_build/`, compartilhados com os outros livros.
+
 ## Como gerar de novo
 
-Requisitos: `pandoc` 3, Node com Playwright (Chromium), Python 3 com `pypdf`.
+Requisitos: `pandoc` 3, Node com Playwright (Chromium), Python 3 com `pypdf` e `pyyaml`. Na raiz do repositório:
 
 ```bash
-python build/build.py
+python ebooks/_build/build.py ebooks/engenharia-de-inferencia
 ```
 
-Para gerar só um formato: `python build/build.py pdf`, `epub` ou `web`.
+Para gerar só um formato, acrescente `pdf`, `epub` ou `web` ao comando.
 
 O PDF é gerado em dois passos: o primeiro descobre a página de cada título (pelos destinos nomeados que o Chromium grava no PDF), o segundo escreve os números no sumário.
 
@@ -44,4 +47,4 @@ Os dois últimos precisam de PyTorch (a versão para CPU basta).
 
 ## Fontes
 
-Source Serif 4 e IBM Plex Sans Condensed (SIL Open Font License) e um subconjunto da DejaVu Sans Mono (licença livre da Bitstream Vera/DejaVu). Detalhes em `build/fontes/LICENCAS.md`.
+Source Serif 4 e IBM Plex Sans Condensed (SIL Open Font License) e um subconjunto da DejaVu Sans Mono (licença livre da Bitstream Vera/DejaVu). Detalhes em `ebooks/_build/fontes/LICENCAS.md`.

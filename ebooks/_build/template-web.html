@@ -1,4 +1,4 @@
-<title>Engenharia de Inferência</title>
+<title>$title$</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="$description$">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,20 +12,19 @@
 <div class="pagina">
   <header class="abertura">
     <div class="abertura-texto">
-      <p class="sobretitulo">Guia de entrevistas · 1ª edição · $date$</p>
+      <p class="sobretitulo">$sobretitulo$</p>
       <p class="titulo-livro">$title$</p>
       <p class="subtitulo-livro">$description$</p>
       <p class="autoria"><span class="autora">$author$</span><span class="contato">$handle$</span></p>
       <ul class="numeros" aria-label="Conteúdo do livro">
-        <li><strong>14</strong> capítulos</li>
-        <li><strong>50</strong> perguntas comentadas</li>
-        <li><strong>~78 mil</strong> palavras</li>
-        <li>código <strong>testado</strong></li>
+$for(destaques)$
+        <li>$destaques$</li>
+$endfor$
       </ul>
     </div>
     <figure class="abertura-grafico">
-      <!--ROOFLINE-->
-      <figcaption>O telhado da H100. O decode com batch 1 fica muito abaixo do teto porque é limitado pela banda de memória; o batching sobe pela rampa; o prefill encosta no teto de cálculo. O livro inteiro é sobre andar neste gráfico.</figcaption>
+      <!--ARTE-->
+      <figcaption>$legenda$</figcaption>
     </figure>
   </header>
   <div class="corpo">
@@ -45,7 +44,9 @@ $toc$
 $body$
       <footer class="creditos">
         <p><strong>$author$</strong> · $handle$</p>
-        <p>As 50 perguntas vêm do levantamento publicado pelo <a href="https://aiengineeringinsider.substack.com/p/you-should-never-walk-into-an-inference">AI Engineering Insider</a>. Respostas, explicações, diagramas e códigos são originais desta edição. Valores de hardware e desempenho são aproximados.</p>
+$for(creditos)$
+        <p>$creditos$</p>
+$endfor$
       </footer>
     </main>
   </div>

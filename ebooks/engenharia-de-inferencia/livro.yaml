@@ -1,0 +1,42 @@
+title: "Engenharia de Inferência"
+subtitle: "O guia completo para entrevistas"
+author: "Júlia Cardoso"
+handle: "@juliacardoso.dev"
+lang: pt-BR
+date: "Novembro de 2026"
+description: >-
+  Os 14 temas e as 50 perguntas que caem em entrevistas de engenharia
+  de inferência em OpenAI, Anthropic, NVIDIA, Google e outras,
+  explicados do zero até o nível sênior.
+rights: >-
+  Lista de perguntas: AI Engineering Insider. Respostas, explicações
+  e código: texto original desta edição.
+
+# usados pelo build (ebooks/_build/build.py)
+arquivo: engenharia-de-inferencia
+rodape: "Engenharia de Inferência · Júlia Cardoso · @juliacardoso.dev"
+pdf-titulo: "Engenharia de Inferência: o guia completo para entrevistas"
+pdf-assunto: "Os 14 temas e as 50 perguntas de entrevistas de engenharia de inferência"
+pdf-palavras: "LLM, inferência, GPU, CUDA, KV cache, batching"
+sobretitulo: "Guia de entrevistas · 1ª edição · Novembro de 2026"
+destaques:
+  - "**14** capítulos"
+  - "**50** perguntas comentadas"
+  - "**~78 mil** palavras"
+  - "código **testado**"
+legenda: >-
+  O telhado da H100. O decode com batch 1 fica muito abaixo do teto
+  porque é limitado pela banda de memória; o batching sobe pela rampa;
+  o prefill encosta no teto de cálculo. O livro inteiro é sobre andar
+  neste gráfico.
+creditos:
+  - >-
+    As 50 perguntas comentadas vêm do levantamento publicado pelo
+    [AI Engineering Insider](https://aiengineeringinsider.substack.com/p/you-should-never-walk-into-an-inference)
+    no post “You should never walk into an Inference Engineering
+    interview without knowing these 50 questions”. As respostas,
+    explicações, diagramas e códigos desta edição são originais.
+  - >-
+    Valores de hardware, preços e números de desempenho são
+    aproximados e servem para raciocínio; confira as especificações
+    da geração com que você vai trabalhar.

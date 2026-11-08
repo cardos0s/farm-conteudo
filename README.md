@@ -162,4 +162,6 @@ O estado fica em `dados/` (um JSON por peça) e os vídeos em `saida/`. As duas 
 
 ## Ebooks
 
-- [`ebooks/engenharia-de-inferencia`](ebooks/engenharia-de-inferencia/): guia de entrevistas de engenharia de inferência em PDF, EPUB e HTML, com o texto em Markdown e o script de build.
+- [`ebooks/engenharia-de-inferencia`](ebooks/engenharia-de-inferencia/): guia de entrevistas de engenharia de inferência em PDF, EPUB e HTML.
+- [`ebooks/engenharia-de-ia-a-fundo`](ebooks/engenharia-de-ia-a-fundo/): 17 conceitos de engenharia de IA para estudar, com testes, flashcards para o Anki e código testado.
+- [`ebooks/_build`](ebooks/_build/): build compartilhado (Pandoc + Chromium) que gera os livros a partir do Markdown.

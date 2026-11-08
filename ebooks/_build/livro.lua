@@ -12,6 +12,19 @@ function CodeBlock(el)
   return el
 end
 
+-- respostas dos testes: recolhidas na versão web
+local web = os.getenv("SAIDA") == "web"
+function Div(el)
+  if web and el.classes:includes("respostas") then
+    local blocos = pandoc.List({
+      pandoc.RawBlock("html", '<details class="respostas">'
+        .. "<summary>Ver respostas</summary>") })
+    blocos:extend(el.content)
+    blocos:insert(pandoc.RawBlock("html", "</details>"))
+    return blocos
+  end
+end
+
 -- tabelas largas rolam dentro de um contêiner próprio
 function Table(el)
   return pandoc.Div({ el }, pandoc.Attr("", { "tabela" }))
@@ -46,10 +59,13 @@ function Header(el)
       pandoc.Span(titulo, pandoc.Attr("", { "titulo" })),
     })
   end
-  -- resumo e checklist ficam fora do sumário (aparecem em todo capítulo)
-  local texto = pandoc.utils.stringify(el.content)
-  if el.level == 2 and (texto == "Resumo do capítulo"
-      or texto == "Checklist para a entrevista") then
+  -- seções que se repetem em todo capítulo ficam fora do sumário
+  local fixas = {
+    ["Resumo do capítulo"] = true, ["Checklist para a entrevista"] = true,
+    ["Erros comuns"] = true, ["Por que importa"] = true,
+    ["Teste-se"] = true, ["Flashcards"] = true,
+  }
+  if el.level == 2 and fixas[pandoc.utils.stringify(el.content)] then
     el.classes:insert("unlisted")
   end
   return el

@@ -1,4 +1,16 @@
-<svg class="roofline" viewBox="0 0 1120 760" role="img" aria-labelledby="roofline-titulo">
+<svg class="arte roofline" viewBox="0 0 1120 760" role="img" aria-labelledby="roofline-titulo">
+  <style>
+    .roofline text { font-family: var(--fonte-mono); fill: var(--tinta-suave); font-size: 22px; }
+    .roofline .grade line { stroke: var(--linha); stroke-width: 1.5; }
+    .roofline .eixos line { stroke: var(--tinta-suave); stroke-width: 2.5; }
+    .roofline .eixo-titulo { font-size: 20px; }
+    .roofline .teto { fill: none; stroke: var(--destaque); stroke-width: 6; stroke-linejoin: round; }
+    .roofline .rotulo-teto { fill: var(--destaque); font-size: 23px; font-weight: 700; }
+    .roofline .equilibrio { stroke: var(--tinta-suave); stroke-width: 2; stroke-dasharray: 8 8; }
+    .roofline .rotulo-equilibrio { font-size: 20px; }
+    .roofline .ponto { fill: var(--conta); stroke: var(--papel); stroke-width: 4; }
+    .roofline .rotulo-ponto { fill: var(--tinta); font-size: 22px; }
+  </style>
   <title id="roofline-titulo">Modelo roofline da H100: teto de banda de 3,35 TB/s, teto de cálculo de 989 TFLOPS em BF16, ponto de equilíbrio perto de 295 FLOP por byte, com o decode de batch 1 bem abaixo, o decode de batch 64 sobre a rampa e o prefill perto do teto.</title>
   <!-- escala log-log: x de 0,1 a 10.000 FLOP/byte; y de 1 a 2.000 TFLOPS -->
   <g class="grade">

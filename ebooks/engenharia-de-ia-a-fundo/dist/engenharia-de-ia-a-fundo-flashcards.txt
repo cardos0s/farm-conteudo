@@ -1,0 +1,173 @@
+#separator:tab
+#html:true
+#tags column:3
+O que é pré-treino?	A primeira etapa de treino: prever o próximo token em trilhões de tokens de texto, ajustando os pesos para reduzir a entropia cruzada.	01_pretreino
+Qual a fórmula da perda do pré-treino?	Entropia cruzada: média de -\log p(x_t \mid x_{<t}) sobre as posições.	01_pretreino
+O que é perplexidade?	e^{\text{perda}}; o número de opções igualmente prováveis entre as quais o modelo "hesita" em média.	01_pretreino
+Qual a perda de um chute uniforme num vocabulário de tamanho V?	\ln V (11,8 para 128 mil tokens).	01_pretreino
+O que é teacher forcing?	Treinar com o texto verdadeiro como contexto em todas as posições, calculando todas as previsões numa só passada.	01_pretreino
+Como estimar o custo de cálculo de um treino?	C \approx 6 N D FLOPs (N parâmetros, D tokens).	01_pretreino
+O que diz o Chinchilla?	Para um cálculo fixo, o ótimo é ~20 tokens de treino por parâmetro, crescendo modelo e dados juntos.	01_pretreino
+Por que treinar modelos pequenos além do ótimo do Chinchilla?	Porque a inferência de um modelo menor é mais barata, e o modelo é usado muitas vezes.	01_pretreino
+O que é um modelo base?	O resultado do pré-treino: continua textos, mas não se comporta como assistente.	01_pretreino
+Para que serve o pré-treino continuado?	Adicionar conhecimento de um domínio ou idioma a um modelo base, continuando o pré-treino com dados novos.	01_pretreino
+O que é aprendizado autossupervisionado?	Treinar com rótulos construídos a partir dos próprios dados (lacunas, próximo token, pares correspondentes), sem rotulagem humana.	02_autossupervisionado
+O que é uma tarefa de pretexto?	Uma tarefa cuja resposta está nos dados, usada para forçar o modelo a aprender representações úteis.	02_autossupervisionado
+Qual a tarefa de pretexto dos LLMs?	Prever o próximo token a partir dos anteriores.	02_autossupervisionado
+Como funciona a modelagem mascarada do BERT?	15% dos tokens são escolhidos; 80% viram [MASK], 10% um token aleatório, 10% ficam iguais; o modelo prevê os originais.	02_autossupervisionado
+O que é aprendizado contrastivo?	Aproximar pares positivos e afastar negativos no espaço de embeddings.	02_autossupervisionado
+O que é a perda InfoNCE?	Entropia cruzada sobre similaridades: a probabilidade de escolher o positivo entre todos os candidatos, com temperatura τ.	02_autossupervisionado
+O que são negativos do próprio lote?	Usar os outros B−1 pares do lote como negativos de cada consulta.	02_autossupervisionado
+O que é o CLIP?	Modelo treinado contrastivamente com imagens e legendas, que coloca texto e imagem no mesmo espaço.	02_autossupervisionado
+O que é colapso de representações?	Quando o modelo mapeia tudo para o mesmo vetor; evitado com negativos ou técnicas específicas.	02_autossupervisionado
+Encoder estilo BERT ou decoder estilo GPT para busca semântica?	Em geral, um encoder de embeddings treinado contrastivamente.	02_autossupervisionado
+O que é geração autorregressiva?	Gerar um token por vez, cada um condicionado a todos os anteriores, anexando a escolha ao contexto.	03_geracao_autorregressiva
+Qual a regra da cadeia para sequências?	P(x_1..x_T) = \prod_t P(x_t \mid x_{<t}).	03_geracao_autorregressiva
+O que é decodificação greedy?	Escolher sempre o token mais provável; determinístico, mas pode repetir e entrar em loop.	03_geracao_autorregressiva
+O que é beam search?	Manter os k melhores prefixos a cada passo; acha sequências mais prováveis, mas pode ficar genérico.	03_geracao_autorregressiva
+O que a temperatura faz?	Divide os logits antes do softmax: T<1 concentra, T>1 espalha, T→0 vira greedy.	03_geracao_autorregressiva
+O que é top-p (nucleus)?	Sortear só entre o menor conjunto de tokens cuja probabilidade soma p.	03_geracao_autorregressiva
+O que é min-p?	Manter só tokens com probabilidade ≥ m vezes a do favorito.	03_geracao_autorregressiva
+O que é exposure bias?	O modelo é treinado com o texto verdadeiro, mas gera a partir das próprias escolhas; erros se propagam.	03_geracao_autorregressiva
+Por que gerar é sequencial?	Cada token depende do anterior, que só existe depois de gerado.	03_geracao_autorregressiva
+Por que temperatura 0 nem sempre é determinística em produção?	Lotes e ordem de somas em ponto flutuante mudam entre chamadas; empates quase exatos podem virar para outro lado.	03_geracao_autorregressiva
+O que é RLHF?	Pós-treino em que comparações humanas treinam um modelo de recompensa, e o LLM é otimizado para notas maiores com penalidade KL.	04_rlhf
+O que é SFT?	Ajuste supervisionado com pares instrução → resposta escrita por pessoas; normalmente a primeira etapa do pós-treino.	04_rlhf
+O que é o modelo de Bradley-Terry?	P(y_w \succ y_l) = \sigma(r(y_w) - r(y_l)): a preferência depende da diferença de notas.	04_rlhf
+Qual a perda do modelo de recompensa?	-\log \sigma(r(x,y_w) - r(x,y_l)).	04_rlhf
+Para que serve a penalidade KL no RLHF?	Manter a política perto da referência, onde a recompensa aprendida é confiável.	04_rlhf
+O que é reward hacking?	A política explora falhas do modelo de recompensa (ex.: verbosidade, bajulação) em vez de melhorar de verdade.	04_rlhf
+O que é DPO?	Otimização direta das preferências, sem modelo de recompensa nem RL, comparando log-probabilidades com a referência.	04_rlhf
+O que é RLAIF / Constitutional AI?	Usar um modelo, guiado por princípios escritos, para gerar as avaliações de preferência.	04_rlhf
+O que é RL com recompensas verificáveis?	Reforço em que a recompensa vem de uma checagem automática (resposta certa, testes passando).	04_rlhf
+Como o GRPO calcula vantagens?	Recompensa de cada resposta comparada com a média (e desvio) do grupo de respostas ao mesmo problema.	04_rlhf
+O que é PEFT?	Adaptar um modelo treinando só uma pequena fração de parâmetros (novos ou existentes).	05_peft_lora
+Qual a fórmula do LoRA?	W' = W + \frac{\alpha}{r} B A, com W congelada e A, B treináveis de posto r.	05_peft_lora
+Por que B começa em zero no LoRA?	Para o modelo adaptado começar idêntico ao original.	05_peft_lora
+Quantos parâmetros um LoRA de posto r adiciona a uma matriz d×k?	r·(d + k).	05_peft_lora
+O que é fundir um adaptador LoRA?	Somar (α/r)·BA aos pesos, eliminando custo extra na inferência.	05_peft_lora
+O que é QLoRA?	LoRA sobre um modelo base quantizado em 4 bits (NF4), permitindo fine-tuning de modelos grandes numa GPU.	05_peft_lora
+Quanta memória o fine-tuning completo com Adam usa por parâmetro?	Cerca de 16 bytes (sem ativações).	05_peft_lora
+Para que o fine-tuning é bom?	Formato, estilo, tarefas específicas e comportamento.	05_peft_lora
+Para que o fine-tuning é ruim?	Ensinar muitos fatos novos ou que mudam; para isso, busca e contexto.	05_peft_lora
+Um adaptador LoRA funciona em outro modelo base?	Não; ele é uma correção para os pesos daquela versão específica.	05_peft_lora
+O que é um modelo de difusão?	Um gerador que aprende a remover ruído e cria dados partindo de ruído puro, em vários passos.	06_difusao
+O que é o processo de ida (forward)?	Adicionar ruído gaussiano aos poucos até o dado virar ruído; fixo, sem aprendizado.	06_difusao
+Qual a fórmula para pular direto ao passo t?	x_t = \sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\varepsilon.	06_difusao
+Qual a perda de treino de um DDPM?	Erro quadrático entre o ruído adicionado e o ruído previsto pela rede.	06_difusao
+Como reduzir o número de passos de geração?	DDIM, amostradores melhores, destilação, flow matching.	06_difusao
+O que é classifier-free guidance?	Combinar previsões com e sem condição: ε̂ = ε_vazio + w(ε_texto − ε_vazio).	06_difusao
+O que é difusão latente?	Fazer a difusão no espaço comprimido de um autoencoder (VAE) e decodificar para pixels no fim.	06_difusao
+Como o texto entra num modelo de difusão?	Codificado por um modelo de texto e injetado na rede por atenção cruzada.	06_difusao
+O que é um DiT?	Um transformer de difusão: o latente vira patches tratados como tokens.	06_difusao
+Difusão vs autorregressivo?	Difusão gera tudo junto refinando em passos; autorregressivo gera um token por vez.	06_difusao
+O que é inferência?	Usar um modelo treinado para produzir saídas; em LLMs, prefill do prompt e decode token a token.	07_inferencia
+Qual o gargalo do prefill?	Cálculo: muitos tokens processados em paralelo.	07_inferencia
+Qual o gargalo do decode?	Memória: ler todos os pesos a cada token gerado.	07_inferencia
+Qual o limite de tokens/s de um usuário sozinho?	Aproximadamente banda de memória ÷ tamanho dos pesos.	07_inferencia
+O que é o KV cache?	Vetores K e V guardados por token e camada, para não recalcular o contexto a cada token.	07_inferencia
+Qual a fórmula do KV cache por token?	2 × camadas × heads de KV × dimensão por head × bytes.	07_inferencia
+Como calcular a latência total?	TTFT + (N − 1) × TPOT.	07_inferencia
+O que é batching contínuo?	Reavaliar o lote a cada passo: quem termina sai, quem espera entra.	07_inferencia
+O que é prompt caching?	Reaproveitar o KV cache de um prefixo repetido, pulando o prefill dessa parte.	07_inferencia
+Por que tokens de saída custam mais?	O decode gera um token por passada e usa a GPU de forma menos eficiente que o prefill.	07_inferencia
+O que é quantização?	Representar pesos, ativações ou KV cache com menos bits, usando escalas.	08_quantizacao
+Qual a fórmula da quantização simétrica?	q = \text{round}(x/s) com s = \max|x|/q_{max}; recupera-se \hat x = s\,q.	08_quantizacao
+Quantos valores um peso em 4 bits pode assumir?	16.	08_quantizacao
+Por que outliers atrapalham a quantização?	Aumentam a escala do grupo, e os valores pequenos viram zero.	08_quantizacao
+O que é quantização por grupo?	Uma escala para cada grupo pequeno de pesos (ex.: 64 ou 128).	08_quantizacao
+Quanto ocupa um modelo de 70B em 4 bits?	Cerca de 35–40 GB.	08_quantizacao
+Quando a quantização de pesos acelera bastante?	Na geração com poucos usuários, limitada pela memória.	08_quantizacao
+O que é GGUF?	O formato de arquivo do llama.cpp para modelos quantizados (ex.: Q4_K_M), usado em ferramentas locais.	08_quantizacao
+O que fazem GPTQ e AWQ?	Quantização pós-treino de pesos que reduz o erro (compensação de erro; proteção de pesos importantes).	08_quantizacao
+Por que perplexidade não basta para avaliar quantização?	Pode esconder perdas em raciocínio, código, contexto longo e idiomas menos representados.	08_quantizacao
+O que é a janela de contexto?	O máximo de tokens que o modelo processa numa chamada, somando entrada e saída.	09_janela_de_contexto
+A resposta ocupa espaço na janela?	Sim; reserve tokens para ela.	09_janela_de_contexto
+Por que português gasta mais tokens?	Os tokenizadores foram treinados com mais texto em inglês; palavras em português são quebradas em mais pedaços.	09_janela_de_contexto
+Como cresce o custo da atenção com o contexto?	Com o quadrado do número de tokens (no prefill).	09_janela_de_contexto
+Como cresce o KV cache com o contexto?	Linearmente: tokens × bytes por token.	09_janela_de_contexto
+O que é "lost in the middle"?	A tendência de usar pior informações no meio de contextos longos.	09_janela_de_contexto
+Como os modelos estendem o contexto?	Treino com sequências longas e escalonamento das posições (RoPE: interpolação, NTK, YaRN).	09_janela_de_contexto
+Onde colocar a pergunta num contexto longo?	Em geral, depois dos documentos, no fim.	09_janela_de_contexto
+O que é compactação de contexto?	Resumir partes antigas da conversa para liberar espaço.	09_janela_de_contexto
+Contexto longo ou RAG?	Contexto longo para material único e médio; RAG para bases grandes e perguntas pontuais.	09_janela_de_contexto
+O que é uma saída estruturada?	Uma resposta que segue um formato definido, como JSON com campos, tipos e valores permitidos.	10_saidas_estruturadas
+O que é decodificação com restrições?	Mascarar, a cada passo, os tokens que tornariam a saída inválida segundo uma gramática.	10_saidas_estruturadas
+Como a gramática é usada na decodificação?	Convertida num autômato que, em cada estado, define os tokens permitidos.	10_saidas_estruturadas
+Modo JSON vs esquema?	O modo JSON garante sintaxe; o esquema garante também campos, tipos e valores.	10_saidas_estruturadas
+Formato certo garante conteúdo certo?	Não; valores podem estar errados ou inventados.	10_saidas_estruturadas
+Por que a ordem dos campos importa?	A geração é da esquerda para a direita; campos anteriores condicionam os seguintes.	10_saidas_estruturadas
+Como evitar invenção em campos que podem não existir?	Permitir null e instruir quando usá-lo.	10_saidas_estruturadas
+O que é chamada de ferramentas?	O modelo devolve nome de ferramenta e argumentos num esquema; o código executa e devolve o resultado.	10_saidas_estruturadas
+O que fazer com uma saída que falha na validação?	Tentar de novo com o erro no contexto, encaminhar para revisão ou devolver erro claro.	10_saidas_estruturadas
+Por que deixar um campo de raciocínio antes da resposta?	Para o modelo raciocinar antes de decidir, em tarefas difíceis.	10_saidas_estruturadas
+O que é aprendizado em contexto?	Seguir instruções e exemplos do prompt para fazer uma tarefa, sem mudar os pesos.	11_aprendizado_em_contexto
+O que é few-shot?	Incluir alguns exemplos de entrada e saída no prompt.	11_aprendizado_em_contexto
+O que os exemplos mostram ao modelo?	As respostas possíveis, o formato e como decidir.	11_aprendizado_em_contexto
+Que atalhos os exemplos podem ensinar sem querer?	Palavras-chave, distribuição de rótulos, ordem e formato.	11_aprendizado_em_contexto
+Quais exemplos ensinam mais?	Casos difíceis, variados e de fronteira.	11_aprendizado_em_contexto
+O que é escolha de exemplos por similaridade?	Buscar, num banco rotulado, os exemplos mais parecidos com a entrada atual.	11_aprendizado_em_contexto
+O que é chain-of-thought em exemplos?	Exemplos em que a resposta vem depois de um raciocínio passo a passo.	11_aprendizado_em_contexto
+O modelo lembra os exemplos de chamadas anteriores?	Não; só existe o que está no contexto da chamada.	11_aprendizado_em_contexto
+Em contexto ou fine-tuning?	Em contexto para testar rápido e poucas regras; fine-tuning para muitos exemplos, custo e latência.	11_aprendizado_em_contexto
+Em contexto ou busca?	Em contexto ensina tarefa e formato; busca traz conhecimento e fatos.	11_aprendizado_em_contexto
+O que é chunking?	Dividir documentos em pedaços que serão indexados e buscados individualmente.	12_chunking
+Por que dividir documentos para RAG?	Embeddings focados, busca precisa, menos tokens no contexto e limites dos modelos de embedding.	12_chunking
+Qual o dilema do tamanho do chunk?	Pequenos são precisos mas perdem contexto; grandes têm contexto mas buscam mal e gastam tokens.	12_chunking
+O que é chunking recursivo?	Cortar pelos separadores mais fortes primeiro (parágrafo, linha, frase, palavra) até caber no limite.	12_chunking
+Para que serve a sobreposição entre chunks?	Garantir que informação na fronteira apareça inteira em algum pedaço.	12_chunking
+O que é o cabeçalho de contexto?	Prefixar cada pedaço com documento e caminho de seções antes de indexar.	12_chunking
+O que é contextual retrieval?	Usar um LLM para escrever uma descrição situando cada pedaço no documento, anexada antes de indexar.	12_chunking
+O que é small-to-big (pai e filho)?	Buscar com pedaços pequenos e entregar o pedaço maior que os contém.	12_chunking
+Como dividir tabelas?	Sem separar as linhas do cabeçalho; repita o cabeçalho ou converta linhas em texto.	12_chunking
+Como avaliar uma estratégia de chunking?	Recall@k da busca e qualidade da resposta num conjunto de perguntas com resposta conhecida.	12_chunking
+O que é busca vetorial?	Encontrar os itens cujos embeddings estão mais próximos do embedding da consulta.	13_busca_vetorial
+O que é um embedding?	Um vetor que representa o significado de um texto (ou imagem), com significados parecidos próximos.	13_busca_vetorial
+Cosseno, produto escalar e distância com vetores normalizados?	Dão a mesma ordenação.	13_busca_vetorial
+O que é ANN?	Vizinhos mais próximos aproximados: examinar só parte da base, aceitando perder alguns vizinhos.	13_busca_vetorial
+Como funciona o IVF?	Agrupa os vetores em clusters e busca só nos nprobe clusters mais próximos da consulta.	13_busca_vetorial
+Como funciona o HNSW?	Um grafo em camadas de vizinhos; a busca desce das ligações longas para as curtas.	13_busca_vetorial
+O que é PQ (quantização de produto)?	Comprimir vetores em códigos curtos por pedaços, com distâncias aproximadas.	13_busca_vetorial
+O que é recall@k?	Fração dos k vizinhos verdadeiros que o índice aproximado encontrou.	13_busca_vetorial
+Quando a busca exata basta?	Em bases de até centenas de milhares ou poucos milhões de vetores, com latência aceitável.	13_busca_vetorial
+Onde a busca vetorial falha?	Termos exatos, números, nomes raros, negações; combine com busca lexical.	13_busca_vetorial
+O que é busca híbrida?	Combinar busca lexical (palavras) e vetorial (significado) e fundir os resultados.	14_busca_hibrida
+Em que a busca lexical é melhor?	Termos exatos: códigos, números, nomes raros, siglas.	14_busca_hibrida
+Em que a busca vetorial é melhor?	Paráfrases e sinônimos.	14_busca_hibrida
+Quais as intuições do BM25?	Termos raros valem mais (IDF), frequência satura (k1), documentos longos são penalizados (b).	14_busca_hibrida
+Qual a fórmula do IDF no BM25?	\ln((N - n + 0{,}5)/(n + 0{,}5) + 1).	14_busca_hibrida
+O que é RRF?	Reciprocal Rank Fusion: soma de 1/(k + posição) em cada lista, com k ≈ 60.	14_busca_hibrida
+Por que a RRF usa posições e não notas?	Porque notas de buscas diferentes têm escalas incomparáveis.	14_busca_hibrida
+O que é busca esparsa aprendida (SPLADE)?	Vetores esparsos sobre o vocabulário com pesos e expansões aprendidos por uma rede.	14_busca_hibrida
+Qual a ordem típica do pipeline de busca?	BM25 e vetorial em paralelo → fusão → reranking → contexto.	14_busca_hibrida
+Que cuidados a busca lexical precisa em português?	Acentos, flexões (stemming), palavras vazias, códigos.	14_busca_hibrida
+O que é reranking?	Reordenar os candidatos da busca com um modelo mais preciso que lê consulta e candidato juntos.	15_reranking
+Quais os dois estágios da busca?	Recall (rápido, muitos candidatos) e precisão (reranking dos melhores).	15_reranking
+O que é um bi-encoder?	Codifica consulta e documento separadamente; vetores dos documentos pré-calculados.	15_reranking
+O que é um cross-encoder?	Lê consulta e documento juntos e devolve uma nota de relevância; não pré-calcula nada.	15_reranking
+O reranker recupera documentos que a busca não trouxe?	Não; ele só reordena os candidatos recebidos.	15_reranking
+O que é MRR?	Média de 1/posição do primeiro resultado relevante.	15_reranking
+O que é nDCG@k?	Ganho acumulado com desconto logarítmico pela posição, dividido pelo ideal.	15_reranking
+O que é ColBERT (interação tardia)?	Vetores por token e similaridade MaxSim entre tokens da consulta e do documento.	15_reranking
+Quantos candidatos reranquear?	Tipicamente de 50 a 200, mantendo de 3 a 10 no final.	15_reranking
+Para que serve a nota mínima do reranker?	Cortar ruído e detectar quando a base não tem a resposta.	15_reranking
+O que é alucinação?	Conteúdo gerado e apresentado como verdadeiro, mas falso ou sem apoio.	16_alucinacao_e_fundamentacao
+O que é factualidade?	Estar correto em relação ao mundo.	16_alucinacao_e_fundamentacao
+O que é fundamentação (groundedness)?	Estar apoiado nas fontes fornecidas e verificáveis.	16_alucinacao_e_fundamentacao
+Uma resposta fundamentada pode estar errada?	Sim, se a fonte estiver errada ou desatualizada.	16_alucinacao_e_fundamentacao
+Por que os modelos alucinam?	Objetivo de texto plausível, chute recompensado, lacunas, coerência com erros, bajulação e problemas de contexto.	16_alucinacao_e_fundamentacao
+Onde a alucinação nasce num RAG?	Na busca, nos documentos ou na geração.	16_alucinacao_e_fundamentacao
+O que a verificação de citações confere?	Que a fonte existe e que o trecho citado está nela.	16_alucinacao_e_fundamentacao
+O que é verificação de apoio?	Julgar, com outro modelo ou classificador, se o trecho realmente sustenta a afirmação.	16_alucinacao_e_fundamentacao
+O que é abstenção no RAG?	Responder que não encontrou quando nenhum trecho passa na nota mínima.	16_alucinacao_e_fundamentacao
+Temperatura baixa resolve alucinação?	Não; reduz variação, não ignorância.	16_alucinacao_e_fundamentacao
+O que é o MCP?	Um padrão aberto para conectar aplicações de IA a ferramentas e fontes de dados via servidores.	17_mcp
+Quais os papéis no MCP?	Host (aplicação), cliente (conexão com um servidor) e servidor (expõe capacidades).	17_mcp
+Qual o formato das mensagens do MCP?	JSON-RPC 2.0.	17_mcp
+Quais as primitivas do servidor?	Ferramentas (o modelo controla), recursos (a aplicação controla) e prompts (o usuário escolhe).	17_mcp
+Quais métodos listam e chamam ferramentas?	tools/list e tools/call.	17_mcp
+O que é sampling no MCP?	O servidor pede ao modelo do host que gere um texto.	17_mcp
+O que é elicitation?	O servidor pede ao usuário uma informação ou confirmação.	17_mcp
+Quais os transportes do MCP?	stdio (processo local) e HTTP (Streamable HTTP), com OAuth em servidores remotos.	17_mcp
+O que é envenenamento de ferramenta?	Instruções maliciosas escondidas na descrição de uma ferramenta.	17_mcp
+MCP vs chamada de ferramentas?	MCP conecta aplicação e sistemas; chamada de ferramentas é como o modelo pede para usar uma.	17_mcp

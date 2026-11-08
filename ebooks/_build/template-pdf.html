@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>$title$</title>
+<link rel="stylesheet" href="${base}fontes.css">
+<link rel="stylesheet" href="${base}estilo.css">
+<link rel="stylesheet" href="${base}print.css">
+</head>
+<body>
+<section class="folha-rosto">
+  <div>
+    <p class="sobretitulo">$sobretitulo$</p>
+    <p class="titulo-livro">$title$</p>
+    <p class="subtitulo-livro">$description$</p>
+    <p class="autoria"><span class="autora">$author$</span><span class="contato">$handle$</span></p>
+  </div>
+  <div class="creditos">
+$for(creditos)$
+    <p>$creditos$</p>
+$endfor$
+  </div>
+</section>
+<nav class="sumario" id="sumario" aria-label="Sumário">
+<p class="sumario-titulo">Sumário</p>
+$toc$
+</nav>
+<main>
+$body$
+</main>
+</body>
+</html>

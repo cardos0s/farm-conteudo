@@ -1,0 +1,54 @@
+<svg class="arte proximo-token" viewBox="0 0 1120 760" role="img" aria-labelledby="arte-titulo">
+  <style>
+    .proximo-token text { font-family: var(--fonte-mono); fill: var(--tinta-suave); font-size: 22px; }
+    .proximo-token .rotulo-eixo { font-size: 19px; letter-spacing: 0.08em; }
+    .proximo-token .contexto { font-family: var(--fonte-texto); font-style: italic; fill: var(--tinta); font-size: 31px; }
+    .proximo-token .token { fill: var(--tinta); font-size: 25px; }
+    .proximo-token .token-top { fill: var(--destaque); font-size: 25px; font-weight: 700; }
+    .proximo-token .valor { font-size: 21px; }
+    .proximo-token .valor-top { fill: var(--destaque); font-size: 21px; font-weight: 700; }
+    .proximo-token .grade line { stroke: var(--linha); stroke-width: 1.5; }
+    .proximo-token .eixo { stroke: var(--tinta-suave); stroke-width: 2.5; }
+    .proximo-token .barra { fill: var(--tinta-suave); opacity: 0.55; }
+    .proximo-token .barra-top { fill: var(--destaque); }
+    .proximo-token .barra-outros { fill: none; stroke: var(--tinta-suave); stroke-width: 2; stroke-dasharray: 7 6; }
+  </style>
+  <title id="arte-titulo">Distribuição do próximo token para o contexto “Para não alucinar, o assistente deve citar as”: fontes 46%, evidências 17%, referências 12%, páginas 6%, provas 4% e os outros 128 mil tokens do vocabulário somam 15%.</title>
+  <text class="rotulo-eixo" x="80" y="58">P(PRÓXIMO TOKEN | CONTEXTO)</text>
+  <text class="contexto" x="80" y="118">“Para não alucinar, o assistente deve citar as …”</text>
+  <!-- escala: 0 a 0,5 em 700 px (x = 350 + 1400 × p) -->
+  <g class="grade">
+    <line x1="490" y1="170" x2="490" y2="640"/>
+    <line x1="630" y1="170" x2="630" y2="640"/>
+    <line x1="770" y1="170" x2="770" y2="640"/>
+    <line x1="910" y1="170" x2="910" y2="640"/>
+    <line x1="1050" y1="170" x2="1050" y2="640"/>
+  </g>
+  <rect class="barra-top" x="350" y="180" width="644" height="40" rx="3"/>
+  <rect class="barra" x="350" y="248" width="238" height="40" rx="3"/>
+  <rect class="barra" x="350" y="316" width="168" height="40" rx="3"/>
+  <rect class="barra" x="350" y="384" width="84" height="40" rx="3"/>
+  <rect class="barra" x="350" y="452" width="56" height="40" rx="3"/>
+  <rect class="barra-outros" x="351" y="561" width="208" height="38" rx="3"/>
+  <text class="token-top" x="330" y="208" text-anchor="end">fontes</text>
+  <text class="token" x="330" y="276" text-anchor="end">evidências</text>
+  <text class="token" x="330" y="344" text-anchor="end">referências</text>
+  <text class="token" x="330" y="412" text-anchor="end">páginas</text>
+  <text class="token" x="330" y="480" text-anchor="end">provas</text>
+  <text class="token" x="330" y="588" text-anchor="end">outros 128 mil</text>
+  <text class="valor-top" x="1006" y="207">0,46</text>
+  <text class="valor" x="600" y="275">0,17</text>
+  <text class="valor" x="530" y="343">0,12</text>
+  <text class="valor" x="446" y="411">0,06</text>
+  <text class="valor" x="418" y="479">0,04</text>
+  <text class="valor" x="572" y="587">0,15</text>
+  <line class="eixo" x1="350" y1="640" x2="1050" y2="640"/>
+  <line class="eixo" x1="350" y1="170" x2="350" y2="640"/>
+  <text x="350" y="674" text-anchor="middle">0</text>
+  <text x="490" y="674" text-anchor="middle">0,1</text>
+  <text x="630" y="674" text-anchor="middle">0,2</text>
+  <text x="770" y="674" text-anchor="middle">0,3</text>
+  <text x="910" y="674" text-anchor="middle">0,4</text>
+  <text x="1050" y="674" text-anchor="middle">0,5</text>
+  <text class="rotulo-eixo" x="700" y="724" text-anchor="middle">probabilidade (a soma de todas as barras é 1)</text>
+</svg>

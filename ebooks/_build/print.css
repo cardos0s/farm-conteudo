@@ -94,3 +94,8 @@ p, li { orphans: 3; widows: 3; }
 .folha-rosto .autoria { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 1.2rem; margin: 2.4rem 0 0; }
 .folha-rosto .autora { font-family: var(--fonte-titulo); font-weight: 600; font-size: 1.55rem; }
 .folha-rosto .contato { font-family: var(--fonte-mono); font-size: 0.95rem; color: var(--destaque); }
+
+/* recursos de estudo no papel */
+.flashcards ul { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.flashcards li { font-size: 0.86rem; padding: 0.55rem 0.7rem; break-inside: avoid-page; }
+.respostas, .frase { break-inside: avoid-page; }

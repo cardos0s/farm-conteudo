@@ -197,6 +197,75 @@ code {
 }
 .conta strong:first-child { color: var(--conta); }
 
+/* ---------- recursos de estudo ---------- */
+.frase {
+  font-size: 1.18rem;
+  line-height: 1.5;
+  border-top: 2px solid var(--destaque);
+  border-bottom: 1px solid var(--linha);
+  padding: 0.9rem 0 1rem;
+  margin: 0 0 1.8rem;
+}
+.frase > :last-child { margin-bottom: 0; }
+.frase p:first-child > strong:first-child {
+  display: block;
+  font-family: var(--fonte-mono);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--destaque);
+  margin-bottom: 0.35rem;
+}
+.respostas {
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+  padding: 0.8rem 1.1rem;
+  margin: 1rem 0 1.6rem;
+  background: var(--superficie);
+}
+div.respostas::before {
+  content: "Respostas";
+  display: block;
+  font-family: var(--fonte-titulo);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+details.respostas > summary {
+  cursor: pointer;
+  font-family: var(--fonte-titulo);
+  font-weight: 600;
+  color: var(--destaque);
+}
+details.respostas[open] > summary { margin-bottom: 0.6rem; }
+.respostas > :last-child { margin-bottom: 0; }
+.flashcards ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.7rem;
+}
+.flashcards li {
+  margin: 0;
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+  padding: 0.7rem 0.85rem;
+  background: var(--superficie);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  break-inside: avoid;
+}
+.flashcards li > strong:first-child,
+.flashcards li > p:first-child > strong:first-child {
+  display: block;
+  font-family: var(--fonte-titulo);
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: var(--tinta);
+  margin-bottom: 0.3rem;
+}
+
 /* ---------- código ---------- */
 pre {
   font-family: var(--fonte-mono);
@@ -261,18 +330,8 @@ ul.task-list input[type="checkbox"] {
 math { font-size: 1.04em; }
 math[display="block"] { margin: 1rem 0; overflow-x: auto; overflow-y: hidden; max-width: 100%; }
 
-/* ---------- gráfico roofline ---------- */
-.roofline { width: 100%; height: auto; display: block; }
-.roofline .grade line { stroke: var(--linha); stroke-width: 1.5; }
-.roofline .eixos line { stroke: var(--tinta-suave); stroke-width: 2.5; }
-.roofline text { font-family: var(--fonte-mono); fill: var(--tinta-suave); font-size: 22px; }
-.roofline .eixo-titulo { font-size: 20px; }
-.roofline .teto { fill: none; stroke: var(--destaque); stroke-width: 6; stroke-linejoin: round; }
-.roofline .rotulo-teto { fill: var(--destaque); font-size: 23px; font-weight: 700; }
-.roofline .equilibrio { stroke: var(--tinta-suave); stroke-width: 2; stroke-dasharray: 8 8; }
-.roofline .rotulo-equilibrio { font-size: 20px; }
-.roofline .ponto { fill: var(--conta); stroke: var(--papel); stroke-width: 4; }
-.roofline .rotulo-ponto { fill: var(--tinta); font-size: 22px; }
+/* ---------- arte da abertura ---------- */
+.arte { width: 100%; height: auto; display: block; }
 
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; transition: none !important; animation: none !important; }

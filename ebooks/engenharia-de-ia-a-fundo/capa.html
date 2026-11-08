@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<title>Capa · Engenharia de IA a Fundo</title>
+<link rel="stylesheet" href="{{BASE}}fontes.css">
+<link rel="stylesheet" href="{{BASE}}estilo.css">
+<style>
+  @page { size: 7in 10in; margin: 0; }
+  html, body { margin: 0; padding: 0; }
+  :root[data-theme="dark"] { --papel: #0d1729; --linha: #22304a; }
+  body {
+    width: 7in; height: 10in; overflow: hidden;
+    background: var(--papel);
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .capa {
+    box-sizing: border-box;
+    width: 100%; height: 100%;
+    padding: 15mm 15mm 13mm;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .sobre {
+    font-family: var(--fonte-mono); font-size: 9.5pt;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--destaque); margin: 0 0 7mm;
+  }
+  .titulo {
+    font-family: var(--fonte-titulo); font-weight: 700;
+    font-size: 54pt; line-height: 0.98; letter-spacing: -0.01em;
+    color: #f2f5fa; margin: 0 0 6mm;
+  }
+  .sub {
+    font-family: var(--fonte-texto); font-size: 13.5pt; line-height: 1.4;
+    color: #b9c4d8; margin: 0; max-width: 30em;
+  }
+  .grafico { margin: 0 -3mm; }
+  .grafico .roofline .ponto { stroke: var(--papel); }
+  .numeros {
+    font-family: var(--fonte-mono); font-size: 8.5pt; color: #93a1b8;
+    letter-spacing: 0.04em; margin: 5mm 0 0;
+  }
+  .rodape {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 6mm; border-top: 1px solid #2c3b57; padding-top: 4.5mm;
+  }
+  .autora {
+    font-family: var(--fonte-titulo); font-weight: 600;
+    font-size: 17pt; color: #f2f5fa; letter-spacing: 0.01em;
+  }
+  .contato {
+    font-family: var(--fonte-mono); font-size: 10.5pt;
+    color: var(--destaque); letter-spacing: 0.02em;
+  }
+</style>
+</head>
+<body>
+<div class="capa">
+  <div>
+    <p class="sobre">Material de estudo · 1ª edição · 2026</p>
+    <p class="titulo">Engenharia<br>de IA a Fundo</p>
+    <p class="sub">Do pré-treino ao MCP: 17 conceitos explicados com teoria, contas, código testado, teste e flashcards.</p>
+    <p class="numeros">17 conceitos · 4 partes · teste e flashcards em todo capítulo</p>
+  </div>
+  <div class="grafico">{{ARTE}}</div>
+  <div class="rodape">
+    <span class="autora">Júlia Cardoso</span><span class="contato">@juliacardoso.dev</span>
+  </div>
+</div>
+</body>
+</html>

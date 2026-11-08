@@ -34,3 +34,7 @@ code span.dv, code span.bn, code span.fl { color: #a14c06; }
 code span.st, code span.ch { color: #0f6f66; }
 code span.co { color: #6b7487; font-style: italic; }
 code span.pp, code span.im { color: #a8327a; }
+.frase { font-size: 1.1em; border-top: 2px solid #2346c7; border-bottom: 1px solid #d8dee8; padding: 0.6em 0; margin: 0 0 1.4em; }
+.respostas { border: 1px solid #d8dee8; padding: 0.6em 0.9em; margin: 1em 0; }
+.flashcards ul { list-style: none; padding: 0; }
+.flashcards li { border: 1px solid #d8dee8; padding: 0.5em 0.7em; margin: 0 0 0.5em; }
