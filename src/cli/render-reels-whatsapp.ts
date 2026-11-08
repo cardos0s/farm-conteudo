@@ -66,9 +66,8 @@ async function renderizar(parte: 1 | 2 | 3, camada: Camada, destino: string, ext
     // 4K vertical (2160x3840), a resolução original do vídeo da Julia; cor marcada como BT.709
     scale: 2,
     colorSpace: "bt709",
-    crf: 16,
-    imageFormat: "jpeg",
-    jpegQuality: 96,
+    // ProRes (camadas transparentes e máscara) não aceita CRF nem JPEG
+    ...(extra.codec === "prores" ? {} : { crf: 16, imageFormat: "jpeg" as const, jpegQuality: 96 }),
     audioBitrate: "192k",
     concurrency: os.cpus().length,
     browserExecutable: navegador,
@@ -100,7 +99,9 @@ for (const parte of filtro) {
   await mkdir(pasta, { recursive: true });
   const faixa: [number, number] = [0, intro.quadros - 1];
   const transparente = { codec: "prores", proResProfile: "4444", imageFormat: "png", pixelFormat: "yuva444p10le", frameRange: faixa, muted: true } as const;
-  await renderizar(parte, "semIntro", `${pasta}/parte${parte}-semIntro.mp4`, { crf: 10 });
+  const semIntro = `${pasta}/parte${parte}-semIntro.mp4`;
+  if (process.env.REAPROVEITAR === "1" && existsSync(semIntro)) console.log(`reaproveitando ${semIntro}`);
+  else await renderizar(parte, "semIntro", semIntro, { crf: 10 });
   await renderizar(parte, "introAtras", `${pasta}/parte${parte}-introAtras.mov`, transparente);
   await renderizar(parte, "introFrente", `${pasta}/parte${parte}-introFrente.mov`, transparente);
   await renderizar(parte, "mascara", `${pasta}/parte${parte}-mascara.mov`, { codec: "prores", proResProfile: "hq", frameRange: faixa, muted: true });
