@@ -13,6 +13,11 @@ Três Reels explicativos que ensinam de verdade e terminam sempre no ebook
 `saida/materiais/reels/`, com os mesmos diagramas do ebook. Os nomes dos arquivos batem com a coluna "Tela"
 dos roteiros (ex.: `p1-2-contas.png`).
 
+**Vídeos prontos (sem narração):** `npm run render:reels-whatsapp` gera os três MP4 em
+`saida/materiais/reels/`. Neles, a fala deste roteiro virou legenda na tela (versão mais curta, no ritmo de
+leitura) e os diagramas se desenham sozinhos. Dá para postar assim, com uma música do Instagram, ou gravar sua
+voz por cima. Para mudar textos e tempos, edite `remotion/reels/whatsapp/roteiro.ts`.
+
 **Como ler o roteiro:** **Fala** é o que você diz para a câmera (ou em off). **Tela** é o que aparece:
 você em tela cheia, a imagem pronta, ou você pequena num canto com a imagem atrás. **Texto** é a frase
 grande na tela, que ajuda quem assiste sem som.

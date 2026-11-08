@@ -148,6 +148,12 @@ npm run reels:whatsapp
 
 Gera as telas verticais da série de Reels de divulgação (3 partes, chamada sempre para o ebook) em `saida/materiais/reels/`. O roteiro de cada parte, com fala, tela, texto, legenda do post e comentário fixado, está em `materiais/whatsapp/REELS.md`. Rode depois do `pdf:whatsapp`, porque a tela final usa a capa do PDF.
 
+```bash
+npm run render:reels-whatsapp
+```
+
+Renderiza os três Reels prontos em MP4 (1080×1920, 30 fps, ~80–90 s cada) em `saida/materiais/reels/`. É a versão sem narração do roteiro: o texto aparece em legendas no ritmo de leitura, os diagramas do ebook se desenham sozinhos e cada parte termina na chamada para o ebook. A faixa de áudio vai muda, para pôr uma música do Instagram ou gravar a voz por cima. Cenas e legendas ficam em `remotion/reels/whatsapp/roteiro.ts` (composição `ReelWhatsApp` no estúdio). Também depende do PDF gerado.
+
 ## Estrutura
 
 ```

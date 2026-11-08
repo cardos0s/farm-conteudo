@@ -6,6 +6,8 @@ import { AulaComplexidade } from "./aulas/complexidade/Aula";
 import { FPS as FPS_AULA, TOTAL_QUADROS } from "./aulas/complexidade/roteiro";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
+import { ReelWhatsApp, type PropsReelWhatsApp } from "./reels/whatsapp/ReelWhatsApp";
+import { FPS as FPS_WPP, quadros as quadrosWpp } from "./reels/whatsapp/roteiro";
 
 export const Root: React.FC = () => (
   <>
@@ -26,6 +28,16 @@ export const Root: React.FC = () => (
       height={1080}
       fps={FPS_AULA}
       durationInFrames={TOTAL_QUADROS}
+    />
+    <Composition
+      id="ReelWhatsApp"
+      component={ReelWhatsApp}
+      width={1080}
+      height={1920}
+      fps={FPS_WPP}
+      durationInFrames={quadrosWpp(1)}
+      defaultProps={{ parte: 1 } as PropsReelWhatsApp}
+      calculateMetadata={({ props }: { props: PropsReelWhatsApp }) => ({ durationInFrames: quadrosWpp(props.parte) })}
     />
   </>
 );
