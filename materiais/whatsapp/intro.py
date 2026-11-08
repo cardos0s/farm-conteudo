@@ -2,7 +2,7 @@
 
     python3 materiais/whatsapp/intro.py IMG_3366.mov --parte 1 --inicio 0.5 --fim 3.9 --mao 3.5 3.87
 
-- converte o HDR (HLG) do iPhone para SDR 1080x1920 30 fps (mesmo tone mapping das aulas);
+- converte o HDR (HLG) do iPhone para SDR mantendo a resolução original (2160x3840, 30 fps);
 - recorta a Julia do fundo quadro a quadro com o RobustVideoMatting (ONNX, modelo ResNet50),
   para os números, textos e desenhos entrarem ATRÁS dela;
 - grava em public/materiais/whatsapp/intro/parteN/ (fora do git):
@@ -26,14 +26,16 @@ import numpy as np
 RAIZ = Path(__file__).resolve().parents[2]
 MODELO_URL = "https://github.com/PeterL1n/RobustVideoMatting/releases/download/v1.0.0/rvm_resnet50_fp32.onnx"
 MODELO = RAIZ / "saida/modelos/rvm_resnet50_fp32.onnx"
-W, H, FPS = 1080, 1920, 30
-TM = "zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,tonemap=tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv,format=yuv420p"
+W, H, FPS = 2160, 3840, 30  # resolução nativa do iPhone (4K vertical): o Reel é renderizado em 4K
+# HLG -> SDR: "mobius" com branco de referência de 203 nits fica mais perto de como o iPhone mostra o vídeo
+# (o "hable" com 100 nits escurecia e deixava a pele laranja)
+TM = "zscale=t=linear:npl=203,format=gbrpf32le,zscale=p=bt709,tonemap=tonemap=mobius:param=0.3:desat=0,zscale=t=bt709:m=bt709:r=tv,format=yuv420p"
 
 
 def sdr(mov: Path, destino: Path) -> None:
     subprocess.run(
         ["ffmpeg", "-v", "error", "-y", "-i", str(mov), "-map", "0:v:0", "-an", "-vf", f"fps={FPS},scale={W}:{H}:flags=lanczos,{TM}",
-         "-c:v", "libx264", "-preset", "medium", "-crf", "14", "-pix_fmt", "yuv420p",
+         "-c:v", "libx264", "-preset", "medium", "-crf", "10", "-pix_fmt", "yuv420p",
          "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", str(destino)],
         check=True,
     )
@@ -61,7 +63,7 @@ def recortar(video: Path, pasta: Path, inicio: float, fim: float) -> dict:
         urllib.request.urlretrieve(MODELO_URL, MODELO)
     sess = ort.InferenceSession(str(MODELO), providers=["CPUExecutionProvider"])
     rec = [np.zeros((1, 1, 1, 1), np.float32)] * 4
-    ratio = np.array([0.25], np.float32)  # recomendado para vídeo HD de pessoa
+    ratio = np.array([0.125], np.float32)  # recomendado para 4K
     pasta.mkdir(parents=True, exist_ok=True)
     caixas = []
     i0, i1 = round(inicio * FPS), round(fim * FPS)
@@ -74,7 +76,7 @@ def recortar(video: Path, pasta: Path, inicio: float, fim: float) -> dict:
         a = np.clip(pha[0, 0], 0, 1)
         a = np.where(a < 0.03, 0, a)  # limpa o véu quase transparente do fundo
         rgba = np.dstack([rgb, (a * 255).astype(np.uint8)])
-        Image.fromarray(rgba, "RGBA").save(pasta / f"{i - i0:04d}.webp", quality=92, method=4)
+        Image.fromarray(rgba, "RGBA").save(pasta / f"{i - i0:04d}.webp", quality=95, method=4)  # alfa sem perda
         ys, xs = np.nonzero(a > 0.5)
         caixas.append([int(xs.min()), int(ys.min()), int(xs.max()), int(ys.max())] if len(xs) else None)
     print(f"{len(caixas)} quadros recortados")
@@ -160,8 +162,9 @@ def main() -> None:
     sdr_mp4 = trab / f"parte{a.parte}-sdr.mp4"
     print("convertendo HDR -> SDR...")
     sdr(a.mov, sdr_mp4)
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{a.inicio}", "-t", f"{a.fim - a.inicio}", "-i", str(sdr_mp4), "-c:v", "libx264", "-preset", "medium", "-crf", "16",
-                    "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(pub / "fundo.mp4")], check=True)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{a.inicio}", "-t", f"{a.fim - a.inicio}", "-i", str(sdr_mp4), "-c:v", "libx264", "-preset", "slow", "-crf", "12",
+                    "-pix_fmt", "yuv420p", "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709",
+                    "-movflags", "+faststart", str(pub / "fundo.mp4")], check=True)
     print("recortando a Julia do fundo...")
     rec = recortar(sdr_mp4, pub / "frente", a.inicio, a.fim)
     ganho = voz(a.mov, pub / "voz.wav", a.inicio, a.voz_ate, RAIZ / f"public/materiais/whatsapp/narracao/parte{a.parte}.mp3")

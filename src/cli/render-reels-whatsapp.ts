@@ -26,7 +26,7 @@ const paginas = "public/materiais/whatsapp/paginas";
 await mkdir(paginas, { recursive: true });
 for (const n of [1, 8, 11, 21]) {
   const nome = String(n).padStart(2, "0");
-  execFileSync("pdftoppm", ["-r", "90", "-png", "-singlefile", "-f", String(n), "-l", String(n), pdf, `${paginas}/p-${nome}`], { stdio: "ignore" });
+  execFileSync("pdftoppm", ["-r", "200", "-png", "-singlefile", "-f", String(n), "-l", String(n), pdf, `${paginas}/p-${nome}`], { stdio: "ignore" });
 }
 
 function limitar(arquivo: string, duracao: number) {
@@ -61,9 +61,12 @@ for (const parte of filtro) {
     codec: "h264",
     outputLocation: destino,
     inputProps,
-    crf: 18,
+    // 4K vertical (2160x3840), a resolução original do vídeo da Julia; cor marcada como BT.709
+    scale: 2,
+    colorSpace: "bt709",
+    crf: 16,
     imageFormat: "jpeg",
-    jpegQuality: 92,
+    jpegQuality: 96,
     audioBitrate: "192k",
     concurrency: os.cpus().length,
     browserExecutable: navegador,

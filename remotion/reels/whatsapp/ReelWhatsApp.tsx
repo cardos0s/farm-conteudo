@@ -11,7 +11,6 @@ import {
   continueRender,
   delayRender,
   interpolate,
-  spring,
   staticFile,
   useCurrentFrame,
   useVideoConfig,
@@ -55,7 +54,8 @@ const LADO = 56;
 const LARG = 1080 - LADO * 2;
 const AREA = { comTitulo: { top: 560, h: 690 }, semTitulo: { top: 330, h: 920 } };
 const LEGENDA_TOPO = 1280;
-const TRANSICAO = 0.3;
+/** Dissolução entre cenas (s): a cena nova aparece por cima enquanto a anterior some, sem "piscar" o fundo. */
+const DISSOLVE = 0.45;
 
 const ease = Easing.bezier(0.45, 0, 0.25, 1);
 const prog = (t: number, de: number, dur: number) => interpolate(t, [de, de + dur], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease });
@@ -106,9 +106,9 @@ function Gancho({ v, t }: { v: Extract<Visual, { tipo: "gancho" }>; t: number })
       {v.apoio && <div style={{ fontFamily: FONTE_LOUSA, fontSize: 58, color: COR.acento, opacity: prog(t, 0.05, 0.3), marginBottom: 24 }}>{v.apoio}</div>}
       <div style={{ fontFamily: "Inter", fontWeight: 800, fontSize: 124, lineHeight: 1.04, letterSpacing: "-0.04em" }}>
         {palavras.map((partes, i) => {
-          const p = prog(t, 0.25 + i * 0.12, 0.3);
+          const p = prog(t, 0.25 + i * 0.12, 0.45);
           return (
-            <span key={i} style={{ display: "inline-block", opacity: p, transform: `translateY(${(1 - p) * 40}px)`, marginRight: 28 }}>
+            <span key={i} style={{ display: "inline-block", opacity: p, transform: `translateY(${(1 - p) * 18}px)`, marginRight: 28 }}>
               {partes.map((x, k) => (
                 <Marcado key={k} texto={x.marca ? `*${x.t}*` : x.t} p={prog(t, 0.9, 0.5)} />
               ))}
@@ -141,7 +141,7 @@ function Itens({ itens, tempos, t, tam = 50 }: { itens: Item[]; tempos: number[]
   return (
     <>
       {itens.map((it, i) => {
-        const p = prog(t, tempos[i], 0.45);
+        const p = prog(t, tempos[i], 0.55);
         return (
           <div
             key={i}
@@ -150,7 +150,7 @@ function Itens({ itens, tempos, t, tam = 50 }: { itens: Item[]; tempos: number[]
               alignItems: "center",
               gap: 26,
               opacity: Math.min(1, p * 1.5),
-              transform: `translateX(${(1 - p) * -30}px)`,
+              transform: `translateX(${(1 - p) * -14}px)`,
               background: it.destaque ? COR.amarelo : "transparent",
               border: it.destaque ? `4px solid ${COR.tinta}` : "4px solid transparent",
               borderRadius: 22,
@@ -175,12 +175,12 @@ function Lista({ v, t, cena }: { v: Extract<Visual, { tipo: "lista" }>; t: numbe
 }
 
 function Comparacao({ v, t, cena }: { v: Extract<Visual, { tipo: "comparacao" }>; t: number; cena: CenaTempo }) {
-  const { fps } = useVideoConfig();
-  const pop = spring({ frame: t * fps, fps, config: { damping: 12, stiffness: 150 } });
+  const pop = 0.85 + 0.15 * prog(t, 0, 0.5);
+  const aparece = prog(t, 0, 0.4);
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", gap: 14 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 30, marginBottom: 18 }}>
-        <span style={{ fontSize: 150, lineHeight: 1, transform: `scale(${pop}) rotate(${(1 - pop) * -12}deg)`, flexShrink: 0 }}>{v.emoji}</span>
+        <span style={{ fontSize: 150, lineHeight: 1, transform: `scale(${pop})`, opacity: aparece, flexShrink: 0 }}>{v.emoji}</span>
         <span style={{ fontSize: 60, fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.08, opacity: prog(t, 0.15, 0.35) }}>
           <Marcado texto={v.frase} p={prog(t, 0.5, 0.5)} />
         </span>
@@ -196,7 +196,7 @@ function Linhas({ v, t, cena }: { v: Extract<Visual, { tipo: "linhas" }>; t: num
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", gap: v.curta ? 26 : 22 }}>
       {v.itens.map((it, i) => {
-        const p = prog(t, tempos[i], 0.4);
+        const p = prog(t, tempos[i], 0.5);
         const foco = i === ativa;
         const [titulo, ...resto] = it.texto.split("\n");
         return (
@@ -211,7 +211,7 @@ function Linhas({ v, t, cena }: { v: Extract<Visual, { tipo: "linhas" }>; t: num
               borderRadius: 26,
               padding: v.curta ? "26px 34px" : "20px 32px",
               opacity: p,
-              transform: `translateY(${(1 - p) * 30}px) scale(${foco ? 1.03 : 1})`,
+              transform: `translateY(${(1 - p) * 14}px) scale(${foco ? 1.02 : 1})`,
               boxShadow: foco ? "0 14px 30px rgba(11,122,107,.18)" : "none",
             }}
           >
@@ -236,13 +236,13 @@ function Diagrama({ v, t, cena, h }: { v: Extract<Visual, { tipo: "diagrama" }>;
     const s = Math.min(LARG / r.w, h / r.h);
     return { s, x: LARG / 2 - (r.x + r.w / 2) * s, y: h / 2 - (r.y + r.h / 2) * s };
   };
-  // câmera: cada frase pode enquadrar uma parte do diagrama; a troca leva 0,7 s
+  // câmera: cada frase pode enquadrar uma parte do diagrama; a troca leva 1,1 s
   let atual = enquadrar(v.focoInicial);
   for (const f of cena.focosT) {
     const de = f.de - cena.inicio;
     if (t < de) break;
     const alvo = enquadrar(f.foco);
-    const p = prog(t, de, 0.7);
+    const p = prog(t, de, 1.1);
     atual = { s: atual.s + (alvo.s - atual.s) * p, x: atual.x + (alvo.x - atual.x) * p, y: atual.y + (alvo.y - atual.y) * p };
   }
   return (
@@ -257,8 +257,8 @@ function Diagrama({ v, t, cena, h }: { v: Extract<Visual, { tipo: "diagrama" }>;
 const PAGINAS = ["p-21.png", "p-11.png", "p-08.png", "p-01.png"];
 
 function Cta({ t }: { t: number }) {
-  const { fps } = useVideoConfig();
-  const preco = spring({ frame: Math.max(0, (t - 1.5) * fps), fps, config: { damping: 11, stiffness: 140 } });
+  const preco = 0.85 + 0.15 * prog(t, 1.5, 0.5);
+  const precoVisivel = prog(t, 1.5, 0.35);
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
       <div style={{ fontFamily: FONTE_LOUSA, fontSize: 54, color: COR.acento, opacity: prog(t, 0, 0.3) }}>guia completo</div>
@@ -286,7 +286,7 @@ function Cta({ t }: { t: number }) {
           );
         })}
       </div>
-      <div style={{ transform: `scale(${preco})`, position: "relative", zIndex: 2 }}>
+      <div style={{ transform: `scale(${preco})`, opacity: precoVisivel, position: "relative", zIndex: 2 }}>
         <span style={{ display: "inline-block", fontSize: 120, fontWeight: 800, letterSpacing: "-0.04em", background: COR.amarelo, padding: "0 30px", borderRadius: 20, border: `4px solid ${COR.tinta}` }}>
           R$ 15
         </span>
@@ -300,10 +300,9 @@ function Cta({ t }: { t: number }) {
 
 /** Legenda da narração: o bloco atual, com a palavra falada destacada. */
 function Legenda({ blocos, t }: { blocos: Bloco[]; t: number }) {
-  const { fps } = useVideoConfig();
   const b = blocos.find((x) => t >= x.de && t < x.ate);
   if (!b) return null;
-  const s = spring({ frame: Math.max(0, (t - b.de) * fps), fps, config: { damping: 18, stiffness: 220 } });
+  const s = prog(t, b.de, 0.2);
   return (
     <div style={{ position: "absolute", left: LADO, right: LADO, top: LEGENDA_TOPO, display: "flex", justifyContent: "center" }}>
       <div
@@ -319,7 +318,7 @@ function Legenda({ blocos, t }: { blocos: Bloco[]; t: number }) {
           textAlign: "center",
           boxShadow: "8px 8px 0 #1e1e1e",
           opacity: s,
-          transform: `translateY(${(1 - s) * 18}px)`,
+          transform: `translateY(${(1 - s) * 8}px)`,
         }}
       >
         {b.palavras.map((p, i) => {
@@ -360,22 +359,22 @@ function efeitos(cenas: CenaTempo[], comIntro = false): Efeito[] {
   const lista: Efeito[] = [];
   cenas.forEach((c, i) => {
     const v = c.visual;
-    if (i > 0) lista.push({ em: c.inicio - 0.12, nome: "whoosh", volume: 0.3 });
+    if (i > 0) lista.push({ em: c.inicio - 0.3, nome: "whoosh", volume: 0.18 });
     if (v.tipo === "gancho" && !comIntro) lista.push({ em: c.inicio + 0.05, nome: "impacto", volume: 0.55 });
-    if (v.tipo === "comparacao") lista.push({ em: c.inicio + 0.08, nome: "pop", volume: 0.35 });
+    if (v.tipo === "comparacao") lista.push({ em: c.inicio + 0.08, nome: "pop", volume: 0.22 });
     if (v.tipo === "lista" || v.tipo === "comparacao") {
       v.itens.forEach((it, k) => {
         const nome = it.icone === "x" ? "erro" : it.icone === "check" || it.destaque ? "plim" : "pop";
-        lista.push({ em: c.tempos[k], nome, volume: nome === "erro" ? 0.22 : nome === "plim" ? 0.26 : 0.4 });
+        lista.push({ em: c.tempos[k], nome, volume: nome === "erro" ? 0.18 : nome === "plim" ? 0.2 : 0.26 });
       });
     }
-    if (v.tipo === "linhas") c.tempos.forEach((tt, k) => lista.push({ em: tt, nome: v.itens[k].destaque ? "plim" : "pop", volume: v.itens[k].destaque ? 0.26 : 0.4 }));
+    if (v.tipo === "linhas") c.tempos.forEach((tt, k) => lista.push({ em: tt, nome: v.itens[k].destaque ? "plim" : "pop", volume: v.itens[k].destaque ? 0.2 : 0.26 }));
     if (v.tipo === "diagrama") {
       if (!v.semDesenho) lista.push({ em: c.inicio + 0.15, nome: "lapis", volume: 0.22 });
-      c.focosT.forEach((f) => lista.push({ em: f.de, nome: "whoosh", volume: 0.14 }));
+      c.focosT.forEach((f) => lista.push({ em: f.de, nome: "whoosh", volume: 0.1 }));
     }
     if (v.tipo === "cta") {
-      [0, 1, 2, 3].forEach((k) => lista.push({ em: c.inicio + 0.15 + k * 0.28, nome: "pop", volume: 0.28 }));
+      [0, 1, 2, 3].forEach((k) => lista.push({ em: c.inicio + 0.15 + k * 0.28, nome: "pop", volume: 0.2 }));
       lista.push({ em: c.inicio + 1.5, nome: "kaching", volume: 0.5 });
     }
   });
@@ -432,16 +431,19 @@ function Efeitos({ lista }: { lista: Efeito[] }) {
 
 /* ------------------------------------------------------------------ cena */
 
-function CenaView({ cena, ultima, numero, adianto = 0 }: { cena: CenaTempo; ultima: boolean; numero: number; adianto?: number }) {
+function CenaView({ cena, ultima, numero, adianto = 0, antes = 0 }: { cena: CenaTempo; ultima: boolean; numero: number; adianto?: number; antes?: number }) {
   const frame = useCurrentFrame();
-  const t = frame / FPS;
+  // a sequência começa `antes` segundos antes da cena (a dissolução); t = 0 é o começo da cena
+  const t = frame / FPS - antes;
   const dur = cena.fim - cena.inicio;
-  const entra = adianto > 0 ? 1 : prog(t, 0, TRANSICAO);
-  const sai = ultima ? 1 : 1 - prog(t, dur - TRANSICAO, TRANSICAO);
+  // a que sai some nos primeiros 70% da dissolução e a que entra aparece nos últimos 70%: elas se
+  // sobrepõem só ~0,18 s (menos "fantasma" de dois títulos) e o fundo nunca fica vazio
+  const entra = adianto > 0 ? 1 : antes === 0 ? prog(t, 0, DISSOLVE) : prog(t, -antes * 0.7, antes * 0.7);
+  const sai = ultima ? 1 : 1 - prog(t, dur - DISSOLVE, DISSOLVE * 0.7);
   const area = cena.titulo ? AREA.comTitulo : AREA.semTitulo;
   const v = cena.visual;
   return (
-    <AbsoluteFill style={{ opacity: entra * sai, transform: `translateY(${(1 - entra) * 26 + (1 - sai) * -26}px)` }}>
+    <AbsoluteFill style={{ opacity: entra * sai, transform: `translateY(${(1 - entra) * 10 + (1 - sai) * -10}px)` }}>
       <div style={{ position: "absolute", left: LADO, top: 252, fontFamily: FONTE_LOUSA, fontSize: 40, color: COR.acento }}>system design · parte {numero}/3</div>
       {cena.titulo && (
         <div style={{ position: "absolute", left: LADO, right: LADO, top: 318, fontFamily: "Inter", fontWeight: 800, fontSize: 88, lineHeight: 1.03, letterSpacing: "-0.035em" }}>
@@ -479,16 +481,16 @@ const ADESIVOS: Adesivo[] = [
 ];
 
 function CartaoIntro({ a, t }: { a: Adesivo; t: number }) {
-  const { fps } = useVideoConfig();
   if (t < a.de) return null;
-  const s = spring({ frame: (t - a.de) * fps, fps, config: { damping: 18, stiffness: 170 } }); // ~5% de passagem do ponto, para não encostar no cabelo
+  const s = prog(t, a.de, 0.45);
   return (
     <div
       style={{
         position: "absolute",
         left: a.x,
         top: a.y,
-        transform: `rotate(${a.giro}deg) scale(${s})`,
+        transform: `translateY(${(1 - s) * 14}px) rotate(${a.giro}deg) scale(${0.92 + 0.08 * s})`,
+        opacity: s,
         background: a.balao ? "#d3f9d8" : "#fff",
         border: `4px solid ${COR.tinta}`,
         borderRadius: a.balao ? "26px 26px 26px 6px" : 22,
@@ -520,19 +522,19 @@ function IntroGravada({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
   const blocos = useMemo(() => legendasIntro(parte), [parte]);
   const [m0] = intro.mao;
   // a borda acompanha a mão: entra pela esquerda junto com ela e sai pela direita
-  const borda = interpolate(t, [m0, intro.duracao], [-330, 1500], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.bezier(0.3, 0, 0.7, 1) });
+  // borda esfumada (240 px) que anda junto com a mão; inclinada (100°): a parte de baixo, onde a mão
+  // fica parada no fim, é revelada por último. A linha do gradiente tem ~1397 px nesta tela.
+  const borda = interpolate(t, [m0, intro.duracao], [-260, 1660], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.bezier(0.3, 0, 0.7, 1) });
+  const mascara = `linear-gradient(100deg, transparent ${borda}px, #000 ${borda + 240}px)`;
   const arrastando = t >= m0;
   const quadro = Math.min(intro.quadros - 1, Math.max(0, Math.floor(frame)));
   const titulo = prog(t, 0.21, 0.35);
-  const whats = prog(t, 1.6, 0.4);
+  const whats = prog(t, 1.6, 0.55);
   return (
-    <AbsoluteFill style={{ filter: arrastando ? "drop-shadow(-16px 0 24px rgba(0,0,0,.35))" : undefined }}>
-      <AbsoluteFill style={{ clipPath: arrastando ? `polygon(${borda + 150}px 0, 1600px 0, 1600px 1920px, ${borda - 150}px 1920px)` : undefined, overflow: "hidden" }}>
-        {/* quarto desfocado: dá profundidade e deixa os gráficos legíveis */}
-        <AbsoluteFill style={{ filter: "blur(5px) saturate(0.95)" }}>
-          <OffthreadVideo src={INTRO(parte, "fundo.mp4")} muted style={{ width: 1080, height: 1920 }} />
-        </AbsoluteFill>
-        <AbsoluteFill style={{ background: "rgba(251,251,248,0.30)" }} />
+    <AbsoluteFill>
+      <AbsoluteFill style={{ maskImage: arrastando ? mascara : undefined, WebkitMaskImage: arrastando ? mascara : undefined, overflow: "hidden" }}>
+        {/* o vídeo original dela, sem filtro: só os gráficos entram entre ela e o quarto */}
+        <OffthreadVideo src={INTRO(parte, "fundo.mp4")} muted style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 1920 }} />
         {/* atrás dela: título, rabiscos e cartões */}
         <div
           style={{
@@ -564,7 +566,7 @@ function IntroGravada({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
             letterSpacing: "-0.05em",
             lineHeight: 1,
             opacity: whats,
-            transform: `translateY(${(1 - whats) * 70}px)`,
+            transform: `translateY(${(1 - whats) * 28}px)`,
             textShadow: "0 4px 28px rgba(255,255,255,.6)",
           }}
         >
@@ -590,10 +592,10 @@ function IntroGravada({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
 /** Sons da intro, em tempo absoluto (fora da sequência visual, para nada ser cortado no fim dela). */
 function SonsIntro({ parte, intro }: { parte: 1 | 2 | 3; intro: Intro }) {
   const lista: Efeito[] = [
-    { em: 0.21, nome: "pop", volume: 0.35 },
+    { em: 0.21, nome: "pop", volume: 0.24 },
     { em: 0.44, nome: "lapis", volume: 0.24 },
-    { em: 1.6, nome: "pop", volume: 0.45 },
-    ...ADESIVOS.map((a) => ({ em: a.de, nome: a.balao ? "plim" : "pop", volume: a.balao ? 0.26 : 0.38 })),
+    { em: 1.6, nome: "pop", volume: 0.3 },
+    ...ADESIVOS.map((a) => ({ em: a.de, nome: a.balao ? "plim" : "pop", volume: a.balao ? 0.2 : 0.24 })),
     { em: intro.mao[0] - 0.12, nome: "whoosh", volume: 0.32 },
   ];
   return (
@@ -616,12 +618,16 @@ function Corpo({ parte, cenas }: { parte: 1 | 2 | 3; cenas: CenaTempo[] }) {
     <AbsoluteFill>
       <Html5Audio src={staticFile(`materiais/whatsapp/narracao/parte${parte}.mp3`)} />
       <Efeitos lista={lista} />
-      {cenas.map((c, i) => (
-        <Sequence key={i} from={Math.round(c.inicio * FPS)} durationInFrames={Math.max(1, Math.round((c.fim - c.inicio) * FPS))}>
-          {/* depois da intro, a 1ª cena já está montada quando a mão passa (sem fade, animação adiantada) */}
-          <CenaView cena={c} ultima={i === cenas.length - 1} numero={parte} adianto={i === 0 && intros[parte] ? ADIANTO_GANCHO : 0} />
-        </Sequence>
-      ))}
+      {cenas.map((c, i) => {
+        // cada cena (menos a 1ª) começa a aparecer DISSOLVE s antes, por cima da anterior, que some junto
+        const antes = i === 0 ? 0 : Math.min(DISSOLVE, c.inicio);
+        return (
+          <Sequence key={i} from={Math.round((c.inicio - antes) * FPS)} durationInFrames={Math.max(1, Math.round((c.fim - c.inicio + antes) * FPS))}>
+            {/* depois da intro, a 1ª cena já está montada quando a mão passa (sem fade, animação adiantada) */}
+            <CenaView cena={c} ultima={i === cenas.length - 1} numero={parte} antes={antes} adianto={i === 0 && intros[parte] ? ADIANTO_GANCHO : 0} />
+          </Sequence>
+        );
+      })}
       <Legenda blocos={blocos} t={frame / FPS} />
     </AbsoluteFill>
   );
