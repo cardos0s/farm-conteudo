@@ -142,6 +142,12 @@ npm run pdf:whatsapp
 
 Gera o guia **System Design do WhatsApp** (A4, 21 páginas) em `saida/materiais/system-design-whatsapp.pdf`. O texto fica em `materiais/whatsapp/conteudo.mjs` e os diagramas, desenhados à mão com o mesmo motor da lousa (roughjs + Excalifont), em `materiais/whatsapp/diagramas.mjs`. A autoria (Julia Cardoso, @juliacardoso.dev) aparece na capa, no rodapé de cada página e nos metadados; para trocar, use `AUTORA="..." PERFIL="@..." npm run pdf:whatsapp`. O roteiro de gravação da aula sobre o mesmo tema está em `remotion/aulas/whatsapp/ROTEIRO.md`.
 
+```bash
+npm run reels:whatsapp
+```
+
+Gera as telas verticais da série de Reels de divulgação (3 partes, chamada sempre para o ebook) em `saida/materiais/reels/`. O roteiro de cada parte, com fala, tela, texto, legenda do post e comentário fixado, está em `materiais/whatsapp/REELS.md`. Rode depois do `pdf:whatsapp`, porque a tela final usa a capa do PDF.
+
 ## Estrutura
 
 ```

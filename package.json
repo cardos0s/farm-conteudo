@@ -15,7 +15,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "render:aula": "tsx src/cli/render-aula.ts",
-    "pdf:whatsapp": "node materiais/whatsapp/gerar.mjs"
+    "pdf:whatsapp": "node materiais/whatsapp/gerar.mjs",
+    "reels:whatsapp": "node materiais/whatsapp/reels.mjs"
   },
   "engines": {
     "node": ">=20"
