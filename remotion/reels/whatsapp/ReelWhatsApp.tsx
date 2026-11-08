@@ -393,7 +393,12 @@ function Sons({ parte, cenas }: { parte: 1 | 2 | 3; cenas: CenaTempo[] }) {
   const lista = useMemo(() => efeitos(cenas), [cenas]);
   return (
     <>
-      <Html5Audio src={SOM("trilha")} loop volume={(f) => vols[Math.min(vols.length - 1, Math.max(0, f))]} />
+      <Html5Audio
+        src={SOM("trilha")}
+        loop
+        // o Remotion pode pedir quadros fracionários: arredonda e limita ao vetor
+        volume={(f) => vols[Math.min(vols.length - 1, Math.max(0, Math.round(Number.isFinite(f) ? f : 0)))] ?? 0}
+      />
       {lista.map((e, i) => (
         <Sequence key={i} from={Math.round(e.em * FPS)} durationInFrames={Math.round(2 * FPS)}>
           <Html5Audio src={SOM(e.nome)} volume={e.volume} />
