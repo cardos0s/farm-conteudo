@@ -134,6 +134,14 @@ npm run render:aula
 
 Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/complexidade/`. O passo a passo completo (baixar do Drive, converter o HDR do iPhone, transcrever, cortar, renderizar) está em `scripts/aulas/README.md`; os componentes da lousa ficam em `remotion/lousa/`.
 
+## Materiais (PDFs de estudo)
+
+```bash
+npm run pdf:whatsapp
+```
+
+Gera o guia **System Design do WhatsApp** (A4, 21 páginas) em `saida/materiais/system-design-whatsapp.pdf`. O texto fica em `materiais/whatsapp/conteudo.mjs` e os diagramas, desenhados à mão com o mesmo motor da lousa (roughjs + Excalifont), em `materiais/whatsapp/diagramas.mjs`. Para colocar seu nome ou @ na capa e no fim: `AUTOR="por @seuperfil" npm run pdf:whatsapp`. O roteiro de gravação da aula sobre o mesmo tema está em `remotion/aulas/whatsapp/ROTEIRO.md`.
+
 ## Estrutura
 
 ```
@@ -142,6 +150,7 @@ remotion/           templates de vídeo: cenas, elemento de cada marca, fontes
 remotion/lousa/     lousa no estilo Excalidraw (formas à mão, texto manuscrito, canvas infinito)
 remotion/aulas/     aulas da comunidade (cenas, cortes e EDL de cada aula)
 scripts/aulas/      pipeline das aulas: Drive, HDR→SDR, transcrição, cortes, voz, rosto
+materiais/          PDFs de estudo (texto, diagramas e gerador)
 src/coleta/         RSS e APIs de dados
 src/agentes/        editor, redator, revisor e editor da newsletter (Claude)
 src/video/          render do Reel
