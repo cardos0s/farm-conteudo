@@ -33,6 +33,7 @@ CORRECOES = [
     (["fique", "esperando"], ["fica", "esperando"]),
     (["tenha", "um", "cuidado,"], ["tem", "um", "cuidado:"]),
     (["a", "horas"], ["há", "horas"]),
+    (["a", "horas,"], ["há", "horas,"]),
     (["System", "design"], ["System", "Design"]),
     (["1024"], ["1.024"]),
 ]
