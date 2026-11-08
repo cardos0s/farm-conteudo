@@ -27,7 +27,7 @@ if (modo === "png") {
       display:flex; justify-content:space-between;
       font-family:'DejaVu Sans Mono',monospace; font-size:7px;
       color:#4f5a6e; letter-spacing:0.04em;">
-      <span>Engenharia de Inferência</span>
+      <span>Engenharia de Inferência · Júlia Cardoso · @juliacardoso.dev</span>
       <span class="pageNumber"></span>
     </div>`;
   await pagina.pdf({

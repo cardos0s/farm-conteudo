@@ -89,3 +89,8 @@ h2 { margin-top: 2rem; }
 h2.pergunta { break-before: auto; margin-top: 2.4rem; }
 pre, .analogia, .dica, .atencao, .conta, .pergunta-meta, tr, ul.task-list li { break-inside: avoid-page; }
 p, li { orphans: 3; widows: 3; }
+
+/* autoria na folha de rosto */
+.folha-rosto .autoria { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 1.2rem; margin: 2.4rem 0 0; }
+.folha-rosto .autora { font-family: var(--fonte-titulo); font-weight: 600; font-size: 1.55rem; }
+.folha-rosto .contato { font-family: var(--fonte-mono); font-size: 0.95rem; color: var(--destaque); }

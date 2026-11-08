@@ -1,6 +1,6 @@
 # Engenharia de Inferência: o guia completo para entrevistas
 
-Ebook em português com os 14 temas e as 50 perguntas de entrevista de engenharia de inferência levantadas pelo [AI Engineering Insider](https://aiengineeringinsider.substack.com/p/you-should-never-walk-into-an-inference). Cada pergunta tem resposta em 30 segundos, resposta completa, perguntas de acompanhamento e armadilhas comuns. As respostas são originais desta edição.
+De **Júlia Cardoso** (@juliacardoso.dev). Ebook em português com os 14 temas e as 50 perguntas de entrevista de engenharia de inferência levantadas pelo [AI Engineering Insider](https://aiengineeringinsider.substack.com/p/you-should-never-walk-into-an-inference). Cada pergunta tem resposta em 30 segundos, resposta completa, perguntas de acompanhamento e armadilhas comuns. As respostas são originais desta edição.
 
 ## Arquivos prontos
 

@@ -114,6 +114,7 @@ def gera_pdf():
     escritor.append(PdfReader(b("_capa.pdf")))
     escritor.append(PdfReader(b("_passo2.pdf")), import_outline=True)
     escritor.add_metadata({
+        "/Author": "Júlia Cardoso (@juliacardoso.dev)",
         "/Title": "Engenharia de Inferência: o guia completo para "
                   "entrevistas",
         "/Subject": "Os 14 temas e as 50 perguntas de entrevistas de "

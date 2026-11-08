@@ -36,11 +36,21 @@
   }
   .grafico { margin: 0 -3mm; }
   .grafico .roofline .ponto { stroke: var(--papel); }
-  .rodape {
-    display: flex; justify-content: space-between; gap: 6mm;
-    border-top: 1px solid #2c3b57; padding-top: 4mm;
+  .numeros {
     font-family: var(--fonte-mono); font-size: 8.5pt; color: #93a1b8;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.04em; margin: 5mm 0 0;
+  }
+  .rodape {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 6mm; border-top: 1px solid #2c3b57; padding-top: 4.5mm;
+  }
+  .autora {
+    font-family: var(--fonte-titulo); font-weight: 600;
+    font-size: 17pt; color: #f2f5fa; letter-spacing: 0.01em;
+  }
+  .contato {
+    font-family: var(--fonte-mono); font-size: 10.5pt;
+    color: var(--destaque); letter-spacing: 0.02em;
   }
 </style>
 </head>
@@ -50,10 +60,11 @@
     <p class="sobre">Guia de entrevistas · 1ª edição · 2026</p>
     <p class="titulo">Engenharia<br>de Inferência</p>
     <p class="sub">Os 14 temas e as 50 perguntas que caem em OpenAI, Anthropic, NVIDIA, Google e outras empresas, explicados do zero até o nível sênior.</p>
+    <p class="numeros">14 capítulos · 50 perguntas comentadas · código testado</p>
   </div>
   <div class="grafico">{{ROOFLINE}}</div>
   <div class="rodape">
-    <span>14 capítulos</span><span>50 perguntas comentadas</span><span>código testado</span>
+    <span class="autora">Júlia Cardoso</span><span class="contato">@juliacardoso.dev</span>
   </div>
 </div>
 </body>

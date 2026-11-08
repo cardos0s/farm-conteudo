@@ -440,6 +440,11 @@ section.level1 > h1 { padding-bottom: 1rem; border-bottom: 2px solid var(--tinta
   pre { font-size: 0.74rem; padding: 0.75rem 0.8rem; }
 }
 
+/* autoria */
+.abertura .autoria { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 1rem; margin: 0 0 1.4rem; }
+.abertura .autora { font-family: var(--fonte-titulo); font-weight: 600; font-size: 1.3rem; }
+.abertura .contato { font-family: var(--fonte-mono); font-size: 0.9rem; color: var(--destaque); }
+
 </style>
 <div class="pagina">
   <header class="abertura">
@@ -447,6 +452,7 @@ section.level1 > h1 { padding-bottom: 1rem; border-bottom: 2px solid var(--tinta
       <p class="sobretitulo">Guia de entrevistas · 1ª edição · Novembro de 2026</p>
       <p class="titulo-livro">Engenharia de Inferência</p>
       <p class="subtitulo-livro">Os 14 temas e as 50 perguntas que caem em entrevistas de engenharia de inferência em OpenAI, Anthropic, NVIDIA, Google e outras, explicados do zero até o nível sênior.</p>
+      <p class="autoria"><span class="autora">Júlia Cardoso</span><span class="contato"><span class="citation" data-cites="juliacardoso.dev">@juliacardoso.dev</span></span></p>
       <ul class="numeros" aria-label="Conteúdo do livro">
         <li><strong>14</strong> capítulos</li>
         <li><strong>50</strong> perguntas comentadas</li>
@@ -11478,6 +11484,7 @@ GPU:.status.allocatable.nvidia\.com/gpu</code></pre>
 </section>
 </section>
       <footer class="creditos">
+        <p><strong>Júlia Cardoso</strong> · <span class="citation" data-cites="juliacardoso.dev">@juliacardoso.dev</span></p>
         <p>As 50 perguntas vêm do levantamento publicado pelo <a href="https://aiengineeringinsider.substack.com/p/you-should-never-walk-into-an-inference">AI Engineering Insider</a>. Respostas, explicações, diagramas e códigos são originais desta edição. Valores de hardware e desempenho são aproximados.</p>
       </footer>
     </main>

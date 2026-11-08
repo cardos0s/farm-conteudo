@@ -146,3 +146,8 @@ section.level1 > h1 { padding-bottom: 1rem; border-bottom: 2px solid var(--tinta
   h2 { font-size: 1.35rem; }
   pre { font-size: 0.74rem; padding: 0.75rem 0.8rem; }
 }
+
+/* autoria */
+.abertura .autoria { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 1rem; margin: 0 0 1.4rem; }
+.abertura .autora { font-family: var(--fonte-titulo); font-weight: 600; font-size: 1.3rem; }
+.abertura .contato { font-family: var(--fonte-mono); font-size: 0.9rem; color: var(--destaque); }
