@@ -28,6 +28,10 @@ CORRECOES = [
     (["a", "não", "aparecer."], ["a", "aparecer."]),  # tropeço da voz, o texto é "começa a aparecer"
     (["a", "mal", "aparecer."], ["a", "aparecer."]),
     (["R", "$15", ",00,"], ["R$ 15,"]),
+    (["R", "$15", ",00."], ["R$ 15."]),
+    (["R", "$15,"], ["R$ 15,"]),
+    (["fique", "esperando"], ["fica", "esperando"]),
+    (["tenha", "um", "cuidado,"], ["tem", "um", "cuidado:"]),
     (["a", "horas"], ["há", "horas"]),
     (["System", "design"], ["System", "Design"]),
     (["1024"], ["1.024"]),
