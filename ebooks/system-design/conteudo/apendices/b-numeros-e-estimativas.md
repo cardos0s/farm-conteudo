@@ -63,7 +63,7 @@ Tamanhos úteis: um inteiro de 64 bits ou um timestamp ocupa 8 bytes; um UUID, 1
 
 Dividir por 10^5 em vez de 86.400 subestima o resultado em ~14%. Para estimar, tudo bem: o fator de pico cobre a diferença com folga. As três fórmulas que resolvem quase tudo:
 
-- **QPS** = ações por dia ÷ 10^5.
+- **QPS** (requisições por segundo) = ações por dia ÷ 10^5.
 - **Armazenamento** = itens por dia × tamanho × dias × número de cópias.
 - **Banda** = QPS × tamanho de cada requisição ou resposta.
 

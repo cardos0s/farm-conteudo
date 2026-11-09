@@ -39,7 +39,7 @@ Perguntas que quase sempre valem a pena:
 
 ## 2. Estimar a ordem de grandeza
 
-As contas servem para decidir, não para impressionar. Calcule o QPS médio e o de pico (o throughput do capítulo 5), o armazenamento e a banda, arredondando sem dó: um dia tem ~10^5 segundos. O apêndice B traz as tabelas de referência e um exemplo resolvido.
+As contas servem para decidir, não para impressionar. Calcule o QPS (requisições por segundo, o throughput do capítulo 5) médio e de pico, o armazenamento e a banda, arredondando sem dó: um dia tem ~10^5 segundos. O apêndice B traz as tabelas de referência e um exemplo resolvido.
 
 Pare quando o número decidir alguma coisa. Cem escritas por segundo cabem num banco só; cem mil pedem sharding (cap. 23). Milhares de leituras por segundo do mesmo conteúdo pedem cache (cap. 41). Se o entrevistador preferir pular as contas, faça-as mais tarde, quando forem decidir algo.
 
@@ -119,7 +119,7 @@ Guarde três minutos. Recapitule os requisitos atendidos, as duas ou três decis
 - **Desenhar antes de perguntar.** Você resolve com capricho um problema que ninguém pediu.
 - **Afogar-se nas contas.** Quinze minutos de aritmética roubam o aprofundamento.
 - **Citar tecnologia sem motivo.** "Coloca um Kafka aqui" não é argumento; "preciso de uma fila porque o processamento leva 30 segundos" é.
-- **Projetar para a escala do Google** sem nenhum número que justifique.
+- **Projetar para a escala do Google.** Sem um número que a justifique, complexidade conta contra você.
 - **Desenhar só o caminho feliz.** Se você não falar de falhas, o entrevistador vai perguntar.
 - **Pensar em silêncio.** O que se avalia é o raciocínio. Narre.
 - **Brigar com a dica.** "E se esse banco cair?" quase sempre aponta um buraco. Reconheça e ajuste.
