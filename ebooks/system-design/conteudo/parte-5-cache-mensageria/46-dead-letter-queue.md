@@ -12,7 +12,7 @@ Uma dead letter queue (DLQ, ou fila de mensagens mortas) guarda as mensagens que
 
 ## Aprofundando
 
-O nome vem dos correios: *dead letter* é a carta que não pode ser entregue nem devolvida. Numa fila, é a mensagem que o consumidor não consegue processar.
+O nome vem dos correios: "dead letter" é a carta que não pode ser entregue nem devolvida. Numa fila, é a mensagem que o consumidor não consegue processar.
 
 ### O caminho de uma mensagem envenenada
 
@@ -43,9 +43,9 @@ O entregador tenta deixar uma encomenda três vezes e não consegue: o número d
 ## No mundo real
 
 - **Amazon SQS:** a redrive policy define o `maxReceiveCount`; passada essa contagem de entregas, a mensagem vai para a DLQ configurada. O próprio SQS oferece o redrive de volta para a fila de origem depois da correção.
-- **RabbitMQ:** mensagens rejeitadas sem reenfileiramento, expiradas por TTL ou descartadas por fila cheia vão para um *dead letter exchange*.
+- **RabbitMQ:** mensagens rejeitadas sem reenfileiramento, expiradas por TTL ou descartadas por fila cheia vão para um dead letter exchange.
 - **Kafka:** o broker não tem DLQ. O consumidor publica a mensagem problemática num tópico separado; o Kafka Connect faz isso nos conectores de destino (sink) com `errors.deadletterqueue.topic.name`.
-- **Sidekiq:** depois de 25 novas tentativas com backoff exponencial, que somam cerca de 20 dias, o job vai para o conjunto *Dead*, de onde pode ser reexecutado pela interface web.
+- **Sidekiq:** depois de 25 novas tentativas com backoff exponencial, que somam cerca de 20 dias, o job vai para o conjunto Dead, de onde pode ser reexecutado pela interface web.
 
 ## Trade-offs
 

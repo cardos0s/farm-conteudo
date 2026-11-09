@@ -46,7 +46,7 @@ Seu guarda-roupa tem 30 cabides; para pendurar uma camisa nova, alguma precisa s
 
 - **Redis:** com `maxmemory` definido, as políticas `allkeys-lru` e `allkeys-lfu` escolhem a vítima entre todas as chaves, e as variantes `volatile-*`, só entre as que têm TTL. O padrão, `noeviction`, não remove nada: quando o limite é atingido, as escritas passam a falhar.
 - **Caffeine:** essa biblioteca de cache em memória para Java, sucessora do cache do Guava e suportada pelo Spring, usa W-TinyLFU em vez de LRU puro.
-- **PostgreSQL:** o buffer pool usa o *clock sweep*, uma aproximação de LRU com um pequeno contador de uso por página.
+- **PostgreSQL:** o buffer pool usa o clock sweep, uma aproximação de LRU com um pequeno contador de uso por página.
 - **ZFS:** o cache em memória é o ARC (Adaptive Replacement Cache), que divide o espaço entre itens recentes e frequentes e ajusta a proporção sozinho.
 
 ## Trade-offs

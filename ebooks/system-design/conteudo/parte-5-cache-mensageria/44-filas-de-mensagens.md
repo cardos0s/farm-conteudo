@@ -42,7 +42,7 @@ Na cozinha de um restaurante, o garçom pendura a comanda no trilho e volta para
 ## No mundo real
 
 - **Amazon SQS:** a mensagem recebida fica invisível por um prazo (o visibility timeout, 30 s por padrão) e reaparece se não for apagada até lá. Filas padrão entregam pelo menos uma vez e sem ordem garantida; filas FIFO preservam a ordem dentro de cada grupo de mensagens.
-- **RabbitMQ:** o consumidor confirma com ack, e o *prefetch* limita quantas mensagens sem ack cada um pode segurar. Se a conexão cai, as pendentes voltam para a fila.
+- **RabbitMQ:** o consumidor confirma com ack, e o prefetch limita quantas mensagens sem ack cada um pode segurar. Se a conexão cai, as pendentes voltam para a fila.
 - **Jobs em segundo plano:** o Sidekiq (Ruby, sobre Redis) e o Celery (Python, sobre RabbitMQ ou Redis) usam filas para e-mails, relatórios e processamento de imagens.
 
 ## Trade-offs
