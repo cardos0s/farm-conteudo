@@ -10,7 +10,7 @@ relacionados: [9, 13, 32, 47, 49]
 
 Um API gateway é um proxy reverso especial que funciona como ponto único de entrada para todas as chamadas de API num sistema de microsserviços. Ele cuida do roteamento para o serviço certo, do rate limiting (limite de requisições), da autenticação, dos logs e, às vezes, da adaptação do formato das respostas. Isso reduz a complexidade do lado do cliente, já que os clientes só conversam com um único endpoint.
 
-Se você puser lógica demais no gateway, ele pode virar um gargalo ou um minimonólito por si só. Bons designs o mantêm focado e enxuto.
+Se você puser lógica demais no gateway, ele pode virar um gargalo ou um pequeno monólito por si só. Bons designs o mantêm focado e enxuto.
 
 ## Aprofundando
 
@@ -21,7 +21,7 @@ Sem gateway, o app precisaria saber o endereço de cada microsserviço, e cada s
 Acompanhe uma chamada do app, `GET /pedidos/123`, com um token no cabeçalho `Authorization`:
 
 1. **TLS:** o gateway termina a conexão segura.
-2. **Autenticação:** valida a assinatura e a validade do token (um JWT, por exemplo) com a chave pública do provedor de identidade, sem consultar outro serviço a cada chamada. Token inválido volta com `401` ali mesmo.
+2. **Autenticação:** valida a assinatura e o prazo de validade do token (um JWT, por exemplo) com a chave pública do provedor de identidade, sem consultar outro serviço a cada chamada. Token inválido volta com `401` ali mesmo.
 3. **Rate limit:** confere a cota do cliente (cap. 32). Passou de 100 chamadas por minuto? Volta `429 Too Many Requests`.
 4. **Roteamento:** consulta a tabela de rotas e encaminha ao serviço de pedidos, levando a identidade do usuário num cabeçalho interno.
 5. **Observabilidade:** registra latência e status e propaga um ID de rastreamento para o tracing distribuído (cap. 47).
@@ -36,7 +36,7 @@ A tabela de rotas costuma ser declarativa:
 
 Se amanhã o catálogo for dividido em dois serviços, muda a tabela, não o app.
 
-Quando clientes diferentes precisam de respostas muito diferentes, entra o padrão BFF (Backend for Frontend): um backend por tipo de cliente, que junta várias chamadas internas numa resposta sob medida para cada tela. É ali que a adaptação das respostas deve morar, e não no gateway compartilhado.
+Quando clientes diferentes precisam de respostas muito diferentes, entra o padrão BFF (Backend for Frontend): um backend por tipo de cliente, que junta várias chamadas internas numa resposta sob medida para cada tela. É um bom lugar para a adaptação das respostas, que assim não incha o gateway compartilhado.
 
 ## Analogia
 
@@ -66,7 +66,7 @@ Pense na central telefônica do seu banco. Você liga para um número só. A URA
 
 ## Cuidado com
 
-- **Autenticar não é autorizar.** O gateway confirma *quem* é o usuário. Se o pedido 123 pertence a ele, só o serviço de pedidos sabe. Esquecer essa checagem no serviço gera a falha que lidera o OWASP API Security Top 10: trocar o ID na URL e ver o pedido de outra pessoa.
+- **Autenticar não é autorizar.** O gateway confirma *quem* é o usuário. Se o pedido 123 pertence a ele, só o serviço de pedidos sabe. Esquecer essa checagem no serviço gera a falha que lidera o OWASP API Security Top 10, conhecida como BOLA: trocar o ID na URL e ver o pedido de outra pessoa.
 - **Ponto único de falha.** Se o gateway cai, todas as APIs caem juntas. Rode várias instâncias, atrás de um LB, em mais de uma zona.
 - **Gateway não é service mesh.** O gateway cuida do tráfego que entra no sistema (norte-sul). A comunicação entre serviços (leste-oeste) passa direto ou por um service mesh, como Istio ou Linkerd.
 

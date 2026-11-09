@@ -32,11 +32,11 @@ Balancear não cria capacidade. Se cada servidor aguenta 2.000 req/s e o pico é
 
 ## Analogia
 
-Pense na fila única de um supermercado grande. Você não escolhe o caixa: o painel chama "caixa 7" e você vai para lá. O painel é o load balancer, e os caixas são os servidores. Quando o caixa 3 fica sem sistema, a luzinha em cima dele apaga e o painel para de chamá-lo; quem já estava passando as compras termina normalmente. A fila continua andando, só que com um caixa a menos.
+Pense na fila única de um supermercado grande. Você não escolhe o caixa: o painel chama "caixa 7" e você vai para lá. O painel é o load balancer, e os caixas são os servidores. Quando o sistema do caixa 3 trava, a luzinha em cima dele apaga e o painel para de chamá-lo, sem que ninguém na fila precise saber o motivo. A fila continua andando, só que com um caixa a menos.
 
 ## No mundo real
 
-- **NGINX** e **HAProxy** são os load balancers de software mais conhecidos. Os dois trabalham tanto na camada 4 quanto na 7.
+- **NGINX** e **HAProxy** estão entre os load balancers de software mais usados. Os dois trabalham tanto na camada 4 quanto na 7.
 - Na AWS, o **Application Load Balancer** atua na camada 7, roteando por caminho e por host, e o **Network Load Balancer** atua na camada 4 (TCP, UDP e TLS). Os dois tiram da rotação os alvos que falham no health check.
 - No **Kubernetes**, um Service distribui as conexões entre os pods, e a readiness probe faz o papel de health check: o pod que falha sai da lista de endpoints do Service.
 - Do lado do hardware, appliances como o **F5 BIG-IP** ainda aparecem em datacenters próprios.
@@ -60,7 +60,7 @@ Pense na fila única de um supermercado grande. Você não escolhe o caixa: o pa
 ## Cuidado com
 
 - **Atualização:** o artigo diz que a falha de um servidor não derruba o sistema. Só é verdade se os outros tiverem folga para absorver a parte dele; sem folga, a carga extra derruba o próximo, num efeito dominó.
-- **Health check raso ou fundo demais.** Um `/health` que sempre devolve 200 não percebe que o app perdeu o banco. O oposto também machuca: se o check depende do banco e o banco oscila, todos os servidores reprovam juntos. Por isso o Envoy tem um "limiar de pânico": por padrão, com menos da metade dos servidores saudáveis, ele ignora o health check e distribui entre todos.
+- **Health check raso ou fundo demais.** Um `/health` que sempre devolve 200 não percebe que o app perdeu o banco. O oposto também machuca: se o check depende do banco e o banco oscila, todos os servidores reprovam juntos. Por isso o Envoy tem um "limiar de pânico": abaixo de 50% de servidores saudáveis, ele ignora o health check e distribui entre todos.
 - **Sticky session é muleta.** Prender cada usuário a um servidor desequilibra a carga e, quando ele cai, leva as sessões junto. Guarde o estado fora do servidor (cap. 8).
 
 ## Teste-se

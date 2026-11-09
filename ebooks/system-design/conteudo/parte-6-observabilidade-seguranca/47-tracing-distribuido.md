@@ -14,7 +14,7 @@ O tracing distribuído acompanha uma única requisição enquanto ela passa por 
 
 Dois conceitos sustentam tudo:
 
-- **Trace:** a viagem completa de uma requisição. É identificado por um **trace ID** de 128 bits, gerado uma única vez, por quem recebe a requisição primeiro (o gateway ou o próprio app do cliente).
+- **Trace:** a viagem completa de uma requisição. É identificado por um **trace ID** de 128 bits, gerado uma única vez, no primeiro ponto instrumentado do caminho (o próprio app do cliente ou o gateway).
 - **Span:** uma etapa dessa viagem, como uma chamada HTTP, uma consulta ao banco ou a publicação numa fila. Cada span guarda o próprio ID, o ID do span pai, o nome da operação, o instante de início, a duração e atributos como o status HTTP ou a consulta SQL.
 
 O que costura os serviços é a **propagação de contexto**. Ao chamar o próximo serviço, cada um envia o trace ID e o ID do span atual num cabeçalho. O padrão hoje é o `traceparent`, do W3C Trace Context:
@@ -23,7 +23,7 @@ O que costura os serviços é a **propagação de contexto**. Ao chamar o próxi
 traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
 ```
 
-Os campos são a versão, o trace ID, o ID do span pai e as flags (o `01` diz que este trace foi amostrado). Quem recebe cria um span filho com o mesmo trace ID e repassa o cabeçalho adiante. Os spans são enviados em lotes, de forma assíncrona, a um coletor; o backend junta tudo pelo trace ID e monta a árvore pelos IDs de pai.
+Os campos são a versão, o trace ID, o ID do span pai e as flags (o `01` diz que este trace foi amostrado). Quem recebe cria um span filho com o mesmo trace ID e, ao chamar o próximo, envia um `traceparent` novo, com o próprio span como pai. Os spans são enviados em lotes, de forma assíncrona, a um coletor; o backend junta tudo pelo trace ID e monta a árvore pelos IDs de pai.
 
 ![Cascata de um trace de checkout: as barras estão em escala, e uma única consulta ao banco ocupa 900 dos 1200 ms.](../../diagramas/47-trace.svg)
 
@@ -50,7 +50,7 @@ Pense no código de rastreio dos Correios. O pacote ganha um código na postagem
 
 **Você ganha**
 
-- Onde o tempo de cada requisição foi gasto, serviço por serviço, em vez de palpites cruzando logs soltos.
+- Ver onde o tempo de cada requisição foi gasto, serviço por serviço, em vez de dar palpites cruzando logs soltos.
 - O mapa real de dependências (quem chama quem), extraído dos próprios traces.
 - Uma ponte entre sinais: do pico na métrica para um trace lento, e dele para as linhas de log com o mesmo trace ID.
 

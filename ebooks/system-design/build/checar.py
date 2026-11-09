@@ -28,11 +28,21 @@ FAIXAS = {  # palavras sugeridas por seção (aviso, não erro)
 IMAGEM = re.compile(r"!\[([^\]]*)\]\(([^)]+)\)")
 
 
+class CabecalhoInvalido(Exception):
+    pass
+
+
 def frente(texto: str):
     m = re.match(r"^---\n(.*?)\n---\n(.*)$", texto, re.S)
     if not m:
         return None, texto
-    return yaml.safe_load(m.group(1)) or {}, m.group(2)
+    try:
+        return yaml.safe_load(m.group(1)) or {}, m.group(2)
+    except yaml.YAMLError as e:
+        raise CabecalhoInvalido(
+            f"cabeçalho YAML inválido ({str(e).splitlines()[0]}). Se um valor tiver ': ' no meio, "
+            'coloque-o entre aspas: resumo: "..."'
+        ) from e
 
 
 def palavras(s: str) -> int:
@@ -161,7 +171,10 @@ def main(args: list[str]) -> int:
     for arq in arquivos:
         erros: list[str] = []
         avisos: list[str] = []
-        {"parte": checar_parte, "capitulo": checar_capitulo, "simulado": checar_simulado}.get(tipo(arq), checar_generico)(arq, erros, avisos)
+        try:
+            {"parte": checar_parte, "capitulo": checar_capitulo, "simulado": checar_simulado}.get(tipo(arq), checar_generico)(arq, erros, avisos)
+        except CabecalhoInvalido as e:
+            erros.append(str(e))
         rotulo = arq.relative_to(RAIZ) if arq.is_relative_to(RAIZ) else arq
         if erros:
             total_erros += len(erros)

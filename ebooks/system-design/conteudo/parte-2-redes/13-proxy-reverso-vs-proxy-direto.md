@@ -2,7 +2,7 @@
 numero: 13
 titulo: Proxy reverso vs. proxy direto
 original: Reverse Proxy vs Forward Proxy
-resumo: Um proxy direto fica do lado dos clientes e fala por eles com a internet; um proxy reverso fica do lado dos servidores e fala por eles com os clientes, cuidando de TLS, cache e roteamento.
+resumo: O proxy direto fica do lado dos clientes e fala por eles com a internet; o proxy reverso fica do lado dos servidores e fala por eles, cuidando de TLS, cache e roteamento.
 relacionados: [11, 14, 15, 41, 50]
 ---
 
@@ -32,7 +32,7 @@ O proxy responde `200` e passa a copiar bytes cifrados de um lado para o outro. 
 
 ### Proxy reverso: escolhido pelo dono do site
 
-Quem configura é o dono dos servidores. O DNS do site aponta para o proxy, e o cliente nem sabe que ele existe. Exemplo: uma requisição a `https://www.loja.com.br/api/pedidos` chega ao NGINX. Ele termina o TLS com o certificado da loja, vê que o caminho começa com `/api` e repassa para `10.0.1.12:8080` pela rede interna, acrescentando o cabeçalho `X-Forwarded-For: 177.20.4.9` para a aplicação saber quem é o cliente de verdade. Respostas grandes saem comprimidas, e arquivos estáticos podem sair direto do cache do proxy, sem incomodar a aplicação. O cliente nunca fica sabendo do endereço `10.0.1.12`.
+Quem configura é o dono dos servidores. O DNS do site aponta para o proxy, e o cliente nem sabe que ele existe. Exemplo: uma requisição a `https://www.loja.com.br/api/pedidos` chega ao NGINX. Ele termina o TLS com o certificado da loja, vê que o caminho começa com `/api` e repassa a requisição para `10.0.1.12:8080` pela rede interna. No caminho, acrescenta o cabeçalho `X-Forwarded-For: 177.20.4.9`, para a aplicação saber quem é o cliente de verdade. Respostas grandes saem comprimidas, e arquivos estáticos podem sair direto do cache do proxy, sem incomodar a aplicação. O cliente nunca fica sabendo do endereço `10.0.1.12`.
 
 Load balancer (cap. 11), API gateway (cap. 14) e CDN (cap. 15) são, todos, proxies reversos especializados.
 

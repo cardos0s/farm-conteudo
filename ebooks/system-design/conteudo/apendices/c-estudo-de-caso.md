@@ -34,7 +34,7 @@ Leituras: 100 × 40/s = 4.000/s               pico: ~12.000/s
 Registro: código + URL + metadados + índice ≈ 500 bytes
 Por mês:  10^8 × 500 B = 50 GB
 5 anos:   50 GB × 60 = 3 TB (6 bilhões de links)
-Cache:    20% dos links do mês = 2 × 10^7 × 500 B = 10 GB
+Cache:    20% mais clicados do mês: 2 × 10^7 × 500 B = 10 GB
 Banda:    4.000 respostas/s × ~500 B = 2 MB/s
 Cliques:  10^10 por mês × 200 B = 2 TB de eventos por mês
 ```
@@ -98,7 +98,7 @@ Em base62 (0–9, a–z, A–Z), cada caractere tem 62 valores: seis caracteres 
 
 Há três jeitos de gerar o código.
 
-**Hash da URL.** Calcula-se um hash (MD5, SHA-256) da URL e ficam os 7 primeiros caracteres em base62. Dispensa coordenação, mas o hash truncado colide, e muito. Pelo paradoxo do aniversário:
+**Hash da URL.** Calcula-se um hash (MD5, SHA-256) da URL e ficam os 7 primeiros caracteres em base62. Dispensa coordenação, mas o hash truncado colide, e muito. Pelo paradoxo do aniversário, com n = 6 bilhões de links e N = 3,5 trilhões de códigos possíveis:
 
 ```text
 colisões ≈ n² ÷ (2 × N)
@@ -140,7 +140,7 @@ Dois cuidados:
 - **Link viral.** Dezenas de milhares de cliques por segundo no mesmo código caem num só nó do Redis. Um cache local em cada instância, com TTL de poucos segundos, absorve o pico.
 - **Código inexistente.** Quem varre códigos ao acaso nunca acerta o cache. Guarde também o "não existe", por pouco tempo.
 
-O banco guarda 3 TB em 5 anos e não para de crescer. Ele é particionado pelo hash do código (cap. 23), com hashing consistente (cap. 25): quando entra um nó novo, só ~1/N das chaves muda de lugar, e a carga, inclusive a das escritas novas, se espalha por igual.
+O banco guarda 3 TB em 5 anos e não para de crescer. Ele é particionado pelo hash do código (cap. 23), com hashing consistente (cap. 25): quando entra um nó novo, só a fração das chaves que passa a ser dele muda de lugar, e a carga, inclusive a das escritas novas, se espalha por igual.
 
 ## 7. Gargalos, falhas e trade-offs
 
@@ -158,7 +158,7 @@ Incrementar um contador no banco a cada clique poria uma escrita no caminho crí
 
 ### Replicação e disponibilidade
 
-Cada shard tem três réplicas, uma por zona de disponibilidade (cap. 24), e a escrita espera duas confirmações (W = 2). Como um link nunca muda, qualquer réplica que tenha o registro tem o valor certo. Então a leitura vai a uma réplica (R = 1) e, se ela não achar, confirma com duas (R = 2) antes do 404. Como R + W > N (2 + 2 > 3), uma das duas tem o link recém-criado.
+Cada shard tem três réplicas, uma por zona de disponibilidade (cap. 24), e a escrita espera duas confirmações (W = 2). Como um link nunca muda, qualquer réplica que tenha o registro tem o valor certo. Então a leitura vai a uma réplica (R = 1) e, se ela não achar, confirma com duas (R = 2) antes do 404. Como R + W > N (2 + 2 > 3 réplicas), pelo menos uma das duas tem o link recém-criado.
 
 Numa partição de rede (cap. 2), o redirecionamento prefere disponibilidade e responde com o que tem; o coordenador de faixas prefere consistência e recusa, enquanto as instâncias criam links com as faixas que já têm.
 

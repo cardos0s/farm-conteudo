@@ -20,7 +20,7 @@ Escolher o algoritmo certo afeta a justiça da distribuição, o uso de recursos
 
 Os três respondem à mesma pergunta, a cada requisição ou conexão nova: para qual servidor mando esta? O que muda é a informação usada para decidir: nenhuma, a carga do momento ou a identidade do cliente.
 
-![Na mesma situação, cada algoritmo manda a próxima requisição para um lugar diferente: A pela ordem, B pela carga, C pelo IP.](../../diagramas/12-algoritmos.svg)
+![Cada algoritmo decide com uma informação diferente: o round robin manda para A pela ordem, o least connections manda para B pela carga, o IP hash manda para C pelo IP.](../../diagramas/12-algoritmos.svg)
 
 ### Round robin: só a ordem
 
@@ -30,7 +30,7 @@ O ponto fraco é que ele distribui requisições, não trabalho. Se A está proc
 
 ### Least connections: a carga do momento
 
-O balanceador mantém um contador de conexões abertas por servidor e escolhe o menor. Com A em 12, B em 3 e C em 8, a próxima vai para B. Um servidor travado em requisições lentas acumula conexões e, por isso, para de receber novas: o algoritmo se corrige sozinho. É a escolha natural para conexões longas e de duração desigual, como WebSocket (cap. 20), uploads e streaming. Também existe a versão ponderada, que divide as conexões pelo peso de cada servidor.
+O balanceador mantém um contador de conexões abertas por servidor e escolhe o menor. Com A em 12, B em 3 e C em 8, a próxima vai para B. Um servidor travado em requisições lentas acumula conexões e deixa de ser escolhido até os outros o alcançarem: o algoritmo se corrige sozinho. É a escolha natural para conexões longas e de duração desigual, como WebSocket (cap. 20), uploads e streaming. Também existe a versão ponderada, que divide as conexões pelo peso de cada servidor.
 
 ### IP hash: quem está pedindo
 

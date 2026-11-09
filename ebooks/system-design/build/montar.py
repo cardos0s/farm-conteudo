@@ -113,11 +113,14 @@ class Questao:
 # ───────────────────────── leitura ─────────────────────────
 
 
-def frente(texto: str) -> tuple[dict, str]:
+def frente(texto: str, arquivo: Path | None = None) -> tuple[dict, str]:
     m = re.match(r"^---\n(.*?)\n---\n(.*)$", texto, re.S)
     if not m:
         return {}, texto
-    return yaml.safe_load(m.group(1)) or {}, m.group(2)
+    try:
+        return yaml.safe_load(m.group(1)) or {}, m.group(2)
+    except yaml.YAMLError as e:
+        raise SystemExit(f"Cabeçalho YAML inválido em {arquivo or '?'}: rode build/checar.py para ver o motivo.") from e
 
 
 def pandoc(md: str, prefixo: str = "", deslocar: int = 0) -> str:
@@ -138,6 +141,7 @@ def inline(md: str) -> str:
     s = re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
     s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
     s = re.sub(r"(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])", r"<em>\1</em>", s)
+    s = re.sub(r"(?<=\d)\^(\d+)\b", r"<sup>\1</sup>", s)
     return s
 
 
@@ -204,6 +208,25 @@ def ligar_referencias(raiz: Tag, titulos: dict[int, str]):
         no.extract()
 
 
+POTENCIA = re.compile(r"(?<=\d)\^(\d+)\b")
+
+
+def potencias(raiz: Tag):
+    """10^5 → 10<sup>5</sup> no texto corrido (blocos de código ficam como estão)."""
+    for no in list(raiz.find_all(string=POTENCIA)):
+        if any(p.name in {"code", "pre", "script", "style", "svg"} for p in no.parents if isinstance(p, Tag)):
+            continue
+        for i, parte in enumerate(POTENCIA.split(str(no))):
+            if i % 2 == 0:
+                if parte:
+                    no.insert_before(NavigableString(parte))
+            else:
+                sup = Tag(name="sup")
+                sup.string = parte
+                no.insert_before(sup)
+        no.extract()
+
+
 def preparar_figuras(raiz: Tag, base: Path) -> int:
     """Troca <img> de diagrama por um marcador; o SVG entra depois, como texto cru."""
     n = 0
@@ -258,7 +281,7 @@ def extrair_perguntas(secao: Tag, capitulo: int) -> list[Pergunta]:
 
 
 def ler_capitulo(arq: Path, parte: int, titulos: dict[int, str]) -> Capitulo:
-    fm, corpo = frente(arq.read_text(encoding="utf-8"))
+    fm, corpo = frente(arq.read_text(encoding="utf-8"), arq)
     cap = Capitulo(
         numero=int(fm["numero"]),
         titulo=str(fm["titulo"]),
@@ -269,6 +292,7 @@ def ler_capitulo(arq: Path, parte: int, titulos: dict[int, str]) -> Capitulo:
     )
     s = sopa(pandoc(corpo, prefixo=f"{cap.id}-", deslocar=1))
     cap.diagramas = preparar_figuras(s, arq.parent)
+    potencias(s)
     embrulhar_tabelas(s)
     marcar_atualizacoes(s)
     for secao in s.find_all("section", class_="level3"):
@@ -304,16 +328,17 @@ def ler_capitulo(arq: Path, parte: int, titulos: dict[int, str]) -> Capitulo:
 
 
 def ler_pagina(arq: Path, id_: str, rotulo: str, titulos: dict[int, str], letra: str = "") -> Pagina:
-    fm, corpo = frente(arq.read_text(encoding="utf-8"))
+    fm, corpo = frente(arq.read_text(encoding="utf-8"), arq)
     s = sopa(pandoc(corpo, prefixo=f"{id_}-"))
     preparar_figuras(s, arq.parent)
+    potencias(s)
     embrulhar_tabelas(s)
     ligar_referencias(s, titulos)
     return Pagina(id=id_, titulo=str(fm.get("titulo", "")), rotulo=rotulo, corpo=str(s), letra=letra)
 
 
 def ler_simulado(arq: Path, capitulo_parte: dict[int, int], titulos: dict[int, str]) -> tuple[Pagina, list[Questao]]:
-    fm, corpo = frente(arq.read_text(encoding="utf-8"))
+    fm, corpo = frente(arq.read_text(encoding="utf-8"), arq)
     blocos = re.split(r"^### +", corpo, flags=re.M)
     intro = sopa(pandoc(blocos[0])) if blocos[0].strip() else sopa("")
     ligar_referencias(intro, titulos)
@@ -336,7 +361,9 @@ def ler_simulado(arq: Path, capitulo_parte: dict[int, int], titulos: dict[int, s
             elif not alternativas and linha.strip():
                 extra.append(linha)
         enun = sopa(pandoc(enunciado_md + ("\n\n" + "\n".join(extra) if extra else "")))
+        potencias(enun)
         exp = sopa(pandoc(" ".join(explicacao)))
+        potencias(exp)
         ligar_referencias(exp, titulos)
         caps = [int(c) for c in re.findall(r"[Cc]ap(?:ítulos?|s?\.)\s*([\d,\se–-]+)", " ".join(explicacao)) for c in re.findall(r"\d{1,2}", c)]
         caps = [c for c in caps if 1 <= c <= TOTAL_CAPITULOS]
@@ -361,7 +388,7 @@ def ler_simulado(arq: Path, capitulo_parte: dict[int, int], titulos: dict[int, s
 def mapa_titulos() -> dict[int, str]:
     titulos: dict[int, str] = {}
     for arq in CONTEUDO.glob("parte-*/[0-9][0-9]-*.md"):
-        fm, _ = frente(arq.read_text(encoding="utf-8"))
+        fm, _ = frente(arq.read_text(encoding="utf-8"), arq)
         if fm.get("numero"):
             titulos[int(fm["numero"])] = str(fm.get("titulo", ""))
     return titulos
@@ -374,8 +401,9 @@ def ler_livro() -> dict:
         n = int(re.match(r"parte-(\d+)", pasta.name).group(1))
         intro_arq = pasta / "_parte.md"
         if intro_arq.exists():
-            fm, corpo = frente(intro_arq.read_text(encoding="utf-8"))
+            fm, corpo = frente(intro_arq.read_text(encoding="utf-8"), intro_arq)
             s = sopa(pandoc(corpo))
+            potencias(s)
             ligar_referencias(s, titulos)
             parte = Parte(n, str(fm.get("titulo", f"Parte {n}")), str(fm.get("original", "")), str(s))
         else:

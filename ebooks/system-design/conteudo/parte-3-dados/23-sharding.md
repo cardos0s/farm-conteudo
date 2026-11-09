@@ -35,7 +35,7 @@ Um cartório com milhões de certidões não cabe numa sala só, então divide o
 - O **MongoDB** faz sharding nativo por faixa ou por hash, e um balanceador move blocos de dados (chunks) entre os shards. Desde a versão 5.0, dá para trocar a chave de shard de uma coleção já em produção.
 - O **Vitess**, criado no YouTube para fatiar o MySQL, roteia cada consulta ao shard certo e é usado pelo Slack, entre outros.
 - O **Instagram** documentou, em 2012, milhares de shards lógicos no PostgreSQL mapeados para poucos servidores físicos, com o número do shard embutido em cada ID gerado.
-- O **DynamoDB** divide as tabelas por hash da chave de partição. Cada partição aguenta até 1.000 unidades de escrita por segundo, então uma chave quente fica presa a esse teto, por maior que seja a capacidade da tabela.
+- O **DynamoDB** divide as tabelas por hash da chave de partição. Cada partição aguenta até 1.000 WCU (cerca de mil escritas de 1 KB por segundo), então uma chave quente fica presa a esse teto, por maior que seja a capacidade da tabela.
 
 ## Trade-offs
 
