@@ -481,9 +481,31 @@ def fonte_base64(caminho: Path) -> str:
     return "data:font/woff2;base64," + base64.b64encode(caminho.read_bytes()).decode("ascii")
 
 
-def fontes_css() -> str:
+def fontes_css(modo: str = "web") -> str:
     f = BUILD / "fontes"
     exc = REPO / "public/fontes/Excalifont-Regular.woff2"
+    if modo == "impressao":
+        # No PDF, fontes variáveis viram Type 3 (uma cópia por combinação de eixos) e o arquivo
+        # incha; instâncias estáticas entram como TrueType com subconjunto.
+        est = f / "estaticas"
+        faces = [
+            ("Literata", "literata-400.woff", "normal", 400),
+            ("Literata", "literata-600.woff", "normal", 600),
+            ("Literata", "literata-400-italico.woff", "italic", 400),
+            ("Literata", "literata-600-italico.woff", "italic", 600),
+            ("Bricolage Grotesque", "bricolage-grotesque-600.woff", "normal", 600),
+            ("Bricolage Grotesque", "bricolage-grotesque-700.woff", "normal", 700),
+            ("Bricolage Grotesque", "bricolage-grotesque-800.woff", "normal", 800),
+            ("JetBrains Mono", "jetbrains-mono-400.woff", "normal", 400),
+            ("JetBrains Mono", "jetbrains-mono-600.woff", "normal", 600),
+        ]
+        css = [
+            f"@font-face{{font-family:'{fam}';src:url(data:font/woff;base64,{base64.b64encode((est / arq).read_bytes()).decode('ascii')}) format('woff');"
+            f"font-style:{estilo};font-weight:{peso};font-display:block}}"
+            for fam, arq, estilo, peso in faces
+        ]
+        css.append(f"@font-face{{font-family:'Excalifont';src:url({fonte_base64(exc)}) format('woff2');font-display:block}}")
+        return "\n".join(css)
     blocos = [
         ("Literata", "literata-latin.woff2", "normal", "200 900", ""),
         ("Literata", "literata-italico-latin.woff2", "italic", "200 900", ""),
@@ -514,7 +536,7 @@ def renderizar(livro: dict, modo: str, fragmento: bool = False) -> str:
         **livro,
         modo=modo,
         fragmento=fragmento,
-        fontes=fontes_css(),
+        fontes=fontes_css(modo),
         estilo=estilo,
         app=app,
         dados_flash=dados_flash,

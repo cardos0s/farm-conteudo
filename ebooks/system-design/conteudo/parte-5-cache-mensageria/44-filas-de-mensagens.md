@@ -29,7 +29,7 @@ Vários consumidores na mesma fila dividem o trabalho. A conta de quantos você 
 
 ### Amortecedor de picos
 
-Numa Black Friday hipotética, o checkout gera 3 mil pedidos por minuto durante uma hora, mas o emissor de notas fiscais processa 2 mil por minuto. Sem fila, o checkout teria de recusar pedidos ou esperar. Com fila, ela acumula 60 mil mensagens no pico e esvazia quando o movimento cai, enquanto o cliente recebe "pedido recebido" na hora. Acompanhe o **tamanho da fila** e a **idade da mensagem mais antiga**: se crescem sem parar, faltam consumidores.
+Numa Black Friday hipotética, o checkout gera 3 mil pedidos por minuto durante uma hora, mas o emissor de notas fiscais processa 2 mil por minuto. Sem fila, o checkout teria de recusar pedidos ou esperar. Com fila, ela acumula 60 mil mensagens no pico e esvazia quando o movimento cai, enquanto o cliente recebe "pedido recebido" na hora. Acompanhe o **tamanho da fila** e a **idade da mensagem mais antiga**: se crescem sem parar, faltam consumidores. E dê um teto à fila: cheia, ela passa a recusar ou atrasar mensagens novas, e o produtor é obrigado a desacelerar. Esse sinal de "vá mais devagar" se chama **backpressure** (contrapressão); sem ele, a fila cresce até esgotar memória ou disco.
 
 ### Ordem
 

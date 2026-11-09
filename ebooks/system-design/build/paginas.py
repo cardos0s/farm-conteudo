@@ -2,7 +2,7 @@
 """Lê um PDF gerado pelo Chromium e imprime, em JSON, a página (começando em 1) de cada âncora.
 
     python3 paginas.py livro.pdf            -> {"cap-01": 9, "parte-1": 8, ...}
-    python3 paginas.py livro.pdf --metadados final.pdf   # grava título/autor e abre com os marcadores
+    python3 paginas.py final.pdf --metadados   # grava título/autor, abre com os marcadores e recomprime
 
 O Chromium cria um destino nomeado para cada elemento com id que recebe link; o sumário linka
 todos os capítulos, então todos aparecem aqui.
@@ -36,6 +36,9 @@ def metadados(caminho: str):
         }
     )
     escritor._root_object[NameObject("/PageMode")] = NameObject("/UseOutlines")
+    for pagina in escritor.pages:
+        pagina.compress_content_streams(level=9)
+    escritor.compress_identical_objects(remove_duplicates=True, remove_unreferenced=True)
     with open(caminho, "wb") as f:
         escritor.write(f)
 

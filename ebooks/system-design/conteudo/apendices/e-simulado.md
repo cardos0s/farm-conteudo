@@ -255,7 +255,7 @@ São 40 questões de múltipla escolha, na ordem das seis partes do livro, e cad
 - [x] Jitter, um componente aleatório no tempo de espera
 - [ ] Um intervalo fixo de 1 segundo entre as tentativas
 
-> O backoff exponencial já espaça as tentativas de cada cliente, mas, sem jitter, clientes que falharam juntos voltam juntos: é o thundering herd. Sortear parte da espera espalha as retentativas e dá ao banco tempo para se recuperar. Capítulo 35.
+> O backoff exponencial já espaça as tentativas de cada cliente, mas, sem jitter, clientes que falharam juntos voltam juntos: é o thundering herd. Sortear parte da espera espalha as novas tentativas e dá ao banco tempo para se recuperar. Capítulo 35.
 
 ### 29. O app envia um pagamento, a conexão cai antes da resposta e o app reenvia a mesma requisição. Como evitar a cobrança dupla?
 

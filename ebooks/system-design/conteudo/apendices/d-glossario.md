@@ -11,7 +11,7 @@ titulo: Glossário
 
 ### B
 
-- **Backoff exponencial** (*exponential backoff*): esperar cada vez mais entre uma retentativa e a seguinte (1 s, 2 s, 4 s...) para não sobrecarregar um serviço que já está com problemas. Capítulo 35.
+- **Backoff exponencial** (*exponential backoff*): esperar cada vez mais entre uma tentativa e a seguinte (1 s, 2 s, 4 s...) para não sobrecarregar um serviço que já está com problemas. Capítulo 35.
 - **Backpressure** (*contrapressão*): sinal que um componente sobrecarregado manda para quem produz trabalho diminuir o ritmo, em vez de deixar as filas crescerem sem limite. Capítulo 44.
 - **Banco de dados vetorial** (*vector database*): banco que guarda embeddings e encontra os mais próximos de uma consulta, a chamada busca por vizinhos mais próximos. Capítulo 31.
 - **BASE**: sigla de Basically Available, Soft state, Eventual consistency, modelo que prioriza continuar respondendo e aceita inconsistências temporárias, que se resolvem com o tempo. Capítulo 4.
@@ -26,7 +26,7 @@ titulo: Glossário
 - **CAP**: teorema segundo o qual, durante uma partição de rede, um sistema distribuído precisa escolher entre consistência (C) e disponibilidade (A). Capítulo 2.
 - **CDN** (*rede de distribuição de conteúdo*): sigla de Content Delivery Network, rede de servidores espalhados pelo mundo que guarda cópias do conteúdo estático perto dos usuários. Capítulo 15.
 - **Circuit breaker** (*disjuntor*): componente que, depois de falhas demais, recusa na hora as chamadas a um serviço com problema e só volta a testá-lo após um tempo, evitando falhas em cascata. Capítulo 33.
-- **Cold start** (*inicialização a frio*): atraso de uma chamada serverless que precisa de um ambiente de execução novo, criado e inicializado na hora. Capítulo 10.
+- **Cold start** (*partida a frio*): atraso de uma chamada serverless que precisa de um ambiente de execução novo, criado e inicializado na hora. Capítulo 10.
 - **Compaction** (*compactação*): processo de fundo das LSM-Trees que mescla os arquivos do disco, descarta versões antigas e dados apagados e reduz o trabalho das leituras. Capítulo 26.
 - **Consenso** (*consensus*): acordo entre os nós de um cluster sobre um mesmo valor ou uma mesma ordem de operações, mesmo com falhas, obtido com algoritmos como Paxos e Raft. Capítulo 38.
 - **Consistência eventual** (*eventual consistency*): garantia de que, se as escritas pararem, todas as réplicas convergem para o mesmo valor; até lá, uma leitura pode ver dado velho. Capítulo 7.
@@ -62,7 +62,7 @@ titulo: Glossário
 - **Hashing consistente** (*consistent hashing*): técnica que posiciona chaves e nós num anel lógico, de modo que adicionar ou remover um nó mova só uma pequena parte das chaves. Capítulo 25.
 - **Head-of-line blocking** (*bloqueio de cabeça de fila*): quando um item atrasado no começo da fila segura todos os que vêm atrás; no HTTP/2, um pacote TCP perdido trava todos os streams da conexão. Capítulo 18.
 - **Heartbeat**: sinal periódico que um nó envia para avisar que está vivo; se ele para de chegar, o nó é dado como fora e o sistema pode disparar o failover. Capítulo 37.
-- **Hot spot** (*ponto quente*): shard, nó ou chave que recebe uma fatia desproporcional do tráfego, geralmente por causa de uma chave de particionamento mal escolhida. Capítulo 23.
+- **Hot spot**: shard, nó ou chave que recebe uma fatia desproporcional do tráfego, geralmente por causa de uma shard key mal escolhida. Capítulo 23.
 - **HTTP/2**: versão do HTTP que multiplexa várias requisições numa mesma conexão TCP e comprime os cabeçalhos. Capítulo 18.
 - **HTTP/3**: versão do HTTP que roda sobre QUIC, em cima de UDP, e acaba com o head-of-line blocking do TCP entre streams. Capítulo 18.
 
@@ -74,7 +74,7 @@ titulo: Glossário
 
 ### J
 
-- **Jitter**: aleatoriedade somada ao tempo de espera entre retentativas, para que os clientes não tentem todos no mesmo instante. Capítulo 35.
+- **Jitter**: aleatoriedade somada ao tempo de espera entre novas tentativas, para que os clientes não tentem todos no mesmo instante. Capítulo 35.
 - **JWT**: sigla de JSON Web Token, token assinado com informações (claims) que quem o recebe valida pela assinatura, sem consultar o emissor a cada requisição; o ID token do OIDC é um JWT. Capítulo 49.
 
 ### L
@@ -121,16 +121,16 @@ titulo: Glossário
 ### Q
 
 - **QUIC**: protocolo de transporte sobre UDP, com TLS 1.3 embutido e streams independentes, que serve de base para o HTTP/3. Capítulo 18.
-- **Quórum** (*quorum*): número mínimo de nós que precisa responder para uma leitura ou escrita valer; quóruns de maioria garantem que dois grupos quaisquer tenham pelo menos um nó em comum. Capítulos 24 e 38.
+- **Quórum** (*quorum*): número mínimo de nós que precisa responder para uma leitura ou escrita valer; quóruns de maioria garantem que dois grupos quaisquer tenham pelo menos um nó em comum. Capítulos 3 e 38.
 
 ### R
 
 - **Raft**: algoritmo de consenso feito para ser fácil de entender, que elege um líder por mandato e replica um log com confirmação da maioria; é usado no etcd e no Consul. Capítulo 38.
 - **Rate limiting** (*limitação de taxa*): limitar quantas requisições um usuário, IP ou chave de API pode fazer numa janela de tempo, com algoritmos como janela fixa, janela deslizante e token bucket. Capítulo 32.
 - **Replication lag** (*atraso de replicação*): intervalo entre uma escrita ser confirmada no primário e aparecer nas réplicas, que faz leituras em réplicas devolverem dados velhos. Capítulo 24.
-- **Resharding** (*reparticionamento*): redistribuir os dados entre shards quando se adicionam ou removem shards ou quando se troca a chave de particionamento. Capítulo 23.
+- **Resharding**: redistribuir os dados entre shards quando se adicionam ou removem shards ou quando se troca a shard key. Capítulo 23.
 - **REST**: estilo de API sobre HTTP organizado em recursos (/users, /orders) manipulados pelos verbos HTTP, normalmente com JSON. Capítulo 19.
-- **Retry** (*retentativa*): repetir automaticamente uma operação que falhou por um erro transitório, como um timeout. Capítulo 35.
+- **Retry** (*nova tentativa*): repetir automaticamente uma operação que falhou por um erro transitório, como um timeout. Capítulo 35.
 - **Round Robin** (*rodízio*): algoritmo de balanceamento que passa pelos servidores em ordem, um de cada vez, e recomeça do primeiro no fim da lista. Capítulo 12.
 - **RTT** (*tempo de ida e volta*): sigla de round-trip time, o tempo que uma mensagem leva para ir até o outro lado e a resposta voltar. Capítulos 18 e 50.
 
@@ -139,12 +139,12 @@ titulo: Glossário
 - **SAGA**: padrão que divide uma transação distribuída em passos locais, cada um com uma ação compensatória que o desfaz se um passo seguinte falhar. Capítulo 39.
 - **Serverless**: modelo em que você roda funções na nuvem sem gerenciar servidores, paga só pela execução e deixa a escala por conta da plataforma. Capítulo 10.
 - **Sharding** (*particionamento*): dividir os dados entre várias máquinas, cada uma com um subconjunto, por intervalo, por hash ou por diretório. Capítulo 23.
-- **Shard key** (*chave de particionamento*): campo que decide em qual shard cada registro fica; dele depende a carga se espalhar ou virar um hot spot. Capítulo 23.
+- **Shard key** (*chave de shard*): campo que decide em qual shard cada registro fica; dele depende a carga se espalhar ou virar um hot spot. Capítulo 23.
 - **SLA** (*acordo de nível de serviço*): sigla de Service Level Agreement, a promessa contratual feita ao cliente, como 99,9% de disponibilidade no mês, em geral com compensação se for descumprida. Capítulo 48.
 - **SLI** (*indicador de nível de serviço*): sigla de Service Level Indicator, a métrica medida de fato, como a porcentagem de requisições bem-sucedidas. Capítulo 48.
 - **SLO** (*objetivo de nível de serviço*): sigla de Service Level Objective, a meta interna para um SLI, normalmente mais rígida que o SLA. Capítulo 48.
 - **Span**: trecho de um trace que representa uma operação, como uma chamada ou uma consulta, com início, duração e referência ao span pai. Capítulo 47.
-- **Split brain** (*cérebro dividido*): situação em que dois nós se consideram líderes ao mesmo tempo, normalmente depois de uma partição, e aceitam escritas conflitantes. Capítulo 38.
+- **Split brain**: situação em que dois nós se consideram líderes ao mesmo tempo, normalmente depois de uma partição, e aceitam escritas conflitantes. Capítulo 38.
 - **SSE**: sigla de Server-Sent Events, canal de mão única sobre HTTP pelo qual o servidor envia eventos ao cliente. Capítulo 20.
 - **Stateful**: serviço que guarda o contexto do usuário entre requisições, geralmente na memória da própria instância. Capítulo 8.
 - **Stateless**: serviço que trata cada requisição como nova e guarda o estado fora, em banco ou cache, de modo que qualquer instância atende qualquer requisição. Capítulo 8.
@@ -154,7 +154,7 @@ titulo: Glossário
 
 - **TCP**: protocolo de transporte orientado a conexão que entrega os bytes em ordem e sem perdas, usando confirmações e retransmissões. Capítulo 17.
 - **Throughput** (*vazão*): quantas requisições o sistema atende por segundo. Capítulo 5.
-- **Thundering herd**: muitos clientes ou processos atacando o mesmo recurso no mesmo instante, como retentativas sincronizadas depois de uma falha ou uma chave popular que expira no cache. Capítulo 35.
+- **Thundering herd**: muitos clientes ou processos atacando o mesmo recurso no mesmo instante, como novas tentativas sincronizadas depois de uma falha ou uma chave popular que expira no cache. Capítulo 35.
 - **TLS**: sigla de Transport Layer Security, protocolo que cifra e autentica a comunicação entre cliente e servidor; sucessor do SSL, é o que protege o HTTPS. Capítulo 50.
 - **Token bucket**: algoritmo de rate limiting em que fichas são repostas a uma taxa fixa e cada requisição gasta uma, o que permite rajadas até o tamanho do balde. Capítulo 32.
 - **Tracing distribuído** (*distributed tracing*): seguir uma requisição por todos os serviços que ela atravessa, com um trace ID propagado de chamada em chamada e um span por operação. Capítulo 47.

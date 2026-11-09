@@ -51,14 +51,17 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 /* aberturas */
 .modo-impressao .pagina, .modo-impressao .capitulo { break-before: page; padding-top: 0; margin-top: 0; border-top: 0; }
 .modo-impressao .parte {
-  page: abre-parte; break-before: page; break-after: page; margin: 0; min-height: 198mm; padding: 16mm 12mm;
+  page: abre-parte; break-before: page; break-after: page; margin: 0; min-height: 192mm; padding: 13mm 11mm 11mm;
   display: flex; flex-direction: column; justify-content: center; background-size: 5.5mm 5.5mm, auto;
 }
 .modo-impressao .parte + .capitulo { margin-top: 0; }
-.modo-impressao .parte-num { font-size: 18pt; }
-.modo-impressao .parte-titulo { font-size: 30pt; }
-.modo-impressao .parte-caps { grid-template-columns: 1fr 1fr; margin-top: 8mm; }
-.modo-impressao .parte-caps a { font-size: 8.8pt; }
+.modo-impressao .parte-num { font-size: 16pt; line-height: 1.2; }
+.modo-impressao .parte-titulo { font-size: 27pt; }
+.modo-impressao .parte-original { margin-bottom: 5mm; }
+.modo-impressao .parte-intro { font-size: 9.3pt; }
+.modo-impressao .parte-caps { grid-template-columns: 1fr 1fr; gap: 0 6mm; margin-top: 6mm; }
+.modo-impressao .parte-caps a { font-size: 8.3pt; padding: 0.7mm 0; line-height: 1.3; }
+.modo-impressao .pc-n { font-size: 10pt; }
 .modo-impressao .pagina-cabeca { margin-bottom: 6mm; }
 .modo-impressao .pagina-cabeca h1 { font-size: 24pt; }
 
