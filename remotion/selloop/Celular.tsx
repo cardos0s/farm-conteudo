@@ -1,5 +1,5 @@
 import React from "react";
-import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { Img, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { fonte } from "./marca";
 
 // O celular do cliente (lado de quem escreve para a empresa), com a conversa acontecendo:
@@ -10,16 +10,19 @@ export type MsgCelular = {
   em: number;
   /** "eu" = o cliente (dono do celular); "empresa" = a Nova Rota. */
   lado: "eu" | "empresa";
-  tipo: "texto" | "audio" | "cartao";
+  /** "data" = separador de dia (ONTEM, HOJE). */
+  tipo: "texto" | "audio" | "cartao" | "data";
   texto?: string;
   hora: string;
   /** Áudio: duração (s) e quando começa a tocar (s). */
   duracao?: number;
   tocaEm?: number;
-  /** Cartão (ex.: orçamento): título e linhas. */
+  /** Cartão (ex.: orçamento ou modelo de campanha): imagem, título, linhas e botões. */
+  imagem?: string;
   titulo?: string;
   linhas?: string[];
   botao?: string;
+  botoes?: string[];
 };
 
 const W = 392;
@@ -100,11 +103,14 @@ const Balao: React.FC<{ m: MsgCelular; t: number; lido: boolean }> = ({ m, t, li
         {m.tipo === "audio" && <Audio m={m} t={t} />}
         {m.tipo === "cartao" && (
           <div style={{ width: 280 }}>
-            <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>{m.titulo}</div>
+            {m.imagem && <Img src={m.imagem} style={{ width: "100%", borderRadius: 7, marginBottom: 7, display: "block" }} />}
+            {m.titulo && <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>{m.titulo}</div>}
             {m.linhas?.map((l, i) => (
-              <div key={i} style={{ fontSize: 14, color: "#d1d7db" }}>{l}</div>
+              <div key={i} style={{ fontSize: 14, color: "#d1d7db", whiteSpace: "pre-wrap" }}>{l}</div>
             ))}
-            {m.botao && <div style={{ marginTop: 8, borderTop: "1px solid #ffffff1a", paddingTop: 8, textAlign: "center", color: COR.azulLido, fontWeight: 600, fontSize: 15 }}>{m.botao}</div>}
+            {[...(m.botao ? [m.botao] : []), ...(m.botoes ?? [])].map((b) => (
+              <div key={b} style={{ marginTop: 8, borderTop: "1px solid #ffffff1a", paddingTop: 8, textAlign: "center", color: COR.azulLido, fontWeight: 600, fontSize: 15 }}>{b}</div>
+            ))}
           </div>
         )}
         <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", fontSize: 11, color: eu ? "#a6c9c0" : COR.suave, marginTop: 2 }}>
@@ -115,6 +121,10 @@ const Balao: React.FC<{ m: MsgCelular; t: number; lido: boolean }> = ({ m, t, li
     </div>
   );
 };
+
+const Separador: React.FC<{ texto: string }> = ({ texto }) => (
+  <div style={{ alignSelf: "center", background: "#182229", color: COR.suave, fontSize: 12.5, padding: "5px 12px", borderRadius: 8, margin: "4px 0 6px" }}>{texto}</div>
+);
 
 const BarraStatus: React.FC<{ hora: string }> = ({ hora }) => (
   <div style={{ height: 46, display: "flex", alignItems: "flex-end", justifyContent: "space-between", padding: "0 30px 6px", color: "#fff", fontSize: 16, fontWeight: 600 }}>
@@ -135,14 +145,16 @@ export const Celular: React.FC<{
   /** Intervalo em que o cliente está gravando um áudio (barra de gravação embaixo). */
   gravando?: { de: number; ate: number };
   escala?: number;
-}> = ({ mensagens, hora, estados = [], gravando, escala = 1 }) => {
+  /** Linha embaixo do nome da empresa quando ela não está digitando nem gravando. */
+  status?: string;
+}> = ({ mensagens, hora, estados = [], gravando, escala = 1, status = "Conta comercial" }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps;
   const visiveis = mensagens.filter((m) => t >= m.em);
   const estado = estados.find((e) => t >= e.de && t < e.ate);
   const grav = gravando && t >= gravando.de && t < gravando.ate;
-  const ultimaEmpresa = [...mensagens].filter((m) => m.lado === "empresa" && t >= m.em).pop();
+  const ultimaEmpresa = [...mensagens].filter((m) => m.lado === "empresa" && m.tipo !== "data" && t >= m.em).pop();
   return (
     <div style={{ width: W, height: H, transform: `scale(${escala})`, transformOrigin: "top left", borderRadius: 58, background: "#111", padding: 12, boxShadow: "0 40px 90px #00042d99, inset 0 0 0 2px #333", fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif" }}>
       <div style={{ position: "relative", width: W - 24, height: H - 24, borderRadius: 46, overflow: "hidden", background: COR.fundo }}>
@@ -157,13 +169,14 @@ export const Celular: React.FC<{
                 Nova Rota Distribuidora
                 <svg width={16} height={16} viewBox="0 0 24 24"><path d="M12 1l2.6 2.2 3.4-.4 1 3.3 3 1.7-1 3.3 1 3.3-3 1.7-1 3.3-3.4-.4L12 23l-2.6-2.2-3.4.4-1-3.3-3-1.7 1-3.3-1-3.3 3-1.7 1-3.3 3.4.4z" fill={COR.verde} /><path d="M7.5 12.2l3 3 6-6.4" fill="none" stroke="#fff" strokeWidth={2} /></svg>
               </div>
-              <div style={{ color: estado ? COR.verde : COR.suave, fontSize: 13 }}>{estado ? estado.texto : "online"}</div>
+              <div style={{ color: estado ? COR.verde : COR.suave, fontSize: 13 }}>{estado ? estado.texto : status}</div>
             </div>
           </div>
         </div>
         <div style={{ position: "absolute", left: 0, right: 0, top: 104, bottom: 62, display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 6, paddingBottom: 8, overflow: "hidden" }}>
-          <div style={{ alignSelf: "center", background: "#182229", color: COR.suave, fontSize: 12.5, padding: "5px 12px", borderRadius: 8, marginBottom: 6 }}>HOJE</div>
+          {!mensagens.some((m) => m.tipo === "data") && <Separador texto="HOJE" />}
           {visiveis.map((m, i) => {
+            if (m.tipo === "data") return <Separador key={i} texto={m.texto ?? ""} />;
             const s = spring({ frame: frame - Math.round(m.em * fps), fps, config: { damping: 18, stiffness: 170 } });
             const lido = m.lado === "eu" && !!ultimaEmpresa && ultimaEmpresa.em >= m.em;
             return (

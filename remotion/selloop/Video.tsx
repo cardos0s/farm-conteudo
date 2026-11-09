@@ -24,7 +24,9 @@ export type BlocoTela = {
   planos?: Plano[];
   zoomCliques?: number;
 };
-export type Bloco = BlocoTela | { tipo: "abertura"; dur: number } | { tipo: "encerramento"; dur: number; frase: string };
+/** Bloco desenhado por um componente do próprio vídeo (ex.: o celular do vídeo 3), pelo nome. */
+export type BlocoCena = { tipo: "cena"; dur: number; nome: string };
+export type Bloco = BlocoTela | BlocoCena | { tipo: "abertura"; dur: number } | { tipo: "encerramento"; dur: number; frase: string };
 
 export type Sobreposicao =
   | { tipo: "canal"; canal: Canal; de: number; ate: number; x: number; y: number; tamanho?: number; comNome?: boolean }
@@ -108,7 +110,7 @@ const Trilha: React.FC<{ trilha: NonNullable<Edicao["trilha"]>; janelas: number[
   return <Audio src={staticFile(trilha.arquivo)} volume={volume} />;
 };
 
-export const Video: React.FC<{ edicao: Edicao; gravacoes: Record<string, Gravacao>; locucao: FalaLocucao[] }> = ({ edicao, gravacoes, locucao }) => {
+export const Video: React.FC<{ edicao: Edicao; gravacoes: Record<string, Gravacao>; locucao: FalaLocucao[]; cenas?: Record<string, React.FC> }> = ({ edicao, gravacoes, locucao, cenas = {} }) => {
   const ini = inicios(edicao);
   const falas: Fala[] = [];
   for (const f of edicao.falas) {
@@ -136,6 +138,7 @@ export const Video: React.FC<{ edicao: Edicao; gravacoes: Record<string, Gravaca
             <Entrada transicao={transicaoAntes(edicao, i)} dur={dur / FPS}>
               {b.tipo === "abertura" && <Abertura />}
               {b.tipo === "encerramento" && <Encerramento frase={b.frase} />}
+              {b.tipo === "cena" && cenas[b.nome] && React.createElement(cenas[b.nome])}
               {b.tipo === "tela" && (
                 <Tela
                   gravacao={gravacoes[b.cena]}

@@ -39,6 +39,26 @@ export function criarMontagem(loc: FalaLocucao[], cfg: { url: string; transicao:
     };
   }
 
+  /**
+   * Trechos seguidos de uma gravação em que cada momento da tela cai numa palavra da fala.
+   * `ancoras` = [[tempo na gravação, tempo na fala], ...] em ordem; o primeiro trecho vai de `de`
+   * até a primeira âncora e leva a fala (que entra `antes` s depois do trecho aparecer).
+   * `transicao` é a do primeiro trecho (0 se ele emendar no anterior).
+   */
+  function sincronizar(cena: string, de: number, ancoras: [number, number][], o: { fala: string; antes?: number; transicao: number; planos?: Plano[]; zoomCliques?: number }): Trecho[] {
+    const antes = o.antes ?? 0.4;
+    const visual = { planos: o.planos, zoomCliques: o.zoomCliques };
+    const r: Trecho[] = [];
+    const ateFala0 = o.transicao * 0.5 + antes + ancoras[0][1];
+    r.push({ ...trecho(cena, de, ancoras[0][0], { vel: (ancoras[0][0] - de) / ateFala0, ...visual }), fala: o.fala, antes });
+    for (let k = 0; k + 1 < ancoras.length; k++) {
+      const [rec0, fala0] = ancoras[k];
+      const [rec1, fala1] = ancoras[k + 1];
+      r.push(trecho(cena, rec0, rec1, { vel: (rec1 - rec0) / (fala1 - fala0), ...visual }));
+    }
+    return r;
+  }
+
   /** Resolve velocidades, inícios e falas; devolve a edição (sem sobreposições) e funções de tempo. */
   function fechar(trechos: Trecho[]) {
     const blocos = trechos.map((x) => x.bloco);
@@ -70,5 +90,5 @@ export function criarMontagem(loc: FalaLocucao[], cfg: { url: string; transicao:
     return { edicao, blocos, inicioBloco, fimBloco, noBloco, emFala, idx };
   }
 
-  return { durFala, palavra, trecho, fechar };
+  return { durFala, palavra, trecho, sincronizar, fechar };
 }

@@ -38,3 +38,14 @@ próprio navegador (`demo/servidor.mjs`), então nada chega ao backend da Selloo
    ```
 
 As gravações (`public/selloop/telas/**/*.mp4`), a trilha e os vídeos finais (`saida/`) ficam fora do git.
+
+## Cenários da demo
+
+- **Dia** (vídeos 1 e 2): terça, 10/11/2026, 10:32. Caixa com as quatro equipes, campanhas dos últimos 30 dias.
+- **Noite** (vídeo 3, `cenario: "noite"` em `cenaDemo`): a mesma terça, 23:47. Quatro conversas nos três
+  canais, todas com a Lia atendendo; o áudio do Fábio tem transcrição; o funil de vendas e a agenda trazem
+  a oportunidade e a visita que a Lia criou. Na cena, `demo.chegar`, `demo.transferir` e `demo.reconectar`
+  fazem as mensagens, a transferência e a nota interna aparecerem ao vivo.
+
+O celular do vídeo 3 (o cliente mandando o áudio e ouvindo a resposta da Lia) é desenhado no Remotion
+(`remotion/selloop/Celular.tsx` e `remotion/selloop/v3/Noite.tsx`), com os mesmos áudios da locução.

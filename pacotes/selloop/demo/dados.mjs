@@ -247,8 +247,8 @@ export const lia = {
   vozId: null,
   vozElevenlabsId: "n2a9VtkZLl8j1FSXHsL7",
   vozGenerica: null,
-  provedor: "anthropic",
-  modelo: "claude-sonnet-4-5",
+  provedor: "openai",
+  modelo: "gpt-5.6-terra",
   chaveConfigurada: true,
 };
 

@@ -565,6 +565,24 @@ function rotas(s) {
     }],
     ["GET", /^carteira\/[^/]+\/documentos-erp\/disponivel$/, () => ({ disponivel: true })],
     ["GET", /^carteira\/[^/]+\/ai\/features$/, () => ({ features: { transcricao_audio: true, atendimento: true, pesquisa_web: true, agenda: true, negocio: true } })],
+    // Agente Hub: voz da resposta em áudio e base de conhecimento da Lia
+    ["GET", /^carteira\/[^/]+\/ai-agents\/vozes$/, () => ({ data: [], genericas: [] })],
+    ["GET", /^carteira\/[^/]+\/ai-agents\/elevenlabs$/, () => ({
+      configured: true,
+      erro: null,
+      vozes: [
+        { voiceId: D.lia.vozElevenlabsId, nome: "Lia · voz da Nova Rota", previewUrl: "/api/uploads/demo/audios/lia-01.mp3", clonada: false },
+        { voiceId: "demo-voz-2", nome: "Rafa · masculina", previewUrl: null, clonada: false },
+      ],
+    })],
+    ["GET", /^carteira\/[^/]+\/ai-agents\/([0-9a-f-]{36})\/conhecimento$/, () => ({
+      data: [
+        { id: D.id("conh:tabela"), nome: "Tabela de preços · dezembro 2026.pdf", tipo: "pdf", bytes: 412000, status: "pronto", trechos: 48, erro: null },
+        { id: D.id("conh:catalogo"), nome: "Catálogo Nova Rota 2026.pdf", tipo: "pdf", bytes: 2480000, status: "pronto", trechos: 96, erro: null },
+        { id: D.id("conh:entrega"), nome: "Política de entrega e frete.pdf", tipo: "pdf", bytes: 186000, status: "pronto", trechos: 12, erro: null },
+        { id: D.id("conh:site"), nome: "novarota.com.br", tipo: "site", bytes: 0, status: "pronto", trechos: 34, erro: null },
+      ],
+    })],
     ["GET", /^carteira\/[^/]+\/ai-agents$/, () => ({ data: [agenteApi(s)], contratados: 1, emUso: [D.lia.id] })],
     ["GET", /^carteira\/[^/]+\/channels$/, () => lista(Object.values(D.canais).map((c) => ({
       id: c.id, workspaceId: D.WS, type: c.tipo, name: c.nome, externalId: `demo-${c.tipo}`, status: "active", ownerUserId: D.usuarios.patricia.id, config: {},
@@ -920,6 +938,10 @@ function agenteApi(s) {
       agendar: { ativa: true, usuarios: [D.usuarios.diogo.id], duracaoMin: 30, dias: [1, 2, 3, 4, 5], inicio: "09:00", fim: "17:00", antecedenciaHoras: 2, janelaDias: 7, camposObrigatorios: ["nome", "empresa"], quando: "Quando o cliente quiser uma visita do vendedor", linkMeet: true },
       moderacao: { ativa: true },
       interpretarDatas: { ativa: true },
+      orcamentos: { ativa: true, itens: [{ modeloId: D.orcamentos[0].id, quando: "Quando o lead pedir preço, orçamento ou quiser fazer um pedido" }] },
+      formularios: { ativa: true, itens: [{ modeloId: D.formularios[0].id, quando: "Quando um cliente novo for fazer o primeiro pedido" }] },
+      catalogos: { ativa: false, itens: [] },
+      consultarIntegracoes: { ativa: true, quando: "Quando o cliente pedir a nota fiscal, o boleto ou o status do pedido" },
     },
     atualizadoEm: s.t(60 * 24 * 3),
   };
