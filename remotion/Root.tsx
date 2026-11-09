@@ -7,6 +7,7 @@ import { FPS as FPS_AULA, TOTAL_QUADROS } from "./aulas/complexidade/roteiro";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
 import { FPS as FPS_SELLOOP } from "./selloop/marca";
+import { Abertura as SelloopAbertura, Encerramento as SelloopEncerramento } from "./selloop/Vinhetas";
 import { DURACAO_TESTE, SelloopTeste } from "./selloop/Teste";
 
 export const Root: React.FC = () => (
@@ -36,6 +37,16 @@ export const Root: React.FC = () => (
       height={1080}
       fps={FPS_SELLOOP}
       durationInFrames={Math.round(DURACAO_TESTE * FPS_SELLOOP)}
+    />
+    <Composition id="SelloopAbertura" component={SelloopAbertura} width={1920} height={1080} fps={FPS_SELLOOP} durationInFrames={Math.round(2 * FPS_SELLOOP)} />
+    <Composition
+      id="SelloopEncerramento"
+      component={SelloopEncerramento}
+      width={1920}
+      height={1080}
+      fps={FPS_SELLOOP}
+      durationInFrames={Math.round(4 * FPS_SELLOOP)}
+      defaultProps={{ frase: "Atenda e venda sem trocar de tela." }}
     />
   </>
 );
