@@ -134,6 +134,16 @@ npm run render:aula
 
 Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/complexidade/`. O passo a passo completo (baixar do Drive, converter o HDR do iPhone, transcrever, cortar, renderizar) está em `scripts/aulas/README.md`; os componentes da lousa ficam em `remotion/lousa/`.
 
+## Ebooks de estudo
+
+`ebooks/system-design/` é o ebook **50 Conceitos de System Design**: tradução e expansão do artigo de Arslan Ahmad (DesignGurus), com diagramas no estilo da lousa, perguntas de revisão, flashcards e simulado. Os arquivos para ler (HTML interativo, PDF e EPUB) ficam em `ebooks/system-design/dist/`.
+
+```bash
+npm run ebook:system-design
+```
+
+Monta tudo de novo a partir dos capítulos em Markdown. Detalhes em `ebooks/system-design/README.md`.
+
 ## Estrutura
 
 ```
@@ -148,6 +158,7 @@ src/video/          render do Reel
 src/publicacao/     Telegram, Instagram, Beehiiv e upload do vídeo
 src/fabrica.ts      o fluxo: produzir, aprovar, agendar, publicar
 src/cli/            comandos do npm
+ebooks/             ebooks de estudo (Markdown → HTML, PDF e EPUB)
 deploy/             cron e serviço do bot
 test/               testes (npm test)
 ```

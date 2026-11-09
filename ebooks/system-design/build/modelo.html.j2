@@ -1,0 +1,302 @@
+{% if not fragmento %}<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+{% endif %}
+<title>50 Conceitos de System Design</title>
+{% if modo == 'web' %}<meta name="claude:viewport-fit-sides" content="cover">{% endif %}
+<meta name="description" content="Os 51 conceitos do artigo de Arslan Ahmad traduzidos e expandidos, com diagramas, dicas de entrevista, flashcards e simulado.">
+<style>
+{{ fontes }}
+{{ estilo }}
+</style>
+{% if not fragmento %}
+</head>
+<body>
+{% endif %}
+{% macro numero_cap(n) %}cap-{{ '%02d' % n }}{% endmacro %}
+<div class="app modo-{{ modo }}" lang="pt-BR">
+{% if modo == 'web' %}
+<div class="progresso-leitura" aria-hidden="true"><span id="progresso-barra"></span></div>
+<header class="barra">
+  <button class="botao-menu" id="botao-menu" type="button" aria-controls="indice" aria-expanded="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Índice</span>
+  </button>
+  <span class="barra-atual" id="barra-atual">System Design</span>
+  <button class="botao-icone" id="botao-tema-barra" type="button" aria-label="Alternar tema claro ou escuro">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+  </button>
+</header>
+<aside class="indice" id="indice" aria-label="Índice do livro">
+  <div class="indice-topo">
+    <a class="indice-livro" href="#capa"><span class="indice-marca">System Design</span><span class="indice-sub">50 conceitos essenciais</span></a>
+    <div class="indice-progresso">
+      <p><strong id="estudados-n">0</strong> de {{ numeros.capitulos }} capítulos estudados</p>
+      <div class="medidor" aria-hidden="true"><span id="estudados-barra"></span></div>
+    </div>
+    <label class="busca" for="busca"><span class="sr">Buscar no livro</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg>
+      <input id="busca" type="search" placeholder="Buscar no livro" autocomplete="off" spellcheck="false">
+    </label>
+  </div>
+  <div class="indice-resultados" id="resultados" hidden></div>
+  <nav class="indice-nav" id="indice-nav">
+    <p class="in-grupo">Começo</p>
+    <ul class="in-lista">
+      <li><a href="#sobre">Sobre este ebook</a></li>
+      <li><a href="#como-estudar">Como estudar</a></li>
+    </ul>
+    {% for p in partes %}
+    <details class="in-parte" open>
+      <summary><span class="in-pn">Parte {{ p.numero }}</span><span class="in-pt">{{ p.titulo }}</span></summary>
+      <ol class="in-caps">
+        {% for c in p.capitulos %}<li><a href="#{{ c.id }}" data-cap="{{ c.numero }}"><span class="in-n">{{ c.numero }}</span><span class="in-t">{{ c.titulo }}</span></a></li>
+        {% endfor %}
+      </ol>
+    </details>
+    {% endfor %}
+    <p class="in-grupo">Estudo</p>
+    <ul class="in-lista">
+      <li><a href="#fechamento">Para fechar</a></li>
+      <li><a href="#cola">Cola</a></li>
+      <li><a href="#flashcards">Flashcards</a></li>
+      <li><a href="#simulado">Simulado</a></li>
+    </ul>
+    <p class="in-grupo">Apêndices</p>
+    <ul class="in-lista">
+      {% for a in apendices %}<li><a href="#{{ a.id }}"><span class="in-n">{{ a.letra }}</span><span class="in-t">{{ a.titulo }}</span></a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+  <div class="indice-pe">
+    <div class="seg" role="group" aria-label="Tema">
+      <button type="button" data-tema="claro">Claro</button><button type="button" data-tema="escuro">Escuro</button><button type="button" data-tema="sistema">Auto</button>
+    </div>
+    <div class="seg" role="group" aria-label="Tamanho do texto">
+      <button type="button" data-fonte="-1" aria-label="Diminuir texto">A−</button><button type="button" data-fonte="1" aria-label="Aumentar texto">A+</button>
+    </div>
+  </div>
+</aside>
+<div class="veu" id="veu" hidden></div>
+{% endif %}
+
+<main class="livro" id="livro">
+
+<section class="capa" id="capa">
+  <div class="capa-miolo">
+    <p class="capa-selo">Edição de estudo em português</p>
+    <h1 class="capa-titulo">System Design</h1>
+    <p class="capa-sub">
+      <span class="capa-riscado">50<svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path d="M2 27 C 30 21, 62 17, 98 10"/><path d="M4 30 C 34 23, 64 19, 97 14"/></svg></span><span class="capa-corrigido" aria-label="51">51</span>
+      <span class="capa-conceitos">conceitos essenciais</span>
+    </p>
+    <p class="capa-desc">Tradução fiel e expansão do artigo <em lang="en">50 System Design Concepts for Beginners</em>, de Arslan Ahmad (DesignGurus). Com diagramas de lousa, dicas de entrevista, flashcards e simulado.</p>
+    {% if modo == 'web' %}
+    <div class="capa-acoes">
+      <a class="botao primario" href="#cap-01">Começar a ler</a>
+      <a class="botao" href="#como-estudar">Como estudar</a>
+      <a class="botao" href="#flashcards">Flashcards</a>
+      <a class="botao" href="#simulado">Simulado</a>
+    </div>
+    <p class="capa-continuar" id="capa-continuar" hidden></p>
+    {% endif %}
+  </div>
+  {% if capa_svg %}<div class="capa-lousa" aria-hidden="true">{{ capa_svg }}</div>{% endif %}
+  <ul class="capa-numeros">
+    <li><strong>{{ numeros.capitulos }}</strong> conceitos</li>
+    <li><strong>{{ partes|length }}</strong> partes</li>
+    <li><strong>{{ numeros.diagramas }}</strong> diagramas</li>
+    <li><strong>{{ numeros.perguntas }}</strong> perguntas de revisão</li>
+    <li><strong>{{ numeros.questoes }}</strong> questões de simulado</li>
+  </ul>
+</section>
+
+{% if modo == 'impressao' %}
+<section class="sumario" id="sumario">
+  <h1 class="sumario-titulo">Sumário</h1>
+  <ol class="sum">
+    {% for pg in abertura %}<li class="sum-item"><a href="#{{ pg.id }}"><span class="sum-t">{{ pg.titulo }}</span><span class="sum-p" data-pagina-de="{{ pg.id }}">000</span></a></li>
+    {% endfor %}
+    {% for p in partes %}
+    <li class="sum-parte"><a href="#{{ p.id }}"><span class="sum-t"><span class="sum-pn">Parte {{ p.numero }}</span> {{ p.titulo }}</span><span class="sum-p" data-pagina-de="{{ p.id }}">000</span></a>
+      <ol>
+        {% for c in p.capitulos %}<li class="sum-item"><a href="#{{ c.id }}"><span class="sum-n">{{ c.numero }}</span><span class="sum-t">{{ c.titulo }}</span><span class="sum-p" data-pagina-de="{{ c.id }}">000</span></a></li>
+        {% endfor %}
+      </ol>
+    </li>
+    {% endfor %}
+    <li class="sum-parte"><a href="#fechamento"><span class="sum-t">{{ fechamento.titulo }}</span><span class="sum-p" data-pagina-de="fechamento">000</span></a></li>
+    <li class="sum-parte"><a href="#cola"><span class="sum-t">Cola: os conceitos em uma linha</span><span class="sum-p" data-pagina-de="cola">000</span></a></li>
+    {% for a in apendices %}<li class="sum-parte"><a href="#{{ a.id }}"><span class="sum-t"><span class="sum-pn">Apêndice {{ a.letra }}</span> {{ a.titulo }}</span><span class="sum-p" data-pagina-de="{{ a.id }}">000</span></a></li>
+    {% endfor %}
+    {% if simulado %}<li class="sum-parte"><a href="#simulado"><span class="sum-t"><span class="sum-pn">Apêndice E</span> {{ simulado.titulo }}</span><span class="sum-p" data-pagina-de="simulado">000</span></a></li>{% endif %}
+  </ol>
+</section>
+{% endif %}
+
+{% for pg in abertura %}
+<section class="pagina" id="{{ pg.id }}">
+  <header class="pagina-cabeca"><p class="sobretitulo">{{ pg.rotulo }}</p><h1>{{ pg.titulo }}</h1></header>
+  <div class="prosa">{{ pg.corpo }}</div>
+</section>
+{% endfor %}
+
+{% for p in partes %}
+<section class="parte" id="{{ p.id }}">
+  <p class="parte-num">Parte {{ p.numero }}</p>
+  <h1 class="parte-titulo">{{ p.titulo }}</h1>
+  {% if p.original %}<p class="parte-original" lang="en">{{ p.original }}</p>{% endif %}
+  <div class="prosa parte-intro">{{ p.intro }}</div>
+  <ol class="parte-caps">
+    {% for c in p.capitulos %}<li><a href="#{{ c.id }}"><span class="pc-n">{{ c.numero }}</span><span class="pc-t">{{ c.titulo }}</span></a></li>
+    {% endfor %}
+  </ol>
+</section>
+{% for c in p.capitulos %}
+<article class="capitulo" id="{{ c.id }}" data-cap="{{ c.numero }}" aria-labelledby="{{ c.id }}-titulo">
+  <header class="cap-cabeca">
+    <p class="cap-meta"><span class="cap-num">{{ c.numero }}</span><span class="cap-parte">Parte {{ p.numero }} · {{ p.titulo }}</span></p>
+    <h2 class="cap-titulo" id="{{ c.id }}-titulo">{{ c.titulo }}</h2>
+    {% if c.original %}<p class="cap-original" lang="en">{{ c.original }}</p>{% endif %}
+    <div class="cap-frase"><p class="rotulo">Em uma frase</p><p class="frase"><span>{{ c.resumo|md }}</span></p></div>
+  </header>
+  <div class="prosa cap-corpo">{{ c.corpo }}</div>
+  <footer class="cap-pe">
+    {% if c.relacionados %}
+    <div class="conecta"><p class="rotulo">Conecta com</p>
+      <ul>{% for r in c.relacionados %}{% if r in titulos %}<li><a class="chip" href="#{{ numero_cap(r) }}"><span class="chip-n">{{ r }}</span>{{ titulos[r] }}</a></li>{% endif %}{% endfor %}</ul>
+    </div>
+    {% endif %}
+    {% if modo == 'web' %}
+    <div class="cap-nav">
+      <button type="button" class="estudado" data-cap="{{ c.numero }}" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Marcar como estudado</span></button>
+      <span class="cap-setas">
+        {% if c.anterior %}<a href="#{{ c.anterior }}" class="seta-nav" aria-label="Capítulo anterior">←</a>{% endif %}
+        {% if c.proximo %}<a href="#{{ c.proximo }}" class="seta-nav" aria-label="Próximo capítulo">→</a>{% endif %}
+      </span>
+    </div>
+    {% endif %}
+  </footer>
+</article>
+{% endfor %}
+{% endfor %}
+
+<section class="pagina" id="fechamento">
+  <header class="pagina-cabeca"><p class="sobretitulo">{{ fechamento.rotulo }}</p><h1>{{ fechamento.titulo }}</h1></header>
+  <div class="prosa">{{ fechamento.corpo }}</div>
+</section>
+
+<section class="pagina cola" id="cola">
+  <header class="pagina-cabeca"><p class="sobretitulo">Estudo</p><h1>Cola: os conceitos em uma linha</h1></header>
+  <p class="pagina-lead">O "Em uma frase" de cada capítulo, em ordem. Leia de cima a baixo na véspera e marque os que você não consegue explicar.</p>
+  {% for p in partes %}
+  <h2 class="cola-parte">Parte {{ p.numero }} · {{ p.titulo }}</h2>
+  <dl class="cola-lista">
+    {% for c in p.capitulos %}<div class="cola-item"><dt><a href="#{{ c.id }}"><span class="cola-n">{{ c.numero }}</span>{{ c.titulo }}</a></dt><dd>{{ c.resumo|md }}</dd></div>
+    {% endfor %}
+  </dl>
+  {% endfor %}
+</section>
+
+{% if modo == 'web' %}
+<section class="pagina flashcards" id="flashcards">
+  <header class="pagina-cabeca"><p class="sobretitulo">Estudo</p><h1>Flashcards</h1></header>
+  <p class="pagina-lead">{{ numeros.flashcards }} cartões: o "Em uma frase" e as perguntas do "Teste-se" de cada capítulo. Responda de cabeça antes de virar. Os cartões que você marca como "Não sabia" voltam antes dos outros.</p>
+  <div class="fc" id="fc">
+    <div class="fc-filtros" role="group" aria-label="Filtrar por parte">
+      <button type="button" class="chip ativo" data-parte="0">Todas</button>{% for p in partes %}<button type="button" class="chip" data-parte="{{ p.numero }}">Parte {{ p.numero }}</button>{% endfor %}
+    </div>
+    {% set f0 = flashcards[0] if flashcards else None %}
+    <div class="fc-cartao" id="fc-cartao" tabindex="0" role="button" aria-label="Virar o cartão">
+      <div class="fc-face fc-frente" id="fc-frente">
+        <p class="fc-rotulo">Pergunta · <a id="fc-cap" href="#{% if f0 %}{{ numero_cap(f0.c) }}{% endif %}">capítulo {% if f0 %}{{ f0.c }}{% endif %}</a></p>
+        <div class="fc-texto" id="fc-q">{% if f0 %}{{ f0.q }}{% endif %}</div>
+        <p class="fc-dica">Toque ou aperte espaço para virar</p>
+      </div>
+      <div class="fc-face fc-verso" id="fc-verso" hidden>
+        <p class="fc-rotulo">Resposta</p>
+        <div class="fc-texto" id="fc-r">{% if f0 %}{{ f0.r }}{% endif %}</div>
+      </div>
+    </div>
+    <div class="fc-botoes">
+      <button type="button" class="botao" id="fc-nao">Não sabia</button>
+      <button type="button" class="botao primario" id="fc-sim">Sabia</button>
+    </div>
+    <p class="fc-status" id="fc-status" aria-live="polite"></p>
+    <p class="fc-zerar"><button type="button" class="link" id="fc-zerar">Recomeçar do zero</button></p>
+  </div>
+  <script type="application/json" id="fc-dados">{{ dados_flash }}</script>
+</section>
+{% endif %}
+
+{% for a in apendices %}
+<section class="pagina apendice{% if a.id == 'glossario' %} glossario{% endif %}" id="{{ a.id }}">
+  <header class="pagina-cabeca"><p class="sobretitulo">{{ a.rotulo }}</p><h1>{{ a.titulo }}</h1></header>
+  <div class="prosa">{{ a.corpo }}</div>
+</section>
+{% endfor %}
+
+{% if simulado %}
+<section class="pagina apendice simulado" id="simulado">
+  <header class="pagina-cabeca"><p class="sobretitulo">{{ simulado.rotulo }}</p><h1>{{ simulado.titulo }}</h1></header>
+  <div class="prosa">{{ simulado.corpo }}</div>
+  {% if modo == 'web' %}
+  <form class="sim" id="sim" novalidate>
+    {% for q in questoes %}
+    <fieldset class="sim-q" id="q-{{ q.numero }}" data-correta="{{ q.correta }}" data-parte="{{ q.parte }}" data-caps="{{ q.capitulos|join(',') }}">
+      <legend><span class="sim-n">{{ q.numero }}</span><span class="sim-enunciado">{{ q.enunciado }}</span></legend>
+      <div class="sim-alts">
+        {% for alt in q.alternativas %}<label class="sim-alt" for="q{{ q.numero }}-{{ loop.index0 }}"><input type="radio" name="q{{ q.numero }}" id="q{{ q.numero }}-{{ loop.index0 }}" value="{{ loop.index0 }}"><span class="sim-letra">{{ 'abcd'[loop.index0] }}</span><span class="sim-texto">{{ alt }}</span></label>
+        {% endfor %}
+      </div>
+      <div class="sim-explica" hidden><p>{{ q.explicacao }}</p></div>
+    </fieldset>
+    {% endfor %}
+    <div class="sim-acoes">
+      <button type="submit" class="botao primario">Corrigir</button>
+      <button type="button" class="botao" id="sim-recomecar">Recomeçar</button>
+    </div>
+    <div class="sim-resultado" id="sim-resultado" hidden aria-live="polite"></div>
+  </form>
+  {% else %}
+  <ol class="sim-impresso">
+    {% for q in questoes %}
+    <li class="sim-q"><p class="sim-enunciado"><span class="sim-n">{{ q.numero }}</span>{{ q.enunciado }}</p>
+      <ol class="sim-alts" type="a">{% for alt in q.alternativas %}<li>{{ alt }}</li>{% endfor %}</ol>
+    </li>
+    {% endfor %}
+  </ol>
+  <h2 class="gabarito-titulo">Gabarito comentado</h2>
+  <ol class="gabarito">
+    {% for q in questoes %}<li><span class="gab-n">{{ q.numero }}</span><span class="gab-letra">{{ 'abcd'[q.correta] }}</span><span class="gab-exp">{{ q.explicacao }}</span></li>
+    {% endfor %}
+  </ol>
+  {% endif %}
+</section>
+{% endif %}
+
+<footer class="colofao">
+  <p><strong>50 Conceitos de System Design</strong>, edição de estudo em português. Conteúdo original de Arslan Ahmad (DesignGurus), traduzido, expandido e ilustrado para estudo pessoal.</p>
+  <p>Escrito em Markdown e montado com pandoc. Diagramas desenhados com roughjs na fonte Excalifont. Texto em Literata, títulos em Bricolage Grotesque, código em JetBrains Mono.</p>
+  {% if modo == 'web' and not fragmento %}<p>Outras versões: <a href="{{ nome_arquivo }}.pdf">PDF</a> · <a href="{{ nome_arquivo }}.epub">EPUB</a></p>{% endif %}
+</footer>
+</main>
+
+{% if modo == 'web' %}
+<div class="lupa" id="lupa" hidden role="dialog" aria-modal="true" aria-label="Diagrama ampliado">
+  <button type="button" class="lupa-fechar" id="lupa-fechar">Fechar</button>
+  <div class="lupa-conteudo" id="lupa-conteudo"></div>
+  <p class="lupa-legenda" id="lupa-legenda"></p>
+</div>
+{% endif %}
+</div>
+{% if modo == 'web' %}
+<script>
+{{ app }}
+</script>
+{% endif %}
+{% if not fragmento %}
+</body>
+</html>
+{% endif %}

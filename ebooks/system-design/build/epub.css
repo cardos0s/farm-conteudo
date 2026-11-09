@@ -1,0 +1,54 @@
+/* EPUB: estilos discretos, que respeitam a fonte e o tema escolhidos no leitor. */
+body { line-height: 1.55; margin: 0 0.4em; widows: 2; orphans: 2; }
+h1, h2, h3, h4 { font-family: sans-serif; line-height: 1.2; page-break-after: avoid; break-after: avoid; }
+h1 { font-size: 1.7em; margin: 0.2em 0 0.3em; }
+h2 { font-size: 1.25em; margin: 1.6em 0 0.5em; }
+h3 { font-size: 1.08em; margin: 1.3em 0 0.4em; }
+p { margin: 0 0 0.8em; }
+a { color: #1864ab; }
+code { font-family: monospace; font-size: 0.88em; }
+pre { font-family: monospace; font-size: 0.78em; white-space: pre-wrap; border: 1px solid #ccc; padding: 0.6em; border-radius: 4px; }
+blockquote { margin: 1em 0; padding-left: 0.9em; border-left: 3px solid #bbb; font-style: italic; }
+table { border-collapse: collapse; width: 100%; font-size: 0.85em; margin: 1em 0; }
+th, td { border: 1px solid #ccc; padding: 0.35em 0.45em; vertical-align: top; text-align: left; }
+th { font-family: sans-serif; }
+img { max-width: 100%; height: auto; }
+figure { margin: 1.4em 0; text-align: center; page-break-inside: avoid; break-inside: avoid; }
+figcaption { font-size: 0.85em; font-style: italic; margin-top: 0.4em; text-align: left; }
+
+.capa { text-align: center; margin: 0; padding: 0; }
+.capa img { max-height: 100%; }
+.sobretitulo, .rotulo, .cap-num, .parte-num { font-family: sans-serif; font-size: 0.72em; letter-spacing: 0.08em; text-transform: uppercase; color: #1864ab; margin: 0 0 0.3em; }
+.original { font-style: italic; color: #666; margin-top: 0; }
+.frase { margin: 1.2em 0 1.4em; padding: 0.7em 0.9em; background: #fff3bf; color: #1e1e1e; border-radius: 4px; }
+.frase p { margin: 0; }
+.frase .rotulo { color: #8a6100; margin-bottom: 0.3em; }
+section.secao { margin-top: 1.4em; }
+.secao-titulo { font-size: 0.8em; letter-spacing: 0.08em; text-transform: uppercase; color: #555; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+.secao-nota { text-transform: none; letter-spacing: 0; font-weight: normal; color: #888; }
+.secao-nota::before { content: " · "; }
+.secao-analogia { background: #fff3bf; color: #1e1e1e; padding: 0.4em 0.9em 0.2em; border-radius: 4px; }
+.secao-analogia .secao-titulo { color: #8a6100; border: 0; }
+.secao-entrevista { background: #e8f1fb; color: #1e1e1e; padding: 0.4em 0.9em 0.2em; border-radius: 4px; }
+.secao-entrevista .secao-titulo { color: #1864ab; border: 0; }
+.secao-cuidado { background: #fcefef; color: #1e1e1e; padding: 0.4em 0.9em 0.2em; border-radius: 4px; }
+.secao-cuidado .secao-titulo { color: #c92a2a; border: 0; }
+.perguntas { padding-left: 1.3em; }
+.qa .q { margin: 0.8em 0 0.3em; }
+.qa .r { margin: 0 0 0.8em; padding: 0.3em 0.7em; border-left: 3px solid #2b8a3e; }
+.qa .r p { margin: 0.2em 0; }
+.conecta { margin-top: 1.6em; border-top: 1px solid #ddd; padding-top: 0.6em; }
+.conecta ul { padding-left: 1.1em; }
+.parte { text-align: left; }
+.parte h1 { font-size: 2em; }
+.parte-caps { padding-left: 1.1em; }
+dl.cola dt { font-family: sans-serif; font-weight: bold; margin-top: 0.7em; }
+dl.cola dd { margin: 0.1em 0 0 1em; }
+.glossario ul { padding-left: 1em; }
+.simulado { padding-left: 1.4em; }
+.simulado .questao { margin-bottom: 1em; page-break-inside: avoid; break-inside: avoid; }
+.simulado .enunciado { margin-bottom: 0.3em; }
+.alts { margin: 0; }
+.gabarito li { margin-bottom: 0.5em; }
+nav ol { list-style: none; padding-left: 0.6em; }
+nav ol ol { padding-left: 1.2em; }

@@ -1,0 +1,111 @@
+/* ───────────── impressão (PDF): página de livro técnico, 170 × 240 mm ───────────── */
+@page {
+  size: 170mm 240mm;
+  margin: 18mm 17mm 20mm;
+  @bottom-center { content: counter(page); font-family: "JetBrains Mono", monospace; font-size: 7.5pt; color: #7c8187; }
+}
+@page capa { margin: 0; @bottom-center { content: none; } }
+@page abre-parte { @bottom-center { content: none; } }
+
+html { scroll-behavior: auto; }
+body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.modo-impressao { --tam: 9.7pt; font-size: 9.7pt; line-height: 1.56; }
+.modo-impressao .livro { padding: 0; }
+.modo-impressao .livro > section, .modo-impressao .livro > article, .modo-impressao .livro > footer { max-width: none; }
+.modo-impressao .prosa { hyphens: auto; text-align: left; }
+.modo-impressao p, .modo-impressao li { orphans: 3; widows: 3; }
+.modo-impressao h1, .modo-impressao h2, .modo-impressao h3, .modo-impressao h4, .modo-impressao .secao-titulo, .modo-impressao .cap-cabeca, .modo-impressao .rotulo { break-after: avoid; }
+.modo-impressao figure.diagrama, .modo-impressao .secao-analogia, .modo-impressao .perguntas > li, .modo-impressao .cola-item,
+.modo-impressao .sim-q, .modo-impressao tr, .modo-impressao pre, .modo-impressao blockquote, .modo-impressao .conecta, .modo-impressao .gabarito li { break-inside: avoid; }
+
+/* capa: página inteira, sem margem */
+.modo-impressao .capa {
+  page: capa; break-after: page; height: 240mm; margin: 0; border: 0; border-radius: 0; padding: 24mm 18mm 16mm;
+  display: flex; flex-direction: column; gap: 0; background-size: 5.5mm 5.5mm, auto;
+}
+.modo-impressao .capa-selo { font-size: 7pt; margin-bottom: 7mm; }
+.modo-impressao .capa-titulo { font-size: 50pt; }
+.modo-impressao .capa-sub { font-size: 20pt; }
+.modo-impressao .capa-desc { font-size: 10pt; max-width: 108mm; margin-top: 6mm; }
+.modo-impressao .capa-lousa { margin: auto 0 0; padding-top: 8mm; }
+.modo-impressao .capa-lousa svg { width: 124mm; border: 1px solid var(--linha); }
+.modo-impressao .capa-numeros { margin-top: 7mm; padding-top: 4mm; font-size: 6.6pt; gap: 1mm 6mm; }
+.modo-impressao .capa-numeros strong { font-size: 12pt; }
+
+/* sumário */
+.sumario { break-after: page; }
+.sumario-titulo { font-family: var(--f-titulo); font-weight: 800; font-stretch: 88%; font-size: 26pt; letter-spacing: -0.02em; margin: 0 0 6mm; }
+.sum, .sum ol { list-style: none; margin: 0; padding: 0; }
+.sum a { display: flex; align-items: baseline; gap: 2mm; color: var(--tinta); text-decoration: none; }
+.sum-t { flex: 1 1 auto; display: flex; align-items: baseline; min-width: 0; }
+.sum-t::after { content: ""; flex: 1 1 4mm; min-width: 4mm; margin: 0 1.5mm 0 2mm; border-bottom: 1px dotted var(--linha-forte); transform: translateY(-0.5mm); }
+.sum-n { flex: none; width: 6mm; font-family: var(--f-mono); font-size: 7.5pt; color: var(--tinta-3); }
+.sum-p { flex: none; width: 8mm; text-align: right; font-family: var(--f-mono); font-size: 7.8pt; font-variant-numeric: tabular-nums; color: var(--tinta-2); }
+.sum > li { margin-top: 2.6mm; }
+.sum > li > a { font-family: var(--f-titulo); font-weight: 700; font-size: 10pt; }
+.sum-parte > ol { margin: 1mm 0 0; }
+.sum-item a { font-size: 8.8pt; line-height: 1.45; padding: 0.35mm 0; }
+.sum > .sum-item > a { font-family: var(--f-titulo); font-weight: 700; font-size: 10pt; }
+.sum-pn { font-family: var(--f-mono); font-size: 6.8pt; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--azul); margin-right: 2mm; }
+
+/* aberturas */
+.modo-impressao .pagina, .modo-impressao .capitulo { break-before: page; padding-top: 0; margin-top: 0; border-top: 0; }
+.modo-impressao .parte {
+  page: abre-parte; break-before: page; break-after: page; margin: 0; min-height: 198mm; padding: 16mm 12mm;
+  display: flex; flex-direction: column; justify-content: center; background-size: 5.5mm 5.5mm, auto;
+}
+.modo-impressao .parte + .capitulo { margin-top: 0; }
+.modo-impressao .parte-num { font-size: 18pt; }
+.modo-impressao .parte-titulo { font-size: 30pt; }
+.modo-impressao .parte-caps { grid-template-columns: 1fr 1fr; margin-top: 8mm; }
+.modo-impressao .parte-caps a { font-size: 8.8pt; }
+.modo-impressao .pagina-cabeca { margin-bottom: 6mm; }
+.modo-impressao .pagina-cabeca h1 { font-size: 24pt; }
+
+/* capítulo */
+.modo-impressao .cap-num { font-size: 30pt; }
+.modo-impressao .cap-titulo { font-size: 23pt; margin-top: 2mm; }
+.modo-impressao .cap-frase { margin-top: 5mm; }
+.modo-impressao .cap-frase .frase { font-size: 11.3pt; }
+.modo-impressao .secao { margin-top: 6mm; }
+.modo-impressao .prosa h3.secao-titulo { font-size: 6.6pt; margin-bottom: 2.5mm; }
+.modo-impressao .secao-analogia { transform: none; margin: 7mm 0 0; box-shadow: none; border: 1px solid #f2df8f; }
+.modo-impressao .prosa .secao-analogia h3.secao-titulo { font-size: 12pt; }
+.modo-impressao .secao-entrevista, .modo-impressao .secao-cuidado { padding: 3.5mm 4.5mm 1mm; }
+.modo-impressao figure.diagrama { margin: 5mm 0; }
+.modo-impressao .lousa-quadro { cursor: default; filter: none; }
+.modo-impressao .lousa-quadro svg { width: 100%; max-height: 112mm; }
+.modo-impressao figure.diagrama figcaption { font-size: 8pt; }
+.modo-impressao .prosa pre { white-space: pre-wrap; overflow: visible; font-size: 7.6pt; }
+.modo-impressao .tabela { overflow: visible; }
+.modo-impressao .tabela table { font-size: 8pt; }
+.modo-impressao .tabela td, .modo-impressao .tabela th { min-width: 0; padding: 1.6mm 2.2mm; }
+.modo-impressao .perguntas summary { cursor: default; padding: 2.2mm 3.2mm 1.2mm; font-size: 9.3pt; }
+.modo-impressao .perguntas .ver { display: none; }
+.modo-impressao .perguntas .r { margin: 0 3.2mm 2.6mm; padding: 2mm 3mm; font-size: 9pt; }
+.modo-impressao .cap-pe { margin-top: 7mm; padding-top: 3.5mm; }
+.modo-impressao .chip { font-size: 7.6pt; padding: 0.8mm 2.6mm 0.8mm 1mm; }
+.modo-impressao .chip-n { min-width: 4.6mm; height: 4.6mm; font-size: 6.4pt; }
+
+/* cola */
+.modo-impressao .cola-item { grid-template-columns: 44mm minmax(0, 1fr); padding: 1.8mm 0; }
+.modo-impressao .cola-item dt { font-size: 8.8pt; }
+.modo-impressao .cola-item dd { font-size: 8.6pt; }
+.modo-impressao .cola-parte { font-size: 12pt; margin-top: 7mm; }
+
+/* simulado impresso + gabarito */
+.sim-impresso { list-style: none; padding: 0; margin: 4mm 0 0; }
+.sim-impresso > .sim-q { border: 1px solid var(--linha); border-radius: 3mm; padding: 3mm 4mm 2mm; margin: 0 0 3mm; }
+.sim-impresso .sim-enunciado { display: flex; gap: 2.5mm; margin: 0 0 1.5mm; font-family: var(--f-titulo); font-weight: 600; font-size: 9.4pt; line-height: 1.4; }
+.sim-impresso .sim-n { font-size: 12pt; }
+.sim-impresso .sim-alts { display: block; list-style: lower-alpha; margin: 0 0 1mm; padding-left: 12mm; font-size: 9pt; }
+.sim-impresso .sim-alts li { margin: 0.8mm 0; }
+.gabarito-titulo { break-before: page; font-family: var(--f-titulo); font-weight: 750; font-size: 16pt; margin: 0 0 4mm; }
+.gabarito { list-style: none; padding: 0; margin: 0; }
+.gabarito li { display: grid; grid-template-columns: 7mm 6mm minmax(0, 1fr); gap: 2mm; padding: 1.8mm 0; border-bottom: 1px solid var(--linha); font-size: 8.6pt; line-height: 1.45; }
+.gab-n { font-family: var(--f-mono); color: var(--tinta-3); }
+.gab-letra { font-family: var(--f-mono); font-weight: 700; color: var(--verde); }
+
+.modo-impressao .glossario .prosa h3 { font-size: 18pt; }
+.modo-impressao .glossario .prosa li { padding: 1.2mm 0; font-size: 9pt; }
+.modo-impressao .colofao { break-before: page; margin-top: 0; padding-top: 0; border-top: 0; }
