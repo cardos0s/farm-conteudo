@@ -42,7 +42,7 @@ Imagine um condomínio com uma rua circular e algumas guaritas ao longo dela. Ca
 - A técnica nasceu num artigo de **Karger e colegas no MIT**, em 1997, pensado para caches distribuídos na web; dois dos autores fundaram a **Akamai** no ano seguinte.
 - O **Dynamo** da Amazon (artigo de 2007) e o **Cassandra** usam um anel com nós virtuais para distribuir e replicar os dados.
 - Clientes de **memcached** popularizaram o algoritmo **ketama**, que o **NGINX** usa na diretiva `hash ... consistent` para escolher servidores de upstream.
-- O **Envoy** oferece as políticas de balanceamento ring hash e Maglev, esta inspirada no balanceador do Google, para que cada cliente continue caindo no mesmo servidor quando o conjunto muda.
+- O **Envoy** oferece as políticas de balanceamento ring hash e Maglev, esta inspirada no balanceador do Google: o mesmo cliente cai sempre no mesmo servidor, e quase nada muda quando servidores entram ou saem.
 
 ## Trade-offs
 
