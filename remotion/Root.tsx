@@ -6,6 +6,8 @@ import { AulaComplexidade } from "./aulas/complexidade/Aula";
 import { FPS as FPS_AULA, TOTAL_QUADROS } from "./aulas/complexidade/roteiro";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
+import { FPS as FPS_SELLOOP } from "./selloop/marca";
+import { DURACAO_TESTE, SelloopTeste } from "./selloop/Teste";
 
 export const Root: React.FC = () => (
   <>
@@ -26,6 +28,14 @@ export const Root: React.FC = () => (
       height={1080}
       fps={FPS_AULA}
       durationInFrames={TOTAL_QUADROS}
+    />
+    <Composition
+      id="SelloopTeste"
+      component={SelloopTeste}
+      width={1920}
+      height={1080}
+      fps={FPS_SELLOOP}
+      durationInFrames={Math.round(DURACAO_TESTE * FPS_SELLOOP)}
     />
   </>
 );

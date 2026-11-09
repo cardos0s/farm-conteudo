@@ -3,3 +3,6 @@ node_modules/
 dados/
 saida/
 public/aulas/
+
+# Gravações de tela do pack Selloop (os eventos.json ficam no git)
+public/selloop/telas/**/*.mp4
