@@ -13,6 +13,7 @@
 //   export default {
 //     nome: "campanhas-publico",
 //     url: "https://app.selloop.com.br/atendimento",   // aberta antes de começar a gravar
+//     antes: async (page) => {},                        // opcional, antes de abrir a página
 //     preparar: async (page) => {},                     // opcional, fora da gravação
 //     gravar: async (g, page) => {                      // tudo aqui é gravado
 //       await g.clicar("button:has-text('Campanhas')");
@@ -74,6 +75,8 @@ async function abrirNavegador(a) {
     locale: "pt-BR",
     timezoneId: "America/Sao_Paulo",
     proxy,
+    // Idioma do sistema em português: campos de data nativos aparecem como dd/mm/aaaa.
+    env: { ...process.env, LANG: "pt_BR.UTF-8", LANGUAGE: "pt_BR:pt", LC_ALL: "pt_BR.UTF-8" },
     // Sem este flag o screencast do Chromium headless entrega os quadros em 1x, mesmo com escala 2.
     args: ["--hide-scrollbars", "--lang=pt-BR", `--force-device-scale-factor=${a.escala}`],
   });
@@ -94,6 +97,8 @@ async function principal() {
   await cdp.send("Emulation.setDeviceMetricsOverride", { width: a.largura, height: a.altura, deviceScaleFactor: a.escala, mobile: false });
   await cdp.send("Emulation.setTimezoneOverride", { timezoneId: "America/Sao_Paulo" }).catch(() => {});
 
+  // `antes` roda antes de abrir a página (ex.: instalar um servidor de demonstração).
+  if (cena.antes) await cena.antes(page);
   if (cena.url) await page.goto(cena.url, { waitUntil: "networkidle", timeout: 60000 }).catch((e) => console.warn("Aviso:", e.message));
   if (cena.preparar) await cena.preparar(page);
   await page.evaluate(() => document.fonts?.ready).catch(() => {});
@@ -176,6 +181,19 @@ async function principal() {
       await page.mouse.down();
       await dormir(70);
       await page.mouse.up();
+      await dormir(depois);
+      return p;
+    },
+    /**
+     * Escolhe uma opção de um <select> nativo. O cursor vai até ele e o clique fica registrado, mas a
+     * lista nativa (que não sai na gravação e prende o teclado) não abre: a opção é aplicada direto.
+     */
+    async escolher(alvo, opcao, { depois = 500 } = {}) {
+      const p = await g.mover(alvo);
+      await dormir(90);
+      eventos.push({ t: rel(), tipo: "clique", x: p.x, y: p.y, caixa: p.caixa });
+      const loc = typeof alvo === "string" ? page.locator(alvo).first() : alvo;
+      await loc.selectOption(opcao);
       await dormir(depois);
       return p;
     },

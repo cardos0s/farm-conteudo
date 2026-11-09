@@ -183,3 +183,40 @@ export const Legenda: React.FC<{ falas: Fala[] }> = ({ falas }) => {
     </div>
   );
 };
+
+/** Uma folha (ex.: o PDF gerado pela plataforma) que entra deslizando, levemente inclinada, com sombra. */
+export const Folha: React.FC<Aparicao & { src: string; x: number; y: number; largura: number; rotacao?: number; rotulo?: string }> = ({
+  src,
+  x,
+  y,
+  largura,
+  rotacao = -3,
+  rotulo,
+  ...ap
+}) => {
+  const { t, fps, frame } = useT();
+  const entrada = spring({ frame: frame - Math.round(ap.de * fps), fps, config: { damping: 16, stiffness: 110, mass: 0.8 } });
+  const saida = ap.ate === undefined ? 1 : interpolate(t, [ap.ate - 0.35, ap.ate], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const vis = Math.min(entrada, saida);
+  if (t < ap.de || vis <= 0.001) return null;
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: x,
+        top: y + (1 - entrada) * 260,
+        width: largura,
+        transform: `translate(-50%, 0) rotate(${rotacao * entrada}deg)`,
+        opacity: vis,
+        filter: "drop-shadow(0 30px 50px rgba(0, 4, 45, 0.45))",
+      }}
+    >
+      <Img src={src} style={{ width: "100%", display: "block", borderRadius: 6 }} />
+      {rotulo && (
+        <div style={{ position: "absolute", left: "50%", top: -26, transform: "translate(-50%, -100%)", padding: "12px 24px", borderRadius: 999, background: cor.royal, color: "#fff", fontFamily: fonte, fontWeight: 600, fontSize: 28, whiteSpace: "nowrap", boxShadow: "0 14px 34px rgba(0,4,45,0.35)" }}>
+          {rotulo}
+        </div>
+      )}
+    </div>
+  );
+};

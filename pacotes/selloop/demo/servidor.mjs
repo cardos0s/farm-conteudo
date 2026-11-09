@@ -102,7 +102,7 @@ export function criarEstado({ usuario = "patricia", agora = new Date() } = {}) {
   // Relógio da demo: começa em `agora` e anda junto com o relógio real (como o page.clock da página).
   const inicioReal = Date.now();
   const agoraSim = () => new Date(agora.getTime() + (Date.now() - inicioReal));
-  return { agora, agoraSim, t, eu, usuario, papeis, contatos, conversas, mensagens, cobrancas: {}, extras: {}, ws: null, log: [] };
+  return { agora, agoraSim, t, eu, usuario, papeis, contatos, conversas, mensagens, cobrancas: {}, enviados: {}, extras: {}, ws: null, log: [] };
 }
 
 const brl = (v) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -179,7 +179,7 @@ function modeloApi(s, m) {
     headerText: null,
     headerHandle: null,
     headerFileName: m.headerUrl ? m.headerUrl.split("/").pop() : null,
-    headerUrl: m.headerUrl ?? null,
+    headerUrl: absoluta(m.headerUrl),
     body: m.body,
     footer: m.footer,
     variables: nomes.map((nome) => ({ nome, tipo: "texto", origem: nome === "contato" ? "contato" : "envio", exemplo: exemplos[nome] ?? nome })),
@@ -193,6 +193,35 @@ function modeloApi(s, m) {
     updatedAt: s.t(30000),
     deletedAt: null,
     channels: [{ id: D.id(`tplc:${m.chave}`), templateId: tid, channelId: D.canais.whatsapp.id, status: "aprovado", metaTemplateId: String(1900000000000000 + m.name.length * 7919), rejectedReason: null, createdAt: s.t(30000), updatedAt: s.t(29000), deletedAt: null, canalNome: D.canais.whatsapp.nome, canalNumero: D.canais.whatsapp.identificador }],
+  };
+}
+
+/** A prévia do cabeçalho usa a URL como está: arquivos da demo precisam do endereço completo da API. */
+const absoluta = (u) => (u && u.startsWith("/") ? `https://api.selloop.com.br${u}` : u ?? null);
+
+/** O mesmo modelo no formato da API da Meta (seletor de modelos do agendamento e da campanha). */
+function modeloMeta(m) {
+  const exemplos = { contato: "Marina", pedido: "1189", vencimento: "17/11", janela: "9h às 12h" };
+  const nomes = [...new Set([...m.body.matchAll(/\[([a-z_]+)\]/g)].map((x) => x[1]))];
+  const comp = [];
+  if (m.headerType === "imagem") comp.push({ type: "HEADER", format: "IMAGE", example: { header_handle: [absoluta(m.headerUrl)] } });
+  comp.push({
+    type: "BODY",
+    text: m.body.replace(/\[([a-z_]+)\]/g, "{{$1}}"),
+    ...(nomes.length ? { example: { body_text_named_params: nomes.map((n) => ({ param_name: n, example: exemplos[n] ?? n })) } } : {}),
+  });
+  if (m.footer) comp.push({ type: "FOOTER", text: m.footer });
+  if (m.buttons?.length) comp.push({ type: "BUTTONS", buttons: m.buttons.map((b) => ({ type: "QUICK_REPLY", text: b.texto })) });
+  return {
+    id: D.id(`meta:${m.chave}`),
+    name: m.name,
+    language: "pt_BR",
+    status: "APPROVED",
+    category: m.category,
+    displayName: m.displayName,
+    components: comp,
+    headerMedia: m.headerType === "imagem" ? { type: "image", url: absoluta(m.headerUrl), fileName: m.headerUrl.split("/").pop() } : null,
+    automaticas: nomes.includes("contato") ? ["contato"] : [],
   };
 }
 
@@ -229,9 +258,9 @@ function indicadores(s, dias) {
       mediaEscopo: 4.8,
       totalEscopo: Math.round(126 * k),
       porUsuario: [
-        { userId: D.usuarios.diogo.id, nome: D.usuarios.diogo.nome, media: 4.9, total: Math.round(48 * k) },
-        { userId: D.usuarios.bruna.id, nome: D.usuarios.bruna.nome, media: 4.8, total: Math.round(41 * k) },
-        { userId: D.usuarios.rafael.id, nome: D.usuarios.rafael.nome, media: 4.7, total: Math.round(37 * k) },
+        { id: D.usuarios.diogo.id, userId: D.usuarios.diogo.id, nome: D.usuarios.diogo.nome, media: 4.9, total: Math.round(48 * k) },
+        { id: D.usuarios.bruna.id, userId: D.usuarios.bruna.id, nome: D.usuarios.bruna.nome, media: 4.8, total: Math.round(41 * k) },
+        { id: D.usuarios.rafael.id, userId: D.usuarios.rafael.id, nome: D.usuarios.rafael.nome, media: 4.7, total: Math.round(37 * k) },
       ],
       porNota: [1, 1, 4, 17, 103].map((n) => Math.round(n * k)),
     },
@@ -448,8 +477,9 @@ function rotas(s) {
     ["GET", /^carteira\/[^/]+\/me\/notice$/, () => null],
     ["GET", /^carteira\/[^/]+\/me\/telefonia$/, () => ({ ativo: false })],
     ["GET", /^carteira\/[^/]+\/support-tickets\/nao-lidas$/, () => ({ total: 0 })],
-    ["GET", /^carteira\/[^/]+\/(segments|units|companies|pipelines|roles|lists|functions)$/, () => lista([])],
-    ["GET", /^carteira\/[^/]+\/tags$/, () => lista([...new Set(D.conversas.flatMap((c) => c.etiquetas))].map((n) => ({ id: D.id(`tag:${n}`), name: n, description: null, color: "#2849db", type: "contact", workspaceId: D.WS, createdAt: s.t(9000), updatedAt: s.t(9000), deletedAt: null })))],
+    ["GET", /^carteira\/[^/]+\/(units|companies|pipelines|roles|lists|functions)$/, () => lista([])],
+    ["GET", /^carteira\/[^/]+\/tags$/, () => lista([...new Set([...Object.keys(D.etiquetasCarteira), ...D.conversas.flatMap((c) => c.etiquetas)])].map((n) => ({ id: D.id(`tag:${n}`), name: n, description: null, color: "#2849db", type: "contact", workspaceId: D.WS, createdAt: s.t(9000), updatedAt: s.t(9000), deletedAt: null })))],
+    ["GET", /^carteira\/[^/]+\/segments$/, () => lista(["Mercados e supermercados", "Bares e restaurantes", "Padarias e cafés"].map((n) => ({ id: D.id(`seg:${n}`), name: n, description: "", status: "active", workspaceId: D.WS, createdAt: s.t(9000), updatedAt: s.t(9000), deletedAt: null })))],
     ["GET", /^carteira\/[^/]+\/teams$/, () => lista(Object.values(D.equipes).map((e) => ({ id: e.id, name: e.nome, description: "", color: e.cor, isDepartment: true, workspaceId: D.WS, createdAt: s.t(9000), updatedAt: s.t(9000), deletedAt: null, isSystem: false })))],
     ["GET", /^carteira\/[^/]+\/team-chat$/, () => ({ equipe: { naoLidas: 0, ultimaEm: null }, equipes: [], colegas: Object.values(D.usuarios).filter((u) => u !== eu).map((u) => ({ userId: u.id, name: u.nome, image: avatarUsuario(u), naoLidas: 0, ultimaEm: null })), grupos: [], podeGerenciarGrupos: true })],
     ["GET", /^carteira\/[^/]+\/conversations\/atendentes-e-equipes$/, () => ({
@@ -485,7 +515,7 @@ function rotas(s) {
         if (pesquisa) {
           const nome = c.contact.name.split(" ")[0];
           const msg = registrar(s, c, mensagem({ conversaId: c.id, contatoId: c.contact.id, dir: "out", criado: agora, i: (s.mensagens[c.id]?.length ?? 0) + 1,
-            texto: `Obrigado pelo contato, ${nome}! 💙\nComo você avalia o nosso atendimento? Leva 5 segundos:\nhttps://avaliar.selloop.com.br/nr-${c.protocol.slice(-4)}`, extra: { status: "sent" } }));
+            texto: `Obrigado pelo contato, ${nome}! 💙\nComo você avalia o nosso atendimento? Leva 5 segundos:\nhttps://app.selloop.com.br/pesquisa/k7Qm${c.protocol.slice(-4)}xNa`, extra: { status: "sent" } }));
           setTimeout(() => s.ws?.send(JSON.stringify({ kind: "message", conversationId: c.id, data: msg })), 300);
         }
       }
@@ -507,7 +537,7 @@ function rotas(s) {
     }],
     ["GET", /^carteira\/[^/]+\/documentos-erp\/disponivel$/, () => ({ disponivel: true })],
     ["GET", /^carteira\/[^/]+\/ai\/features$/, () => ({ features: { transcricao_audio: true, atendimento: true, pesquisa_web: true, agenda: true, negocio: true } })],
-    ["GET", /^carteira\/[^/]+\/ai-agents$/, () => ({ data: [], contratados: 1, emUso: [] })],
+    ["GET", /^carteira\/[^/]+\/ai-agents$/, () => ({ data: [agenteApi(s)], contratados: 1, emUso: [D.lia.id] })],
     ["GET", /^carteira\/[^/]+\/channels$/, () => lista(Object.values(D.canais).map((c) => ({
       id: c.id, workspaceId: D.WS, type: c.tipo, name: c.nome, externalId: `demo-${c.tipo}`, status: "active", ownerUserId: D.usuarios.patricia.id, config: {},
       connectionHealth: "healthy", connectionHealthDetail: null, connectionCheckedAt: s.t(5), createdAt: s.t(90000), updatedAt: s.t(5), deletedAt: null,
@@ -543,9 +573,86 @@ function rotas(s) {
       return { opcoes: e.opcoes.map((o) => ({ opcao: o, votos: 0 })), pessoas: [], total: 0 };
     }],
     ["GET", /^carteira\/[^/]+\/(quick-messages|chatbots|scheduled-messages|catalogos)$/, () => ({ data: [] })],
+    // Campanhas
+    ["GET", /^carteira\/[^/]+\/campaigns$/, (_m, q) => ({ data: [...D.campanhas.map((c) => campanhaApi(s, c)), ...(s.extras.campanhasNovas ?? [])].filter((c) => q.get("arquivadas") === "1" ? c.archivedAt : !c.archivedAt) })],
+    ["GET", /^carteira\/[^/]+\/campaigns\/indicadores$/, (_m, q) => indicadoresCampanhas(s, Number(q.get("dias") ?? 30))],
+    ["GET", /^carteira\/[^/]+\/campaigns\/(interagiram|nao-interagiram)$/, (m) => {
+      const pessoas = contatosCarteira(m[1] === "interagiram" ? 38 : 64, m[1] === "interagiram" ? 7 : 9);
+      const camp = D.campanhas[0];
+      return { data: pessoas.map((p, i) => ({ recipientId: D.id(`rec:${m[1]}:${i}`), campanhaId: D.id(`camp:${camp.chave}`), campanha: camp.nome, contatoId: p.id, nome: p.name, telefone: p.phone, conversaId: D.id(`cvc:${i}`), enviadoEm: s.t(60 * 24 * 7 - i * 3), etapa: i % 5 === 0 ? 1 : 2, totalEtapas: 2, emSequencia: i % 5 === 0, ...(m[1] === "interagiram" ? { respondidoEm: s.t(60 * 24 * 7 - 30 - i * 5), resposta: ["Quero aproveitar", "Falar com vendedor", "Quero aproveitar"][i % 3] } : {}) })) };
+    }],
+    ["POST", /^carteira\/[^/]+\/campaigns\/nao-interagiram\/acoes$/, (_m, _q, corpo = {}) => ({ ok: true, aplicados: (corpo.recipientIds ?? []).length })],
+    ["GET", /^carteira\/[^/]+\/campaigns\/([0-9a-f-]{36})$/, (m) => {
+      const c = D.campanhas.find((x) => D.id(`camp:${x.chave}`) === m[1]);
+      return c ? campanhaApi(s, c) : (s.extras.campanhasNovas ?? []).find((x) => x.id === m[1]) ?? { __status: 404, corpo: { error: "not_found" } };
+    }],
+    ["GET", /^carteira\/[^/]+\/campaigns\/([0-9a-f-]{36})\/template$/, (m) => {
+      const c = D.campanhas.find((x) => D.id(`camp:${x.chave}`) === m[1]);
+      const modelo = D.modelos.find((x) => x.chave === (c?.modelo ?? "promo"));
+      return { data: modeloMeta(modelo) };
+    }],
+    ["GET", /^carteira\/[^/]+\/campaigns\/([0-9a-f-]{36})\/recipients$/, (m) => {
+      const c = D.campanhas.find((x) => D.id(`camp:${x.chave}`) === m[1]) ?? D.campanhas[0];
+      const t = campanhaApi(s, c).totais;
+      const pessoas = contatosCarteira(40, 3);
+      const st = (i) => (i < 40 * (t.respondidos / Math.max(1, t.enviados)) ? "respondido" : i < 40 * (t.lidos / Math.max(1, t.enviados)) ? "lido" : i < 40 * (t.entregues / Math.max(1, t.enviados)) ? "entregue" : "falhou");
+      return { data: pessoas.map((p, i) => ({ id: D.id(`rcp:${c.chave}:${i}`), contatoId: p.id, nome: p.name, telefone: p.phone, conversaId: D.id(`cvr:${i}`), status: st(i), enviadoEm: s.t(60 * 24 * Math.max(0, c.dias ?? 0) - i), respondidoEm: st(i) === "respondido" ? s.t(60 * 24 * Math.max(0, c.dias ?? 0) - 20 - i) : null, motivoFalha: st(i) === "falhou" ? "Número sem WhatsApp" : null })) };
+    }],
+    ["GET", /^carteira\/[^/]+\/campaigns\/([0-9a-f-]{36})\/etapas$/, (m) => {
+      const c = D.campanhas.find((x) => D.id(`camp:${x.chave}`) === m[1]) ?? D.campanhas[0];
+      const t = campanhaApi(s, c).totais;
+      const etapas = [{ etapa: 1, enviados: t.enviados, entregues: t.entregues, lidos: t.lidos, interagiram: t.respondidos }];
+      if (c.chave === "atacado") etapas.push({ etapa: 2, enviados: Math.round((t.enviados - t.respondidos) * 0.9), entregues: Math.round((t.enviados - t.respondidos) * 0.88), lidos: Math.round((t.enviados - t.respondidos) * 0.61), interagiram: Math.round((t.enviados - t.respondidos) * 0.09) });
+      return { data: etapas };
+    }],
+    ["POST", /^carteira\/[^/]+\/campaigns\/audience\/preview$/, (_m, _q, corpo = {}) => {
+      const etiquetas = (corpo.etiquetasIds ?? []).map((tid) => Object.keys(D.etiquetasCarteira).find((n) => D.id(`tag:${n}`) === tid)).filter(Boolean);
+      let total = corpo.todaCarteira ? 1580 : etiquetas.reduce((n, e, i) => n + Math.round(D.etiquetasCarteira[e] * (i === 0 ? 1 : 0.82)), 0);
+      total += (corpo.contatosIncluidosIds ?? []).length;
+      total = Math.max(0, total - (corpo.contatosExcluidosIds ?? []).length);
+      return { total, data: contatosCarteira(Math.min(total, 30), etiquetas.length + 1).map((c) => ({ ...c, excluido: (corpo.contatosExcluidosIds ?? []).includes(c.id) })) };
+    }],
+    ["POST", /^carteira\/[^/]+\/campaigns\/audience\/validar-whatsapp$/, (_m, _q, corpo = {}) => {
+      const etiquetas = (corpo.audience?.etiquetasIds ?? []).map((tid) => Object.keys(D.etiquetasCarteira).find((n) => D.id(`tag:${n}`) === tid)).filter(Boolean);
+      const total = etiquetas.reduce((n, e, i) => n + Math.round(D.etiquetasCarteira[e] * (i === 0 ? 1 : 0.82)), 0) || 30;
+      const sem = contatosCarteira(Math.max(1, Math.round(total * 0.012)), 21);
+      return { total, verificados: total, naoVerificados: 0, semWhatsapp: sem.map((c) => ({ id: c.id, name: c.name, phone: c.phone, companyName: c.companyName })) };
+    }],
+    ["POST", /^carteira\/[^/]+\/campaigns\/audience\/sem-whatsapp$/, () => ({ ok: true })],
+    ["POST", /^carteira\/[^/]+\/campaigns$/, (_m, _q, corpo = {}) => {
+      const id = D.id(`camp:nova:${(s.extras.campanhasNovas ?? []).length}`);
+      const agora = s.agoraSim().toISOString();
+      const nova = { id, workspaceId: D.WS, name: corpo.name, channelId: corpo.channelId, teamId: corpo.teamId, enableReceptive: corpo.enableReceptive ?? true, acaoResposta: corpo.acaoResposta ?? null, templateName: corpo.templateName, templateLanguage: corpo.templateLanguage ?? "pt_BR", templateParams: corpo.templateParams ?? {}, sequencia: corpo.sequencia ?? [], acoesSaida: corpo.acoesSaida ?? null, audience: corpo.audience, dispatchConfig: corpo.dispatchConfig, status: corpo.scheduledFor ? "agendada" : "rascunho", scheduledFor: corpo.scheduledFor ?? null, startedAt: null, finishedAt: null, nextSendAt: null, pauseReason: null, pausedAt: null, recipientCount: corpo.recipientCount ?? 0, archivedAt: null, createdByUserId: s.eu.id, createdAt: agora, updatedAt: agora, deletedAt: null, sentCount: 0, totais: { enviados: 0, falhas: 0, cancelados: 0, pendentes: 0, entregues: 0, lidos: 0, respondidos: 0 } };
+      (s.extras.campanhasNovas ??= []).unshift(nova);
+      return nova;
+    }],
+    ["POST", /^carteira\/[^/]+\/campaigns\/([0-9a-f-]{36})\/(iniciar|start|agendar)$/, (m, _q, corpo = {}) => {
+      const nova = (s.extras.campanhasNovas ?? []).find((x) => x.id === m[1]);
+      if (nova) {
+        nova.status = corpo.scheduledFor ? "agendada" : "em_envio";
+        nova.scheduledFor = corpo.scheduledFor ?? null;
+        if (!corpo.scheduledFor) nova.startedAt = s.agoraSim().toISOString();
+      }
+      return nova ?? { ok: true };
+    }],
+    ["GET", /^carteira\/[^/]+\/chatbots$/, () => ({ data: [] })],
     ["GET", /^carteira\/[^/]+\/meta-templates$/, () => ({ data: D.modelos.map((m) => modeloApi(s, m)) })],
+    ["GET", /^carteira\/[^/]+\/channels\/[^/]+\/whatsapp\/manage-templates$/, () => ({ data: D.modelos.map(modeloMeta) })],
     ["GET", /^carteira\/[^/]+\/dashboard\/atendimento$/, (_m, q) => indicadores(s, Number(q.get("days") ?? 7))],
     ["GET", /^carteira\/[^/]+\/session-report$/, (_m, q) => protocolos(s, q)],
+    // Envio (ou agendamento) de modelo aprovado pela Meta dentro da conversa.
+    ["POST", /^carteira\/[^/]+\/conversations\/([^/]+)\/whatsapp-template$/, (m, _q, corpo = {}) => {
+      const c = s.conversas.find((x) => x.id === m[1]);
+      const modelo = D.modelos.find((x) => x.name === corpo.name);
+      const params = { contato: c.contact.name.split(" ")[0], ...(corpo.params ?? {}) };
+      const texto = (modelo?.body ?? corpo.name).replace(/\[([a-z_]+)\]/g, (_x, v) => params[v] ?? v);
+      const msg = mensagem({ conversaId: c.id, contatoId: c.contact.id, dir: "out", criado: s.agoraSim().toISOString(), quem: s.usuario, i: (s.mensagens[c.id]?.length ?? 0) + 1, texto,
+        extra: { status: corpo.scheduledFor ? "scheduled" : "sent", scheduledFor: corpo.scheduledFor ?? null, templateName: corpo.name, templateLanguage: corpo.language ?? "pt_BR", templateParams: corpo.params ?? {},
+          templateButtons: modelo?.buttons?.length ? modelo.buttons.map((b) => ({ texto: b.texto })) : null, hiddenService: !!corpo.hiddenService } });
+      registrar(s, c, msg);
+      setTimeout(() => s.ws?.send(JSON.stringify({ kind: "message", conversationId: c.id, data: msg })), 200);
+      return msg;
+    }],
     ["POST", /^carteira\/[^/]+\/conversations\/([^/]+)\/messages$/, (m, _q, corpo) => {
       const c = s.conversas.find((x) => x.id === m[1]);
       return registrar(s, c, mensagemDeSaida(s, c, corpo ?? {}));
@@ -604,6 +711,105 @@ function avatarUsuario(u) {
   return fs.existsSync(path.join(ARQUIVOS, "avatares", `u-${chave}.jpg`)) ? `/api/uploads/demo/avatares/u-${chave}.jpg` : null;
 }
 
+
+// ── Campanhas ─────────────────────────────────────────────────────────────────
+
+const NOMES = ["Ana", "Bruno", "Carla", "Daniel", "Eduarda", "Felipe", "Gabriela", "Henrique", "Isabela", "João", "Karina", "Leonardo", "Mariana", "Nicolas", "Olívia", "Paulo", "Rafaela", "Sérgio", "Tatiane", "Vinícius"];
+const SOBRENOMES = ["Silva", "Souza", "Oliveira", "Pereira", "Costa", "Rodrigues", "Almeida", "Nascimento", "Lima", "Araújo", "Fernandes", "Carvalho", "Gomes", "Martins", "Rocha"];
+const NEGOCIOS = ["Mercado Bela Vista", "Padaria Pão Nosso", "Restaurante Maré Alta", "Lanchonete Ponto Certo", "Empório Serra Verde", "Bar do Porto", "Mercearia São José", "Cantina Bella", "Supermercado Litoral", "Café da Praça", "Padaria Trigo de Ouro", "Bistrô Lagoa", "Mercado Central", "Hamburgueria Fogo", "Pizzaria Forno a Lenha"];
+
+/** Contatos fictícios da carteira (para o público e os destinatários das campanhas). */
+function contatosCarteira(n, semente = 1) {
+  return Array.from({ length: n }, (_, i) => {
+    const k = i * 7 + semente * 13;
+    const nome = `${NOMES[k % NOMES.length]} ${SOBRENOMES[(k * 3 + 1) % SOBRENOMES.length]}`;
+    const fone = `+55 48 99${String(100 + ((k * 37) % 900)).padStart(3, "0")}-${String(1000 + ((k * 7919) % 9000)).padStart(4, "0")}`;
+    return { id: D.id(`ctc:${semente}:${i}`), name: nome, phone: fone, companyName: NEGOCIOS[(k * 5 + i) % NEGOCIOS.length] };
+  });
+}
+
+function campanhaApi(s, c) {
+  const id = D.id(`camp:${c.chave}`);
+  const modelo = D.modelos.find((m) => m.chave === c.modelo);
+  // 9h de Brasília no dia de `agora`
+  const base = new Date(`${new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(s.agora)}T09:00:00-03:00`);
+  const inicio = c.dias == null ? null : new Date(base.getTime() - c.dias * 86400000);
+  const enviados = c.status === "em_envio" ? c.enviadosAteAgora : c.status === "concluida" ? c.destinatarios : 0;
+  const entregues = Math.round(enviados * c.entregues);
+  const lidos = Math.round(enviados * c.lidas);
+  const respondidos = Math.round(enviados * c.responderam);
+  return {
+    id,
+    workspaceId: D.WS,
+    name: c.nome,
+    channelId: D.canais.whatsapp.id,
+    teamId: D.equipes[c.equipe].id,
+    enableReceptive: !c.agente,
+    acaoResposta: c.agente ? { modo: "agente", agenteId: D.lia.id } : null,
+    templateName: modelo.name,
+    templateLanguage: "pt_BR",
+    templateParams: { contato: "Marina", pedido: "1189", vencimento: "17/11" },
+    sequencia: c.chave === "atacado" ? [{ templateName: "ultima_chamada_atacado", templateLanguage: "pt_BR", templateParams: { contato: "Marina" }, esperaValor: 2, esperaUnidade: "dias" }] : [],
+    acoesSaida: null,
+    audience: { etiquetasIds: c.etiquetas.map((n) => D.id(`tag:${n}`)), segmentosIds: [], todaCarteira: false, contatosExcluidosIds: [], contatosIncluidosIds: [], etiquetasExcluidasIds: [] },
+    dispatchConfig: { horarioFinal: "18:00", diasPermitidos: [1, 2, 3, 4, 5], horarioInicial: "08:00", intervaloValor: 2, restringirDias: true, intervaloUnidade: "segundos", intervaloAleatorio: true, restringirHorarios: true, esperaConversaValor: 1, conversasEmAndamento: "aguardar_1h", esperaConversaUnidade: "horas" },
+    status: c.status,
+    scheduledFor: c.status === "agendada" ? inicio.toISOString() : null,
+    startedAt: ["concluida", "em_envio"].includes(c.status) ? inicio.toISOString() : null,
+    finishedAt: c.status === "concluida" ? new Date(inicio.getTime() + 2.5 * 3600000).toISOString() : null,
+    nextSendAt: c.status === "em_envio" ? new Date(s.agoraSim().getTime() + 2000).toISOString() : null,
+    pauseReason: null,
+    pausedAt: null,
+    recipientCount: c.destinatarios,
+    archivedAt: null,
+    createdByUserId: D.usuarios.patricia.id,
+    createdAt: new Date((inicio ?? s.agora).getTime() - 86400000).toISOString(),
+    updatedAt: (inicio ?? s.agora).toISOString(),
+    deletedAt: null,
+    sentCount: enviados,
+    totais: { enviados, falhas: Math.round(enviados * (1 - c.entregues) * 0.8), cancelados: 0, pendentes: c.destinatarios - enviados, entregues, lidos, respondidos },
+  };
+}
+
+function indicadoresCampanhas(s, dias) {
+  const lista = D.campanhas.filter((c) => c.dias != null && c.dias >= 0 && c.dias <= dias);
+  const tot = lista.map((c) => campanhaApi(s, c).totais).reduce((a, t) => ({ enviadas: a.enviadas + t.enviados, entregues: a.entregues + t.entregues, lidas: a.lidas + t.lidos, responderam: a.responderam + t.respondidos, falhas: a.falhas + t.falhas }), { enviadas: 0, entregues: 0, lidas: 0, responderam: 0, falhas: 0 });
+  const porDia = Array.from({ length: dias }, (_, i) => {
+    const d = new Date(s.agora.getTime() - (dias - 1 - i) * 86400000);
+    const dd = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(d);
+    const daqui = lista.filter((c) => c.dias === dias - 1 - i).map((c) => campanhaApi(s, c).totais);
+    const r = daqui.reduce((a, t) => ({ enviadas: a.enviadas + t.enviados, entregues: a.entregues + t.entregues, lidas: a.lidas + t.lidos, falhas: a.falhas + t.falhas }), { enviadas: 0, entregues: 0, lidas: 0, falhas: 0 });
+    // leituras e respostas continuam chegando no dia seguinte
+    const ontem = lista.filter((c) => c.dias === dias - i).map((c) => campanhaApi(s, c).totais);
+    for (const t of ontem) r.lidas += Math.round(t.lidos * 0.12);
+    return { dia: dd, ...r };
+  });
+  return { dias, campanhas: lista.length, ...tot, alcancados: tot.entregues, cancelados: 0, porDia };
+}
+
+
+/** A Lia no formato que o Agente Hub espera (lista e editor). */
+function agenteApi(s) {
+  const L = D.lia;
+  return {
+    ...L,
+    equipeTransferenciaId: D.equipes.comercial.id,
+    equipeFallbackId: D.equipes.comercial.id,
+    habilidades: {
+      infoContato: { ativa: true, campos: ["nome", "empresa", "cnpj"] },
+      etiquetar: { ativa: true, etiquetas: [{ acao: "adicionar", tagId: D.id("tag:Lead"), quando: "Quando for um novo contato" }] },
+      transferir: { ativa: true, quando: "Quando o cliente pedir para falar com uma pessoa ou fechar um pedido grande" },
+      concluir: { ativa: true, quando: "Quando a dúvida for resolvida e o cliente agradecer" },
+      criarCard: { ativa: true, pipelineId: D.id("funil:vendas"), responsavelUserId: D.usuarios.diogo.id, quando: "Quando o cliente pedir orçamento" },
+      followup: { ativa: true, tentativas: 2, intervaloMin: 120, mensagemFinal: "Fico à disposição! Quando quiser, é só chamar. 😉" },
+      agendar: { ativa: true, usuarios: [D.usuarios.diogo.id], duracaoMin: 30, dias: [1, 2, 3, 4, 5], inicio: "09:00", fim: "17:00", antecedenciaHoras: 2, janelaDias: 7, camposObrigatorios: ["nome", "empresa"], quando: "Quando o cliente quiser uma visita do vendedor", linkMeet: true },
+      moderacao: { ativa: true },
+      interpretarDatas: { ativa: true },
+    },
+    atualizadoEm: s.t(60 * 24 * 3),
+  };
+}
+
 /** Instala a demo na página. Chame antes do primeiro page.goto. */
 export async function instalarDemo(page, opcoes = {}) {
   const s = criarEstado(opcoes);
@@ -628,6 +834,32 @@ export async function instalarDemo(page, opcoes = {}) {
     const req = route.request();
     const url = new URL(req.url());
     const caminho = url.pathname.replace(/^\/api\//, "");
+    if (caminho === "uploads" && req.method() === "POST") {
+      // Upload de anexo: guarda só na memória da gravação e devolve uma URL da demo.
+      const tipo = req.headers()["content-type"] ?? "";
+      const limite = /boundary=(.+)$/.exec(tipo)?.[1];
+      const bruto = req.postDataBuffer() ?? Buffer.alloc(0);
+      let nome = `anexo-${Date.now()}.bin`;
+      let conteudo = bruto;
+      if (limite) {
+        const texto = bruto.toString("latin1");
+        const parte = texto.split(`--${limite}`).find((x) => /filename="/.test(x));
+        if (parte) {
+          nome = /filename="([^"]+)"/.exec(parte)[1];
+          const ini = texto.indexOf(parte) + parte.indexOf("\r\n\r\n") + 4;
+          const fim = texto.indexOf(`\r\n--${limite}`, ini);
+          conteudo = bruto.subarray(ini, fim);
+        }
+      }
+      s.enviados[nome] = conteudo;
+      return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ url: `/api/uploads/demo/enviados/${encodeURIComponent(nome)}` }) });
+    }
+    if (caminho.startsWith("uploads/demo/enviados/")) {
+      const nome = decodeURIComponent(caminho.replace("uploads/demo/enviados/", ""));
+      const arq = s.enviados[nome];
+      if (arq) return route.fulfill({ status: 200, body: arq, contentType: tiposArquivo[path.extname(nome)] ?? "application/octet-stream" });
+      return route.fulfill({ status: 404, body: "" });
+    }
     if (caminho.startsWith("uploads/demo/")) {
       const arq = path.join(ARQUIVOS, caminho.replace("uploads/demo/", ""));
       if (fs.existsSync(arq)) return route.fulfill({ status: 200, body: fs.readFileSync(arq), contentType: tiposArquivo[path.extname(arq)] ?? "application/octet-stream" });
@@ -681,6 +913,30 @@ export async function instalarDemo(page, opcoes = {}) {
     ultimaSaida(chave) {
       const c = demo.conversa(chave);
       return [...(s.mensagens[c.id] ?? [])].reverse().find((m) => m.direction === "outbound");
+    },
+    /** O cliente vota na última enquete enviada (resposta à mensagem da enquete). */
+    votar(chave, opcao) {
+      const enquete = [...(s.mensagens[demo.conversa(chave).id] ?? [])].reverse().find((m) => m.templateButtons?.[0]?.enquete);
+      return demo.chegar(chave, { texto: opcao, extra: { replyId: enquete?.id ?? null } });
+    },
+    /** O cliente devolve o orçamento montado no WhatsApp. */
+    solicitarOrcamento(chave, itens) {
+      const c = demo.conversa(chave);
+      const doc = D.documentosErp[chave]?.cliente;
+      const linhas = itens.map(([chaveProd, qtd]) => {
+        const p = D.produtos.find((x) => x.chave === chaveProd);
+        // valores em centavos, como o cartão de orçamento da Selloop espera
+        return { productId: D.id(`prod:${p.chave}`), quantidade: qtd, nome: p.nome, precoFinal: Math.round(p.preco * 100), subtotal: Math.round(p.preco * 100) * qtd };
+      });
+      const produtos = linhas.reduce((n, l) => n + l.subtotal, 0);
+      const desconto = Math.round(produtos * 0.03);
+      const sol = { confirmacao: false, nome: c.contact.name, empresa: doc?.nome ?? null, cnpj: doc?.documento ?? null, entrega: "Entrega · Florianópolis/SC", itens: linhas, produtos, desconto, pagamento: "Pix", frete: "CIF", valorFrete: 0, freteACombinar: false, total: produtos - desconto, observacoes: null };
+      return demo.chegar(chave, { texto: "Solicitação de orçamento", extra: { solicitacaoOrcamento: sol } });
+    },
+    /** O cliente responde o formulário (o texto que a Selloop monta com as respostas). */
+    responderFormulario(chave, nome, respostas) {
+      const texto = `📋 Formulário respondido: ${nome}\n\n` + respostas.map(([p, r]) => `*${p}*\n${r}`).join("\n\n");
+      return demo.chegar(chave, { texto });
     },
     /** O cliente paga a cobrança: o balão muda para "Pago" ao vivo. */
     pagar(chave) {

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Banners da Nova Rota</title>
+<!-- Imagens de cabeçalho dos modelos de campanha (1200×628). Cada <section> vira um PNG (gerar-arquivos.mjs). -->
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&display=swap");
+  body { margin: 0; font-family: Poppins, sans-serif; }
+  section { width: 1200px; height: 628px; position: relative; overflow: hidden; color: #fff; }
+  .marca { position: absolute; left: 60px; top: 48px; font-weight: 700; font-size: 26px; letter-spacing: .5px; display: flex; align-items: center; gap: 12px; }
+  .marca i { width: 38px; height: 38px; border-radius: 10px; background: #fff; color: #0d3b66; display: grid; place-items: center; font-style: normal; font-weight: 900; font-size: 18px; }
+  h1 { margin: 0; font-weight: 900; line-height: .95; letter-spacing: -1px; }
+  .selo { display: inline-block; padding: 10px 22px; border-radius: 999px; font-weight: 800; font-size: 26px; }
+  img { position: absolute; filter: drop-shadow(0 24px 30px rgba(0,0,0,.28)); }
+</style>
+</head>
+<body>
+
+<section id="semana-atacado" style="background: linear-gradient(120deg, #0d3b66 0%, #1559a8 55%, #f4a300 140%)">
+  <div class="marca"><i>NR</i>Nova Rota Distribuidora</div>
+  <div style="position:absolute; left:60px; top:150px; width:560px">
+    <div class="selo" style="background:#f4a300; color:#0d3b66">SÓ ATÉ SEXTA</div>
+    <h1 style="font-size:88px; margin-top:22px">Semana do<br>Atacado</h1>
+    <div style="font-size:34px; font-weight:600; margin-top:22px; opacity:.95">Até <b style="font-size:54px; color:#ffd166">15% off</b> em bebidas e mercearia</div>
+  </div>
+  <img src="arquivos/produtos/refri.png" style="right:-40px; top:120px; width:470px; border-radius:24px">
+  <img src="arquivos/produtos/cafe.png" style="right:330px; top:350px; width:250px; border-radius:24px">
+</section>
+
+<section id="cafes-especiais" style="background: linear-gradient(120deg, #2b170d 0%, #5a3420 60%, #a8723f 130%)">
+  <div class="marca"><i style="color:#5a3420">NR</i>Nova Rota Distribuidora</div>
+  <div style="position:absolute; left:60px; top:160px; width:620px">
+    <div class="selo" style="background:#f3dcc0; color:#5a3420">LANÇAMENTO</div>
+    <h1 style="font-size:92px; margin-top:22px">Cafés<br>especiais</h1>
+    <div style="font-size:32px; font-weight:600; margin-top:22px; opacity:.92">Grãos selecionados · torra média · preço de atacado</div>
+  </div>
+  <img src="arquivos/produtos/cafe.png" style="right:40px; top:90px; width:470px; border-radius:24px">
+</section>
+
+<section id="degustacao" style="background: linear-gradient(120deg, #3b0b4f 0%, #6a1b86 55%, #ff6b57 150%)">
+  <div class="marca"><i style="color:#6a1b86">NR</i>Nova Rota Distribuidora</div>
+  <div style="position:absolute; left:60px; top:150px; width:640px">
+    <div class="selo" style="background:#ffd6cf; color:#6a1b86">CONVITE</div>
+    <h1 style="font-size:72px; margin-top:22px">Degustação de<br>lançamentos</h1>
+    <div style="font-size:34px; font-weight:700; margin-top:22px">21/11 · 15h · Centro de distribuição</div>
+  </div>
+  <img src="arquivos/produtos/suco.png" style="right:270px; top:200px; width:260px; border-radius:24px">
+  <img src="arquivos/produtos/azeite.png" style="right:20px; top:120px; width:260px; border-radius:24px">
+</section>
+
+</body>
+</html>

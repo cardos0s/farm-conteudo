@@ -21,6 +21,7 @@ const [caminho = "/atendimento", saida = "demo.png"] = pos;
 const browser = await chromium.launch({
   headless: true,
   args: ["--lang=pt-BR"],
+  env: { ...process.env, LANG: "pt_BR.UTF-8", LANGUAGE: "pt_BR:pt", LC_ALL: "pt_BR.UTF-8" },
   proxy: process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY } : undefined,
 });
 const ctx = await browser.newContext({ viewport: { width: 1600, height: 900 }, locale: "pt-BR", timezoneId: "America/Sao_Paulo" });

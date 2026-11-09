@@ -1,0 +1,80 @@
+{
+  "modelo": "eleven_v3",
+  "vozes": {
+    "narrador": "k3f7zOv6LF88v78QHCNh"
+  },
+  "ajustes": {
+    "narrador": {
+      "stability": 0.45,
+      "similarity_boost": 0.8,
+      "style": 0.25,
+      "speed": 1.0
+    }
+  },
+  "pronuncia": {
+    "Selloop": "Sell Loop",
+    "loop": "lup"
+  },
+  "falas": [
+    {
+      "id": "v2-01",
+      "voz": "narrador",
+      "texto": "Com as campanhas da Selloop, a mensagem certa chega a centenas de clientes de uma vez, pelo WhatsApp oficial."
+    },
+    {
+      "id": "v2-02",
+      "voz": "narrador",
+      "texto": "Você dá um nome, escolhe a equipe e o número que vai disparar."
+    },
+    {
+      "id": "v2-03",
+      "voz": "narrador",
+      "texto": "O público sai da sua carteira: por tag, segmento ou cidade."
+    },
+    {
+      "id": "v2-04",
+      "voz": "narrador",
+      "texto": "E antes de enviar, a Selloop confere quem tem WhatsApp."
+    },
+    {
+      "id": "v2-05",
+      "voz": "narrador",
+      "texto": "Agende o disparo para o melhor horário, com intervalo e limite por dia."
+    },
+    {
+      "id": "v2-06",
+      "voz": "narrador",
+      "texto": "A mensagem é um modelo aprovado pela Meta, com imagem, botões e o nome de cada cliente."
+    },
+    {
+      "id": "v2-06b",
+      "voz": "narrador",
+      "texto": "Se o cliente não responder, a sequência manda um lembrete depois, no prazo que você definir."
+    },
+    {
+      "id": "v2-07",
+      "voz": "narrador",
+      "texto": "Quando o cliente responde, quem atende pode ser o seu time ou o agente de IA, na hora."
+    },
+    {
+      "id": "v2-08",
+      "voz": "narrador",
+      "texto": "No relatório, você acompanha quem recebeu, quem leu e quem respondeu."
+    },
+    {
+      "id": "v2-09",
+      "voz": "narrador",
+      "texto": "E quem não interagiu fica separado para uma nova abordagem."
+    },
+    {
+      "id": "v2-10",
+      "voz": "narrador",
+      "texto": "Use para promoções, comunicados, lembretes de pagamento, lançamentos, para reativar quem parou de comprar ou convidar seus clientes para um evento."
+    },
+    {
+      "id": "v2-11",
+      "voz": "narrador",
+      "texto": "Selloop. Suas vendas em loop."
+    }
+  ]
+}

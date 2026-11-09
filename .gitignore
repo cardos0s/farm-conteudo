@@ -6,3 +6,5 @@ public/aulas/
 
 # Gravações de tela do pack Selloop (os eventos.json ficam no git)
 public/selloop/telas/**/*.mp4
+# Trilha do pack Selloop: gerada por scripts/telas/trilha.py
+public/selloop/sons/trilha.wav

@@ -104,12 +104,14 @@ export const Tela: React.FC<{
   planos: Plano[];
   /** Segundo da gravação em que esta cena começa. */
   inicio?: number;
+  /** Velocidade de reprodução do trecho (1 = tempo real). */
+  velocidade?: number;
   cursor?: boolean;
   children?: React.ReactNode;
-}> = ({ gravacao, video, url, planos, inicio = 0, cursor = true, children }) => {
+}> = ({ gravacao, video, url, planos, inicio = 0, velocidade = 1, cursor = true, children }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const t = inicio + frame / fps;
+  const t = inicio + (frame / fps) * velocidade;
   const tela = { w: gravacao.largura, h: gravacao.altura };
   const { sx, sy, sw, sh } = layoutGeral(tela);
   const { tx, ty, z } = transformacao(enquadreEm(planos, t, tela), tela);
@@ -138,6 +140,7 @@ export const Tela: React.FC<{
           <OffthreadVideo
             src={staticFile(video)}
             trimBefore={Math.round(inicio * fps)}
+            playbackRate={velocidade}
             muted
             style={{ position: "absolute", left: 0, top: 0, width: sw, height: sh }}
           />

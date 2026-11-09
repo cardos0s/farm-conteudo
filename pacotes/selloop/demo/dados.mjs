@@ -13,7 +13,7 @@ export function id(nome) {
   const hex = (n, t) => n.toString(16).padStart(8, "0").repeat(4).slice(0, t);
   const a = hex(h1, 8);
   const b = hex(h2, 12);
-  const c = hex(h1 ^ h2, 8);
+  const c = hex((h1 ^ h2) >>> 0, 8);
   return `${a}-${b.slice(0, 4)}-4${b.slice(4, 7)}-8${b.slice(7, 10)}-${c}${b.slice(0, 4)}`;
 }
 
@@ -135,8 +135,8 @@ export const formularios = [
     botao: "Preencher cadastro",
     perguntas: [
       { pergunta: "CNPJ", tipo: "texto", opcoes: [] },
-      { pergunta: "Endereço de entrega", tipo: "texto", opcoes: [] },
-      { pergunta: "Melhor horário para receber", tipo: "opcoes", opcoes: ["Manhã", "Tarde"] },
+      { pergunta: "Endereço", tipo: "texto", opcoes: [] },
+      { pergunta: "Recebimento", tipo: "opcoes", opcoes: ["Manhã", "Tarde"] },
     ],
   },
   {
@@ -173,6 +173,9 @@ export const modelos = [
   { chave: "promo", name: "semana_do_atacado", displayName: "Semana do Atacado", category: "MARKETING", headerType: "imagem", headerUrl: "/api/uploads/demo/banners/semana-atacado.png",
     body: "Oi, [contato]! 🛒 É a *Semana do Atacado* na Nova Rota: até *15% off* em bebidas e mercearia, só até sexta.\n\nQuer que eu já separe o seu pedido?",
     footer: "Nova Rota Distribuidora", buttons: [{ tipo: "resposta_rapida", texto: "Quero aproveitar" }, { tipo: "resposta_rapida", texto: "Falar com vendedor" }] },
+  { chave: "ultima", name: "ultima_chamada_atacado", displayName: "Última chamada: Semana do Atacado", category: "MARKETING", headerType: "nenhum",
+    body: "[contato], a *Semana do Atacado* termina amanhã ⏰\n\nAinda dá tempo de garantir até *15% off* no seu pedido. Separo pra você?",
+    footer: "Nova Rota Distribuidora", buttons: [{ tipo: "resposta_rapida", texto: "Quero aproveitar" }] },
   { chave: "comunicado", name: "horario_fim_de_ano", displayName: "Horário de fim de ano", category: "UTILITY", headerType: "nenhum",
     body: "Olá, [contato]! 📅 Nosso horário de fim de ano:\n\n• Entregas até *23/12*\n• Retorno em *05/01*\n\nProgramar o pedido de dezembro agora garante o estoque.",
     footer: "Nova Rota Distribuidora", buttons: [{ tipo: "resposta_rapida", texto: "Fazer pedido" }] },
@@ -192,3 +195,59 @@ export const modelos = [
     body: "Bom dia, [contato]! 🚚 Seu pedido sai hoje para entrega. Previsão de chegada: *[janela]*.",
     footer: null, buttons: [{ tipo: "resposta_rapida", texto: "Ok, obrigado!" }] },
 ];
+
+/**
+ * Campanhas dos últimos 30 dias. `dias` = há quantos dias começou (negativo = agendada no futuro).
+ * Taxas sobre o total de destinatários.
+ */
+export const campanhas = [
+  { chave: "atacado", nome: "Semana do Atacado · bebidas e mercearia", modelo: "promo", status: "concluida", dias: 7, destinatarios: 1240, entregues: 0.97, lidas: 0.81, responderam: 0.24, equipe: "comercial", agente: true, etiquetas: ["Mercados", "Padarias", "Restaurantes"] },
+  { chave: "boletos", nome: "Lembrete de boletos · novembro", modelo: "boleto", status: "concluida", dias: 5, destinatarios: 186, entregues: 0.99, lidas: 0.93, responderam: 0.41, equipe: "financeiro", agente: false, etiquetas: ["Cliente ativo"] },
+  { chave: "cafes", nome: "Lançamento · cafés especiais", modelo: "lancamento", status: "em_envio", dias: 0, destinatarios: 860, enviadosAteAgora: 512, entregues: 0.98, lidas: 0.62, responderam: 0.17, equipe: "comercial", agente: true, etiquetas: ["Padarias", "Mercados"] },
+  { chave: "reativacao", nome: "Reativação · 60 dias sem pedido", modelo: "reativacao", status: "concluida", dias: 13, destinatarios: 312, entregues: 0.96, lidas: 0.74, responderam: 0.18, equipe: "comercial", agente: true, etiquetas: ["Inativos 60 dias"] },
+  { chave: "fimdeano", nome: "Comunicado · horário de fim de ano", modelo: "comunicado", status: "agendada", dias: -21, destinatarios: 1418, entregues: 0, lidas: 0, responderam: 0, equipe: "comercial", agente: false, etiquetas: ["Cliente ativo"] },
+  { chave: "degustacao", nome: "Convite · degustação 21/11", modelo: "convite", status: "rascunho", dias: null, destinatarios: 240, entregues: 0, lidas: 0, responderam: 0, equipe: "comercial", agente: false, etiquetas: ["Restaurantes"] },
+];
+
+/** Etiquetas da carteira e quantos contatos cada uma tem (público das campanhas). */
+export const etiquetasCarteira = { "Cliente ativo": 1418, Mercados: 512, Padarias: 286, Restaurantes: 442, "Inativos 60 dias": 312, Lead: 205, "Nova abordagem": 96 };
+
+/** A Lia: agente de IA (Agente Hub) da Nova Rota. Formato do agente na API da Selloop. */
+export const lia = {
+  id: id("agente:lia"),
+  nome: "Lia",
+  apelido: "Lia · Nova Rota",
+  fotoUrl: null,
+  tom: "consultivo",
+  formatacao: "curto",
+  perfil: "sdr",
+  objetivo: "Atender clientes e novos contatos da Nova Rota 24 horas por dia: tirar dúvidas, enviar catálogo e orçamento, marcar visitas e passar para o time quando precisar.",
+  comportamento: "Simpática, objetiva e prestativa. Responde em áudio quando o cliente manda áudio.",
+  empresaNome: "Nova Rota Distribuidora",
+  empresaSetor: "Distribuição de alimentos e bebidas",
+  empresaProdutos: "Mercearia (café, açúcar, arroz, azeite, biscoitos) e bebidas (refrigerantes, água e sucos).",
+  empresaDiferenciais: "Entrega em até 48 h em Santa Catarina, pedido mínimo de R$ 300 e 3% de desconto no Pix.",
+  empresaPublico: "Mercados, padarias, lanchonetes, bares e restaurantes de Santa Catarina.",
+  modoPrompt: "unico",
+  prompt: "",
+  etapas: [],
+  scripts: "",
+  regras: "",
+  equipeTransferenciaId: null,
+  mensagemTransferencia: "Vou te passar agora para o nosso time comercial, que já recebe o resumo da nossa conversa. 😉",
+  resumoTransferencia: true,
+  prioridadeTransferencia: null,
+  etiquetasTransferencia: [],
+  equipeFallbackId: null,
+  tempoRespostaSeg: 5,
+  emojis: "moderado",
+  transparencia: "silenciosa",
+  dividirMensagens: true,
+  intervaloMensagensSeg: 2,
+  vozId: null,
+  vozElevenlabsId: "n2a9VtkZLl8j1FSXHsL7",
+  vozGenerica: null,
+  provedor: "anthropic",
+  modelo: "claude-sonnet-4-5",
+  chaveConfigurada: true,
+};

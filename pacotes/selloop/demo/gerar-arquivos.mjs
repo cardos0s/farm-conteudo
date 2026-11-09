@@ -35,3 +35,19 @@ await browser.close();
   }
   await b.close();
 }
+
+// Banners dos modelos de campanha (cabeçalho com imagem).
+{
+  const dir = path.join(AQUI, "arquivos", "banners");
+  fs.mkdirSync(dir, { recursive: true });
+  const b = await chromium.launch({ proxy: process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY } : undefined });
+  const p = await b.newPage({ viewport: { width: 1200, height: 628 } });
+  await p.goto("file://" + path.join(AQUI, "banners.html"));
+  await p.evaluate(() => document.fonts.ready);
+  await p.waitForTimeout(500);
+  for (const id of await p.$$eval("section", (s) => s.map((x) => x.id))) {
+    await p.locator(`#${id}`).screenshot({ path: path.join(dir, `${id}.png`) });
+    console.log("banner:", id);
+  }
+  await b.close();
+}
