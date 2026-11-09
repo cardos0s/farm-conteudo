@@ -26,7 +26,7 @@ export default (d) => {
   d.celulas(560, 250, ["R", "R"], { lado: L, destacadas: [0, 1], tom: "vermelho" });
   d.seta([28, 270], [140, 270], { rotulo: "checkout", desloc: 16, tamRotulo: 16 });
 
-  d.textoCentro(250, 322, "o checkout continua\natendendo normalmente", { tam: 16, cor: "verde" });
-  d.textoCentro(600, 322, "cheio: a próxima\né recusada na hora", { tam: 16, cor: "vermelho" });
+  d.textoCentro(250, 316, "o checkout continua\natendendo normalmente", { tam: 16, cor: "verde" });
+  d.textoCentro(600, 316, "cheio: a próxima\né recusada na hora", { tam: 16, cor: "vermelho" });
   d.texto(704, 362, "R = thread presa em recomendações\ncada quadrado = 10 threads", { tam: 16, cor: "cinza", ancora: "end" });
 };

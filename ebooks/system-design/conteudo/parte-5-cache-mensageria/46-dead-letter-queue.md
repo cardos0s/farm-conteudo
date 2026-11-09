@@ -38,7 +38,7 @@ Junto com a mensagem, guarde o contexto do erro: a exceção, o número de tenta
 
 ## Analogia
 
-O entregador tenta deixar uma encomenda três vezes, e ninguém atende: o número da casa não existe. Em vez de rodar com o pacote para sempre, ele o deixa na agência, numa prateleira separada, e segue com as outras entregas. Lá, alguém confere a etiqueta, corrige o endereço com o remetente e põe o pacote de volta na rota.
+O entregador tenta deixar uma encomenda três vezes e não consegue: o número da casa não existe. Em vez de rodar com o pacote para sempre, ele o deixa na agência, numa prateleira separada, e segue com as outras entregas. Lá, alguém confere a etiqueta, corrige o endereço com o remetente e põe o pacote de volta na rota.
 
 ## No mundo real
 

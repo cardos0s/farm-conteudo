@@ -51,7 +51,7 @@
 <path d="M129.3 264.6 C131.3 266.2, 134.4 267.5, 140 270 M129.3 264.6 C132.9 266.5, 135.4 268.5, 140 270 M140 270 C137 271.9, 136.1 273.4, 129.3 275.4 M140 270 C136.4 272, 132.6 274, 129.3 275.4" fill="none" stroke="#1e1e1e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 <rect x="44.2" y="242.4" width="79.5" height="23.2" rx="4" fill="#fdfdfc"/>
 <text x="84" y="259.4" font-size="16" fill="#1e1e1e" text-anchor="middle">checkout</text>
-<text x="250" y="317.8" font-size="16" fill="#2f9e44" text-anchor="middle">o checkout continua</text><text x="250" y="337" font-size="16" fill="#2f9e44" text-anchor="middle">atendendo normalmente</text>
-<text x="600" y="317.8" font-size="16" fill="#e03131" text-anchor="middle">cheio: a próxima</text><text x="600" y="337" font-size="16" fill="#e03131" text-anchor="middle">é recusada na hora</text>
+<text x="250" y="311.8" font-size="16" fill="#2f9e44" text-anchor="middle">o checkout continua</text><text x="250" y="331" font-size="16" fill="#2f9e44" text-anchor="middle">atendendo normalmente</text>
+<text x="600" y="311.8" font-size="16" fill="#e03131" text-anchor="middle">cheio: a próxima</text><text x="600" y="331" font-size="16" fill="#e03131" text-anchor="middle">é recusada na hora</text>
 <text x="704" y="362" font-size="16" fill="#868e96" text-anchor="end">R = thread presa em recomendações</text><text x="704" y="381.2" font-size="16" fill="#868e96" text-anchor="end">cada quadrado = 10 threads</text>
 </svg>
