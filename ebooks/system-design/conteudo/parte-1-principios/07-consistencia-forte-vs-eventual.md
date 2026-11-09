@@ -15,7 +15,7 @@ A consistência forte é mais fácil de entender, mas costuma ser mais lenta e m
 
 ## Aprofundando
 
-Os dois modelos aparecem assim que você replica dados: um primário recebe as escritas e réplicas copiam o que ele grava. A diferença está em **quando o primário confirma a escrita** e **de onde vêm as leituras**.
+Os dois modelos aparecem assim que você replica dados (cap. 24): um primário recebe as escritas e réplicas copiam o que ele grava. A diferença está em **quando o primário confirma a escrita** e **de onde vêm as leituras**.
 
 ![Com consistência forte, o primário só confirma depois de copiar para a réplica, e a leitura vê o valor novo. Com consistência eventual, a confirmação vem na hora, e uma leitura logo depois ainda encontra o valor velho.](../../diagramas/07-consistencia.svg)
 

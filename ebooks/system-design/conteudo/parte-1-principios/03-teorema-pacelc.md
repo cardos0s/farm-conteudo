@@ -14,13 +14,13 @@ Sistemas que sincronizam dados entre regiões muitas vezes pagam em latência pa
 
 ## Aprofundando
 
-A sigla foi proposta por Daniel Abadi em 2010 e detalhada num artigo dele de 2012. A crítica ao CAP: partições são raras, mas o sistema paga um preço pela consistência o tempo todo, mesmo com a rede perfeita. Leia a sigla como um *if/else*: **se P, então A ou C; senão (E), L ou C.**
+A sigla foi proposta por Daniel Abadi em 2010 e detalhada num artigo dele de 2012. A crítica ao CAP (cap. 2): partições são raras, mas o sistema paga um preço pela consistência o tempo todo, mesmo com a rede perfeita. Leia a sigla como um *if/else*: **se P, então A ou C; senão (E), L ou C.**
 
 ![Leia o PACELC como um if/else: com partição, o sistema escolhe entre A e C; sem partição, entre L e C. Os exemplos vêm da classificação original de Abadi e valem para as configurações padrão.](../../diagramas/03-pacelc.svg)
 
 ### De onde vem a latência
 
-O custo do *else* vem da replicação. Para uma escrita ser consistente, a réplica que a recebe precisa ouvir as outras antes de confirmar. Para uma leitura ser consistente, ela precisa ir ao líder ou consultar várias réplicas. Cada consulta custa pelo menos um round trip pela rede:
+O custo do *else* vem da replicação (cap. 24). Para uma escrita ser consistente, a réplica que a recebe precisa ouvir as outras antes de confirmar. Para uma leitura ser consistente, ela precisa ir ao líder ou consultar várias réplicas. Cada consulta custa pelo menos um round trip pela rede:
 
 | Onde estão as réplicas | Round trip típico |
 |---|---|

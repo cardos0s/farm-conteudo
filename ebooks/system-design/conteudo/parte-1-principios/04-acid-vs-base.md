@@ -34,7 +34,7 @@ COMMIT;
 
 ### BASE, letra por letra
 
-A sigla surgiu no fim dos anos 1990, no grupo de Eric Brewer (o mesmo do CAP), como contraponto ao ACID:
+A sigla surgiu no fim dos anos 1990, no grupo de Eric Brewer (o mesmo do CAP, cap. 2), como contraponto ao ACID:
 
 - **Basically Available:** o sistema responde mesmo com partes falhando, ainda que com dados parciais ou atrasados.
 - **Soft state:** o estado pode mudar sem nenhuma escrita nova, enquanto as réplicas trocam atualizações entre si.

@@ -16,7 +16,7 @@ Pense em serverless como "funções como serviço" (FaaS, de *functions as a ser
 
 ## Aprofundando
 
-Você não aluga uma máquina: entrega uma função e diz qual evento a dispara. Pode ser uma requisição HTTP, um arquivo novo no storage, uma mensagem numa fila (cap. 44) ou um horário agendado. O AWS Lambda, lançado em 2014, popularizou o modelo.
+Você não aluga uma máquina: entrega uma função e diz qual evento a dispara. Pode ser uma requisição HTTP vinda de um API Gateway (cap. 14), um arquivo novo no storage, uma mensagem numa fila (cap. 44) ou um horário agendado. O AWS Lambda, lançado em 2014, popularizou o modelo.
 
 ### O ciclo de vida de uma função
 
@@ -63,7 +63,7 @@ Ter carro próprio é como ter servidor: você paga IPVA, seguro e garagem mesmo
 
 - Use serverless para o que é orientado a eventos e irregular: *"O processamento das fotos enviadas roda numa função disparada pelo upload; escala sozinho na Black Friday e custa quase nada de madrugada."*
 - Evite no caminho crítico com p99 apertado ou com tráfego alto e constante, e diga por quê: cold start e custo.
-- Lembre do banco: muitas funções simultâneas exigem um pool ou proxy de conexões, ou um banco que aceite muitas conexões.
+- Não esqueça o banco: muitas funções simultâneas exigem um pool ou proxy de conexões, ou um banco que aceite muitas conexões.
 
 ## Cuidado com
 

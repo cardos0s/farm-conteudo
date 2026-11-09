@@ -15,7 +15,7 @@ Serviços stateless são mais fáceis de escalar horizontalmente, porque qualque
 
 ## Aprofundando
 
-Imagine uma loja virtual com dois servidores atrás de um load balancer. A usuária põe um tênis no carrinho; a requisição cai no servidor 1, que guarda o carrinho num dicionário em memória. A próxima requisição cai no servidor 2, e o carrinho está vazio.
+Imagine uma loja virtual com dois servidores atrás de um load balancer (cap. 11). A usuária põe um tênis no carrinho; a requisição cai no servidor 1, que guarda o carrinho num dicionário em memória. A próxima requisição cai no servidor 2, e o carrinho está vazio.
 
 ![Com o estado na memória, a usuária fica presa ao servidor 1. Sem estado nos servidores, qualquer um atende, porque a sessão mora no Redis.](../../diagramas/08-stateful-stateless.svg)
 
