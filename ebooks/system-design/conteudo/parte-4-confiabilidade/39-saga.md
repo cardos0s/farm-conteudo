@@ -79,9 +79,9 @@ Você monta as férias em três compras separadas: passagem aérea, hotel e alug
 
 **R:** Uma nova operação que anula, do ponto de vista do negócio, o efeito de um passo já confirmado, como estornar uma cobrança ou liberar uma reserva. Ela não apaga o passo original; registra outro por cima.
 
-**P:** No checkout, a ordem é reservar o estoque, cobrar e agendar a entrega. A cobrança foi recusada. Quais compensações rodam?
+**P:** Uma saga de viagem tem três passos: emitir a passagem (sem reembolso), reservar o hotel (cancelável) e alugar o carro (cancelável). Em que ordem você os coloca?
 
-**R:** Só a liberação do estoque. A cobrança não chegou a acontecer, então não há o que estornar, e a entrega nem começou.
+**R:** Hotel e carro primeiro, passagem por último. Se o hotel ou o carro falharem, as compensações são simples cancelamentos; a passagem, que não dá para desfazer, só é emitida quando o resto já deu certo.
 
 **P:** Uma saga garante o mesmo isolamento de uma transação ACID?
 

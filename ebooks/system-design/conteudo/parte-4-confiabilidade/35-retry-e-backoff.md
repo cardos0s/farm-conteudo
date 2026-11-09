@@ -27,7 +27,7 @@ Com um limite de, digamos, 4 retries, o cliente desiste cerca de 15 s depois da 
 
 ### Por que o jitter
 
-![Sem jitter, clientes que falharam juntos voltam juntos, em picos; com jitter, cada um sorteia a espera e a carga se espalha.](../../diagramas/35-backoff-jitter.svg)
+![As esperas dobram a cada falha (1, 2, 4 e 8 s); sem jitter, os clientes voltam juntos, em picos; com jitter, cada um sorteia a espera e a carga se espalha.](../../diagramas/35-backoff-jitter.svg)
 
 O backoff resolve o problema de *um* cliente insistente, mas não o de mil. Se o servidor reinicia e mil clientes falham no mesmo segundo, todos voltam juntos em t = 1 s, depois em t = 3 s, em t = 7 s. Cada onda é um pico que pode derrubar o servidor de novo. O jitter quebra essa sincronia. Na variante full jitter (jitter total), a espera inteira é sorteada entre zero e o teto exponencial:
 
@@ -69,10 +69,10 @@ Sexta à noite, você liga para a pizzaria e dá ocupado. Você não fica redisc
 
 ## Cuidado com
 
-- **Atualização:** o artigo descreve o jitter como "um pouco de aleatoriedade", mas somar um ruído pequeno (alguns milissegundos sobre uma espera de 4 s) desfaz pouco a sincronia. A análise publicada pela AWS em 2015 comparou variantes, e as melhores sorteiam a espera inteira, como o full jitter.
-- **Retry sem timeout não ajuda.** Se a primeira tentativa fica pendurada para sempre, a segunda nunca acontece. Cada tentativa precisa do seu timeout, e todas juntas precisam caber no tempo que o usuário espera.
-- **Retry em várias camadas multiplica a carga** justamente quando o serviço está mais fraco.
-- **Retry não conserta erro permanente.** Repetir um `400` só gasta recursos e atrasa o erro.
+- **Atualização:** o artigo fala em "um pouco de aleatoriedade", mas um ruído pequeno, de milissegundos sobre esperas de segundos, mal desfaz a sincronia. Na análise da AWS de 2015, as melhores variantes sorteiam a espera inteira, como o full jitter.
+- **Retry sem timeout não ajuda.** Se a primeira tentativa fica pendurada, a segunda nunca acontece. E todas juntas precisam caber no tempo que o usuário espera.
+- **Timeout abaixo da latência normal gera retries à toa.** Com p99 de 800 ms e timeout de 500 ms, pelo menos 1 chamada em 100 é repetida sem necessidade, e sob carga isso piora.
+- **Backoff longo não cabe em requisição de usuário.** Esperar 15 s com a tela travada já é uma falha; o backoff longo é para jobs e filas.
 
 ## Teste-se
 

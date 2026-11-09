@@ -14,7 +14,7 @@ Um circuit breaker (disjuntor) monitora as chamadas a um serviço remoto e "abre
 
 ### Por que um serviço lento é pior que um morto
 
-Um serviço morto recusa a conexão em milissegundos. Um serviço lento prende quem o chama. Imagine que o serviço de pedidos tem 200 threads e chama o serviço de frete, que passou a responder só no timeout de 30 segundos. Chegando 10 requisições por segundo, cada uma fica presa 30 s: em 20 segundos, as 200 threads estão esperando o frete, e o serviço de pedidos para de atender até quem nem precisava de frete. A falha subiu um andar. Se outros serviços dependem de pedidos, sobe mais um. Isso é a falha em cascata.
+Um serviço morto recusa a conexão em milissegundos. Um serviço lento prende quem o chama. Imagine que o serviço de pedidos tem 200 threads e chama o serviço de frete, que passou a responder só no timeout de 30 segundos. Chegando 10 requisições por segundo que precisam de frete, cada uma fica presa 30 s: em 20 segundos, as 200 threads estão esperando, e o serviço de pedidos para de atender até quem nem precisava de frete. A falha subiu um andar. Se outros serviços dependem de pedidos, sobe mais um. Isso é a falha em cascata.
 
 ### Os três estados
 
@@ -26,7 +26,7 @@ Um serviço morto recusa a conexão em milissegundos. Um serviço lento prende q
 
 ### O que conta como falha
 
-Timeouts, erros de conexão e respostas 5xx contam. Respostas 4xx, em geral, não: um 404 diz que o pedido estava errado, não que o serviço está doente. As bibliotecas atuais também contam **chamadas lentas** como falha (acima de 2 s, por exemplo), porque lentidão é justamente o sintoma que derruba quem chama.
+Timeouts, erros de conexão e respostas 5xx contam. Respostas 4xx, em geral, não: um 404 diz que o pedido estava errado, não que o serviço está doente. As bibliotecas atuais também podem contar **chamadas lentas** como falha (acima de 2 s, por exemplo), porque lentidão é justamente o sintoma que derruba quem chama.
 
 O padrão foi popularizado por Michael Nygard no livro *Release It!* (2007). Ele não substitui o timeout: o breaker decide *se* a chamada sai; o timeout limita *quanto tempo* cada chamada pode prender um recurso.
 

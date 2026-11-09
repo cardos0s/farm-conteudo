@@ -65,7 +65,7 @@ Pense na eleição de síndico. O síndico tem mandato, que é o termo, e precis
 
 - **Atualização:** muito material ainda descreve o Kafka elegendo o controller pelo ZooKeeper. O Kafka 4.0, de 2025, removeu o suporte ao ZooKeeper; o KRaft, baseado em Raft, virou o único modo.
 - **"Um líder só" vale por termo.** Um líder antigo, isolado por uma partição, pode continuar achando que manda; ele só não consegue confirmar escritas sem maioria. Por isso clientes e armazenamento precisam checar o termo.
-- **Número par não ajuda, e mais nós custam caro.** Com 4 nós, a tolerância é de 1 falha, igual à de 3. Com 7, cada escrita só é confirmada quando 4 nós a gravam.
+- **Consenso cobra em disponibilidade.** O Raft é CP (cap. 2): durante a eleição, e do lado minoritário de uma partição, ninguém confirma escritas. E mais nós deixam cada escrita mais lenta: com 7, ela só é confirmada quando 4 nós a gravam.
 - **O ZooKeeper não usa Paxos**, e sim o ZAB, um protocolo parecido.
 
 ## Teste-se

@@ -24,7 +24,7 @@ Olha sempre para "os últimos 60 segundos". A versão exata guarda o horário de
 
 ### Token bucket
 
-Cada chave tem um balde (bucket) com capacidade fixa de fichas (tokens), reposto a uma taxa constante. Cada requisição gasta uma ficha; sem ficha, a resposta é **429 Too Many Requests**.
+Cada chave tem um balde (bucket) com capacidade fixa de fichas (tokens), reabastecido a uma taxa constante. Cada requisição gasta uma ficha; sem ficha, a resposta é **429 Too Many Requests**.
 
 ![O balde recebe fichas a uma taxa constante até encher; cada requisição gasta uma, e sem ficha a resposta é 429.](../../diagramas/32-token-bucket.svg)
 
@@ -36,7 +36,7 @@ Com um servidor só, o contador fica em memória. Com dez réplicas atrás de um
 
 ## Analogia
 
-O limite do Pix noturno é um rate limiter. Das 20h às 6h, o banco limita quanto você pode transferir para outra pessoa física (R$ 1.000, por padrão), mesmo que haja saldo sobrando. Não é desconfiança de você: é um teto que limita o estrago se o celular for roubado. E, como num plano de API mais caro, dá para pedir ao banco um limite maior.
+O limite do Pix noturno é um rate limiter. Pela regra criada pelo Banco Central em 2021, das 20h às 6h o banco limita quanto você pode transferir para outra pessoa física (R$ 1.000, por padrão), mesmo que haja saldo sobrando. Não é desconfiança de você: é um teto que limita o estrago se o celular for roubado. E, como num plano de API mais caro, dá para pedir ao banco um limite maior.
 
 ## No mundo real
 
@@ -63,10 +63,10 @@ O limite do Pix noturno é um rate limiter. Das 20h às 6h, o banco limita quant
 
 ## Cuidado com
 
-- **Limite por instância multiplica a cota.** Se cada um de 10 servidores aplica 100 por minuto em memória, um cliente consegue até 1.000.
+- **Nem toda requisição custa igual.** Num limite simples, exportar um relatório e ler um item contam 1 cada. A API GraphQL do GitHub cobra pontos conforme o tamanho da consulta.
 - **Limitar só por IP pune inocentes.** Redes móveis e provedores com CGNAT colocam centenas de clientes atrás do mesmo IP. Prefira usuário ou chave de API quando houver.
-- **Rate limiting não é load shedding.** Um limita a cota de cada cliente; o outro descarta trabalho quando o próprio servidor está sobrecarregado, venha de quem vier. Você precisa dos dois.
-- **Atualização:** além das três estratégias citadas no artigo, o leaky bucket é muito usado (é o do NGINX), e hoje é comum limitar em camadas: na borda contra DDoS, no gateway por chave de API e dentro do serviço para operações caras.
+- **Rate limiting não é load shedding.** Um limita a cota de cada cliente; o outro descarta trabalho quando o próprio servidor está sobrecarregado, venha de quem vier.
+- **Atualização:** além das três estratégias do artigo, o leaky bucket é muito usado (é o do NGINX), e hoje se limita em camadas: na borda contra DDoS, no gateway por chave de API e no serviço para operações caras.
 
 ## Teste-se
 

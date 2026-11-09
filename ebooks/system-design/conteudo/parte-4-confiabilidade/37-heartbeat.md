@@ -39,7 +39,7 @@ Todo dia às 7h, a tia manda "bom dia" com figurinha no grupo da família. No di
 ## No mundo real
 
 - **etcd (Raft):** o líder manda heartbeats a cada 100 ms por padrão, e um seguidor que passa 1 s sem ouvi-lo, o election timeout padrão, inicia uma eleição (cap. 38).
-- **Kubernetes:** se o Lease de um nó para de ser renovado, o control plane marca o nó como `Unknown` e, depois de um prazo (5 minutos, por padrão), começa a despejar os pods dele para que sejam recriados em outros nós.
+- **Kubernetes:** se o Lease de um nó para de ser renovado, o control plane marca a condição `Ready` do nó como `Unknown` e, depois de um prazo (5 minutos, por padrão), começa a despejar os pods dele para que sejam recriados em outros nós.
 - **HAProxy:** por padrão, verifica cada servidor a cada 2 s, tira de rotação o que falhar 3 verificações seguidas e só o devolve depois de 2 verificações bem-sucedidas.
 
 ## Trade-offs
@@ -62,8 +62,8 @@ Todo dia às 7h, a tia manda "bom dia" com figurinha no grupo da família. No di
 
 - **Atualização:** o artigo diz que, sem heartbeats, o nó é marcado como fora do ar. Mas silêncio não prova morte: o nó pode estar lento ou isolado e voltar. Sistemas atuais tratam a falta de sinal como suspeita (detectores adaptativos, quórum) e se protegem do nó que volta (fencing).
 - **Vivo não é saudável.** Um processo pode responder ao heartbeat com o disco cheio ou sem conexão com o banco.
-- **Não ponha o banco na liveness probe.** Se o banco cai, todas as réplicas falham a checagem e o Kubernetes reinicia todas em loop, o que piora o problema. Dependências externas vão, quando vão, na readiness.
-- **Thread de heartbeat isolada pode mentir:** ela continua batendo enquanto o trabalho principal está travado.
+- **Meça o silêncio com o relógio de quem recebe.** Comparar o horário escrito no heartbeat com o relógio do monitor engana, porque relógios de máquinas diferentes divergem. O monitor conta o tempo desde o último sinal com o próprio relógio.
+- **Thread de heartbeat isolada pode mentir.** Ela continua batendo enquanto o trabalho principal está travado.
 
 ## Teste-se
 
@@ -75,6 +75,6 @@ Todo dia às 7h, a tia manda "bom dia" com figurinha no grupo da família. No di
 
 **R:** O timeout curto gera falsos positivos (pausas de GC, picos de rede): o worker "morto" continua trabalhando enquanto outro recebe a mesma tarefa. Aumente o timeout para vários intervalos e torne as tarefas idempotentes ou protegidas por fencing.
 
-**P:** Se um nó parou de mandar heartbeats, ele morreu?
+**P:** A liveness probe do seu serviço consulta o banco de dados. O que acontece quando o banco cai?
 
-**R:** Não necessariamente. O monitor só sabe que não ouviu nada: o nó pode estar lento, pausado ou isolado por uma partição. Por isso o sistema trata isso como suspeita e se protege para o caso de ele voltar.
+**R:** Todas as réplicas falham a checagem ao mesmo tempo, e o Kubernetes reinicia todas em loop, o que derruba até o que ainda funcionava. Dependências externas vão, se forem, na readiness, que só tira a réplica do balanceamento.

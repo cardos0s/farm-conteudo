@@ -18,7 +18,7 @@ Imagine o serviço de uma loja virtual com um único pool de 100 threads atenden
 
 ### Compartimentos
 
-O bulkhead dá a cada funcionalidade, ou a cada dependência, o seu próprio recurso, com limite: 50 threads para o checkout, 30 para a busca, 20 para as recomendações. Quando recomendações trava, só os 20 lugares dela enchem; a 21ª chamada é recusada na hora (ou espera numa fila curta e limitada), e o checkout segue com os 50 lugares dele intactos.
+O bulkhead dá a cada funcionalidade, ou a cada dependência, o seu próprio recurso, com limite: 50 threads para o checkout, 30 para a busca, 20 para as recomendações. Quando recomendações trava, só os 20 lugares dela enchem; a 21ª chamada simultânea é recusada na hora (ou espera numa fila curta e limitada), e o checkout segue com os 50 lugares dele intactos.
 
 ![Com um pool só, a dependência lenta ocupa todas as threads; com compartimentos, ela enche só o dela, e o checkout continua atendendo.](../../diagramas/34-bulkhead.svg)
 
@@ -76,6 +76,6 @@ O caixa rápido do supermercado, para até 10 volumes, é um bulkhead. Em dia de
 
 **R:** Separando o trabalho pesado do interativo: pool, fila ou instâncias próprios para relatórios, com limite. Se o problema é um cliente específico, ele ganha um compartimento ou uma célula própria, junto com rate limiting (cap. 32).
 
-**P:** Separar pools de threads dentro do mesmo processo protege contra o vazamento de memória de uma das funcionalidades?
+**P:** Em vez de criar compartimentos, não basta aumentar o pool compartilhado de 100 para 1.000 threads?
 
-**R:** Não. Os pools isolam threads e conexões, mas memória e CPU do processo continuam compartilhadas. Esse tipo de falha exige isolamento em processos, contêineres ou máquinas diferentes.
+**R:** Não. Pela lei de Little, a dependência lenta ocupa vazão × latência threads: se a latência dela sobe de 100 ms para 10 s, ela passa a precisar de 100 vezes mais, e o pool maior também esgota, só que mais tarde e gastando mais memória. O problema é a falta de isolamento, não o tamanho.
