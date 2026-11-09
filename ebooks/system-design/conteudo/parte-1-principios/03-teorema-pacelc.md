@@ -14,13 +14,13 @@ Sistemas que sincronizam dados entre regiões muitas vezes pagam em latência pa
 
 ## Aprofundando
 
-A sigla foi proposta por Daniel Abadi em 2010 e detalhada num artigo dele de 2012. A crítica ao CAP (cap. 2): partições são raras, mas o sistema paga um preço pela consistência o tempo todo, mesmo com a rede perfeita. Leia a sigla como um *if/else*: **se P, então A ou C; senão (E), L ou C.**
+A sigla foi proposta por Daniel Abadi em 2010 e detalhada num artigo dele de 2012. A crítica ao CAP (cap. 2): partições são raras, mas o sistema paga um preço pela consistência o tempo todo, mesmo com a rede perfeita. Leia a sigla como um if/else de programação: **se P, então A ou C; senão (E), L ou C.**
 
 ![Leia o PACELC como um if/else: com partição, o sistema escolhe entre A e C; sem partição, entre L e C. Os exemplos vêm da classificação original de Abadi e valem para as configurações padrão.](../../diagramas/03-pacelc.svg)
 
 ### De onde vem a latência
 
-O custo do *else* vem da replicação (cap. 24). Para uma escrita ser consistente, a réplica que a recebe precisa ouvir as outras antes de confirmar. Para uma leitura ser consistente, ela precisa ir ao líder ou consultar várias réplicas. Cada consulta custa pelo menos um round trip pela rede:
+O custo do lado E (else) vem da replicação (cap. 24). Para uma escrita ser consistente, a réplica que a recebe precisa ouvir as outras antes de confirmar. Para uma leitura ser consistente, ela precisa ir ao líder ou consultar várias réplicas. Cada consulta custa pelo menos um round trip pela rede:
 
 | Onde estão as réplicas | Round trip típico |
 |---|---|
@@ -47,7 +47,7 @@ Você precisa confirmar quantas pessoas da família vão ao churrasco de domingo
 
 - **DynamoDB:** as leituras são eventualmente consistentes por padrão (EL). Com `ConsistentRead`, a leitura é fortemente consistente, consome o dobro de capacidade, pode demorar mais e pode falhar se houver problema de rede: EC e PC na mesma tabela.
 - **Cassandra:** o nível de consistência é escolhido a cada consulta. Com vários datacenters, `QUORUM` conta réplicas de todos eles e pode esperar por outra região; `LOCAL_QUORUM` conta só as do datacenter local e responde mais rápido.
-- **Azure Cosmos DB:** oferece cinco níveis de consistência, de *Strong* a *Eventual*, com *Session* como padrão, e a documentação apresenta cada nível como um trade-off entre consistência, latência e disponibilidade.
+- **Azure Cosmos DB:** oferece cinco níveis de consistência, de Strong a Eventual, com Session como padrão, e a documentação apresenta cada nível como um trade-off entre consistência, latência e disponibilidade.
 
 ## Trade-offs
 

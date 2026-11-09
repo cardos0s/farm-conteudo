@@ -37,7 +37,7 @@ A disponibilidade também se multiplica. Se uma página depende de 10 serviços,
 
 ### O caminho do meio
 
-O **monólito modular** tem um único deploy, mas módulos com fronteiras claras: cada um com sua API interna e suas tabelas, sem mexer nas dos outros. Quando um módulo precisa mesmo escalar ou ser publicado sozinho, ele é extraído aos poucos, com o padrão *strangler fig*: o serviço novo assume uma rota de cada vez, até o código antigo poder ser removido.
+O **monólito modular** tem um único deploy, mas módulos com fronteiras claras: cada um com sua API interna e suas tabelas, sem mexer nas dos outros. Quando um módulo precisa mesmo escalar ou ser publicado sozinho, ele é extraído aos poucos, com o padrão strangler fig (figueira-estranguladora): o serviço novo assume uma rota de cada vez, até o código antigo poder ser removido.
 
 E vale lembrar a Lei de Conway: sistemas tendem a copiar a estrutura de comunicação da organização que os constrói. Microsserviços fazem mais sentido quando há vários times que precisam andar sem pisar uns nos outros.
 

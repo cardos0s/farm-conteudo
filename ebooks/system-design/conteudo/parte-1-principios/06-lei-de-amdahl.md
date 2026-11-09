@@ -10,7 +10,7 @@ relacionados: [1, 5, 23, 24, 47]
 
 A Lei de Amdahl diz que o ganho de velocidade obtido com paralelização é limitado pela parte que não pode ser paralelizada. Se 20% do seu sistema é sempre sequencial, nenhuma quantidade de máquinas extras vai resolver esse gargalo.
 
-Explicando melhor: se toda requisição sempre precisa passar por um único banco de dados primário (o *master*), esse primário vai limitar o seu desempenho. Essa lei lembra você de caçar gargalos, em vez de simplesmente adicionar mais servidores.
+Explicando melhor: se toda requisição sempre precisa passar por um único banco de dados primário (o master), esse primário vai limitar o seu desempenho. Essa lei lembra você de caçar gargalos, em vez de simplesmente adicionar mais servidores.
 
 ## Aprofundando
 

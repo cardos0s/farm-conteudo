@@ -12,7 +12,7 @@ Serverless permite rodar pequenas funções na nuvem sem gerenciar servidores di
 
 É ideal para cargas orientadas a eventos, como webhooks, jobs em segundo plano ou APIs leves com tráfego em picos. O preço a pagar é menos controle sobre tarefas longas, cold starts (partidas a frio) e, às vezes, um custo maior em volumes muito altos.
 
-Pense em serverless como "funções como serviço" (FaaS, de *functions as a service*), perfeito para código de cola (glue code) e serviços leves.
+Pense em serverless como "funções como serviço" (FaaS, de functions as a service), perfeito para código de cola (glue code) e serviços leves.
 
 ## Aprofundando
 
@@ -46,7 +46,7 @@ Ter carro próprio é como ter servidor: você paga IPVA, seguro e garagem mesmo
 
 - **AWS Lambda**, **Azure Functions** e **Google Cloud Run functions** são as plataformas de funções dos três grandes provedores. O **Cloudflare Workers** roda funções na borda da rede usando isolates do V8, com cold starts bem menores que os de contêineres.
 - **Processamento de arquivos:** gerar miniaturas quando uma imagem chega num bucket do S3 é o exemplo clássico da documentação do Lambda.
-- **Contra o cold start:** o Lambda oferece *provisioned concurrency* (ambientes pré-aquecidos, cobrados mesmo parados) e o *SnapStart*, que restaura o ambiente a partir de um snapshot já inicializado.
+- **Contra o cold start:** o Lambda oferece provisioned concurrency (ambientes pré-aquecidos, cobrados mesmo parados) e o SnapStart, que restaura o ambiente a partir de um snapshot já inicializado.
 
 ## Trade-offs
 

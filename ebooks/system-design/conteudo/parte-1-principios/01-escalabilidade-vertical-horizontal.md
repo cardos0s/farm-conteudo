@@ -15,7 +15,7 @@ A escala vertical é mais fácil, mas esbarra nos limites do hardware e fica car
 
 ## Aprofundando
 
-Em inglês, a escala vertical também é chamada de *scale up*, e a horizontal, de *scale out*. As duas resolvem o mesmo problema, mais carga do que a máquina atual aguenta, de jeitos opostos.
+Em inglês, a escala vertical também é chamada de scale up, e a horizontal, de scale out. As duas resolvem o mesmo problema, mais carga do que a máquina atual aguenta, de jeitos opostos.
 
 ![Na vertical, a mesma máquina cresce até encostar no limite do hardware. Na horizontal, um load balancer reparte as requisições entre máquinas iguais, que guardam os dados num lugar compartilhado.](../../diagramas/01-escalabilidade.svg)
 

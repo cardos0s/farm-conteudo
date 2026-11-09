@@ -38,7 +38,7 @@ Ligar para um call center onde só a atendente Márcia conhece o seu caso é sta
 ## No mundo real
 
 - **The Twelve-Factor App**, guia de boas práticas para aplicações em nuvem, manda executar a aplicação como processos stateless, chama sticky sessions de violação e sugere guardar sessões num armazenamento com expiração, como Redis ou Memcached.
-- **Kubernetes** separa os dois mundos: *Deployments* para serviços stateless, cujos pods são intercambiáveis, e *StatefulSets* para bancos e afins, que precisam de identidade estável e disco próprio por pod.
+- **Kubernetes** separa os dois mundos: Deployments para serviços stateless, cujos pods são intercambiáveis, e StatefulSets para bancos e afins, que precisam de identidade estável e disco próprio por pod.
 - **HTTP** é stateless por definição: cada requisição pode ser entendida sozinha. Os cookies foram criados justamente para carregar estado entre requisições.
 
 ## Trade-offs

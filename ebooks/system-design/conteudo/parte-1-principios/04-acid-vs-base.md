@@ -10,7 +10,7 @@ relacionados: [2, 7, 27, 39, 40]
 
 ACID trata de transações rígidas e confiáveis: **A**tomicidade, **C**onsistência, **I**solamento e **D**urabilidade. Combina com sistemas financeiros, controle de estoque e qualquer coisa em que erros custem muito caro.
 
-BASE significa *Basically Available* (basicamente disponível), *Soft state* (estado flexível) e *Eventual consistency* (consistência eventual), e é usado em grandes sistemas distribuídos que precisam ficar no ar e responder rápido. Sistemas BASE podem mostrar inconsistências temporárias, mas se corrigem com o tempo.
+BASE significa Basically Available (basicamente disponível), Soft state (estado flexível) e Eventual consistency (consistência eventual), e é usado em grandes sistemas distribuídos que precisam ficar no ar e responder rápido. Sistemas BASE podem mostrar inconsistências temporárias, mas se corrigem com o tempo.
 
 Na prática, muitas arquiteturas combinam os dois: ACID para os fluxos centrais de dinheiro e BASE para coisas como feeds e analytics.
 
@@ -29,7 +29,7 @@ COMMIT;
 
 - **Atomicidade:** os dois `UPDATE` acontecem juntos ou nenhum acontece. Se o servidor cair entre um e outro, o banco desfaz o primeiro (rollback).
 - **Consistência:** a transação leva o banco de um estado válido a outro. Se existe a regra `CHECK (saldo >= 0)` e a Ana só tem R$ 150, a transação inteira é recusada.
-- **Isolamento:** transações simultâneas não enxergam o trabalho pela metade umas das outras. Ninguém vê o dinheiro já fora da conta da Ana e ainda não na do Bruno. O rigor depende do nível de isolamento, de *read committed* a *serializable*.
+- **Isolamento:** transações simultâneas não enxergam o trabalho pela metade umas das outras. Ninguém vê o dinheiro já fora da conta da Ana e ainda não na do Bruno. O rigor depende do nível de isolamento, de read committed a serializable.
 - **Durabilidade:** depois que o `COMMIT` é confirmado, a transferência sobrevive a uma queda de energia, porque o banco gravou a mudança num log em disco antes de responder (cap. 27).
 
 ### BASE, letra por letra
@@ -53,7 +53,7 @@ Comprar um apartamento é ACID: a escritura passa no cartório inteira ou não p
 ## No mundo real
 
 - **PostgreSQL, MySQL (InnoDB), Oracle e SQL Server** oferecem transações ACID completas; é onde mora o dinheiro da maioria das empresas.
-- **Cassandra** segue a linha BASE: escritas rápidas, réplicas que convergem depois. Para operações do tipo "grave só se ainda não existir", oferece *lightweight transactions*, baseadas em Paxos e bem mais lentas.
+- **Cassandra** segue a linha BASE: escritas rápidas, réplicas que convergem depois. Para operações do tipo "grave só se ainda não existir", oferece lightweight transactions, baseadas em Paxos e bem mais lentas.
 - **DynamoDB** é BASE no uso comum, mas tem transações ACID desde 2018 (`TransactWriteItems`); o **MongoDB** tem transações com vários documentos desde a versão 4.0.
 - **Spanner** e **CockroachDB** entregam ACID distribuído entre regiões, pagando com latência de coordenação.
 
@@ -77,7 +77,7 @@ Comprar um apartamento é ACID: a escritura passa no cartório inteira ou não p
 
 - **Atualização:** a divisão "SQL é ACID, NoSQL é BASE" envelheceu. MongoDB e DynamoDB têm transações ACID, e bancos como Spanner e CockroachDB oferecem ACID distribuído. Hoje a pergunta é que garantia cada operação precisa.
 - **O C do ACID depende de você.** O banco só protege as regras que você declarou (`CHECK`, `UNIQUE`, chaves estrangeiras). Ele não sabe que o estoque não pode ficar negativo se ninguém disse isso a ele.
-- **Isolamento padrão não é serializável.** O PostgreSQL usa *read committed* por padrão e o MySQL (InnoDB), *repeatable read*. Ler um valor, calcular na aplicação e gravar o resultado pode perder atualizações concorrentes.
+- **Isolamento padrão não é serializável.** O PostgreSQL usa read committed por padrão e o MySQL (InnoDB), repeatable read. Ler um valor, calcular na aplicação e gravar o resultado pode perder atualizações concorrentes.
 
 ## Teste-se
 
