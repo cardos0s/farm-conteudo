@@ -64,7 +64,7 @@ Você está viajando e a diarista precisa entrar no seu apartamento. Em vez de e
 
 - **Atualização:** o artigo fala em tokens "em que clientes e APIs podem confiar" como se fossem um só. São dois, com destinatários diferentes: o ID token é da aplicação e não deve ir para a API como credencial; o access token é da API.
 - **OAuth puro não é login.** Usar o access token como prova de identidade abre brecha: um token emitido para outra aplicação pode ser reaproveitado na sua. O `aud` do ID token evita isso.
-- **Fluxos aposentados.** As boas práticas atuais (RFC 9700, de 2025) desaconselham o fluxo implícito, que devolve o token na URL, proíbem o de senha e recomendam PKCE em todo cliente.
+- **Fluxos aposentados.** As boas práticas atuais (RFC 9700, de 2025) desaconselham o fluxo implícito (token devolvido na URL), proíbem o de senha (o app recebe a senha do usuário) e recomendam PKCE em todo cliente.
 - **JWT assinado não é cifrado.** Qualquer um lê o conteúdo; não guarde segredos nele.
 
 ## Teste-se

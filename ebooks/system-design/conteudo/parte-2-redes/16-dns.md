@@ -14,7 +14,7 @@ Ele também pode ser usado para fazer um balanceamento de carga simples, devolve
 
 ## Aprofundando
 
-O DNS é um banco de dados distribuído e hierárquico. Ninguém tem a lista inteira: cada nível só sabe a quem delegar o próximo. Veja a primeira visita a `www.loja.com.br`, com todos os caches vazios:
+O DNS é um banco de dados distribuído, hierárquico e eventualmente consistente (cap. 7). Ninguém tem a lista inteira: cada nível só sabe a quem delegar o próximo. Veja a primeira visita a `www.loja.com.br`, com todos os caches vazios:
 
 ![A primeira consulta percorre a raiz, o TLD .br e o servidor autoritativo. Durante o TTL, as próximas param no cache do resolvedor.](../../diagramas/16-dns.svg)
 
@@ -29,7 +29,7 @@ www.loja.com.br.   300   IN   A   203.0.113.10
 
 O `300` é o **TTL**: por 300 segundos, quem guardou essa resposta pode reutilizá-la sem perguntar de novo. O resolvedor guarda, devolve o IP ao SO, e o navegador enfim abre a conexão.
 
-A resolução completa custa várias idas e voltas, de dezenas a centenas de milissegundos. Nos 300 segundos seguintes, qualquer cliente desse resolvedor recebe o IP direto do cache, em poucos milissegundos. Os passos 2 e 3 são ainda mais raros, porque as indicações da raiz e do TLD ficam em cache por horas ou dias.
+Cada pergunta costuma ir num único pacote UDP para a porta 53 (cap. 17), mas a resolução completa soma várias idas e voltas: de dezenas a centenas de milissegundos. Nos 300 segundos seguintes, qualquer cliente desse resolvedor recebe o IP direto do cache, em poucos milissegundos. Os passos 2 e 3 são ainda mais raros, porque as indicações da raiz e do TLD ficam em cache por horas ou dias.
 
 ### Balanceamento e "propagação"
 

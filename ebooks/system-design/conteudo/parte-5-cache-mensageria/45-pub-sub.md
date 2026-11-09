@@ -36,7 +36,7 @@ O grupo de WhatsApp do condomínio: a síndica escreve uma vez "a água será co
 
 ## No mundo real
 
-- **Apache Kafka:** criado no LinkedIn e aberto em 2011 para distribuir eventos de atividade, como visualizações de página, a vários sistemas ao mesmo tempo.
+- **Apache Kafka:** criado no LinkedIn para distribuir eventos de atividade, como visualizações de página, a vários sistemas ao mesmo tempo, e aberto como software livre em 2011.
 - **Amazon SNS + SQS:** a AWS documenta o fan-out em que um tópico do SNS entrega cada mensagem a várias filas SQS, uma por serviço.
 - **Google Cloud Pub/Sub:** cada assinatura recebe as mensagens publicadas depois da sua criação, e os clientes de uma mesma assinatura dividem o trabalho.
 - **RabbitMQ:** exchanges do tipo `fanout` copiam a mensagem para todas as filas ligadas a elas; as do tipo `topic`, para as filas cujo padrão casa com a chave de roteamento.

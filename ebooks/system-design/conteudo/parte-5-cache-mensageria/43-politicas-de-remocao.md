@@ -44,17 +44,17 @@ Seu guarda-roupa tem 30 cabides; para pendurar uma camisa nova, alguma precisa s
 
 ## No mundo real
 
-- **Redis:** com `maxmemory` definido, as políticas `allkeys-lru` e `allkeys-lfu` escolhem a vítima entre todas as chaves, e as variantes `volatile-*`, só entre as que têm TTL. O padrão, `noeviction`, não remove nada: quando a memória acaba, as escritas passam a falhar.
-- **Caffeine:** biblioteca de cache em memória para Java, sucessora do cache do Guava e suportada pelo Spring, troca o LRU puro pelo W-TinyLFU.
+- **Redis:** com `maxmemory` definido, as políticas `allkeys-lru` e `allkeys-lfu` escolhem a vítima entre todas as chaves, e as variantes `volatile-*`, só entre as que têm TTL. O padrão, `noeviction`, não remove nada: quando o limite é atingido, as escritas passam a falhar.
+- **Caffeine:** essa biblioteca de cache em memória para Java, sucessora do cache do Guava e suportada pelo Spring, usa W-TinyLFU em vez de LRU puro.
 - **PostgreSQL:** o buffer pool usa o *clock sweep*, uma aproximação de LRU com um pequeno contador de uso por página.
-- **ZFS:** o cache de leitura usa o ARC, que se ajusta sozinho entre recência e frequência.
+- **ZFS:** o cache em memória é o ARC (Adaptive Replacement Cache), que divide o espaço entre itens recentes e frequentes e ajusta a proporção sozinho.
 
 ## Trade-offs
 
 | | LRU | LFU |
 |---|---|---|
 | Critério | Último acesso | Número de acessos |
-| Custo por acesso | Mover um nó na lista: O(1) | Atualizar contador e grupo: O(1), com mais memória |
+| Custo por acesso | Mover um nó na lista: O(1) | Atualizar o contador: O(1) com listas por frequência, mais memória |
 | Vai bem quando | O interesse muda rápido (sessões, notícias do dia) | A popularidade é estável (catálogo, configurações) |
 | Erra quando | Uma varredura única passa por cima dos itens quentes | Itens antigos acumulam contagem e itens novos não têm chance |
 | Ajuste típico | LRU segmentado: o item só vira "protegido" no segundo acesso | Envelhecer os contadores |
@@ -68,7 +68,7 @@ Seu guarda-roupa tem 30 cabides; para pendurar uma camisa nova, alguma precisa s
 ## Cuidado com
 
 - **Atualização:** os "algoritmos avançados" que o original cita de passagem são o padrão hoje. Quase ninguém usa LRU ou LFU exatos: o Redis amostra chaves, o Caffeine usa W-TinyLFU, o ZFS usa ARC. E pesquisas recentes, como o S3-FIFO (2023) e o SIEVE (2024), mostraram que variações de FIFO, mais simples e baratas que o LRU, acertam tanto quanto ele, ou mais, em muitas cargas web reais.
-- **Remoção não é expiração:** o TTL tira o dado por idade, mesmo com o cache vazio; a remoção tira por falta de espaço.
+- **Remoção não é expiração:** o TTL tira o dado por idade, mesmo com espaço sobrando; a remoção tira por falta de espaço.
 - **Redis sem `maxmemory`:** em 64 bits não há limite, e o processo cresce até a máquina ficar sem memória.
 
 ## Teste-se

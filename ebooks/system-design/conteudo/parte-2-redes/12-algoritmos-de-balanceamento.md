@@ -66,7 +66,7 @@ Num salão de beleza movimentado, a recepcionista pode distribuir as clientes de
 ## Cuidado com
 
 - **Afinidade não é garantia.** O "geralmente" do IP hash tem motivo: o celular troca de IP ao sair do Wi-Fi para o 4G, servidores entram e saem, e o CGNAT das operadoras põe muitos clientes atrás de um mesmo IP.
-- **Conexão longa engana o balanceamento de camada 4.** Com HTTP/2 e gRPC (caps. 18 e 19), o cliente abre uma única conexão e multiplexa milhares de requisições nela. Quem escolhe o servidor por conexão manda tudo para o mesmo. A saída é balancear por requisição, na camada 7.
+- **Conexão longa engana o balanceamento de camada 4.** Com HTTP/2 (cap. 18) e gRPC (cap. 19), o cliente abre uma única conexão e multiplexa milhares de requisições nela. Quem escolhe o servidor por conexão manda tudo para o mesmo. A saída é balancear por requisição, na camada 7.
 - **Atualização:** os três algoritmos do artigo são o básico. Proxies modernos oferecem least request com duas escolhas aleatórias, balanceamento pela latência observada (o Linkerd usa uma média móvel exponencial) e hash consistente (ring hash e Maglev, no Envoy).
 
 ## Teste-se

@@ -90,7 +90,7 @@ REST é o cardápio do restaurante: qualquer cliente lê, entende e faz o pedido
 | Formato | texto, quase sempre JSON | binário (protobuf) |
 | Contrato | opcional (OpenAPI) | obrigatório (`.proto`), com código gerado |
 | Streaming | não nativo (usa SSE ou WebSocket) | quatro modos, inclusive bidirecional |
-| Navegador | nativo (`fetch`) | só com gRPC-Web e um proxy |
+| Navegador | nativo (`fetch`) | só via gRPC-Web (proxy ou suporte no servidor) |
 | Cache HTTP | `GET` cacheável por CDN e proxies | não aproveita (toda chamada é `POST`) |
 | Depuração | `curl` e o navegador bastam | ferramentas próprias (`grpcurl`) |
 
@@ -105,7 +105,7 @@ REST é o cardápio do restaurante: qualquer cliente lê, entende e faz o pedido
 
 - **Atualização:** "binário é menor e mais rápido" depende do caso. Com gzip ou Brotli, a diferença de tamanho encolhe em respostas grandes; o ganho do gRPC costuma vir mais da CPU de serialização, do contrato e da conexão reaproveitada. Meça antes de migrar.
 - **Balanceamento:** um load balancer de camada 4 distribui conexões, não chamadas. Como o gRPC reaproveita uma conexão HTTP/2 longa, todo o tráfego de um cliente cai num servidor só. Use balanceamento L7 ou no cliente (cap. 11).
-- **Navegador não fala gRPC puro:** precisa de gRPC-Web com um proxy (como o Envoy).
+- **Navegador não fala gRPC puro:** precisa do gRPC-Web, traduzido por um proxy (como o Envoy) ou aceito pelo próprio servidor.
 - **REST não é "JSON sobre HTTP".** É modelar recursos e usar os verbos e códigos de status do HTTP. `POST /criarPedido` é RPC com JSON.
 
 ## Teste-se

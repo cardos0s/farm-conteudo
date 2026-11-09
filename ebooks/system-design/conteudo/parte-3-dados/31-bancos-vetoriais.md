@@ -56,7 +56,7 @@ Num supermercado, ninguém acha o requeijão pelo código de barras: vai ao corr
 | | Busca exata (k-NN) | Busca aproximada (ANN) |
 |---|---|---|
 | Resultado | Os k mais próximos, garantido | Quase sempre os mesmos (recall ajustável, como 95%) |
-| Custo por consulta | Cresce em linha reta com o número de vetores | Cresce bem mais devagar |
+| Custo por consulta | Proporcional ao número de vetores | Cresce bem mais devagar |
 | Memória | Só os vetores | Vetores mais o índice (o grafo HNSW pesa) |
 | Atualizações | Triviais | Mais trabalhosas: o índice precisa ser mantido e, às vezes, reconstruído |
 | Bom para | Coleções pequenas ou reordenar poucos candidatos | Milhões a bilhões de vetores com latência baixa |

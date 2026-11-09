@@ -12,7 +12,7 @@ Zero Trust é um modelo de segurança que diz: "nunca confie, sempre verifique".
 
 ## Aprofundando
 
-O modelo antigo é o **perímetro**, apelidado de "castelo e fosso": um firewall forte na borda, uma VPN para quem está fora e, lá dentro, uma rede em que todo mundo confia em todo mundo. O problema aparece depois da primeira invasão. Basta um notebook comprometido por phishing para o atacante alcançar bancos e serviços internos, porque o único teste era "estar dentro". Esse avanço de máquina em máquina se chama **movimento lateral**.
+O modelo antigo é o **perímetro**, apelidado de "castelo e fosso": um firewall forte na borda, uma VPN para quem está fora e, lá dentro, uma rede em que todo mundo confia em todo mundo. O problema aparece depois da primeira invasão. Basta um notebook comprometido por phishing para o atacante alcançar bancos de dados e serviços internos, porque o único teste era "estar dentro". Esse avanço de máquina em máquina se chama **movimento lateral**.
 
 ![No perímetro, quem está dentro da rede alcança tudo; no Zero Trust, cada serviço verifica cada acesso, mesmo os que vêm de dentro.](../../diagramas/51-zero-trust.svg)
 

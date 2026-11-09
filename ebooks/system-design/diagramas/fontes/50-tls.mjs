@@ -2,7 +2,7 @@
 export default (d) => {
   d.tela(720, 396).titulo(
     "Handshake do TLS 1.3 em 1 RTT",
-    "Diagrama de sequência entre cliente e servidor, com o tempo correndo para baixo. O cliente envia o ClientHello com as cifras aceitas e a sua key_share. O servidor responde com o ServerHello e a sua key_share e, já cifrados, o certificado, o CertificateVerify e o Finished. Entre a saída do ClientHello e a chegada dessa resposta passa 1 RTT. O cliente confere o certificado, calcula as chaves e envia o seu Finished junto com a primeira requisição HTTP, já cifrados, e daí em diante os dados da aplicação trafegam cifrados nos dois sentidos. Mensagens em preto vão em claro; em verde, cifradas. No TLS 1.2, a mesma conversa levava 2 RTT antes do primeiro dado.",
+    "Diagrama de sequência entre cliente e servidor, com o tempo correndo para baixo. O cliente envia o ClientHello com as cifras aceitas e a sua key_share. O servidor responde com o ServerHello e a sua key_share e, já cifrados, o certificado, o CertificateVerify e o Finished. Entre a saída do ClientHello e a chegada dessa resposta passa 1 RTT. O cliente confere o certificado, calcula as chaves e envia o seu Finished junto com a primeira requisição HTTP, já cifrados, e daí em diante os dados da aplicação trafegam cifrados nos dois sentidos. Mensagens em verde vão cifradas; as demais, em claro. No TLS 1.2, a mesma conversa levava 2 RTT antes do primeiro dado.",
   );
 
   const cli = 150;
@@ -33,6 +33,6 @@ export default (d) => {
   d.texto(cli - 76, 161, "1 RTT", { ancora: "middle", tam: 20, cor: "violeta" });
 
   // legenda
-  d.texto(24, 350, "preto: vai em claro  ·  *{verde: já cifrado}", { tam: 16, destaque: "verde" });
+  d.texto(24, 350, "*{em verde: já vai cifrado}  ·  o resto vai em claro", { tam: 16, destaque: "verde" });
   d.texto(24, 376, "No TLS 1.2, a mesma conversa levava 2 RTT antes do primeiro dado.", { tam: 16, cor: "cinza" });
 };

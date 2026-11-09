@@ -60,7 +60,7 @@ O TCP é ditar a linha digitável de um boleto por telefone. Primeiro vem o "al�
 - Traga o UDP quando o problema for tempo real (voz, vídeo, jogos, telemetria) e diga o porquê: *"Um pacote de áudio que chega atrasado já não serve; retransmitir só aumenta o atraso."*
 - Para o resto (APIs, pagamentos, uploads), o padrão é TCP, e ninguém vai pedir justificativa longa.
 - Mostre que confiabilidade não é tudo ou nada: o QUIC (cap. 18) e o WebRTC constroem sobre o UDP só as garantias de que precisam.
-- Ao falar de latência, lembre o custo de abrir conexão: TCP mais TLS são 2 ou 3 idas e voltas antes do primeiro byte. Pool de conexões e keep-alive evitam pagar isso a cada requisição.
+- Ao falar de latência, lembre o custo de abrir conexão: TCP mais TLS custam 2 ou 3 idas e voltas antes de a primeira requisição poder sair. Pool de conexões e keep-alive evitam pagar isso a cada requisição.
 
 ## Cuidado com
 

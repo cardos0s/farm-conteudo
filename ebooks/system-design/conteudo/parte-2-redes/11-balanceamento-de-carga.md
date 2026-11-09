@@ -59,8 +59,8 @@ Pense na fila única de um supermercado grande. Você não escolhe o caixa: o pa
 
 ## Cuidado com
 
-- **Atualização:** o artigo diz que a falha de um servidor não derruba o sistema. Só é verdade se os outros tiverem folga para absorver a parte dele; sem folga, a carga extra derruba o próximo, num efeito dominó.
-- **Health check raso ou fundo demais.** Um `/health` que sempre devolve 200 não percebe que o app perdeu o banco. O oposto também machuca: se o check depende do banco e o banco oscila, todos os servidores reprovam juntos. Por isso o Envoy tem um "limiar de pânico": abaixo de 50% de servidores saudáveis, ele ignora o health check e distribui entre todos.
+- **Atualização:** o artigo diz que a falha de um servidor não derruba o sistema. Só vale se os outros tiverem folga para absorver a parte dele; sem folga, a carga extra derruba o próximo, num efeito dominó.
+- **Health check raso ou fundo demais.** Um `/health` que sempre devolve 200 não percebe que o app perdeu o banco. O oposto também machuca: se o check depende do banco e ele oscila, todos os servidores reprovam juntos. Por isso o Envoy tem um "limiar de pânico": abaixo de 50% de servidores saudáveis, ignora o health check e distribui entre todos.
 - **Sticky session é muleta.** Prender cada usuário a um servidor desequilibra a carga e, quando ele cai, leva as sessões junto. Guarde o estado fora do servidor (cap. 8).
 
 ## Teste-se

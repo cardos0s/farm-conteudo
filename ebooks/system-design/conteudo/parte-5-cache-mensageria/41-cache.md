@@ -2,7 +2,7 @@
 numero: 41
 titulo: Cache
 original: Caching
-resumo: Cache é uma cópia dos dados mais usados num armazenamento rápido, quase sempre a memória, que corta a latência e a carga do banco ao custo de um problema novo, saber quando essa cópia ficou velha.
+resumo: Cache é uma cópia dos dados mais usados num armazenamento rápido, quase sempre a memória; corta a latência e a carga do banco, mas cria um problema novo, o de saber quando essa cópia ficou velha.
 relacionados: [42, 43, 15, 7, 5]
 ---
 
@@ -12,7 +12,7 @@ Cache é guardar os dados acessados com frequência numa camada de armazenamento
 
 ## Aprofundando
 
-O cache funciona porque o acesso aos dados quase nunca é uniforme. Numa loja online, algumas centenas de produtos em destaque recebem a maior parte das visitas; numa rede social, o post do momento é lido milhões de vezes, enquanto os antigos quase não são abertos. Guardar essa fatia quente em memória resolve a maioria das leituras.
+O cache funciona porque o acesso aos dados quase nunca é uniforme. Numa loja online, algumas centenas de produtos em destaque recebem a maior parte das visitas; numa rede social, o post do momento é lido milhões de vezes. Guardar essa fatia quente em memória resolve a maioria das leituras.
 
 ### Taxa de acerto
 
@@ -27,21 +27,21 @@ Subir de 90% para 99% parece pouco, mas divide por dez a carga do banco. O banco
 
 ### Camadas
 
-Entre o usuário e o banco pode haver várias camadas de cache, e a leitura só desce para a seguinte quando dá miss:
+Entre o usuário e o banco pode haver várias camadas, e a leitura só desce para a seguinte num miss:
 
 ![Cada miss desce uma camada. As de cima são mais rápidas para o usuário; as de baixo, mais fáceis de manter atualizadas.](../../diagramas/41-camadas-de-cache.svg)
 
 - **Navegador:** com `Cache-Control: max-age=3600`, o aparelho reaproveita a resposta por uma hora sem tocar a rede.
 - **CDN** (cap. 15): servidores de borda guardam imagens, scripts e até páginas inteiras perto do usuário.
 - **Cache em processo:** um mapa na memória da própria aplicação. Responde em menos de um microssegundo, mas cada instância tem a sua cópia.
-- **Cache distribuído:** Redis ou Memcached, compartilhado por todas as instâncias. Custa uma ida pela rede, cerca de meio milissegundo dentro do mesmo datacenter.
+- **Cache distribuído:** Redis ou Memcached, compartilhado por todas as instâncias. Custa uma ida pela rede: cerca de meio milissegundo no mesmo datacenter.
 - **Banco:** a fonte da verdade, que também mantém em memória as páginas mais lidas.
 
 Quanto mais perto do usuário, mais difícil invalidar: você apaga uma chave no Redis com um comando, mas não alcança o navegador de quem já baixou a resposta.
 
 ### Validade
 
-Toda entrada precisa de uma regra para sair. O **TTL** (time to live, tempo de vida) limita a idade do dado: com TTL de 60 s, ninguém vê um preço com mais de um minuto de atraso. A **invalidação explícita** apaga a chave quando o dado muda na origem. Use as duas juntas: a invalidação mantém o dado fresco no caso comum, e o TTL corrige o que ela deixar escapar.
+Toda entrada precisa de uma regra para sair. O **TTL** (time to live, tempo de vida) limita a idade do dado: com TTL de 60 s, ninguém vê um preço com mais de um minuto de atraso. A **invalidação explícita** apaga a chave quando o dado muda na origem. Use as duas juntas: a invalidação mantém o dado fresco no caso comum, e o TTL corrige o que ela deixar escapar. Não por acaso, a frase citada pelo autor, atribuída a Phil Karlton, diz que só há duas coisas difíceis em computação: invalidar cache e dar nome às coisas.
 
 ## Analogia
 
@@ -49,7 +49,7 @@ O caixa da padaria tem um papel colado no balcão com o preço dos vinte itens q
 
 ## No mundo real
 
-- **Facebook:** o artigo *Scaling Memcache at Facebook* (NSDI 2013) descreve a frota de Memcached na frente do MySQL, que já atendia bilhões de requisições por segundo.
+- **Facebook:** o artigo *Scaling Memcache at Facebook* (NSDI 2013) descreve a frota de Memcached que fica na frente do MySQL e já atendia bilhões de requisições por segundo.
 - **Redis e Memcached** são os caches distribuídos mais comuns, inclusive como serviço gerenciado (o Amazon ElastiCache, por exemplo). Depois que o Redis mudou de licença, em 2024, a Linux Foundation lançou o **Valkey**, um fork aberto e compatível.
 - **HTTP:** navegadores e CDNs seguem as regras de cache da RFC 9111, com cabeçalhos como `Cache-Control` e `ETag`. É o cache mais barato que existe, porque a requisição nem chega ao seu servidor.
 - **Bancos:** o PostgreSQL (`shared_buffers`) e o InnoDB do MySQL (buffer pool) guardam em memória as páginas mais lidas.
@@ -77,9 +77,9 @@ O caixa da padaria tem um papel colado no balcão com o preço dos vinte itens q
 ## Cuidado com
 
 - **Avalanche de misses (cache stampede):** quando uma chave muito acessada expira, centenas de requisições dão miss juntas e vão todas ao banco. Defesas: deixar só uma recarregar a chave enquanto as outras esperam, renovar antes de expirar e espalhar os TTLs com um pouco de aleatoriedade.
-- **Cache frio:** depois de um reinício, o cache começa vazio e o banco leva a carga inteira. Dimensione o banco para esse momento ou aqueça o cache antes de liberar o tráfego.
+- **Chave incompleta vaza dados:** se a resposta depende do usuário, do idioma ou da permissão, isso precisa estar na chave. No Natal de 2015, um erro de configuração de cache na Steam mostrou páginas de conta de cerca de 34 mil usuários a outras pessoas.
+- **Cache frio:** depois de um reinício, o cache começa vazio e o banco leva a carga inteira.
 - **Cache não conserta consulta lenta:** só a esconde enquanto a taxa de acerto é alta.
-- O ditado é atribuído a Phil Karlton: "só há duas coisas difíceis em ciência da computação: invalidar cache e dar nome às coisas".
 
 ## Teste-se
 

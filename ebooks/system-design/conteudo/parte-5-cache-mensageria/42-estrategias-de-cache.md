@@ -45,7 +45,7 @@ Igual ao cache-aside, mas quem vai ao banco no miss é o próprio cache; a aplic
 
 ### Write-through
 
-A escrita passa pelo cache, que grava no banco e só então confirma. Uma leitura logo depois da escrita sempre acerta, mas cada escrita paga as duas gravações, e o cache se enche de dados que talvez ninguém leia.
+A escrita passa pelo cache, que grava no banco e só então confirma. Uma leitura logo depois da escrita já encontra o dado no cache, mas cada escrita paga as duas gravações, e o cache se enche de dados que talvez ninguém leia.
 
 ### Write-back (write-behind)
 
@@ -100,4 +100,4 @@ Na recepção de um consultório, a secretária tem a agenda do dia impressa na 
 
 **P:** Com write-through, cache e banco nunca divergem?
 
-**R:** Podem divergir. Sem uma transação entre os dois, uma falha entre as gravações ou escritas concorrentes deixam valores diferentes; por isso o TTL continua útil.
+**R:** Podem divergir. Sem uma transação entre os dois, uma falha entre as gravações ou escritas concorrentes podem deixar valores diferentes; por isso o TTL continua útil.

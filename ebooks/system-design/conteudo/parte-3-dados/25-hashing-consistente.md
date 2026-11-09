@@ -16,7 +16,7 @@ O problema aparece com `hash(chave) mod N`. Com 4 servidores de cache e 1 milhã
 
 O hashing consistente troca o `mod N` por um anel:
 
-1. Pegue o espaço de saída da função de hash (por exemplo, de 0 a 2³² − 1) e dobre-o num círculo.
+1. Pegue o espaço de saída da função de hash (por exemplo, de 0 a 2^32 − 1) e dobre-o num círculo.
 2. Cada nó ganha uma posição no anel: `hash("servidor-A")`.
 3. Cada chave também: `hash("usuario:42")`.
 4. O dono da chave é o primeiro nó que você encontra andando no sentido horário a partir dela.

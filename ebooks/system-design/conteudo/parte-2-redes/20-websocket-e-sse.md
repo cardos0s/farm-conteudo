@@ -25,7 +25,7 @@ Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
 Sec-WebSocket-Version: 13
 ```
 
-Se o servidor aceita, responde `101 Switching Protocols` e, daí em diante, aquela conexão TCP deixa de falar HTTP. Os dois lados trocam frames (texto, binário, ping/pong e fechamento) quando quiserem, com 2 a 14 bytes de cabeçalho por mensagem, contra as centenas de bytes de cabeçalhos de uma requisição HTTP típica.
+Se o servidor aceita, responde `101 Switching Protocols` e, daí em diante, aquela conexão TCP deixa de falar HTTP. Os dois lados trocam frames (texto, binário, ping/pong e fechamento) quando quiserem, com 2 a 14 bytes de cabeçalho por frame, contra as centenas de bytes de cabeçalhos de uma requisição HTTP típica.
 
 ### SSE: uma resposta HTTP que não termina
 

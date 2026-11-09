@@ -65,7 +65,7 @@ Uma família guarda a vida em vários lugares: o dinheiro no banco, os documento
 
 ## Na entrevista
 
-- Em system design, propor dois ou três bancos é natural. O que conta é justificar cada um pelo padrão de acesso: "Pedidos no PostgreSQL, pelas transações; busca no OpenSearch, pela relevância; sessões no Redis, pela latência."
+- Propor dois ou três bancos num desenho de sistema é natural. O que conta é justificar cada um pelo padrão de acesso: "Pedidos no PostgreSQL, pelas transações; busca no OpenSearch, pela relevância; sessões no Redis, pela latência."
 - Diga qual é a fonte da verdade, como os outros bancos são alimentados (CDC ou outbox) e o que o usuário vê enquanto eles estão atrasados.
 - Mostre parcimônia: "Não adicionaria um banco de grafos só para recomendações simples; uma consulta recursiva no PostgreSQL resolve no começo."
 

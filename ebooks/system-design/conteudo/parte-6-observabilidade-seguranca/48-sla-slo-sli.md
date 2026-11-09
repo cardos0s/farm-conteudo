@@ -65,7 +65,7 @@ Uma pizzaria anuncia: "entrega em até 50 minutos ou a pizza sai de graça". Ess
 ## Na entrevista
 
 - Transforme "precisa ser confiável" em números logo nos requisitos não funcionais: "99,9% de disponibilidade e p99 de leitura abaixo de 300 ms, em 30 dias".
-- Traduza noves em tempo para mostrar que sabe o custo: 99,9% são uns 43 minutos por mês, dá tempo de um humano reagir; 99,99% são 4 minutos, então o failover precisa ser automático.
+- Traduza noves em tempo para mostrar que sabe o custo: 99,9% são uns 43 minutos por mês, o que cabe um incidente resolvido pelo plantão; 99,99% são 4 minutos, então o failover precisa ser automático.
 - Lembre que dependências em série se multiplicam: três serviços de 99,9% em cadeia, com falhas independentes, entregam uns 99,7% (0,999³), a menos que haja redundância ou fallback.
 - Frase pronta: *"Proponho um SLO de 99,9% em 30 dias. Isso dá um orçamento de uns 43 minutos, e é ele que decide quando paramos de lançar para cuidar da estabilidade."*
 

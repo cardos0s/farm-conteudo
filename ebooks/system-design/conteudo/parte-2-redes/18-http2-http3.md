@@ -52,7 +52,7 @@ Pense em caminhões levando carga de uma fábrica até o porto. No HTTP/1.1, cad
 | Requisições por conexão | uma por vez | muitas, intercaladas | muitas, independentes |
 | Cabeçalhos | texto, repetidos | comprimidos (HPACK) | comprimidos (QPACK) |
 | Um pacote perdido | trava aquela conexão | trava todos os streams | trava só o stream afetado |
-| Conexão nova com TLS 1.3 | 2 RTT | 2 RTT | 1 RTT (0-RTT na volta) |
+| Conexão nova com TLS 1.3 | 2 RTT | 2 RTT | 1 RTT (0-RTT ao retomar) |
 | Troca de rede (Wi-Fi para 4G) | reconecta | reconecta | a conexão continua |
 
 ## Na entrevista

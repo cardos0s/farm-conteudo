@@ -21,11 +21,11 @@ São três papéis: o **produtor** envia, o **broker** (RabbitMQ, Amazon SQS) gu
 
 ![Cada mensagem vai para um único consumidor e continua guardada até o ack; sem ack no prazo, volta para a fila.](../../diagramas/44-fila-ponto-a-ponto.svg)
 
-O passo 4 garante que nada se perde, mas tem um efeito colateral: se o consumidor caiu depois de mandar o e-mail e antes do ack, o e-mail sai duas vezes. Essa garantia se chama **pelo menos uma vez** (at-least-once), e é por isso que consumidores precisam ser idempotentes (cap. 36).
+O passo 4 garante que a queda de um consumidor não perde mensagens, mas tem um efeito colateral: se o consumidor caiu depois de mandar o e-mail e antes do ack, o e-mail sai duas vezes. Essa garantia se chama **pelo menos uma vez** (at-least-once), e é por isso que consumidores precisam ser idempotentes (cap. 36).
 
 ### Consumidores concorrentes
 
-Vários consumidores na mesma fila dividem o trabalho. A conta de quantos você precisa é direta: se chegam 50 e-mails por segundo e cada envio leva 200 ms, há em média 50 × 0,2 = 10 envios em andamento, então são pelo menos 10 consumidores, mais uma folga. Para processar mais rápido, basta subir mais consumidores; o produtor nem fica sabendo.
+Vários consumidores na mesma fila dividem o trabalho. A conta de quantos você precisa é direta: se chegam 50 e-mails por segundo e cada envio leva 200 ms, pela lei de Little há em média 50 × 0,2 = 10 envios em andamento, então são pelo menos 10 consumidores, mais uma folga. Para processar mais rápido, basta subir mais consumidores; o produtor nem fica sabendo.
 
 ### Amortecedor de picos
 
@@ -68,7 +68,7 @@ Na cozinha de um restaurante, o garçom pendura a comanda no trilho e volta para
 
 ## Cuidado com
 
-- **Atualização:** "consumida e depois removida" pula o passo mais importante. A mensagem só sai depois do ack; até lá, pode ser entregue de novo, inclusive a outro consumidor. "Exatamente uma vez" de ponta a ponta só existe com consumidor idempotente.
+- **Atualização:** "consumida e depois removida" pula o passo mais importante. A mensagem só sai depois do ack; até lá, pode ser entregue de novo, inclusive a outro consumidor. O efeito de "exatamente uma vez", de ponta a ponta, depende de um consumidor idempotente.
 - **Fila não é banco de dados:** as mensagens têm retenção limitada (no SQS, no máximo 14 dias) e não servem para consultas.
 - **Kafka não é uma fila ponto a ponto clássica:** ler não apaga a mensagem; cada grupo de consumidores guarda a própria posição (offset) num log, como mostra o capítulo 45.
 
