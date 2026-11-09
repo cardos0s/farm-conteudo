@@ -27,23 +27,23 @@
 <path d="M185.4 44.3 C188.1 46.1, 189.9 47.4, 196 50 M185.4 44.3 C189.7 46.8, 193.4 48.9, 196 50 M196 50 C192.7 51.7, 189.7 54.7, 185.2 55.2 M196 50 C192 52.3, 188.9 53.6, 185.2 55.2" fill="none" stroke="#1e1e1e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M296 74 C296.4 83.8, 296.7 94.2, 296 106 M296 74 C294.9 80.3, 295.1 86.3, 296 106" fill="none" stroke="#1e1e1e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M301.4 95.3 C299.1 97.5, 297.2 102.3, 296 106 M301.4 95.3 C299.6 99.9, 296.7 103.5, 296 106 M296 106 C294 102.7, 293.3 101.2, 290.6 95.3 M296 106 C294.2 102, 291.9 99.6, 290.6 95.3" fill="none" stroke="#1e1e1e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="302.1" y="79" width="39.9" height="22" rx="4" fill="#fdfdfc"/>
-<text x="322" y="95.1" font-size="15" fill="#e03131" text-anchor="middle">miss</text>
+<rect x="301.1" y="78.4" width="41.9" height="23.2" rx="4" fill="#fdfdfc"/>
+<text x="322" y="95.4" font-size="16" fill="#e03131" text-anchor="middle">miss</text>
 <path d="M296 154 C295.2 167.9, 295.6 180, 296 186 M296 154 C296.3 163.5, 295.8 174.3, 296 186" fill="none" stroke="#1e1e1e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M301.4 175.3 C300.6 179.5, 298.4 182.5, 296 186 M301.4 175.3 C299.5 178.8, 297.9 182.2, 296 186 M296 186 C295.6 183.4, 293.1 181, 290.6 175.3 M296 186 C294.4 181.9, 291.6 177.8, 290.6 175.3" fill="none" stroke="#1e1e1e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="302.1" y="159" width="39.9" height="22" rx="4" fill="#fdfdfc"/>
-<text x="322" y="175.1" font-size="15" fill="#e03131" text-anchor="middle">miss</text>
+<rect x="301.1" y="158.4" width="41.9" height="23.2" rx="4" fill="#fdfdfc"/>
+<text x="322" y="175.4" font-size="16" fill="#e03131" text-anchor="middle">miss</text>
 <path d="M296 234 C294.3 240.9, 296 250.9, 296 266 M296 234 C296.3 244.5, 296.7 255.2, 296 266" fill="none" stroke="#1e1e1e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M301.4 255.3 C300.8 256.7, 300.3 259.6, 296 266 M301.4 255.3 C299.2 259.1, 298 262.2, 296 266 M296 266 C294 264.1, 293.3 260.5, 290.6 255.3 M296 266 C293.5 262.3, 292.1 257.6, 290.6 255.3" fill="none" stroke="#1e1e1e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="302.1" y="239" width="39.9" height="22" rx="4" fill="#fdfdfc"/>
-<text x="322" y="255.1" font-size="15" fill="#e03131" text-anchor="middle">miss</text>
+<rect x="301.1" y="238.4" width="41.9" height="23.2" rx="4" fill="#fdfdfc"/>
+<text x="322" y="255.4" font-size="16" fill="#e03131" text-anchor="middle">miss</text>
 <path d="M296 314 C297.5 323.2, 297.9 331.3, 296 344 M296 314 C295.6 323, 296.4 331.9, 296 344" fill="none" stroke="#1e1e1e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M301.4 333.3 C300 335.9, 298.4 340.1, 296 344 M301.4 333.3 C299.4 335.8, 298.7 339.7, 296 344 M296 344 C293.7 340.2, 291.4 335.2, 290.6 333.3 M296 344 C295.1 341.2, 293.4 338.1, 290.6 333.3" fill="none" stroke="#1e1e1e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="302.1" y="318" width="39.9" height="22" rx="4" fill="#fdfdfc"/>
-<text x="322" y="334.1" font-size="15" fill="#e03131" text-anchor="middle">miss</text>
-<text x="97" y="150" font-size="15" fill="#6741d9" text-anchor="middle">mais perto do usuário:</text><text x="97" y="168" font-size="15" fill="#6741d9" text-anchor="middle">mais rápido</text>
+<rect x="301.1" y="317.4" width="41.9" height="23.2" rx="4" fill="#fdfdfc"/>
+<text x="322" y="334.4" font-size="16" fill="#e03131" text-anchor="middle">miss</text>
+<text x="97" y="150" font-size="16" fill="#6741d9" text-anchor="middle">perto do usuário:</text><text x="97" y="169.2" font-size="16" fill="#6741d9" text-anchor="middle">mais rápido</text>
 <path d="M97 182 C96.1 233.6, 98.2 289.6, 97 322 M97 182 C97.1 221.9, 96.9 260.3, 97 322" fill="none" stroke="#6741d9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M102.4 311.3 C99.4 316.2, 98.3 318.7, 97 322 M102.4 311.3 C100.4 313.9, 99.1 317.3, 97 322 M97 322 C95.5 318.3, 92.9 314.5, 91.6 311.3 M97 322 C95.9 319.7, 94.7 316.6, 91.6 311.3" fill="none" stroke="#6741d9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M91.6 192.7 C93.8 189.8, 96 186.6, 97 182 M91.6 192.7 C93.1 190.4, 93.8 188, 97 182 M97 182 C98.5 184.8, 99.6 188.4, 102.4 192.7 M97 182 C98.3 185.6, 100.1 189, 102.4 192.7" fill="none" stroke="#6741d9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="97" y="346" font-size="15" fill="#6741d9" text-anchor="middle">mais perto do dado:</text><text x="97" y="364" font-size="15" fill="#6741d9" text-anchor="middle">fácil de invalidar</text>
+<text x="97" y="346" font-size="16" fill="#6741d9" text-anchor="middle">perto do dado:</text><text x="97" y="365.2" font-size="16" fill="#6741d9" text-anchor="middle">fácil de invalidar</text>
 </svg>

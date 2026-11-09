@@ -43,7 +43,7 @@ export default (d) => {
   const lfu = d.celulas(x0, y4, ["A", "C", "B"], { lado, destacadas: [1], tom: "vermelho" });
   ["4", "1", "9"].forEach((n, i) => {
     const c = lfu.celula(i);
-    d.circulo(c.cx, c.y, 26, n, { tom: "ciano", hachura: "solid", tam: 15 });
+    d.circulo(c.cx, c.y, 28, n, { tom: "ciano", hachura: "solid", tam: 16 });
   });
   d.texto(x0 + 3 * lado + 34, meio(y4) - 10, "sai C (1 acesso)", { tam: 17, cor: "vermelho" });
   d.texto(x0 + 3 * lado + 34, meio(y4) + 14, "o LRU tirou B (9 acessos)", { tam: 16, cor: "cinza" });

@@ -24,11 +24,11 @@ export default (d) => {
 
   d.seta([112, 48], camadas[0].esq);
   [...camadas, banco].forEach((c, i, todas) => {
-    if (i < todas.length - 1) d.seta(c.base, todas[i + 1].topo, { rotulo: "miss", desloc: 26, tamRotulo: 15, corRotulo: "vermelho" });
+    if (i < todas.length - 1) d.seta(c.base, todas[i + 1].topo, { rotulo: "miss", desloc: 26, tamRotulo: 16, corRotulo: "vermelho" });
   });
 
   // a régua: rapidez de um lado, facilidade de invalidar do outro
-  d.texto(97, 150, "mais perto do usuário:\nmais rápido", { ancora: "middle", tam: 15, cor: "violeta" });
+  d.texto(97, 150, "perto do usuário:\nmais rápido", { ancora: "middle", tam: 16, cor: "violeta" });
   d.seta([97, 182], [97, 322], { duasPontas: true, cor: "violeta" });
-  d.texto(97, 346, "mais perto do dado:\nfácil de invalidar", { ancora: "middle", tam: 15, cor: "violeta" });
+  d.texto(97, 346, "perto do dado:\nfácil de invalidar", { ancora: "middle", tam: 16, cor: "violeta" });
 };
