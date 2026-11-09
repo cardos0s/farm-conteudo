@@ -138,10 +138,10 @@ Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/
 
 Materiais longos para levar o público à newsletter, um por pasta em `ebooks/`, com o HTML (fonte) e o PDF pronto.
 
-- **Os 4 Craques do Pasto** (Rebanho): guia lúdico sobre Braquiária, Panicum, Tifton e Capim-elefante. Veja `ebooks/os-4-craques-do-pasto/README.md`.
+- **Os 4 capins mais usados no Brasil** (Rebanho): guia prático sobre Braquiária, Panicum, Tifton e Capim-elefante. Veja `ebooks/os-4-capins-mais-usados/README.md`.
 
 ```bash
-node scripts/ebook/gerar-pdf.mjs ebooks/os-4-craques-do-pasto
+node scripts/ebook/gerar-pdf.mjs ebooks/os-4-capins-mais-usados
 ```
 
 Gera o PDF de novo depois de editar o HTML (precisa do Playwright: `npm i --no-save playwright && npx playwright install chromium`).

@@ -1,5 +1,5 @@
 // Gera o PDF de um e-book a partir do index.html da pasta dele.
-// Uso: node scripts/ebook/gerar-pdf.mjs ebooks/os-4-craques-do-pasto
+// Uso: node scripts/ebook/gerar-pdf.mjs ebooks/os-4-capins-mais-usados
 // Precisa do Playwright com o Chromium (sem mexer no package.json):
 //   npm i --no-save playwright && npx playwright install chromium
 import fs from "node:fs";
