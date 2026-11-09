@@ -1,0 +1,2108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Os 4 Craques do Pasto</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="E-book do Rebanho: um guia lúdico e didático sobre Braquiária, Panicum, Tifton e Capim-elefante, os capins mais usados nas pastagens brasileiras.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@700;800;900&display=swap">
+<style>
+/* Conceito: álbum de figurinhas de futebol encontra a régua de manejo, na linha verde da marca Rebanho.
+   Páginas A4 como papel (iguais no claro e no escuro); colinas como divisores; Nunito nos títulos, Inter no texto. */
+:root {
+  --mesa: #DCE3D3;
+  --mesa-texto: #13241C;
+  --sombra: rgba(1, 61, 47, .16);
+  --papel: #FFFFFF;
+  --campo: #F3F6E3;
+  --campo-2: #E6ECD2;
+  --noite: #013D2F;
+  --noite-2: #035237;
+  --noite-3: #0B5E40;
+  --tinta: #13241C;
+  --tinta-suave: #5B6B62;
+  --sobre-noite: #F3F6E3;
+  --sobre-noite-suave: #A9C4B4;
+  --marca: #058149;
+  --ganho: #4DDF35;
+  --terra: #B8895A;
+  --terra-clara: #EAD3B4;
+  --verde-texto: #2E7D23;
+  --vermelho: #B23A36;
+  --ambar: #9A6510;
+  --amarelo: #F2C230;
+  --fundo-amarelo: #FBF1D2;
+  --fundo-vermelho: #F8E3E1;
+  --fundo-verde: #DDF0D6;
+  --destaque: #C9EDBE;
+  --linha: #DCE3D6;
+  --f-titulo: "Nunito", "Avenir Next", "Trebuchet MS", system-ui, sans-serif;
+  --f-texto: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --mesa: #0A1611; --mesa-texto: #F3F6E3; --sombra: rgba(0, 0, 0, .55); color-scheme: dark; }
+}
+:root[data-theme="dark"] { --mesa: #0A1611; --mesa-texto: #F3F6E3; --sombra: rgba(0, 0, 0, .55); color-scheme: dark; }
+
+@page { size: A4; margin: 0; }
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--mesa); color: var(--mesa-texto); font-family: var(--f-texto); font-size: 14.5px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4, p, ul, ol, dl, dd, figure, blockquote { margin: 0; }
+ul, ol { padding: 0; }
+a { color: inherit; }
+svg { display: block; }
+i.it { font-style: italic; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Livro e páginas ---------- */
+.livro { display: flex; flex-direction: column; align-items: center; gap: 28px; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.page { position: relative; width: 210mm; min-height: 297mm; padding: 15mm 16mm 22mm; background: var(--papel); color: var(--tinta); overflow: hidden; display: flex; flex-direction: column; gap: 5.5mm; border-radius: 6px; box-shadow: 0 2px 4px var(--sombra), 0 18px 40px var(--sombra); scroll-margin-top: 16px; }
+.page > * { position: relative; z-index: 1; flex-shrink: 0; }
+.page--suave { background: var(--campo); }
+.page--escura { background: var(--noite); color: var(--sobre-noite); }
+.page--colina::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 17mm; z-index: 0; pointer-events: none; background: no-repeat center bottom / 100% 100% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 64' preserveAspectRatio='none'%3E%3Cpath d='M0 40C110 20 220 30 330 27C470 22 560 42 680 31C730 27 770 23 800 25V64H0Z' fill='%23F3F6E3'/%3E%3Cpath d='M0 52C140 40 260 48 400 46C540 44 660 54 800 44V64H0Z' fill='%23E6ECD2'/%3E%3C/svg%3E"); }
+.page--suave.page--colina::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 64' preserveAspectRatio='none'%3E%3Cpath d='M0 40C110 20 220 30 330 27C470 22 560 42 680 31C730 27 770 23 800 25V64H0Z' fill='%23E6ECD2'/%3E%3Cpath d='M0 52C140 40 260 48 400 46C540 44 660 54 800 44V64H0Z' fill='%23D8E1C0'/%3E%3C/svg%3E"); }
+.folio { position: absolute; z-index: 2; left: 16mm; right: 16mm; bottom: 7.5mm; display: flex; align-items: center; justify-content: space-between; gap: 4mm; font: 600 9.5px/1 var(--f-texto); letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-suave); }
+.folio__n { display: grid; place-items: center; min-width: 25px; height: 25px; padding: 0 6px; border-radius: 999px; background: var(--noite); color: var(--sobre-noite); font: 900 12px/1 var(--f-titulo); letter-spacing: 0; }
+.page--escura .folio { color: var(--sobre-noite-suave); }
+.page--escura .folio__n { background: var(--sobre-noite); color: var(--noite); }
+
+/* ---------- Tipografia ---------- */
+.cabeca { display: flex; flex-direction: column; gap: 2.4mm; }
+.olho { display: flex; align-items: center; gap: 8px; font: 700 11px/1.2 var(--f-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--marca); }
+.olho::before { content: ""; width: 18px; height: 3px; border-radius: 3px; background: currentColor; }
+.page--escura .olho { color: var(--ganho); }
+.titulo { font: 900 33px/1.08 var(--f-titulo); letter-spacing: -0.015em; color: var(--noite); text-wrap: balance; }
+.page--escura .titulo { color: var(--sobre-noite); }
+.lide { font-size: 16px; line-height: 1.5; color: var(--tinta-suave); max-width: 66ch; text-wrap: pretty; }
+.sub { font: 800 16.5px/1.25 var(--f-titulo); color: var(--noite); text-wrap: balance; }
+.texto { display: flex; flex-direction: column; gap: 2.6mm; }
+.texto p, .bloco p { text-wrap: pretty; }
+.nota { font-size: 12px; line-height: 1.45; color: var(--tinta-suave); }
+.fonte { font-size: 10.5px; line-height: 1.4; color: var(--tinta-suave); }
+.forte { font: 800 16px/1.45 var(--f-titulo); color: var(--noite); text-wrap: pretty; }
+.duas { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; align-items: start; }
+.tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; align-items: stretch; }
+.duas > *, .tres > * { min-width: 0; }
+.empurra { margin-top: auto; }
+.ic { width: 22px; height: 22px; flex: none; }
+
+/* ---------- Caixas e falas ---------- */
+.caixa { display: flex; flex-direction: column; gap: 1.8mm; padding: 4mm 4.5mm; border-radius: 16px; background: var(--campo); }
+.caixa p, .caixa li { font-size: 13.5px; line-height: 1.5; }
+.caixa__tit { display: flex; align-items: center; gap: 8px; font: 800 14.5px/1.2 var(--f-titulo); color: var(--marca); }
+.caixa--amarelo { background: var(--fundo-amarelo); }
+.caixa--amarelo .caixa__tit { color: var(--ambar); }
+.caixa--amarelo .caixa__tit .ic { color: var(--amarelo); }
+.caixa--vermelho { background: var(--fundo-vermelho); }
+.caixa--vermelho .caixa__tit { color: var(--vermelho); }
+.caixa--linha { background: var(--papel); border: 1.5px solid var(--linha); }
+.caixa--noite { background: var(--noite); color: var(--sobre-noite); }
+.caixa--noite .caixa__tit { color: var(--ganho); }
+.page--suave .caixa--sabia { background: var(--papel); }
+.caixa p.fonte { font-size: 10.5px; line-height: 1.4; }
+.tabela--compacta td { padding-top: 1.35mm; padding-bottom: 1.35mm; }
+.abre__fala { margin-top: 7mm; max-width: 114mm; }
+.abre__fala .fala__avatar { background: var(--sobre-noite); }
+.fala { display: grid; grid-template-columns: 64px 1fr; gap: 15px; align-items: center; }
+.fala__avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--campo-2); }
+.page--suave .fala__avatar { background: var(--papel); }
+.fala__balao { position: relative; padding: 3mm 4.2mm; border-radius: 18px; background: var(--papel); border: 2px solid var(--noite); font: 700 14.5px/1.45 var(--f-titulo); color: var(--tinta); text-wrap: pretty; }
+.fala__balao::before { content: ""; position: absolute; left: -9px; top: 50%; width: 14px; height: 14px; margin-top: -7px; background: var(--papel); border-left: 2px solid var(--noite); border-bottom: 2px solid var(--noite); transform: rotate(45deg); }
+.fala__quem { display: block; margin-bottom: 1mm; font: 800 10px/1 var(--f-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--marca); }
+
+/* ---------- Camisa (número do craque) ---------- */
+.camisa { position: relative; display: inline-grid; place-items: center; width: 42px; height: 42px; flex: none; color: var(--noite); }
+.camisa svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.camisa b { position: relative; margin-top: 5px; font: 900 15px/1 var(--f-titulo); color: var(--sobre-noite); }
+.camisa--clara { color: var(--sobre-noite); }
+.camisa--clara b { color: var(--noite); }
+.camisa--grande { width: 54px; height: 54px; }
+.camisa--grande b { font-size: 19px; margin-top: 7px; }
+
+/* ---------- Listas ---------- */
+.escalacao { list-style: none; display: grid; gap: 2.4mm; }
+.escalacao li { display: grid; grid-template-columns: 42px 1fr; gap: 4mm; align-items: center; padding: 2.4mm 4mm; border-radius: 14px; background: var(--campo); }
+.escalacao__nome { font: 800 15.5px/1.2 var(--f-titulo); color: var(--noite); }
+.escalacao__pos { margin-left: 6px; font: 700 10px/1 var(--f-texto); letter-spacing: .12em; text-transform: uppercase; color: var(--marca); }
+.escalacao p + p { font-size: 13px; line-height: 1.4; color: var(--tinta-suave); margin-top: .5mm; }
+.lista { list-style: none; display: grid; gap: 2mm; }
+.lista li { display: grid; grid-template-columns: 20px 1fr; gap: 2.6mm; font-size: 13px; line-height: 1.45; }
+.lista .ic { width: 20px; height: 20px; color: var(--marca); }
+.lista--sim .ic { color: var(--verde-texto); }
+.lista--nao .ic { color: var(--vermelho); }
+.passos { list-style: none; display: grid; gap: 3.2mm; counter-reset: passo; }
+.passos > li { display: grid; grid-template-columns: 32px 1fr; gap: 3.5mm; align-items: start; counter-increment: passo; }
+.passos > li::before { content: counter(passo); display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--noite); color: var(--sobre-noite); font: 900 15px/1 var(--f-titulo); }
+.passos b { display: block; margin-bottom: .6mm; font: 800 14.5px/1.3 var(--f-titulo); color: var(--noite); }
+.passos p { font-size: 13.5px; line-height: 1.5; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; background: var(--campo); color: var(--noite); font: 700 11px/1.35 var(--f-texto); }
+.page--suave .chip { background: var(--papel); }
+
+/* ---------- Legenda de ícones ---------- */
+.legenda { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 5mm; }
+.legenda li { list-style: none; display: grid; grid-template-columns: 34px 1fr; gap: 3mm; align-items: center; }
+.legenda__ic { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: var(--campo); color: var(--marca); }
+.legenda__ic--amarelo { background: var(--fundo-amarelo); color: var(--amarelo); }
+.legenda__ic svg { width: 22px; height: 22px; }
+.legenda__ic--mimosa svg { width: 32px; height: 32px; }
+.legenda b { display: block; font: 800 13.5px/1.25 var(--f-titulo); color: var(--noite); }
+.legenda span { font-size: 12px; line-height: 1.35; color: var(--tinta-suave); }
+
+/* ---------- Ficha do craque ---------- */
+.ficha { display: flex; flex-direction: column; gap: 2.8mm; padding: 0 5mm 4.2mm; border-radius: 16px; background: var(--papel); color: var(--tinta); overflow: hidden; }
+.ficha__topo { display: flex; align-items: center; gap: 3mm; margin: 0 -5mm; padding: 3.2mm 5mm; background: var(--marca); color: var(--sobre-noite); }
+.ficha__posicao { font: 700 10px/1.2 var(--f-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--sobre-noite); }
+.ficha__nome { font: 900 21px/1.1 var(--f-titulo); color: var(--sobre-noite); }
+.ficha__dados { display: grid; }
+.ficha__dados > div { display: grid; grid-template-columns: 25mm 1fr; gap: 3mm; padding: 1.55mm 0; border-bottom: 1px solid var(--linha); }
+.ficha__dados dt { padding-top: 1px; font: 700 9.5px/1.4 var(--f-texto); letter-spacing: .08em; text-transform: uppercase; color: var(--tinta-suave); }
+.ficha__dados dd { font-size: 12.3px; line-height: 1.38; }
+.attr { list-style: none; display: grid; gap: 1.5mm; }
+.attr li { display: flex; align-items: center; justify-content: space-between; gap: 3mm; font: 600 12px/1.2 var(--f-texto); }
+.pips { display: inline-flex; gap: 3px; }
+.pips i { display: block; width: 14px; height: 8px; border-radius: 3px; background: var(--linha); }
+.pips[data-n="1"] i:nth-child(-n+1), .pips[data-n="2"] i:nth-child(-n+2), .pips[data-n="3"] i:nth-child(-n+3), .pips[data-n="4"] i:nth-child(-n+4), .pips[data-n="5"] i { background: var(--marca); }
+.ficha__nota { font-size: 10px; line-height: 1.35; color: var(--tinta-suave); }
+
+/* ---------- Tabelas ---------- */
+.tabela-wrap { overflow-x: auto; }
+.tabela { width: 100%; border-collapse: collapse; font-size: 12.5px; line-height: 1.4; }
+.tabela th { text-align: left; vertical-align: bottom; padding: 0 3mm 1.8mm 0; border-bottom: 2px solid var(--noite); font: 700 9.5px/1.3 var(--f-texto); letter-spacing: .09em; text-transform: uppercase; color: var(--tinta-suave); }
+.tabela td { padding: 2mm 3mm 2mm 0; border-bottom: 1px solid var(--linha); vertical-align: top; }
+.tabela th:last-child, .tabela td:last-child { padding-right: 0; }
+.tabela .nome { font: 800 13.5px/1.25 var(--f-titulo); color: var(--noite); }
+.tabela .nome small { display: block; margin-top: .4mm; font: italic 500 11px/1.3 var(--f-texto); color: var(--tinta-suave); }
+.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tabela td.num, .tabela th.num { text-align: right; }
+.tabela td.num { font-weight: 700; }
+
+/* ---------- Capa ---------- */
+.page--capa { padding: 14mm 16mm 0; gap: 0; }
+.capa__topo { display: flex; justify-content: space-between; align-items: center; gap: 4mm; }
+.capa__marca { display: flex; align-items: center; gap: 10px; font: 900 17px/1 var(--f-titulo); letter-spacing: .22em; text-transform: uppercase; color: var(--sobre-noite); }
+.capa__marca::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--ganho); }
+.capa__selo { font: 700 10px/1.2 var(--f-texto); letter-spacing: .16em; text-transform: uppercase; color: var(--sobre-noite-suave); }
+.capa__bloco { display: flex; flex-direction: column; gap: 5mm; margin-top: 17mm; }
+.capa__titulo { font: 900 72px/.98 var(--f-titulo); letter-spacing: -0.03em; color: var(--sobre-noite); }
+.capa__quatro { display: inline-grid; place-items: center; width: 1em; height: 1em; margin-right: .1em; border-radius: 50%; background: var(--ganho); color: var(--noite); font-size: .92em; line-height: 1; vertical-align: -0.1em; }
+.capa__sub { max-width: 128mm; font-size: 17px; line-height: 1.5; color: var(--sobre-noite); text-wrap: pretty; }
+.capa__arte { position: absolute; z-index: 0; left: 0; bottom: 0; width: 100%; height: auto; }
+.capa__rodape { position: absolute; z-index: 2; left: 16mm; right: 16mm; bottom: 7mm; display: flex; justify-content: space-between; gap: 4mm; font: 700 9.5px/1.3 var(--f-texto); letter-spacing: .12em; text-transform: uppercase; color: var(--sobre-noite-suave); }
+.g-camisa text { font: 900 15px var(--f-titulo); fill: var(--noite); }
+
+/* ---------- Sumário ---------- */
+.sumario { display: grid; grid-template-columns: 88mm 1fr; gap: 9mm; align-items: start; }
+.nq { white-space: nowrap; }
+.ciclo { display: flex; flex-direction: column; gap: 2.4mm; }
+.ciclo__passos { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; counter-reset: ciclo; }
+.ciclo__passos li { position: relative; display: flex; flex-direction: column; gap: 1.2mm; padding: 3.4mm 4mm 3.6mm; border-radius: 16px; background: var(--campo); counter-increment: ciclo; }
+.ciclo__passos li::before { content: counter(ciclo); display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--noite); color: var(--sobre-noite); font: 900 13px/1 var(--f-titulo); }
+.ciclo__passos li:not(:last-child)::after { content: ""; position: absolute; top: 50%; right: -5.2mm; width: 4.4mm; height: 4.4mm; margin-top: -2.2mm; background: var(--noite); clip-path: polygon(0 15%, 55% 15%, 55% 0, 100% 50%, 55% 100%, 55% 85%, 0 85%); }
+.ciclo__passos b { font: 900 14.5px/1.2 var(--f-titulo); color: var(--noite); }
+.ciclo__passos p { font-size: 12.5px; line-height: 1.45; }
+.g-med { font: 600 13px var(--f-texto); fill: var(--tinta-suave); }
+.abre__nome--longo { font-size: 52px; }
+.uso { display: flex; flex-direction: column; gap: 1.5mm; padding: 4mm; border-radius: 16px; background: var(--campo); min-width: 0; }
+.uso__n { font: 700 10px/1 var(--f-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--marca); }
+.uso h3 { font: 900 17px/1.2 var(--f-titulo); color: var(--noite); }
+.uso p { font-size: 12.5px; line-height: 1.45; }
+.uso .uso__regua { margin-top: auto; padding: 2.4mm 3mm; border-radius: 10px; background: var(--papel); font-weight: 600; color: var(--noite); }
+.figura { display: flex; flex-direction: column; gap: 2mm; }
+.figura > svg { width: 100%; height: auto; }
+.graficos figcaption { grid-column: 1 / -1; }
+.feno-grade { display: grid; grid-template-columns: 1fr 64mm; gap: 6mm; align-items: start; }
+.feno-grade > * { min-width: 0; }
+.feno-lado { display: flex; flex-direction: column; gap: 4mm; }
+.feno-lado > svg { width: 100%; height: auto; }
+.formacao-grade { display: grid; grid-template-columns: 1fr 80mm; gap: 6mm; align-items: start; }
+.formacao-grade > * { min-width: 0; }
+.formula .formula__nota { font-size: 11px; line-height: 1.45; color: var(--sobre-noite-suave); }
+.exemplos { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 2.4mm 6mm; }
+.exemplos li { display: flex; flex-direction: column; gap: .6mm; }
+.exemplos b { font: 800 13.5px/1.25 var(--f-titulo); color: var(--noite); }
+.exemplos span { font-size: 12.5px; line-height: 1.4; }
+.tira__notas th, .tira__notas td { vertical-align: middle; }
+.tira__sep th, .tira__sep td { border-top: 2px solid var(--noite); }
+.piquetes { display: flex; flex-direction: column; gap: 2mm; }
+.piquetes > svg { width: 100%; height: auto; }
+.g-titulo { font: 900 21px var(--f-titulo); fill: var(--noite); }
+.campo-svg { width: 100%; height: auto; }
+.campo-svg a:focus-visible { outline: 3px solid var(--ganho); }
+.g-nome { font: 800 12.5px var(--f-titulo); fill: var(--sobre-noite); }
+.g-num-camisa { font: 900 17px var(--f-titulo); fill: var(--noite); }
+.indice { display: flex; flex-direction: column; }
+.indice__grupo { margin: 4mm 0 1mm; font: 700 10px/1 var(--f-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--marca); }
+.indice__grupo:first-child { margin-top: 0; }
+.indice a { display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: 2.5mm; padding: 2.1mm 0; text-decoration: none; font: 800 14px/1.3 var(--f-titulo); color: var(--noite); }
+.indice a i { align-self: end; margin-bottom: 4px; border-bottom: 2px dotted var(--linha); }
+.indice a:hover span:first-child { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.indice a:focus-visible { outline: 3px solid var(--marca); outline-offset: 2px; border-radius: 6px; }
+.indice__pag { min-width: 22px; text-align: right; font: 900 14px/1 var(--f-titulo); color: var(--marca); font-variant-numeric: tabular-nums; }
+
+/* ---------- Aquecimento ---------- */
+.anatomia-grade { display: grid; grid-template-columns: 1fr 86mm; gap: 6mm; align-items: start; }
+.anatomia-grade > * { min-width: 0; }
+.blocos { display: flex; flex-direction: column; gap: 4.5mm; }
+.bloco { display: flex; flex-direction: column; gap: 1.3mm; }
+.bloco p { font-size: 13.8px; line-height: 1.52; }
+.anatomia { display: flex; flex-direction: column; gap: 2mm; }
+.anatomia > svg { width: 100%; height: auto; }
+.g-rot { font: 700 12px var(--f-texto); fill: var(--tinta); }
+.g-sub { font: 500 10.5px var(--f-texto); fill: var(--tinta-suave); }
+.g-grande { font: 900 17px var(--f-titulo); fill: var(--noite); }
+.g-linha { stroke: var(--tinta-suave); stroke-width: 1.2; fill: none; }
+.versus { display: grid; grid-template-columns: 1fr auto 1fr; gap: 3mm; align-items: stretch; }
+.versus__lado { display: flex; flex-direction: column; gap: 1.6mm; padding: 3.5mm 4mm; border-radius: 16px; background: var(--campo); }
+.versus__lado--colmo { background: var(--fundo-amarelo); }
+.versus__lado h3 { display: flex; align-items: center; gap: 8px; font: 900 16px/1.2 var(--f-titulo); color: var(--noite); }
+.versus__lado li { list-style: none; font-size: 12.8px; line-height: 1.45; }
+.versus__x { align-self: center; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--noite); color: var(--sobre-noite); font: 900 16px/1 var(--f-titulo); }
+.habitos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+.habito { display: flex; flex-direction: column; gap: 2mm; padding: 3mm 3mm 3.5mm; border-radius: 16px; background: var(--campo); min-width: 0; }
+.habito > svg { width: 100%; height: auto; border-radius: 10px; background: var(--papel); }
+.habito h3 { font: 900 16px/1.2 var(--f-titulo); color: var(--noite); }
+.habito p { font-size: 12.5px; line-height: 1.45; }
+.habito p b { color: var(--marca); }
+.numeros { display: grid; gap: 3.4mm; }
+.numero { display: grid; grid-template-columns: 21mm 1fr; gap: 4.5mm; align-items: start; padding-bottom: 3.4mm; border-bottom: 1px solid var(--linha); }
+.numero:last-child { padding-bottom: 0; border-bottom: 0; }
+.numero__sigla { display: grid; place-items: center; height: 13mm; border-radius: 14px; background: var(--noite); color: var(--ganho); font: 900 19px/1 var(--f-titulo); }
+.numero__sigla--longa { font-size: 13px; letter-spacing: .02em; }
+.numero__corpo { display: flex; flex-direction: column; gap: 1.5mm; min-width: 0; }
+.numero__corpo p { font-size: 13.5px; line-height: 1.5; }
+.numero__lado { display: grid; grid-template-columns: 1fr 88mm; gap: 5mm; align-items: center; }
+.numero__lado > * { min-width: 0; }
+.barra-ms { display: flex; height: 9mm; margin-top: .8mm; border-radius: 10px; overflow: hidden; font: 700 11.5px/1 var(--f-texto); }
+.barra-ms span { display: flex; align-items: center; gap: 6px; padding: 0 3mm; white-space: nowrap; }
+.barra-ms__ms { flex: 20 0 0; background: var(--marca); color: var(--sobre-noite); }
+.barra-ms__agua { flex: 80 0 0; background: var(--campo-2); color: var(--noite); }
+.barra-ms__agua svg { width: 16px; height: 16px; }
+
+/* ---------- Abertura de capítulo ---------- */
+.page--abre { padding: 15mm 16mm 0; }
+.abre__texto { display: flex; flex-direction: column; gap: 2.4mm; max-width: 124mm; }
+.abre__camisa { position: absolute; z-index: 0; top: 2mm; right: 9mm; font: 900 236px/1 var(--f-titulo); letter-spacing: -0.05em; color: transparent; -webkit-text-stroke: 3px var(--ganho); opacity: .5; pointer-events: none; }
+.abre__nome { margin-top: 2mm; font: 900 58px/1 var(--f-titulo); letter-spacing: -0.025em; color: var(--sobre-noite); }
+.abre__apelido { font: 800 22px/1.2 var(--f-titulo); color: var(--ganho); }
+.abre__lide { max-width: 114mm; margin-top: 1.5mm; font-size: 15.5px; line-height: 1.55; color: var(--sobre-noite); text-wrap: pretty; }
+.abre__arte { position: absolute; z-index: 0; left: 0; bottom: 0; width: 100%; height: auto; }
+.abre__ficha { position: absolute; z-index: 2; right: 14mm; bottom: 17mm; width: 99mm; box-shadow: 0 12px 32px rgba(0, 0, 0, .35); }
+.page--abre .folio { justify-content: flex-start; }
+.page--abre .folio__t { display: none; }
+
+/* ---------- Componentes dos capítulos ---------- */
+.pros { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.pros > div { display: flex; flex-direction: column; gap: 2.4mm; padding: 4mm; border-radius: 16px; background: var(--campo); min-width: 0; }
+.pros h3 { display: flex; align-items: center; gap: 8px; font: 900 15px/1.2 var(--f-titulo); color: var(--noite); }
+.pros h3 .ic { color: var(--verde-texto); }
+.pros > div + div h3 .ic { color: var(--vermelho); }
+.elenco { display: grid; grid-template-columns: 1fr 1fr; gap: 3.4mm; }
+.cultivar { display: flex; flex-direction: column; gap: 1.4mm; padding: 3.4mm 4mm; border-radius: 16px; background: var(--campo); min-width: 0; }
+.cultivar__topo { display: flex; justify-content: space-between; align-items: baseline; gap: 2mm; }
+.cultivar__nome { font: 900 16px/1.2 var(--f-titulo); color: var(--noite); }
+.cultivar__ano { font: 700 11px/1 var(--f-texto); color: var(--tinta-suave); font-variant-numeric: tabular-nums; }
+.cultivar__porte { font: 700 9.5px/1 var(--f-texto); letter-spacing: .12em; text-transform: uppercase; color: var(--marca); }
+.cultivar p { font-size: 12.4px; line-height: 1.45; }
+.cultivar__alturas { display: flex; flex-wrap: wrap; gap: 1.6mm; margin-top: auto; padding-top: .8mm; }
+.cultivar__alturas span { padding: 1mm 2.4mm; border-radius: 8px; background: var(--papel); font: 700 11px/1.3 var(--f-texto); color: var(--noite); font-variant-numeric: tabular-nums; }
+.formula { display: flex; flex-direction: column; gap: 2.2mm; padding: 4.2mm 4.6mm; border-radius: 16px; background: var(--noite); color: var(--sobre-noite); }
+.formula__tit { font: 800 14.5px/1.2 var(--f-titulo); color: var(--ganho); }
+.formula__conta { padding: 2.6mm 3mm; border-radius: 10px; background: var(--noite-2); font: 900 15px/1.35 var(--f-titulo); color: var(--sobre-noite); text-align: center; }
+.formula p { font-size: 12.8px; line-height: 1.5; }
+.formula b { color: var(--ganho); }
+.mini { display: flex; flex-direction: column; gap: 1.4mm; padding: 3.5mm 4mm; border-radius: 16px; background: var(--campo); }
+.mini h3 { font: 900 14.5px/1.2 var(--f-titulo); color: var(--noite); }
+.mini p { font-size: 12.4px; line-height: 1.45; }
+.mini__n { font: 900 26px/1 var(--f-titulo); color: var(--marca); }
+.graficos { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; }
+.grafico { display: flex; flex-direction: column; gap: 2.2mm; min-width: 0; }
+.grafico__tit { font: 800 13.5px/1.3 var(--f-titulo); color: var(--noite); }
+.grafico__area { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3.5mm; align-items: end; height: 40mm; padding-top: 7mm; border-bottom: 2px solid var(--noite); }
+.grafico__barra { position: relative; height: calc(var(--v) / var(--max) * 100%); border-radius: 7px 7px 0 0; background: var(--marca); }
+.grafico__barra--pb { background: var(--terra); }
+.grafico__barra span { position: absolute; left: 50%; bottom: 100%; transform: translate(-50%, -1.3mm); font: 800 12.5px/1 var(--f-texto); color: var(--tinta); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.grafico__eixo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3.5mm; text-align: center; font: 600 10.5px/1.3 var(--f-texto); color: var(--tinta-suave); font-variant-numeric: tabular-nums; }
+.grafico__eixo b { display: block; color: var(--noite); font-weight: 700; }
+
+/* ---------- Régua ---------- */
+.regua { display: flex; flex-direction: column; gap: 3.6mm; }
+.regua__grupo { display: flex; flex-direction: column; gap: 1.2mm; }
+.regua__gtit { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; margin-bottom: .8mm; font: 900 14px/1.2 var(--f-titulo); color: var(--noite); }
+.regua__gtit span { font: 600 10.5px/1.2 var(--f-texto); color: var(--tinta-suave); }
+.regua__linha { display: grid; grid-template-columns: 31mm 1fr; align-items: center; gap: 3mm; height: 6.15mm; }
+.regua__nome { font: 700 12px/1.15 var(--f-texto); color: var(--tinta); }
+.regua__nome small { display: block; font-weight: 500; font-size: 9.5px; color: var(--tinta-suave); }
+.regua__trilho { position: relative; height: 100%; border-radius: 6px; background-image: linear-gradient(90deg, var(--linha) 1px, transparent 1px), linear-gradient(90deg, var(--fundo-vermelho) 0 calc(var(--de) / 90 * 100%), var(--papel) calc(var(--de) / 90 * 100%) calc(var(--ate) / 90 * 100%), var(--fundo-amarelo) calc(var(--ate) / 90 * 100%) 100%); background-size: calc(100% / 9) 100%, 100% 100%; }
+.regua__faixa { position: absolute; top: 14%; bottom: 14%; left: calc(var(--de) / 90 * 100%); width: calc((var(--ate) - var(--de)) / 90 * 100%); display: flex; align-items: center; justify-content: space-between; padding: 0 5px; border-radius: 999px; background: var(--marca); color: var(--sobre-noite); font: 800 10.5px/1 var(--f-texto); font-variant-numeric: tabular-nums; }
+.regua__eixo { position: relative; height: 4mm; margin-left: calc(31mm + 3mm); font: 600 9.5px/1 var(--f-texto); color: var(--tinta-suave); font-variant-numeric: tabular-nums; }
+.regua__eixo span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+.regua__legenda { display: flex; flex-wrap: wrap; gap: 2mm 5mm; font: 600 11px/1.3 var(--f-texto); color: var(--tinta); }
+.regua__legenda span { display: inline-flex; align-items: center; gap: 6px; }
+.regua__legenda i { display: inline-block; width: 22px; height: 10px; border-radius: 999px; }
+
+/* ---------- Tira-teima ---------- */
+.tira { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12px; line-height: 1.4; }
+.tira thead th { padding: 0 2mm 2.5mm; text-align: left; vertical-align: bottom; }
+.tira thead th:first-child { padding-left: 0; }
+.tira__cab { display: flex; align-items: center; gap: 2.4mm; font: 900 14.5px/1.15 var(--f-titulo); color: var(--noite); }
+.tira tbody th { width: 26mm; padding: 2.2mm 2mm 2.2mm 0; border-top: 1px solid var(--linha); text-align: left; vertical-align: top; font: 700 9.5px/1.35 var(--f-texto); letter-spacing: .08em; text-transform: uppercase; color: var(--tinta-suave); }
+.tira tbody td { padding: 2.2mm 2mm; border-top: 1px solid var(--linha); vertical-align: top; }
+.tira tbody td:nth-child(odd) { background: var(--campo); }
+
+/* ---------- Perguntas (qual craque escalar) ---------- */
+.perguntas { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.pergunta { display: flex; flex-direction: column; gap: 2.4mm; padding: 4mm; border-radius: 16px; background: var(--campo); min-width: 0; scroll-margin-top: 16px; }
+.pergunta__n { font: 700 10px/1 var(--f-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--marca); }
+.pergunta__q { font: 900 16px/1.25 var(--f-titulo); color: var(--noite); text-wrap: balance; }
+.resposta { display: flex; flex-direction: column; gap: 1.2mm; padding: 2.4mm 3mm; border-radius: 12px; background: var(--papel); }
+.resposta__se { font-size: 12.5px; line-height: 1.35; color: var(--tinta); }
+.resposta__se b { font-weight: 700; }
+.resposta__vai { display: inline-flex; align-items: center; gap: 6px; font: 800 12.5px/1.25 var(--f-titulo); color: var(--marca); text-decoration: none; }
+.resposta__vai .ic { width: 16px; height: 16px; }
+.resposta--fim { background: var(--noite); }
+.resposta--fim .resposta__se { color: var(--sobre-noite-suave); }
+.resposta--fim .resposta__vai { color: var(--sobre-noite); }
+.resposta--fim .camisa { width: 30px; height: 30px; }
+.resposta--fim .camisa b { font-size: 11px; margin-top: 4px; }
+a.resposta__vai:focus-visible { outline: 3px solid var(--marca); outline-offset: 2px; border-radius: 4px; }
+
+/* ---------- Cartões vermelhos ---------- */
+.cartoes { display: grid; grid-template-columns: 1fr 1fr; gap: 3.6mm; }
+.cartao-erro { display: grid; grid-template-columns: 30px 1fr; gap: 3mm; padding: 3.6mm 4mm; border-radius: 16px; background: var(--fundo-vermelho); min-width: 0; }
+.cartao-erro .ic { width: 30px; height: 30px; color: var(--vermelho); }
+.cartao-erro h3 { margin-bottom: .8mm; font: 900 15px/1.25 var(--f-titulo); color: var(--vermelho); }
+.cartao-erro p { font-size: 12.8px; line-height: 1.45; }
+.cartao-erro--largo { grid-column: 1 / -1; }
+.verde { display: flex; flex-direction: column; gap: 3mm; padding: 4.2mm 4.6mm; border-radius: 16px; background: var(--fundo-verde); }
+.verde__tit { display: flex; align-items: center; gap: 8px; font: 900 15.5px/1.2 var(--f-titulo); color: var(--verde-texto); }
+.verde__tit .ic { width: 26px; height: 26px; color: var(--marca); }
+.verde__lista { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 6mm; }
+.verde__lista li { display: flex; flex-direction: column; gap: .6mm; }
+.verde__lista b { font: 800 14px/1.25 var(--f-titulo); color: var(--noite); }
+.verde__lista span { font-size: 12.8px; line-height: 1.45; }
+
+/* ---------- Jogos ---------- */
+.quiz { display: grid; grid-template-columns: 1fr 1fr; gap: 3.8mm 6mm; }
+.quiz__q { display: flex; flex-direction: column; gap: 1.6mm; min-width: 0; }
+.quiz__p { font: 800 14px/1.3 var(--f-titulo); color: var(--noite); text-wrap: pretty; }
+.quiz__p span { color: var(--marca); }
+.quiz__ops { display: grid; gap: 1.1mm; }
+.quiz__op { display: flex; gap: 8px; align-items: baseline; width: 100%; padding: 1.1mm 3mm; border: 1.5px solid transparent; border-radius: 10px; background: var(--campo); color: var(--tinta); font: 500 12.5px/1.35 var(--f-texto); text-align: left; cursor: pointer; }
+.quiz__op b { font: 900 13px/1 var(--f-titulo); color: var(--marca); }
+.quiz__op:hover { border-color: var(--marca); }
+.quiz__op:focus-visible { outline: 3px solid var(--marca); outline-offset: 2px; }
+.quiz__q.feita .quiz__op { cursor: default; }
+.quiz__q.feita .quiz__op:hover { border-color: transparent; }
+.quiz__op.certa, .quiz__q.feita .quiz__op.certa:hover { border-color: var(--verde-texto); background: var(--fundo-verde); }
+.quiz__op.errou, .quiz__q.feita .quiz__op.errou:hover { border-color: var(--vermelho); background: var(--fundo-vermelho); }
+.placar { display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; padding: 2mm 4mm; border-radius: 999px; background: var(--noite); color: var(--sobre-noite); font: 800 13px/1 var(--f-titulo); }
+.placar b { color: var(--ganho); }
+.caca-grade { display: grid; grid-template-columns: 118mm 1fr; gap: 7mm; align-items: start; }
+.caca-grade > * { min-width: 0; }
+.caca { display: grid; grid-template-columns: repeat(13, 1fr); width: 100%; aspect-ratio: 1; border: 2px solid var(--noite); border-radius: 14px; overflow: hidden; background: var(--papel); }
+.caca span { display: grid; place-items: center; border-right: 1px solid var(--linha); border-bottom: 1px solid var(--linha); font: 800 16px/1 var(--f-titulo); color: var(--tinta); cursor: pointer; user-select: none; -webkit-user-select: none; }
+.caca span:nth-child(13n) { border-right: 0; }
+.caca span.marcada, .caca span.achada { background: var(--destaque); color: var(--noite); }
+.caca--mini { width: 46mm; border-width: 1.5px; border-radius: 8px; }
+.caca--mini span { font-size: 7.5px; cursor: default; }
+.palavras { list-style: none; columns: 1; }
+.palavras li { padding: 1.2mm 0; font: 800 13px/1.2 var(--f-titulo); color: var(--noite); letter-spacing: .04em; }
+.gabarito { display: flex; flex-direction: column; gap: 3mm; padding: 4mm 4.5mm; border-radius: 16px; border: 1.5px dashed var(--terra); background: var(--papel); }
+.gabarito__corpo { display: grid; grid-template-columns: 1fr 46mm; gap: 5mm; align-items: start; }
+.gabarito__corpo > * { min-width: 0; }
+.gabarito ol { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1.2mm 4mm; font-size: 11.5px; line-height: 1.4; }
+.gabarito ol b { font-family: var(--f-titulo); font-weight: 900; color: var(--marca); }
+.botao { display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; padding: 2.2mm 4mm; border: 0; border-radius: 12px; background: var(--noite); color: var(--sobre-noite); font: 800 13px/1 var(--f-titulo); cursor: pointer; }
+.botao:focus-visible { outline: 3px solid var(--marca); outline-offset: 2px; }
+
+/* ---------- Dicionário e fontes ---------- */
+.dicionario { columns: 2; column-gap: 8mm; }
+.dicionario div { break-inside: avoid; padding: 1.5mm 0 1.7mm; border-bottom: 1px solid var(--linha); }
+.dicionario dt { font: 800 13.5px/1.3 var(--f-titulo); color: var(--noite); }
+.dicionario dd { font-size: 12px; line-height: 1.45; color: var(--tinta); }
+.fontes { list-style: none; display: grid; gap: 1.5mm; font-size: 11px; line-height: 1.45; color: var(--tinta-suave); }
+.fontes li { padding-left: 4mm; text-indent: -4mm; }
+.fontes b { color: var(--tinta); font-weight: 600; }
+
+/* ---------- Contracapa ---------- */
+.page--contra { padding: 0; justify-content: flex-start; align-items: center; text-align: center; }
+.contra__bloco { display: flex; flex-direction: column; align-items: center; gap: 5mm; margin-top: 70mm; padding: 0 20mm; }
+.contra__marca { display: flex; align-items: center; gap: 12px; font: 900 34px/1 var(--f-titulo); letter-spacing: .2em; text-transform: uppercase; color: var(--sobre-noite); }
+.contra__marca::before { content: ""; width: 18px; height: 18px; border-radius: 50%; background: var(--ganho); }
+.contra__tag { font: 800 22px/1.3 var(--f-titulo); color: var(--ganho); }
+.contra__txt { max-width: 120mm; font-size: 14.5px; line-height: 1.55; color: var(--sobre-noite); }
+.contra__arte { position: absolute; z-index: 0; left: 0; bottom: 0; width: 100%; height: auto; }
+
+/* ---------- Impressão e tela ---------- */
+@media print {
+  body { background: var(--papel); }
+  .livro { display: block; padding: 0; }
+  .page { width: 210mm; height: 297mm; min-height: 0; margin: 0; border-radius: 0; box-shadow: none; break-after: page; }
+  .page:last-child { break-after: auto; }
+  .so-tela { display: none !important; }
+}
+@media screen {
+  .so-impressao { display: none !important; }
+  .js .gabarito:not(.aberto) .gabarito__corpo { display: none; }
+}
+@media screen and (max-width: 840px) {
+  .livro { gap: 10px; padding-block: 0 24px; padding-left: 0; padding-right: 0; }
+  .page { width: 100%; min-height: 0; padding-block: 28px 66px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); gap: 18px; border-radius: 0; box-shadow: none; }
+  .folio { left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: 18px; }
+  .page--colina::after { height: 50px; }
+  .titulo { font-size: 28px; }
+  .duas, .tres, .pros, .sumario, .anatomia-grade, .elenco, .perguntas, .cartoes, .quiz, .graficos, .caca-grade, .gabarito__corpo, .numero__lado, .legenda { grid-template-columns: 1fr; }
+  .habitos { grid-template-columns: 1fr; }
+  .versus { grid-template-columns: 1fr; }
+  .versus__x { justify-self: center; }
+  .dicionario { columns: 1; }
+  .numero { grid-template-columns: 56px 1fr; gap: 12px; }
+  .numero__sigla { height: 44px; font-size: 16px; }
+  .numero__sigla--longa { font-size: 10px; }
+  .campo-svg { max-width: 300px; margin: 0 auto; }
+  .anatomia { max-width: 340px; }
+  .page--capa, .page--abre, .page--contra { padding-bottom: 0; }
+  .capa__bloco { margin-top: 26px; }
+  .capa__titulo { font-size: clamp(42px, 12.5vw, 70px); }
+  .capa__arte, .abre__arte, .contra__arte { position: relative; width: calc(100% + 2 * max(16px, env(safe-area-inset-left, 0px))); max-width: none; margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); margin-top: 8px; }
+  .capa__rodape { position: static; flex-direction: column; padding: 4px 0 22px; }
+  .abre__camisa { font-size: 150px; top: 8px; right: 8px; }
+  .abre__nome { font-size: 44px; }
+  .abre__ficha { position: static; width: auto; box-shadow: none; margin-bottom: 8px; }
+  .page--abre .folio { position: static; padding-bottom: 20px; }
+  .contra__bloco { margin-top: 40px; padding: 0 16px; }
+  .regua__linha { grid-template-columns: 96px 1fr; }
+  .regua__eixo { margin-left: calc(96px + 3mm); }
+  .regua__faixa { padding: 0; }
+  .regua__faixa b { position: absolute; top: 50%; transform: translateY(-50%); color: var(--tinta); font-size: 10px; }
+  .regua__faixa b:first-child { right: calc(100% + 3px); }
+  .regua__faixa b:last-child { left: calc(100% + 3px); }
+  .abre__arte { margin-top: -80px; }
+  .page--abre .abre__ficha { margin-top: -56px; }
+  .caca span { font-size: 13px; }
+  .caca--mini { width: 160px; }
+  .caca--mini span { font-size: 7px; }
+  .tira { min-width: 620px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <clipPath id="mimosa-cabeca"><path d="M60 22C83 22 93 38 93 58C93 73 88 83 82 89H38C32 83 27 73 27 58C27 38 37 22 60 22Z"/></clipPath>
+    <clipPath id="campo-clip"><rect x="6" y="6" width="308" height="488" rx="16"/></clipPath>
+  </defs>
+  <symbol id="mimosa" viewBox="0 0 120 120">
+    <g stroke="#13241C" stroke-width="3" stroke-linejoin="round">
+      <path d="M38 29C31 21 32 11 39 8C39 15 42 21 48 25Z" fill="#EAD3B4"/>
+      <path d="M82 29C89 21 88 11 81 8C81 15 78 21 72 25Z" fill="#EAD3B4"/>
+      <ellipse cx="19" cy="50" rx="15" ry="8.5" transform="rotate(-22 19 50)" fill="#FFFFFF"/>
+      <ellipse cx="101" cy="50" rx="15" ry="8.5" transform="rotate(22 101 50)" fill="#FFFFFF"/>
+    </g>
+    <ellipse cx="21" cy="50" rx="8" ry="4" transform="rotate(-22 21 50)" fill="#F0C2A6"/>
+    <ellipse cx="99" cy="50" rx="8" ry="4" transform="rotate(22 99 50)" fill="#F0C2A6"/>
+    <path d="M60 22C83 22 93 38 93 58C93 73 88 83 82 89H38C32 83 27 73 27 58C27 38 37 22 60 22Z" fill="#FFFFFF"/>
+    <g clip-path="url(#mimosa-cabeca)">
+      <path d="M66 17C84 17 99 30 99 50C88 55 77 50 71 43C65 36 62 26 66 17Z" fill="#13241C"/>
+      <path d="M21 69C30 66 37 73 35 81C31 88 22 87 19 80Z" fill="#13241C"/>
+    </g>
+    <path d="M60 22C83 22 93 38 93 58C93 73 88 83 82 89H38C32 83 27 73 27 58C27 38 37 22 60 22Z" fill="none" stroke="#13241C" stroke-width="3"/>
+    <path d="M53 24C54 16 60 14 61 20C63 14 69 15 68 23" fill="none" stroke="#13241C" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="46" cy="54" r="5.5" fill="#13241C"/><circle cx="47.8" cy="52.2" r="1.9" fill="#FFFFFF"/>
+    <circle cx="74" cy="54" r="5.5" fill="#13241C"/><circle cx="75.8" cy="52.2" r="1.9" fill="#FFFFFF"/>
+    <circle cx="37" cy="68" r="4.5" fill="#F0C2A6"/><circle cx="83" cy="68" r="4.5" fill="#F0C2A6"/>
+    <ellipse cx="60" cy="86" rx="29" ry="18" fill="#F0C2A6" stroke="#13241C" stroke-width="3"/>
+    <ellipse cx="50" cy="82" rx="3.4" ry="4.8" fill="#13241C"/><ellipse cx="70" cy="82" rx="3.4" ry="4.8" fill="#13241C"/>
+    <path d="M51 94Q60 100 69 94" fill="none" stroke="#13241C" stroke-width="3" stroke-linecap="round"/>
+    <path d="M70 96C80 97 91 93 101 84C95 94 84 100 71 100Z" fill="#058149" stroke="#13241C" stroke-width="2" stroke-linejoin="round"/>
+    <rect x="12" y="40" width="13" height="22" rx="6" fill="#058149" stroke="#13241C" stroke-width="3"/>
+    <path d="M19 62C20 78 26 88 36 93" fill="none" stroke="#13241C" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="38" cy="94" r="4.6" fill="#13241C"/>
+  </symbol>
+  <symbol id="fardo" viewBox="0 0 260 180">
+    <ellipse cx="130" cy="164" rx="112" ry="10" fill="#000000" opacity=".12"/>
+    <path d="M30 58L66 30H236L200 58Z" fill="#DCD28C"/>
+    <path d="M200 58L236 30V128L200 158Z" fill="#B3A960"/>
+    <rect x="30" y="58" width="170" height="100" rx="6" fill="#CBC077"/>
+    <g stroke="#A69B55" stroke-width="2" stroke-linecap="round"><path d="M44 76h18M78 70h22M120 82h16M150 72h24M52 104h20M96 110h18M138 100h24M60 136h22M112 140h18M160 128h20M178 92h12"/><path d="M84 40h18M140 44h22M176 38h18M212 60v14M220 96v16M210 120v12"/></g>
+    <g stroke="#7A5A33" stroke-width="5" stroke-linecap="round" fill="none"><path d="M86 58V158M146 58V158"/><path d="M86 58L122 30M146 58L182 30"/></g>
+  </symbol>
+  <symbol id="i-camisa" viewBox="0 0 40 40"><path fill="currentColor" d="M14 4L8 6.5L1.5 12.5L6.5 19L10 16.8V36.5H30V16.8L33.5 19L38.5 12.5L32 6.5L26 4C25 7 23 8.6 20 8.6S15 7 14 4Z"/></symbol>
+  <symbol id="i-lampada" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21.5h4"/><path d="M12 2.8a6.2 6.2 0 0 0-3.7 11.2c.7.5 1.2 1.3 1.2 2.2v.3h5v-.3c0-.9.5-1.7 1.2-2.2A6.2 6.2 0 0 0 12 2.8z"/></g></symbol>
+  <symbol id="i-regua" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7.5" y="2" width="9" height="20" rx="2"/><path d="M7.5 6h3.5M7.5 10h2.5M7.5 14h3.5M7.5 18h2.5"/></g></symbol>
+  <symbol id="i-cartao" viewBox="0 0 24 24"><rect x="6.5" y="3" width="11" height="16" rx="2" transform="rotate(14 12 11)" fill="currentColor"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L19.5 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-xis" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-seta" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-gota" viewBox="0 0 24 24"><path d="M12 3s6 6.6 6 11.2a6 6 0 0 1-12 0C6 9.6 12 3 12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-folha" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19C5 10 11 5 20 4c0 9-6 15-15 15z"/><path d="M5 19l8-8"/></g></symbol>
+  <symbol id="i-talo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20"/><path d="M8.5 7h7M8.5 13h7M8.5 19h7"/></g></symbol>
+</svg>
+
+<main class="livro">
+
+<!-- 1 · CAPA -->
+<section class="page page--escura page--capa" id="capa" aria-label="Capa">
+  <div class="capa__topo">
+    <span class="capa__marca">Rebanho</span>
+    <span class="capa__selo">E-book · Guia de pastagens</span>
+  </div>
+  <div class="capa__bloco">
+    <p class="olho">Escalação completa</p>
+    <h1 class="capa__titulo">Os <span class="capa__quatro">4</span>Craques<br>do Pasto</h1>
+    <p class="capa__sub">Braquiária, Panicum, Tifton e Capim-elefante: quem é quem, onde cada um joga melhor e como manejar o seu pasto sem errar.</p>
+  </div>
+  <svg class="capa__arte" viewBox="0 0 800 660" aria-hidden="true">
+    <circle cx="598" cy="206" r="132" fill="#035237"/>
+    <path d="M0 372C130 318 262 344 392 326C528 306 652 344 800 312V660H0Z" fill="#035237"/>
+    <path d="M0 452C150 414 286 444 428 432C566 420 684 444 800 424V660H0Z" fill="#0B5E40"/>
+    <g data-capim="elefante" data-x="112" data-y="530" data-h="462" data-w="150" data-k="1.15" data-semente="21" data-paleta="escuro"></g>
+    <g data-capim="touceira" data-x="490" data-y="530" data-h="300" data-w="180" data-k="1.05" data-semente="9" data-paleta="escuro"></g>
+    <g data-capim="braquiaria" data-x="292" data-y="534" data-h="212" data-w="180" data-k="1.05" data-semente="5" data-paleta="escuro"></g>
+    <g data-capim="tifton" data-x="636" data-y="534" data-h="76" data-w="150" data-k="1" data-semente="10" data-paleta="escuro"></g>
+    <use href="#mimosa" x="698" y="420" width="104" height="104"/>
+    <path d="M0 520C150 500 300 514 450 510C600 506 700 520 800 508V660H0Z" fill="#013D2F"/>
+    <g stroke="#B8895A" stroke-width="4" stroke-linecap="round"><path d="M0 564H800M0 590H800"/></g>
+    <g fill="#B8895A">
+      <rect x="22" y="546" width="12" height="70" rx="4"/><rect x="114" y="546" width="12" height="70" rx="4"/><rect x="206" y="546" width="12" height="70" rx="4"/>
+      <rect x="298" y="546" width="12" height="70" rx="4"/><rect x="390" y="546" width="12" height="70" rx="4"/><rect x="482" y="546" width="12" height="70" rx="4"/>
+      <rect x="574" y="546" width="12" height="70" rx="4"/><rect x="666" y="546" width="12" height="70" rx="4"/><rect x="758" y="546" width="12" height="70" rx="4"/>
+    </g>
+    <g class="g-camisa" transform="translate(90 10)"><use href="#i-camisa" width="44" height="44" color="#F3F6E3"/><text x="22" y="31" text-anchor="middle">1</text></g>
+    <g class="g-camisa" transform="translate(270 262)"><use href="#i-camisa" width="44" height="44" color="#F3F6E3"/><text x="22" y="31" text-anchor="middle">5</text></g>
+    <g class="g-camisa" transform="translate(468 134)"><use href="#i-camisa" width="44" height="44" color="#F3F6E3"/><text x="22" y="31" text-anchor="middle">9</text></g>
+    <g class="g-camisa" transform="translate(614 396)"><use href="#i-camisa" width="44" height="44" color="#F3F6E3"/><text x="22" y="31" text-anchor="middle">10</text></g>
+  </svg>
+  <div class="capa__rodape"><span>Com comentários da vaca Mimosa</span><span>Números de manejo da Embrapa</span></div>
+</section>
+
+<!-- 2 · APRESENTAÇÃO -->
+<section class="page page--colina" id="apresentacao" aria-label="Apresentação">
+  <header class="cabeca">
+    <p class="olho">Apresentação</p>
+    <h2 class="titulo">Antes do apito inicial</h2>
+  </header>
+  <div class="fala">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Muito prazer, eu sou a Mimosa! Passo umas oito horas por dia pastando, então de capim eu entendo. Vou comentar este jogo com você.</p>
+  </div>
+  <div class="texto">
+    <p>No Brasil, a produção de carne e de leite é baseada no pasto. É a comida que o gado colhe sozinho, todos os dias, e a forma mais barata de alimentar o rebanho. Por isso, escolher e manejar bem o capim pesa muito no resultado da fazenda.</p>
+    <p>Existem dezenas de capins no mercado, mas quatro grupos formam a base das pastagens brasileiras. Neste <span class="nq">e-book</span>, cada um é um craque com posição definida em campo:</p>
+  </div>
+  <ul class="escalacao">
+    <li><span class="camisa"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>5</b></span><div><p><span class="escalacao__nome">Braquiária</span><span class="escalacao__pos">Volante</span></p><p>Rústica e versátil. É a titular da maior parte dos pastos do país.</p></div></li>
+    <li><span class="camisa"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>9</b></span><div><p><span class="escalacao__nome">Panicum</span><span class="escalacao__pos">Centroavante</span></p><p>Produz muito quando é bem servido de adubo e de manejo.</p></div></li>
+    <li><span class="camisa"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>10</b></span><div><p><span class="escalacao__nome">Tifton</span><span class="escalacao__pos">Meia</span></p><p>Folha fina e de alta qualidade. O rei do feno.</p></div></li>
+    <li><span class="camisa"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>1</b></span><div><p><span class="escalacao__nome">Capim-elefante</span><span class="escalacao__pos">Goleiro</span></p><p>O gigante da capineira e da silagem, que segura o time na seca.</p></div></li>
+  </ul>
+  <p class="forte">Como no futebol, nenhum craque joga bem em todas as posições. Existe o capim certo para o seu solo, o seu clima e o seu objetivo. E o técnico desse time é você.</p>
+  <div class="cabeca">
+    <h3 class="sub">Como ler este e-book</h3>
+  </div>
+  <ul class="legenda">
+    <li><span class="legenda__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lampada"/></svg></span><p><b>Você sabia?</b><span>Curiosidades para contar na roda de conversa.</span></p></li>
+    <li><span class="legenda__ic legenda__ic--mimosa"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg></span><p><b>Mimosa comenta</b><span>O recado prático de quem come capim todo dia.</span></p></li>
+    <li><span class="legenda__ic legenda__ic--amarelo"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg></span><p><b>Cartão amarelo</b><span>Atenção: aqui mora um erro comum.</span></p></li>
+    <li><span class="legenda__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-regua"/></svg></span><p><b>Na régua</b><span>Números de manejo para levar ao campo.</span></p></li>
+  </ul>
+  <p class="nota">Os números de manejo são referências de pesquisa, principalmente da Embrapa. Solo, clima e adubação mudam o resultado: use como ponto de partida e ajuste com o seu técnico.</p>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">2</span></footer>
+</section>
+
+<!-- 3 · SUMÁRIO -->
+<section class="page page--colina" id="sumario" aria-label="Sumário">
+  <header class="cabeca">
+    <p class="olho">Sumário</p>
+    <h2 class="titulo">A escalação</h2>
+    <p class="lide">Toque num craque para ir direto ao capítulo dele. Antes do jogo tem aquecimento; depois, tira-teima, jogos e dicionário.</p>
+  </header>
+  <div class="sumario">
+    <svg class="campo-svg" viewBox="0 0 320 500" role="img" aria-label="Campo de futebol com a escalação: Panicum no ataque, Tifton no meio-campo, Braquiária na volância e Capim-elefante no gol.">
+      <rect x="6" y="6" width="308" height="488" rx="16" fill="#058149"/>
+      <g clip-path="url(#campo-clip)" fill="#0A8B51"><rect x="6" y="67" width="308" height="61"/><rect x="6" y="189" width="308" height="61"/><rect x="6" y="311" width="308" height="61"/><rect x="6" y="433" width="308" height="61"/></g>
+      <g fill="none" stroke="#F3F6E3" stroke-width="2.5" opacity=".9">
+        <rect x="22" y="22" width="276" height="456" rx="2"/>
+        <path d="M22 250H298"/>
+        <circle cx="160" cy="250" r="40"/>
+        <rect x="86" y="22" width="148" height="62"/><rect x="124" y="22" width="72" height="22"/>
+        <rect x="86" y="416" width="148" height="62"/><rect x="124" y="456" width="72" height="22"/>
+        <path d="M134 84a30 30 0 0 0 52 0M134 416a30 30 0 0 1 52 0"/>
+      </g>
+      <circle cx="160" cy="250" r="3.5" fill="#F3F6E3"/>
+      <a href="#panicum" aria-label="Panicum, camisa 9, página 10"><g transform="translate(160 100)"><use href="#i-camisa" x="-27" y="-30" width="54" height="54" color="#F3F6E3"/><text class="g-num-camisa" y="10" text-anchor="middle">9</text><rect x="-42" y="28" width="84" height="22" rx="11" fill="#013D2F"/><text class="g-nome" y="43.5" text-anchor="middle">Panicum</text></g></a>
+      <a href="#tifton" aria-label="Tifton, camisa 10, página 13"><g transform="translate(160 206)"><use href="#i-camisa" x="-27" y="-30" width="54" height="54" color="#F3F6E3"/><text class="g-num-camisa" y="10" text-anchor="middle">10</text><rect x="-34" y="28" width="68" height="22" rx="11" fill="#013D2F"/><text class="g-nome" y="43.5" text-anchor="middle">Tifton</text></g></a>
+      <a href="#braquiaria" aria-label="Braquiária, camisa 5, página 7"><g transform="translate(160 322)"><use href="#i-camisa" x="-27" y="-30" width="54" height="54" color="#F3F6E3"/><text class="g-num-camisa" y="10" text-anchor="middle">5</text><rect x="-49" y="28" width="98" height="22" rx="11" fill="#013D2F"/><text class="g-nome" y="43.5" text-anchor="middle">Braquiária</text></g></a>
+      <a href="#capim-elefante" aria-label="Capim-elefante, camisa 1, página 16"><g transform="translate(160 418)"><use href="#i-camisa" x="-27" y="-30" width="54" height="54" color="#F3F6E3"/><text class="g-num-camisa" y="10" text-anchor="middle">1</text><rect x="-62" y="28" width="124" height="22" rx="11" fill="#013D2F"/><text class="g-nome" y="43.5" text-anchor="middle">Capim-elefante</text></g></a>
+    </svg>
+    <nav class="indice" aria-label="Capítulos">
+      <p class="indice__grupo">Aquecimento</p>
+      <a href="#aquecimento"><span>Capim 101: o que todo capim tem</span><i></i><span class="indice__pag">4</span></a>
+      <p class="indice__grupo">Os craques</p>
+      <a href="#braquiaria"><span>1 · Braquiária, a volante</span><i></i><span class="indice__pag">7</span></a>
+      <a href="#panicum"><span>2 · Panicum, o centroavante</span><i></i><span class="indice__pag">10</span></a>
+      <a href="#tifton"><span>3 · Tifton, o meia</span><i></i><span class="indice__pag">13</span></a>
+      <a href="#capim-elefante"><span>4 · Capim-elefante, o goleiro</span><i></i><span class="indice__pag">16</span></a>
+      <p class="indice__grupo">Depois do jogo</p>
+      <a href="#regua"><span>A régua do pasto</span><i></i><span class="indice__pag">19</span></a>
+      <a href="#tira-teima"><span>Tira-teima: os 4 lado a lado</span><i></i><span class="indice__pag">20</span></a>
+      <a href="#escalar"><span>Qual craque escalar?</span><i></i><span class="indice__pag">21</span></a>
+      <a href="#formacao"><span>Formação do pasto em 6 jogadas</span><i></i><span class="indice__pag">22</span></a>
+      <a href="#cartoes"><span>7 cartões vermelhos</span><i></i><span class="indice__pag">23</span></a>
+      <a href="#jogos"><span>Teste de craque e caça-capim</span><i></i><span class="indice__pag">24</span></a>
+      <a href="#dicionario"><span>Dicionário do pasto</span><i></i><span class="indice__pag">26</span></a>
+      <a href="#apito-final"><span>Apito final e fontes</span><i></i><span class="indice__pag">27</span></a>
+    </nav>
+  </div>
+  <div class="caixa caixa--sabia">
+    <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lampada"/></svg>Por que esses quatro?</p>
+    <p>As braquiárias e os panicuns estão na maior parte dos pastos plantados do Brasil, e o capim Marandu é a gramínea mais cultivada do país. O Tifton e o capim-elefante são os mais procurados quando o capim vai virar feno, ir para o cocho ou para o silo.</p>
+  </div>
+  <div class="fala empurra">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Com pressa? Vá direto para a página 21. Em quatro perguntas, você descobre qual craque combina com o seu campo.</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">3</span></footer>
+</section>
+
+<!-- 4 · AQUECIMENTO 1 -->
+<section class="page page--colina" id="aquecimento" aria-label="Aquecimento: o que todo capim tem">
+  <header class="cabeca">
+    <p class="olho">Aquecimento · 1 de 3</p>
+    <h2 class="titulo">Capim é planta de sol (e veio da África)</h2>
+    <p class="lide">Antes de conhecer os craques, vale entender o que todos eles têm em comum.</p>
+  </header>
+  <div class="anatomia-grade">
+    <div class="blocos">
+      <article class="bloco">
+        <h3 class="sub">Uma família só</h3>
+        <p>Todos os capins deste <span class="nq">e-book</span> são gramíneas, a mesma família do milho, da cana e do arroz. Folhas compridas, caule com nós e raízes em cabeleira.</p>
+      </article>
+      <article class="bloco">
+        <h3 class="sub">Vieram da África</h3>
+        <p>A maior parte dos capins dos nossos pastos é de origem africana. Eles chegaram ao Brasil em épocas diferentes e se adaptaram tão bem ao clima tropical que viraram a base da pecuária.</p>
+      </article>
+      <article class="bloco">
+        <h3 class="sub">Motor turbo no calor</h3>
+        <p>São plantas do tipo C4. Com calor, sol forte e água, transformam luz em folha mais depressa do que as plantas de clima frio. Por isso o pasto dispara nas águas e quase para no inverno seco, quando faltam chuva, calor e horas de sol.</p>
+      </article>
+    </div>
+    <figure class="anatomia">
+      <svg viewBox="0 0 330 360" role="img" aria-label="Desenho de um capim com as partes indicadas: inflorescência, lâmina foliar, colmo, bainha, nó, perfilho e raízes.">
+        <rect x="0" y="292" width="330" height="68" rx="0" fill="#EAD3B4"/>
+        <path d="M0 292H330" stroke="#B8895A" stroke-width="2"/>
+        <g fill="none" stroke="#B8895A" stroke-width="1.7" stroke-linecap="round">
+          <path d="M120 294C112 312 104 326 92 346"/><path d="M123 294C120 318 116 334 120 352"/><path d="M127 294C134 314 140 328 152 344"/>
+          <path d="M130 294C146 306 160 312 172 330"/><path d="M117 294C104 302 94 306 80 322"/><path d="M110 322l-9 8M119 330l7 9M141 324l9 5M160 314l3 10"/>
+        </g>
+        <path d="M112 292C104 262 92 246 70 238C92 252 102 268 118 292Z" fill="#3E9F4A"/>
+        <path d="M116 292C112 262 112 240 104 214C118 240 122 266 122 292Z" fill="#79C062"/>
+        <path d="M136 292C142 262 154 246 178 238C156 252 146 268 142 292Z" fill="#3E9F4A"/>
+        <path d="M133 292C137 264 141 242 151 220C143 244 141 268 139 292Z" fill="#79C062"/>
+        <path d="M125 292C126 236 128 168 130 98" fill="none" stroke="#058149" stroke-width="7" stroke-linecap="round"/>
+        <path d="M126 246L127 214M128 196L129 166M129 150L130 124" stroke="#3E9F4A" stroke-width="11" stroke-linecap="round"/>
+        <ellipse cx="126" cy="248" rx="6.5" ry="2.8" fill="#035237"/>
+        <ellipse cx="128" cy="198" rx="6.5" ry="2.8" fill="#035237"/>
+        <ellipse cx="129.2" cy="152" rx="6.5" ry="2.8" fill="#035237"/>
+        <path d="M127 209C99 188 62 188 20 222C64 198 100 200 127 218Z" fill="#058149"/>
+        <path d="M129 161C160 137 204 139 250 176C204 153 162 155 129 170Z" fill="#3E9F4A"/>
+        <path d="M130 119C108 93 80 87 46 104C80 98 108 104 130 128Z" fill="#058149"/>
+        <path d="M130 98C131 82 132 64 133 40" fill="none" stroke="#C99A5B" stroke-width="2.6" stroke-linecap="round"/>
+        <g fill="none" stroke-linecap="round">
+          <g stroke="#C99A5B" stroke-width="5"><path d="M130.6 88C140 84 148 78 154 70"/><path d="M131.4 74C122 70 114 64 108 56"/><path d="M132.2 60C140 56 147 50 152 43"/><path d="M132.8 48C126 44 120 38 116 31"/></g>
+          <g stroke="#EAD3B4" stroke-width="1.6" stroke-dasharray="2.5 2.5"><path d="M130.6 88C140 84 148 78 154 70"/><path d="M131.4 74C122 70 114 64 108 56"/><path d="M132.2 60C140 56 147 50 152 43"/><path d="M132.8 48C126 44 120 38 116 31"/></g>
+        </g>
+        <path class="g-linha" d="M169 38H182M157 52L169 38"/>
+        <text class="g-rot" x="186" y="36">Inflorescência</text><text class="g-sub" x="186" y="49">o cacho de sementes</text>
+        <path class="g-linha" d="M220 114V100H232M220 114L214 148"/>
+        <text class="g-rot" x="236" y="98">Lâmina foliar</text><text class="g-sub" x="236" y="111">a folha</text>
+        <path class="g-linha" d="M134 206H196"/>
+        <text class="g-rot" x="200" y="204">Colmo</text><text class="g-sub" x="200" y="217">o talo, com nós</text>
+        <path class="g-linha" d="M134 232H196"/>
+        <text class="g-rot" x="200" y="236">Bainha</text><text class="g-sub" x="200" y="249">abraça o colmo</text>
+        <path class="g-linha" d="M134 250L150 264H196"/>
+        <text class="g-rot" x="200" y="268">Nó</text>
+        <path class="g-linha" d="M160 252L176 280H196"/>
+        <text class="g-rot" x="200" y="284">Perfilho</text>
+        <path class="g-linha" d="M166 326H196"/>
+        <text class="g-rot" x="200" y="324">Raízes</text><text class="g-sub" x="200" y="337">em cabeleira</text>
+      </svg>
+      <figcaption class="fonte">As partes de um capim (desenho esquemático, fora de escala).</figcaption>
+    </figure>
+  </div>
+  <div class="versus" aria-label="Comparação entre folha e colmo">
+    <div class="versus__lado">
+      <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--marca)"><use href="#i-folha"/></svg>Folha</h3>
+      <ul><li>Mais proteína</li><li>Mais fácil de digerir</li><li>É a parte que o gado escolhe</li></ul>
+    </div>
+    <span class="versus__x" aria-hidden="true">×</span>
+    <div class="versus__lado versus__lado--colmo">
+      <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--ambar)"><use href="#i-talo"/></svg>Colmo (talo)</h3>
+      <ul><li>Mais fibra</li><li>Digere devagar</li><li>Costuma sobrar no pasto</li></ul>
+    </div>
+  </div>
+  <div class="ciclo">
+    <h3 class="sub">O pasto funciona em ciclo</h3>
+    <ol class="ciclo__passos">
+      <li><b>Pastejo</b><p>O gado come as folhas de cima. A folha que sobra é o "painel solar" da planta.</p></li>
+      <li><b>Rebrota</b><p>Essa folha faz fotossíntese e as reservas da base ajudam a soltar folhas novas.</p></li>
+      <li><b>Ponto certo</b><p>O capim volta à altura de entrada e fica pronto para um novo pastejo.</p></li>
+    </ol>
+  </div>
+  <div class="fala empurra">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Folha é filé, colmo é osso. Todo bom manejo busca a mesma coisa: muita folha e pouco talo no meu prato.</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">4</span></footer>
+</section>
+
+<!-- 5 · AQUECIMENTO 2 -->
+<section class="page page--colina" aria-label="Aquecimento: jeitos de crescer">
+  <header class="cabeca">
+    <p class="olho">Aquecimento · 2 de 3</p>
+    <h2 class="titulo">Cada craque ocupa o campo de um jeito</h2>
+    <p class="lide">O jeito de crescer muda a altura de pastejo, a forma de plantar e até a proteção do solo.</p>
+  </header>
+  <div class="habitos">
+    <figure class="habito">
+      <svg viewBox="0 0 200 170" role="img" aria-label="Capim em touceira: uma moita que cresce para cima.">
+        <rect y="136" width="200" height="34" fill="#EAD3B4"/><path d="M0 136H200" stroke="#B8895A" stroke-width="2"/>
+        <g data-capim="touceira" data-x="100" data-y="137" data-h="118" data-w="120" data-k=".72" data-n="44" data-flor="0" data-semente="3" data-paleta="claro"></g>
+      </svg>
+      <figcaption><h3>Touceira</h3><p>Cresce em moitas, para cima. <b>Ex.:</b> Panicum, capim-elefante e Marandu.</p></figcaption>
+    </figure>
+    <figure class="habito">
+      <svg viewBox="0 0 200 170" role="img" aria-label="Capim decumbente: colmos deitados que soltam raízes nos nós e depois sobem.">
+        <rect y="136" width="200" height="34" fill="#EAD3B4"/><path d="M0 136H200" stroke="#B8895A" stroke-width="2"/>
+        <g data-capim="decumbens" data-x="100" data-y="137" data-h="96" data-w="190" data-k=".72" data-semente="7" data-paleta="claro"></g>
+      </svg>
+      <figcaption><h3>Decumbente</h3><p>Os colmos deitam, encostam no chão e soltam raízes nos nós. <b>Ex.:</b> braquiária decumbens.</p></figcaption>
+    </figure>
+    <figure class="habito">
+      <svg viewBox="0 0 200 170" role="img" aria-label="Capim rasteiro: estolões sobre o chão e rizomas debaixo da terra formando um tapete.">
+        <rect y="122" width="200" height="48" fill="#EAD3B4"/><path d="M0 122H200" stroke="#B8895A" stroke-width="2"/>
+        <g data-capim="tifton" data-x="100" data-y="123" data-h="62" data-w="190" data-k=".72" data-solo="1" data-flor="0" data-semente="12" data-paleta="claro"></g>
+      </svg>
+      <figcaption><h3>Rasteiro</h3><p>Espalha por estolões, sobre o chão, e rizomas, debaixo da terra: vira um tapete. <b>Ex.:</b> Tifton e humidícola.</p></figcaption>
+    </figure>
+  </div>
+  <div class="duas">
+    <div class="texto">
+      <h3 class="sub">Por que isso importa?</h3>
+      <ul class="lista">
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg><span>Capim de touceira precisa sair do pastejo mais alto. Rapado, a moita enfraquece e o chão fica descoberto entre uma touceira e outra.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg><span>Capim rasteiro aguenta pastejo mais baixo e cobre melhor o solo, o que ajuda contra erosão e plantas daninhas.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg><span>Touceira se planta por semente ou por colmo. O tapete de Tifton se planta por mudas.</span></li>
+      </ul>
+    </div>
+    <div class="caixa caixa--noite">
+      <p class="caixa__tit">O perfilho é o reserva do time</p>
+      <p>Perfilho é cada brotação nova que nasce na base da planta. Pasto bom tem muitos perfilhos: quando um envelhece ou é comido, outro entra em campo.</p>
+      <p>Pastejar na altura certa deixa a luz chegar na base da touceira e estimula novos perfilhos.</p>
+    </div>
+  </div>
+  <div class="caixa caixa--sabia">
+    <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lampada"/></svg>Você sabia?</p>
+    <p>Uma cultivar nova de capim pode levar até 20 anos para chegar ao mercado. São etapas de coleta, cruzamentos, testes em vários estados e avaliação com animais, até o registro no Ministério da Agricultura.</p>
+  </div>
+  <div class="fala">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Pasto ralo, com chão aparecendo, é sinal de que faltam perfilhos. E onde o capim não ocupa, a planta daninha ocupa.</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">5</span></footer>
+</section>
+
+<!-- 6 · AQUECIMENTO 3 -->
+<section class="page page--colina" aria-label="Aquecimento: cinco números">
+  <header class="cabeca">
+    <p class="olho">Aquecimento · 3 de 3</p>
+    <h2 class="titulo">Cinco números para entender qualquer capim</h2>
+    <p class="lide">Estas siglas aparecem no laudo da semente, na conversa com o técnico e neste <span class="nq">e-book</span>. São mais simples do que parecem.</p>
+  </header>
+  <div class="numeros">
+    <article class="numero">
+      <p class="numero__sigla">MS</p>
+      <div class="numero__corpo">
+        <h3 class="sub">Matéria seca</h3>
+        <p>É o que sobra do capim depois de tirar toda a água. O capim verde tem de 70% a 90% de água; o que alimenta o boi está na matéria seca. Por isso a produção de capim é medida em toneladas de MS por hectare por ano (t MS/ha/ano).</p>
+        <div class="barra-ms" role="img" aria-label="Exemplo: 100 kg de capim verde com 20% de matéria seca têm 20 kg de matéria seca e 80 kg de água.">
+          <span class="barra-ms__ms">20 kg de MS</span>
+          <span class="barra-ms__agua"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-gota"/></svg>80 kg de água</span>
+        </div>
+        <p class="fonte">Exemplo: 100 kg de capim verde com 20% de MS. A BRS Capiaçu cortada aos 50 dias tem só 9,3% de MS (Embrapa Gado de Leite).</p>
+      </div>
+    </article>
+    <article class="numero">
+      <p class="numero__sigla">PB</p>
+      <div class="numero__corpo">
+        <h3 class="sub">Proteína bruta</h3>
+        <p>É o "músculo" da dieta. Folha nova tem mais proteína que folha velha e que colmo. Abaixo de 7% de PB, os microrganismos do rúmen trabalham mal e o animal come menos.</p>
+      </div>
+    </article>
+    <article class="numero">
+      <p class="numero__sigla numero__sigla--longa">DIGEST.</p>
+      <div class="numero__corpo">
+        <h3 class="sub">Digestibilidade</h3>
+        <p>Quanto do capim o animal consegue aproveitar. Capim passado, cheio de talo, enche a barriga e engorda pouco.</p>
+      </div>
+    </article>
+    <article class="numero">
+      <p class="numero__sigla">UA</p>
+      <div class="numero__corpo">
+        <h3 class="sub">Unidade animal</h3>
+        <p>Um animal-padrão de 450 kg de peso vivo. Lotação de 2 UA/ha quer dizer 900 kg de animal por hectare. Um bezerro desmamado de 225 kg vale meia UA.</p>
+      </div>
+    </article>
+    <article class="numero">
+      <p class="numero__sigla">ha</p>
+      <div class="numero__corpo numero__lado">
+        <div class="numero__corpo">
+          <h3 class="sub">Hectare</h3>
+          <p>A área de um quadrado de 100 m por 100 m: 10.000 m². Dá cerca de 1,4 campo de futebol oficial.</p>
+        </div>
+        <svg viewBox="0 0 380 200" role="img" aria-label="Comparação em escala: um hectare, quadrado de 100 por 100 metros, ao lado de um campo de futebol oficial de 105 por 68 metros.">
+          <rect x="6" y="20" width="160" height="160" rx="4" fill="#EAD3B4" stroke="#B8895A" stroke-width="2"/>
+          <text class="g-titulo" x="86" y="94" text-anchor="middle">1 hectare</text>
+          <text class="g-med" x="86" y="116" text-anchor="middle">100 m × 100 m</text>
+          <text class="g-med" x="86" y="134" text-anchor="middle">10.000 m²</text>
+          <g transform="translate(200 46)">
+            <rect width="168" height="108.8" rx="3" fill="#058149"/>
+            <g fill="#0A8B51"><rect x="21" width="21" height="108.8"/><rect x="63" width="21" height="108.8"/><rect x="105" width="21" height="108.8"/><rect x="147" width="21" height="108.8" rx="3"/></g>
+            <g fill="none" stroke="#F3F6E3" stroke-width="1.5"><rect x="4" y="4" width="160" height="100.8"/><path d="M84 4V104.8"/><circle cx="84" cy="54.4" r="14.6"/><rect x="4" y="22.2" width="26.4" height="64.4"/><rect x="137.6" y="22.2" width="26.4" height="64.4"/></g>
+          </g>
+          <text class="g-med" x="284" y="176" text-anchor="middle">Campo: 105 m × 68 m</text>
+          <text class="g-med" x="284" y="194" text-anchor="middle">7.140 m²</text>
+        </svg>
+      </div>
+    </article>
+  </div>
+  <div class="fala empurra">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Pasto cheio não é o mesmo que pasto bom. Se for só talo velho, eu como, como e ganho pouco peso.</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">6</span></footer>
+</section>
+
+<!-- 7 · CAPÍTULO 1: BRAQUIÁRIA -->
+<section class="page page--escura page--abre" id="braquiaria" aria-label="Capítulo 1: Braquiária">
+  <span class="abre__camisa" aria-hidden="true">5</span>
+  <div class="abre__texto">
+    <p class="olho">Capítulo 1 · Volante · Camisa 5</p>
+    <h2 class="abre__nome">Braquiária</h2>
+    <p class="abre__apelido">A carregadora de piano</p>
+    <p class="abre__lide">Ela não tem a maior produção nem a folha mais nobre da turma. Mas joga em quase todo campo, aguenta solo mais fraco e raramente deixa o time na mão. Por isso é a titular da maior parte dos pastos do Brasil.</p>
+    <div class="fala abre__fala">
+      <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+      <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>A braquiária é o arroz com feijão do meu cardápio: tem em quase todo pasto do Brasil.</p>
+    </div>
+  </div>
+  <svg class="abre__arte" viewBox="0 0 840 780" aria-hidden="true">
+    <path d="M0 500C160 452 300 480 440 466C600 450 720 486 840 460V780H0Z" fill="#035237"/>
+    <path d="M0 588C140 560 280 580 420 574C560 568 700 588 840 572V780H0Z" fill="#0B5E40"/>
+    <g data-capim="braquiaria" data-x="206" data-y="630" data-h="470" data-w="330" data-k="1.55" data-n="58" data-semente="31" data-paleta="escuro"></g>
+    <path d="M0 618C160 604 300 614 440 612C600 610 720 620 840 608V780H0Z" fill="#013D2F"/>
+  </svg>
+  <article class="ficha abre__ficha" aria-label="Ficha da Braquiária">
+    <header class="ficha__topo">
+      <span class="camisa camisa--clara camisa--grande"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>5</b></span>
+      <div><p class="ficha__posicao">Ficha do craque · Volante</p><h3 class="ficha__nome">Braquiária</h3></div>
+    </header>
+    <dl class="ficha__dados">
+      <div><dt>Nome científico</dt><dd><i class="it">Urochloa</i> spp. (antes <i class="it">Brachiaria</i>)</dd></div>
+      <div><dt>Origem</dt><dd>África</dd></div>
+      <div><dt>Apelidos</dt><dd>Braquiarão, braquiarinha, humidícola</dd></div>
+      <div><dt>Porte</dt><dd>De 0,4 m (BRS Ipyporã) a 2,5 m (Marandu florido)</dd></div>
+      <div><dt>Plantio</dt><dd>Por semente</dd></div>
+      <div><dt>Joga melhor em</dt><dd>Pastejo de cria, recria e engorda; integração lavoura-pecuária</dd></div>
+    </dl>
+    <ul class="attr">
+      <li>Produção <span class="pips" data-n="3" role="img" aria-label="3 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Valor nutritivo <span class="pips" data-n="3" role="img" aria-label="3 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Rusticidade <span class="pips" data-n="5" role="img" aria-label="5 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Facilidade de manejo <span class="pips" data-n="5" role="img" aria-label="5 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Facilidade de plantio <span class="pips" data-n="5" role="img" aria-label="5 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+    </ul>
+    <p class="ficha__nota">Notas de 1 a 5, comparando os quatro craques entre si.</p>
+  </article>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">7</span></footer>
+</section>
+
+<!-- 8 · BRAQUIÁRIA: A FAMÍLIA -->
+<section class="page page--colina" aria-label="Braquiária: as cultivares">
+  <header class="cabeca">
+    <p class="olho">Capítulo 1 · Braquiária</p>
+    <h2 class="titulo">Uma família grande, cada um com seu talento</h2>
+    <p class="lide">Braquiária é o nome de um grupo de espécies. Escolher a cultivar certa faz tanta diferença quanto escolher entre braquiária e outro capim.</p>
+  </header>
+  <div class="tabela-wrap">
+    <table class="tabela">
+      <thead><tr><th scope="col" style="width:34mm">Cultivar</th><th scope="col">Destaque</th><th scope="col" style="width:46mm">Joga melhor em</th></tr></thead>
+      <tbody>
+        <tr><td class="nome">Marandu<small>U. brizantha · o braquiarão</small></td><td>Robusta e resistente às cigarrinhas mais comuns do Cerrado. É a gramínea mais cultivada do Brasil.</td><td>Solo de média a boa fertilidade e bem drenado</td></tr>
+        <tr><td class="nome">Xaraés<small>U. brizantha</small></td><td>Alta produção de folhas. Foi coletada no Burundi, na África, e lançada pela Embrapa em 2003.</td><td>Solo de média fertilidade para cima</td></tr>
+        <tr><td class="nome">BRS Piatã<small>U. brizantha</small></td><td>Boa produção e bom valor nutritivo. Ótima para diversificar a fazenda junto com o Marandu.</td><td>Solo de média fertilidade</td></tr>
+        <tr><td class="nome">BRS Paiaguás<small>U. brizantha</small></td><td>A brizantha mais rústica. Fica verde por mais tempo na seca. Lançada em 2013.</td><td>Solo de média fertilidade e integração lavoura-pecuária</td></tr>
+        <tr><td class="nome">BRS Ipyporã<small>híbrido de braquiárias</small></td><td>Resiste a todas as espécies de cigarrinha-das-pastagens e tem 13% mais proteína que o Marandu.</td><td>Solo bem drenado, de média fertilidade</td></tr>
+        <tr><td class="nome">Decumbens<small>U. decumbens · a braquiarinha</small></td><td>Muito rústica e cobre bem o chão. Sofre com a cigarrinha e pode causar fotossensibilização (lesões de pele que pioram ao sol) em bezerros e ovinos.</td><td>Solo de baixa fertilidade</td></tr>
+        <tr><td class="nome">Humidícola<small>U. humidicola · ex.: BRS Tupi</small></td><td>Rasteira, forma tapete. É a braquiária que mais tolera solo encharcado, mas tem valor nutritivo menor.</td><td>Baixadas e solos mal drenados</td></tr>
+        <tr><td class="nome">Ruziziensis<small>U. ruziziensis</small></td><td>Folha macia, de boa qualidade e fácil de dessecar. Sensível à cigarrinha.</td><td>Integração lavoura-pecuária e palhada para plantio direto</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="duas">
+    <div class="caixa caixa--sabia">
+      <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lampada"/></svg>Você sabia?</p>
+      <p>Marandu quer dizer "novidade" em guarani. O capim veio de uma estação de pesquisa no Zimbábue, chegou ao Brasil por volta de 1967 pelas mãos de um produtor de sementes, foi cultivado por anos em Ibirarema (SP) e lançado pela Embrapa em 1984.</p>
+    </div>
+    <div class="caixa caixa--amarelo">
+      <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg>Cartão amarelo: cigarrinha</p>
+      <p>As ninfas da cigarrinha-das-pastagens se escondem numa espuma branca na base da planta, e os adultos sugam a seiva. O pasto amarela e seca em manchas. Cultivares resistentes ajudam: o BRS Ipyporã resiste a todas as espécies, e o Marandu, às mais comuns do Cerrado.</p>
+    </div>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">8</span></footer>
+</section>
+
+<!-- 9 · BRAQUIÁRIA: MANEJO -->
+<section class="page page--colina" aria-label="Braquiária: manejo">
+  <header class="cabeca">
+    <p class="olho">Capítulo 1 · Braquiária</p>
+    <h2 class="titulo">Como fazer a braquiária jogar bem</h2>
+  </header>
+  <div class="pros">
+    <div>
+      <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Ponto forte</h3>
+      <ul class="lista lista--sim">
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg><span>Aceita solo ácido e de fertilidade média; algumas, até solo fraco.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg><span>Semente fácil de achar e pasto fácil de formar.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg><span>Cobre bem o chão e perdoa erros de manejo melhor que os outros craques.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg><span>Combina com lavoura na integração lavoura-pecuária.</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-xis"/></svg>Ponto fraco</h3>
+      <ul class="lista lista--nao">
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-xis"/></svg><span>Produz menos e tem menos proteína que Panicum e Tifton bem adubados.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-xis"/></svg><span>O Marandu não tolera solo encharcado.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-xis"/></svg><span>Algumas cultivares sofrem com a cigarrinha.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-xis"/></svg><span>Uma braquiária só na fazenda inteira vira alvo fácil de praga e doença.</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="duas">
+    <div class="caixa caixa--linha">
+      <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-regua"/></svg>Na régua: pastejo contínuo</p>
+      <table class="tabela tabela--compacta">
+        <thead><tr><th scope="col">Cultivar</th><th scope="col" class="num">Máxima</th><th scope="col" class="num">Mínima</th></tr></thead>
+        <tbody>
+          <tr><td class="nome">Xaraés</td><td class="num">40 cm</td><td class="num">20 cm</td></tr>
+          <tr><td class="nome">BRS Piatã</td><td class="num">40 cm</td><td class="num">20 cm</td></tr>
+          <tr><td class="nome">Marandu</td><td class="num">35 cm</td><td class="num">20 cm</td></tr>
+          <tr><td class="nome">BRS Paiaguás</td><td class="num">35 cm</td><td class="num">20 cm</td></tr>
+          <tr><td class="nome">BRS Ipyporã</td><td class="num">35 cm</td><td class="num">20 cm</td></tr>
+          <tr><td class="nome">Decumbens</td><td class="num">30 cm</td><td class="num">15 cm</td></tr>
+          <tr><td class="nome">BRS Tupi</td><td class="num">20 cm</td><td class="num">10 cm</td></tr>
+        </tbody>
+      </table>
+      <p class="fonte">Fonte: Embrapa Gado de Corte, Régua de manejo de pastagens (2017).</p>
+    </div>
+    <div class="texto">
+      <h3 class="sub">Como usar a régua</h3>
+      <p>No pastejo contínuo, o gado fica sempre no mesmo pasto. A altura do capim diz quando mexer na lotação:</p>
+      <ul class="lista">
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg><span>Chegou na altura <b>máxima</b>: coloque mais animais.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg><span>Chegou na <b>mínima</b>: tire animais ou deixe o pasto descansar.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg><span>Entre as duas: o pasto está no ponto.</span></li>
+      </ul>
+      <p>No pastejo rotacionado, uma referência da Embrapa Rondônia para Marandu e BRS Piatã é colocar o gado com 35 cm e tirar com 20 cm.</p>
+    </div>
+  </div>
+  <div class="caixa caixa--amarelo">
+    <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg>Cartão amarelo: síndrome da morte do Marandu</p>
+    <p>Em solos mal drenados, principalmente no Norte e no Centro-Oeste, o Marandu pode morrer em reboleiras na época das chuvas, com cara de capim fenado. O excesso de água enfraquece as raízes e abre caminho para fungos. Nessas áreas, troque por um capim mais tolerante ao encharcamento e não deixe a fazenda inteira com um capim só.</p>
+  </div>
+  <div class="fala empurra">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Rapar a braquiária abaixo da altura mínima é tirar o painel solar da planta. Ela gasta a reserva da raiz para rebrotar e, se isso se repete, o pasto degrada.</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">9</span></footer>
+</section>
+
+<!-- 10 · CAPÍTULO 2: PANICUM -->
+<section class="page page--escura page--abre" id="panicum" aria-label="Capítulo 2: Panicum">
+  <span class="abre__camisa" aria-hidden="true">9</span>
+  <div class="abre__texto">
+    <p class="olho">Capítulo 2 · Centroavante · Camisa 9</p>
+    <h2 class="abre__nome">Panicum</h2>
+    <p class="abre__apelido">O artilheiro bem servido</p>
+    <p class="abre__lide">Mombaça, Tanzânia, Zuri, Quênia e companhia formam touceiras grandes e muito produtivas. Com solo corrigido, adubo e rodízio de piquetes, fazem muito gol. Sem isso, somem do jogo.</p>
+    <div class="fala abre__fala">
+      <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+      <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Mombaça no ponto é banquete. Mas, se o gado demora a entrar, o capim vira vara e sobra no pasto.</p>
+    </div>
+  </div>
+  <svg class="abre__arte" viewBox="0 0 840 780" aria-hidden="true">
+    <circle cx="210" cy="300" r="150" fill="#035237"/>
+    <path d="M0 500C160 452 300 480 440 466C600 450 720 486 840 460V780H0Z" fill="#035237"/>
+    <path d="M0 588C140 560 280 580 420 574C560 568 700 588 840 572V780H0Z" fill="#0B5E40"/>
+    <g data-capim="touceira" data-x="200" data-y="630" data-h="440" data-w="300" data-k="1.5" data-n="62" data-semente="44" data-paleta="escuro"></g>
+    <path d="M0 618C160 604 300 614 440 612C600 610 720 620 840 608V780H0Z" fill="#013D2F"/>
+  </svg>
+  <article class="ficha abre__ficha" aria-label="Ficha do Panicum">
+    <header class="ficha__topo">
+      <span class="camisa camisa--clara camisa--grande"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>9</b></span>
+      <div><p class="ficha__posicao">Ficha do craque · Centroavante</p><h3 class="ficha__nome">Panicum</h3></div>
+    </header>
+    <dl class="ficha__dados">
+      <div><dt>Nome científico</dt><dd><i class="it">Megathyrsus maximus</i> (antes <i class="it">Panicum maximum</i>)</dd></div>
+      <div><dt>Origem</dt><dd>África: Tanzânia, Quênia e vizinhos</dd></div>
+      <div><dt>Apelido</dt><dd>Família dos coloniões</dd></div>
+      <div><dt>Porte</dt><dd>De baixo (BRS Tamani) a alto (Mombaça)</dd></div>
+      <div><dt>Plantio</dt><dd>Por semente, bem rasa</dd></div>
+      <div><dt>Joga melhor em</dt><dd>Pastejo rotacionado intensivo, de corte e de leite</dd></div>
+    </dl>
+    <ul class="attr">
+      <li>Produção <span class="pips" data-n="5" role="img" aria-label="5 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Valor nutritivo <span class="pips" data-n="4" role="img" aria-label="4 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Rusticidade <span class="pips" data-n="2" role="img" aria-label="2 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Facilidade de manejo <span class="pips" data-n="2" role="img" aria-label="2 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Facilidade de plantio <span class="pips" data-n="3" role="img" aria-label="3 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+    </ul>
+    <p class="ficha__nota">Notas de 1 a 5, comparando os quatro craques entre si.</p>
+  </article>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">10</span></footer>
+</section>
+
+<!-- 11 · PANICUM: O ELENCO -->
+<section class="page page--colina" aria-label="Panicum: as cultivares">
+  <header class="cabeca">
+    <p class="olho">Capítulo 2 · Panicum</p>
+    <h2 class="titulo">O elenco do artilheiro</h2>
+    <p class="lide">Todos são da mesma espécie, mas cada cultivar tem um porte. E o porte define a altura de manejo: quanto maior a touceira, mais alto o gado entra e sai do piquete.</p>
+  </header>
+  <div class="elenco">
+    <article class="cultivar">
+      <div class="cultivar__topo"><h3 class="cultivar__nome">Mombaça</h3><span class="cultivar__ano">1993</span></div>
+      <p class="cultivar__porte">Porte alto</p>
+      <p>Touceiras grandes e produção altíssima. Exige rodízio afinado para não passar do ponto.</p>
+      <p class="cultivar__alturas"><span>Entra com 85 cm</span><span>Sai com 45 cm</span></p>
+    </article>
+    <article class="cultivar">
+      <div class="cultivar__topo"><h3 class="cultivar__nome">BRS Zuri</h3><span class="cultivar__ano">2014</span></div>
+      <p class="cultivar__porte">Porte médio-alto</p>
+      <p>Folhas muito largas, rebrota rápida e alta resistência à mancha-das-folhas, causada pelo fungo <i class="it">Bipolaris maydis</i>.</p>
+      <p class="cultivar__alturas"><span>Entra com 80 cm</span><span>Sai com 40 cm</span></p>
+    </article>
+    <article class="cultivar">
+      <div class="cultivar__topo"><h3 class="cultivar__nome">Tanzânia</h3><span class="cultivar__ano">1990</span></div>
+      <p class="cultivar__porte">Porte médio</p>
+      <p>A primeira cultivar lançada da grande coleção de capins trazida da África. Um clássico do pastejo rotacionado.</p>
+      <p class="cultivar__alturas"><span>Entra com 70 cm</span><span>Sai com 35 cm</span></p>
+    </article>
+    <article class="cultivar">
+      <div class="cultivar__topo"><h3 class="cultivar__nome">BRS Quênia</h3><span class="cultivar__ano">2017</span></div>
+      <p class="cultivar__porte">Porte médio</p>
+      <p>Híbrido de folhas macias e colmos tenros. Rendeu 32,5 arrobas por hectare por ano, sem suplementação, em Campo Grande (MS).</p>
+      <p class="cultivar__alturas"><span>Entra com 65 cm</span><span>Sai com 35 cm</span></p>
+    </article>
+    <article class="cultivar">
+      <div class="cultivar__topo"><h3 class="cultivar__nome">Massai</h3></div>
+      <p class="cultivar__porte">Porte baixo a médio</p>
+      <p>Folhas finas, muitos perfilhos e touceiras menores que as do Tanzânia e do Mombaça.</p>
+      <p class="cultivar__alturas"><span>Entra com 55 cm</span><span>Sai com 30 cm</span></p>
+    </article>
+    <article class="cultivar">
+      <div class="cultivar__topo"><h3 class="cultivar__nome">BRS Tamani</h3><span class="cultivar__ano">2015</span></div>
+      <p class="cultivar__porte">Porte baixo</p>
+      <p>Muitas folhas longas e finas e ótima cobertura do solo. Floresce cedo e entra na seca com bom valor nutritivo.</p>
+      <p class="cultivar__alturas"><span>Entra com 50 cm</span><span>Sai com 25 cm</span></p>
+    </article>
+  </div>
+  <p class="fonte">Alturas de entrada e saída no pastejo rotacionado: Embrapa Gado de Corte, Régua de manejo de pastagens (2017). Ano = lançamento da cultivar.</p>
+  <div class="duas">
+    <div class="caixa caixa--sabia">
+      <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lampada"/></svg>Você sabia?</p>
+      <p>Zuri quer dizer "bom" e "bonito", e Tamani, "precioso" e "desejado", em suaíle, língua falada no Quênia e na Tanzânia, de onde vem a espécie. E o velho capim-colonião deu o apelido à família toda: os coloniões.</p>
+    </div>
+    <div class="caixa caixa--noite">
+      <p class="caixa__tit">O que o artilheiro pede</p>
+      <ul class="lista">
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--ganho)"><use href="#i-check"/></svg><span>Solo de média a alta fertilidade e bem drenado. Quênia e Tamani não toleram encharcamento.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--ganho)"><use href="#i-check"/></svg><span>Calagem e adubação de manutenção todo ano.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--ganho)"><use href="#i-check"/></svg><span>Pastejo rotacionado, com controle das alturas de entrada e saída.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--ganho)"><use href="#i-check"/></svg><span>Plantio raso: a semente é pequena e não pode ficar enterrada fundo.</span></li>
+      </ul>
+    </div>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">11</span></footer>
+</section>
+
+<!-- 12 · PANICUM: RODÍZIO -->
+<section class="page page--colina" aria-label="Panicum: pastejo rotacionado">
+  <header class="cabeca">
+    <p class="olho">Capítulo 2 · Panicum</p>
+    <h2 class="titulo">O rodízio que faz o artilheiro marcar</h2>
+    <p class="lide">O pasto é dividido em piquetes. O gado entra na altura de entrada, sai na altura de saída e passa para o próximo, enquanto os outros descansam e rebrotam.</p>
+  </header>
+  <figure class="piquetes">
+    <svg viewBox="0 0 680 250" role="img" aria-label="Rodízio com cinco piquetes: o gado está no piquete 1; o piquete 2 tem 28 dias de descanso e é o próximo; os piquetes 3, 4 e 5 têm 21, 14 e 7 dias de descanso.">
+      <g class="g-rot" text-anchor="middle"><text x="70" y="24">Piquete 1</text><text x="204" y="24">Piquete 2</text><text x="338" y="24">Piquete 3</text><text x="472" y="24">Piquete 4</text><text x="606" y="24">Piquete 5</text></g>
+      <g fill="#F3F6E3"><rect x="8" y="34" width="124" height="150" rx="14"/><rect x="142" y="34" width="124" height="150" rx="14"/><rect x="276" y="34" width="124" height="150" rx="14"/><rect x="410" y="34" width="124" height="150" rx="14"/><rect x="544" y="34" width="124" height="150" rx="14"/></g>
+      <g fill="#EAD3B4"><rect x="8" y="160" width="124" height="24" rx="0"/><rect x="142" y="160" width="124" height="24"/><rect x="276" y="160" width="124" height="24"/><rect x="410" y="160" width="124" height="24"/><rect x="544" y="160" width="124" height="24"/></g>
+      <rect x="6" y="32" width="128" height="154" rx="15" fill="none" stroke="#058149" stroke-width="3"/>
+      <rect x="140" y="32" width="128" height="154" rx="15" fill="none" stroke="#4DDF35" stroke-width="3" stroke-dasharray="7 5"/>
+      <g data-capim="touceira" data-x="70" data-y="161" data-h="20" data-w="80" data-k=".55" data-n="26" data-flor="0" data-semente="51" data-paleta="claro"></g>
+      <g data-capim="touceira" data-x="204" data-y="161" data-h="108" data-w="90" data-k=".6" data-n="40" data-flor="0" data-semente="52" data-paleta="claro"></g>
+      <g data-capim="touceira" data-x="338" data-y="161" data-h="84" data-w="90" data-k=".6" data-n="38" data-flor="0" data-semente="53" data-paleta="claro"></g>
+      <g data-capim="touceira" data-x="472" data-y="161" data-h="60" data-w="90" data-k=".6" data-n="34" data-flor="0" data-semente="54" data-paleta="claro"></g>
+      <g data-capim="touceira" data-x="606" data-y="161" data-h="38" data-w="90" data-k=".6" data-n="30" data-flor="0" data-semente="55" data-paleta="claro"></g>
+      <use href="#mimosa" x="16" y="92" width="58" height="58"/>
+      <use href="#mimosa" x="68" y="100" width="52" height="52"/>
+      <g class="g-rot" text-anchor="middle"><text x="70" y="206">Gado pastejando</text><text x="204" y="206">28 dias de descanso</text><text x="338" y="206">21 dias</text><text x="472" y="206">14 dias</text><text x="606" y="206">7 dias</text></g>
+      <g class="g-sub" text-anchor="middle"><text x="70" y="222">por 7 dias</text><text x="204" y="222">é o próximo!</text><text x="338" y="222">de descanso</text><text x="472" y="222">de descanso</text><text x="606" y="222">acabou de sair</text></g>
+      <path d="M40 240H640" fill="none" stroke="#5B6B62" stroke-width="1.5" stroke-dasharray="3 4"/>
+      <path d="M632 234l9 6-9 6" fill="none" stroke="#5B6B62" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <figcaption class="fonte">Sentido do rodízio: 1 → 2 → 3 → 4 → 5 → volta ao 1. Exemplo com 5 piquetes, 7 dias de ocupação e 28 dias de descanso.</figcaption>
+  </figure>
+  <div class="duas">
+    <div class="formula">
+      <p class="formula__tit">Quantos piquetes?</p>
+      <p class="formula__conta">Piquetes = descanso ÷ ocupação + 1</p>
+      <p>Com 28 dias de descanso e 7 de ocupação: <span class="nq">28 ÷ 7 + 1 = <b>5 piquetes</b>.</span></p>
+      <p>Com 1 dia de ocupação, comum no leite: <span class="nq">28 ÷ 1 + 1 = <b>29 piquetes</b>.</span></p>
+      <p>O descanso depende do capim, do clima e da adubação. Na Embrapa Rondônia, por exemplo, varia de 21 a 35 dias.</p>
+    </div>
+    <div class="caixa caixa--linha">
+      <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-regua"/></svg>Na régua: rotacionado</p>
+      <table class="tabela tabela--compacta">
+        <thead><tr><th scope="col">Cultivar</th><th scope="col" class="num">Entrada</th><th scope="col" class="num">Saída</th></tr></thead>
+        <tbody>
+          <tr><td class="nome">Mombaça</td><td class="num">85 cm</td><td class="num">45 cm</td></tr>
+          <tr><td class="nome">BRS Zuri</td><td class="num">80 cm</td><td class="num">40 cm</td></tr>
+          <tr><td class="nome">Tanzânia</td><td class="num">70 cm</td><td class="num">35 cm</td></tr>
+          <tr><td class="nome">BRS Quênia</td><td class="num">65 cm</td><td class="num">35 cm</td></tr>
+          <tr><td class="nome">Massai</td><td class="num">55 cm</td><td class="num">30 cm</td></tr>
+          <tr><td class="nome">BRS Tamani</td><td class="num">50 cm</td><td class="num">25 cm</td></tr>
+        </tbody>
+      </table>
+      <p class="fonte">A lotação certa baixa o capim da entrada até a saída em 1 a 7 dias. Fonte: Embrapa Gado de Corte (2017).</p>
+    </div>
+  </div>
+  <div class="caixa caixa--amarelo">
+    <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg>Cartão amarelo: passou do ponto, virou vara</p>
+    <p>Se o gado entra tarde, o colmo do Panicum alonga (é o envaretamento): sobra talo, o gado pisa e desperdiça. Se sai tarde, a touceira é rapada, perde força e abre espaço para as invasoras.</p>
+  </div>
+  <div class="fala empurra">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>O capim que fica no piquete depois do pastejo é a poupança do pasto. Quem saca tudo hoje fica sem rebrota amanhã.</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">12</span></footer>
+</section>
+
+<!-- 13 · CAPÍTULO 3: TIFTON -->
+<section class="page page--escura page--abre" id="tifton" aria-label="Capítulo 3: Tifton">
+  <span class="abre__camisa" aria-hidden="true">10</span>
+  <div class="abre__texto">
+    <p class="olho">Capítulo 3 · Meia · Camisa 10</p>
+    <h2 class="abre__nome">Tifton</h2>
+    <p class="abre__apelido">O camisa 10 refinado</p>
+    <p class="abre__lide">Folha fina, macia e cheia de valor nutritivo. O Tifton e seus parentes do gênero <i class="it">Cynodon</i> formam um tapete denso que vira feno de primeira, pasto de vaca leiteira e comida de cavalo. Em troca, pede adubo, água e capricho.</p>
+    <div class="fala abre__fala">
+      <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+      <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Folha fininha e macia como a do Tifton é a minha sobremesa preferida.</p>
+    </div>
+  </div>
+  <svg class="abre__arte" viewBox="0 0 840 780" aria-hidden="true">
+    <path d="M0 404C160 356 300 384 440 370C600 354 720 390 840 364V780H0Z" fill="#035237"/>
+    <path d="M0 520C140 492 280 512 420 506C560 500 700 520 840 504V780H0Z" fill="#0B5E40"/>
+    <use href="#fardo" x="22" y="398" width="200" height="138"/>
+    <use href="#fardo" x="176" y="404" width="192" height="133"/>
+    <use href="#fardo" x="104" y="318" width="192" height="133"/>
+    <g data-capim="tifton" data-x="200" data-y="640" data-h="230" data-w="460" data-k="1.8" data-semente="61" data-paleta="escuro"></g>
+    <path d="M0 628C160 614 300 624 440 622C600 620 720 630 840 618V780H0Z" fill="#013D2F"/>
+  </svg>
+  <article class="ficha abre__ficha" aria-label="Ficha do Tifton">
+    <header class="ficha__topo">
+      <span class="camisa camisa--clara camisa--grande"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>10</b></span>
+      <div><p class="ficha__posicao">Ficha do craque · Meia</p><h3 class="ficha__nome">Tifton</h3></div>
+    </header>
+    <dl class="ficha__dados">
+      <div><dt>Nome científico</dt><dd><i class="it">Cynodon</i> spp. (o Tifton 85 é um híbrido)</dd></div>
+      <div><dt>Origem</dt><dd>Gênero africano; o Tifton 85 foi criado nos Estados Unidos</dd></div>
+      <div><dt>Parentes</dt><dd>Tifton 68, Coastcross, Jiggs, estrela-africana</dd></div>
+      <div><dt>Porte</dt><dd>Baixo, rasteiro: estolões e rizomas</dd></div>
+      <div><dt>Plantio</dt><dd>Por mudas (o Tifton 85 não forma semente viável)</dd></div>
+      <div><dt>Joga melhor em</dt><dd>Feno e pré-secado; pastejo de leite, cavalos e ovinos</dd></div>
+    </dl>
+    <ul class="attr">
+      <li>Produção <span class="pips" data-n="4" role="img" aria-label="4 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Valor nutritivo <span class="pips" data-n="5" role="img" aria-label="5 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Rusticidade <span class="pips" data-n="1" role="img" aria-label="1 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Facilidade de manejo <span class="pips" data-n="3" role="img" aria-label="3 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Facilidade de plantio <span class="pips" data-n="2" role="img" aria-label="2 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+    </ul>
+    <p class="ficha__nota">Notas de 1 a 5, comparando os quatro craques entre si.</p>
+  </article>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">13</span></footer>
+</section>
+
+<!-- 14 · TIFTON: ORIGEM E PLANTIO -->
+<section class="page page--colina" aria-label="Tifton: origem e plantio">
+  <header class="cabeca">
+    <p class="olho">Capítulo 3 · Tifton</p>
+    <h2 class="titulo">Um craque formado nos Estados Unidos</h2>
+    <p class="lide">O Tifton 85 foi desenvolvido pelo pesquisador Glenn Burton e sua equipe, do Departamento de Agricultura dos Estados Unidos (USDA), na cidade de Tifton, na Geórgia. Lançado em 1992, ele é o cruzamento entre o Tifton 68 e uma grama trazida da África do Sul.</p>
+  </header>
+  <div class="cabeca"><h3 class="sub">Onde o Tifton joga melhor</h3></div>
+  <div class="tres">
+    <article class="mini"><p class="mini__n">Feno</p><p>Colmos finos e muita folha: seca rápido no campo e vira feno de alta qualidade. Também serve para pré-secado.</p></article>
+    <article class="mini"><p class="mini__n">Leite</p><p>Pastejo intensivo de vacas em piquetes bem adubados, muitas vezes irrigados.</p></article>
+    <article class="mini"><p class="mini__n">Cavalos</p><p>Folha macia e pastejo baixo combinam com cavalos, ovinos e bezerros, que pastam rente ao chão.</p></article>
+  </div>
+  <div class="duas">
+    <div class="caixa caixa--sabia">
+      <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lampada"/></svg>Você sabia?</p>
+      <p>O Tifton 85 é estéril: não forma semente viável. Por isso, todo Tifton 85 é plantado com mudas, ou seja, pedaços da própria planta.</p>
+      <p>Em testes nos Estados Unidos, ele produziu cerca de 26% mais matéria seca que a grama Coastal, e essa matéria seca era 11% mais digestível.</p>
+    </div>
+    <div class="texto">
+      <h3 class="sub">Plantio em 4 jogadas</h3>
+      <ol class="passos">
+        <li><div><b>Prepare o terreno</b><p>Análise de solo, calcário e fósforo, como para qualquer pasto.</p></div></li>
+        <li><div><b>Escolha boas mudas</b><p>Novas, viçosas e com vários nós. É dos nós que saem raízes e brotos.</p></div></li>
+        <li><div><b>Plante com chuva</b><p>No início das águas, com o solo úmido, cobrindo parte da muda com terra.</p></div></li>
+        <li><div><b>Proteja o começo</b><p>Controle as plantas daninhas até o tapete fechar.</p></div></li>
+      </ol>
+    </div>
+  </div>
+  <div class="caixa caixa--noite">
+    <p class="caixa__tit">O que o camisa 10 pede</p>
+    <ul class="lista">
+      <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--ganho)"><use href="#i-check"/></svg><span>Solo fértil e corrigido, com adubação de manutenção, principalmente de nitrogênio.</span></li>
+      <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--ganho)"><use href="#i-check"/></svg><span>Chuva bem distribuída ou irrigação.</span></li>
+      <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--ganho)"><use href="#i-check"/></svg><span>Corte ou pastejo frequente, para não passar do ponto.</span></li>
+    </ul>
+  </div>
+  <div class="fala empurra">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Tifton parece grama de jardim, mas não se engane: é craque de alto rendimento. Só rende assim se for bem tratado.</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">14</span></footer>
+</section>
+
+<!-- 15 · TIFTON: FENO E MANEJO -->
+<section class="page page--colina" aria-label="Tifton: feno e manejo">
+  <header class="cabeca">
+    <p class="olho">Capítulo 3 · Tifton</p>
+    <h2 class="titulo">Do pasto ao fardo</h2>
+    <p class="lide">Feno é capim desidratado ao sol para ser guardado. Bem feito, mantém boa parte do valor do capim verde e vira reserva para a seca.</p>
+  </header>
+  <div class="feno-grade">
+    <ol class="passos">
+      <li><div><b>Corte na hora certa</b><p>Nas águas, a cada 4 a 5 semanas (28 a 35 dias). Cortar antes enfraquece a planta; depois, sobra talo e cai a qualidade.</p></div></li>
+      <li><div><b>Escolha dias firmes</b><p>Corte baixo, com sol e sem previsão de chuva para os próximos dias.</p></div></li>
+      <li><div><b>Seque e vire</b><p>Espalhe e vire o capim no campo para secar por igual.</p></div></li>
+      <li><div><b>Enfarde no ponto</b><p>Com cerca de 80% a 85% de matéria seca, ou seja, 15% a 20% de umidade.</p></div></li>
+      <li><div><b>Guarde bem</b><p>Em galpão coberto, seco e ventilado, com os fardos longe do chão. Feno guardado úmido mofa, esquenta e perde qualidade.</p></div></li>
+    </ol>
+    <div class="feno-lado">
+      <svg viewBox="0 0 260 180" role="img" aria-label="Desenho de um fardo de feno amarrado com dois cordões."><use href="#fardo"/></svg>
+      <div class="caixa caixa--sabia">
+        <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lampada"/></svg>Teste da torção</p>
+        <p>Torça um punhado de capim. Se os talos quebram e não sai umidade, está no ponto de enfardar.</p>
+      </div>
+    </div>
+  </div>
+  <div class="duas">
+    <div class="caixa caixa--linha">
+      <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-regua"/></svg>Na régua: pastejo</p>
+      <p>O Tifton aguenta pastejo mais baixo que os outros craques. Faixas citadas em pesquisas:</p>
+      <ul class="lista">
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg><span><b>Contínuo:</b> pasto perto de 15 cm, entre 10 e 20 cm.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg><span><b>Rotacionado:</b> entrada com 20 a 25 cm e saída com 10 a 15 cm.</span></li>
+      </ul>
+      <p class="fonte">Não há uma régua oficial única para o Tifton: confirme a meta com o seu técnico.</p>
+    </div>
+    <div class="caixa caixa--amarelo">
+      <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg>Cartão amarelo</p>
+      <p>Tifton sem adubo é craque fora de forma: a produção cai, o tapete abre e as invasoras entram.</p>
+      <p>E ele se espalha por estolões e rizomas. Perto de lavouras, pode virar invasor difícil de eliminar.</p>
+    </div>
+  </div>
+  <div class="fala empurra">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Feno bom tem cheiro de capim, cor esverdeada e muita folha. Feno marrom, empoeirado ou mofado, nem eu quero.</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">15</span></footer>
+</section>
+
+<!-- 16 · CAPÍTULO 4: CAPIM-ELEFANTE -->
+<section class="page page--escura page--abre" id="capim-elefante" aria-label="Capítulo 4: Capim-elefante">
+  <span class="abre__camisa" aria-hidden="true">1</span>
+  <div class="abre__texto">
+    <p class="olho">Capítulo 4 · Goleiro · Camisa 1</p>
+    <h2 class="abre__nome abre__nome--longo">Capim-elefante</h2>
+    <p class="abre__apelido">O paredão da seca</p>
+    <p class="abre__lide">O maior da turma: algumas cultivares passam de 4 metros. Produz um volume enorme de forragem para cortar e levar ao cocho ou guardar como silagem. É a reserva que segura o time quando o pasto para de crescer.</p>
+  </div>
+  <svg class="abre__arte" viewBox="0 0 840 780" aria-hidden="true">
+    <path d="M0 500C160 452 300 480 440 466C600 450 720 486 840 460V780H0Z" fill="#035237"/>
+    <path d="M0 588C140 560 280 580 420 574C560 568 700 588 840 572V780H0Z" fill="#0B5E40"/>
+    <g data-capim="elefante" data-x="196" data-y="632" data-h="590" data-w="250" data-k="1.65" data-n="7" data-semente="71" data-paleta="escuro"></g>
+    <path d="M0 620C160 606 300 616 440 614C600 612 720 622 840 610V780H0Z" fill="#013D2F"/>
+  </svg>
+  <article class="ficha abre__ficha" aria-label="Ficha do Capim-elefante">
+    <header class="ficha__topo">
+      <span class="camisa camisa--clara camisa--grande"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>1</b></span>
+      <div><p class="ficha__posicao">Ficha do craque · Goleiro</p><h3 class="ficha__nome">Capim-elefante</h3></div>
+    </header>
+    <dl class="ficha__dados">
+      <div><dt>Nome científico</dt><dd><i class="it">Cenchrus purpureus</i> (antes <i class="it">Pennisetum purpureum</i>)</dd></div>
+      <div><dt>Origem</dt><dd>África tropical; chegou ao Brasil em 1920, com estacas vindas de Cuba</dd></div>
+      <div><dt>Parentes</dt><dd>Napier, Cameroon, BRS Capiaçu, BRS Kurumi</dd></div>
+      <div><dt>Porte</dt><dd>Alto, até 4,2 m (BRS Capiaçu); a BRS Kurumi é anã</dd></div>
+      <div><dt>Plantio</dt><dd>Por colmos (mudas), em sulcos</dd></div>
+      <div><dt>Joga melhor em</dt><dd>Capineira, silagem e, nas cultivares anãs, pastejo</dd></div>
+    </dl>
+    <ul class="attr">
+      <li>Produção <span class="pips" data-n="5" role="img" aria-label="5 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Valor nutritivo <span class="pips" data-n="3" role="img" aria-label="3 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Rusticidade <span class="pips" data-n="1" role="img" aria-label="1 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Facilidade de manejo <span class="pips" data-n="2" role="img" aria-label="2 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li>Facilidade de plantio <span class="pips" data-n="2" role="img" aria-label="2 de 5"><i></i><i></i><i></i><i></i><i></i></span></li>
+    </ul>
+    <p class="ficha__nota">Notas de 1 a 5, comparando os quatro craques entre si.</p>
+  </article>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">16</span></footer>
+</section>
+
+<!-- 17 · CAPIM-ELEFANTE: FORMAS DE USO -->
+<section class="page page--colina" aria-label="Capim-elefante: formas de uso">
+  <header class="cabeca">
+    <p class="olho">Capítulo 4 · Capim-elefante</p>
+    <h2 class="titulo">Três jeitos de usar o gigante</h2>
+    <p class="lide">Cocho, silo ou pasto: o que muda é a cultivar e a idade de corte.</p>
+  </header>
+  <div class="tres">
+    <article class="uso">
+      <p class="uso__n">No cocho</p>
+      <h3>Capineira</h3>
+      <p>Corta, pica e serve verde. É o uso mais comum, principalmente para reforçar a comida do gado na seca em pequenas propriedades.</p>
+      <p class="uso__regua">BRS Capiaçu: corte com 2,5 a 3,0 m, cerca de 50 a 70 dias de rebrota nas águas.</p>
+    </article>
+    <article class="uso">
+      <p class="uso__n">No silo</p>
+      <h3>Silagem</h3>
+      <p>O capim picado fermenta sem ar dentro do silo e fica guardado para o período seco.</p>
+      <p class="uso__regua">BRS Capiaçu: corte com 3,5 a 4,0 m, perto de 90 a 110 dias. Passou de 120 dias, perde valor nutritivo.</p>
+    </article>
+    <article class="uso">
+      <p class="uso__n">No pasto</p>
+      <h3>Pastejo</h3>
+      <p>As cultivares anãs, como a BRS Kurumi, foram feitas para o gado colher sozinho, em pastejo rotacionado.</p>
+      <p class="uso__regua">BRS Kurumi: entrada com 75 a 80 cm, saída com 35 a 40 cm e descanso perto de 22 dias nas águas.</p>
+    </article>
+  </div>
+  <div class="tabela-wrap">
+    <table class="tabela tabela--compacta">
+      <thead><tr><th scope="col" style="width:34mm">Cultivar</th><th scope="col">Destaque</th></tr></thead>
+      <tbody>
+        <tr><td class="nome">Napier e Cameroon<small>clássicos</small></td><td>Tradicionais nas capineiras brasileiras.</td></tr>
+        <tr><td class="nome">BRS Capiaçu<small>registrada em 2015</small></td><td>Porte alto (4,2 m), touceira ereta, colmo grosso e boa resistência ao tombamento. Não tem joçal, os pelos que irritam a pele de quem corta. Produz em média 50 t de matéria seca por hectare por ano.</td></tr>
+        <tr><td class="nome">BRS Kurumi<small>anã, para pastejo</small></td><td>Entrenós curtos e muitos perfilhos. Bem manejada, suporta de 4 a 7 UA/ha e permite de 18 a 19 litros de leite por vaca por dia, só com suplementação energética.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="caixa caixa--linha">
+    <p class="caixa__tit">Plantio: colmo deitado no sulco</p>
+    <p>Plante no início das chuvas, em sulcos de 20 a 30 cm de profundidade e espaçados de 0,8 a 1,2 m. Deite os colmos no fundo do sulco, a ponta de um junto ao pé do outro, e cubra com terra.</p>
+    <div class="figura">
+      <svg viewBox="0 0 640 132" role="img" aria-label="Corte do sulco de plantio: colmos deitados no fundo do sulco, um encostado no outro, com brotos saindo dos nós e subindo até a superfície.">
+        <rect x="0" y="36" width="640" height="96" fill="#EAD3B4"/>
+        <rect x="40" y="36" width="560" height="68" rx="10" fill="#DCC09A"/>
+        <path d="M0 36H640" stroke="#B8895A" stroke-width="2"/>
+        <g stroke="#B8895A" stroke-width="1.6" stroke-linecap="round" fill="none"><path d="M150 94l-6 16M150 94l5 14M250 92l-5 16M400 98l-6 15M400 98l6 13M500 98l-4 16"/></g>
+        <g fill="none" stroke-linecap="round"><path d="M64 88H330" stroke="#A9B65E" stroke-width="10"/><path d="M314 96H580" stroke="#A9B65E" stroke-width="10"/></g>
+        <g stroke="#6E7B33" stroke-width="2.5" stroke-linecap="round"><path d="M100 82v12M150 82v12M200 82v12M250 82v12M300 82v12M350 90v12M400 90v12M450 90v12M500 90v12M550 90v12"/></g>
+        <g fill="none" stroke="#3E9F4A" stroke-width="3" stroke-linecap="round"><path d="M150 82C150 64 154 48 156 36"/><path d="M250 82C252 62 248 48 252 36"/><path d="M400 90C400 70 404 50 406 36"/><path d="M500 90C502 70 498 50 502 36"/></g>
+        <g fill="#3E9F4A"><path d="M156 36C150 24 140 18 128 16C142 24 148 30 152 38Z"/><path d="M156 36C160 22 170 14 182 12C170 22 164 30 160 38Z"/><path d="M252 36C246 24 236 20 226 18C238 26 244 32 248 38Z"/><path d="M252 36C258 26 266 20 278 18C268 26 262 32 256 38Z"/><path d="M406 36C400 24 390 18 378 16C392 24 398 30 402 38Z"/><path d="M406 36C410 22 420 14 432 12C420 22 414 30 410 38Z"/><path d="M502 36C496 26 488 20 476 18C488 26 494 32 498 38Z"/><path d="M502 36C508 24 518 18 530 16C518 24 512 32 506 38Z"/></g>
+        <path class="g-linha" d="M22 38V102M16 38H28M16 102H28"/>
+        <text class="g-rot" x="10" y="124">20 a 30 cm</text>
+        <path class="g-linha" d="M322 96V112"/>
+        <text class="g-rot" x="322" y="126" text-anchor="middle">pé com ponta</text>
+        <path class="g-linha" d="M534 20H548"/>
+        <text class="g-rot" x="552" y="24">broto do nó</text>
+      </svg>
+    </div>
+  </div>
+  <div class="fala empurra">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Na seca, quando o pasto para, é o capim-elefante picado no cocho que garante o meu jantar.</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">17</span></footer>
+</section>
+
+<!-- 18 · CAPIM-ELEFANTE: IDADE DE CORTE -->
+<section class="page page--colina" aria-label="Capim-elefante: idade de corte">
+  <header class="cabeca">
+    <p class="olho">Capítulo 4 · Capim-elefante</p>
+    <h2 class="titulo">O dilema do goleiro: volume ou qualidade?</h2>
+    <p class="lide">Quanto mais tempo o capim cresce, mais forragem ele dá e menos proteína ela tem. Veja o que acontece com a BRS Capiaçu.</p>
+  </header>
+  <figure class="graficos">
+    <div class="grafico">
+      <p class="grafico__tit">Produção por corte (t de matéria seca por hectare)</p>
+      <div class="grafico__area" style="--max:25">
+        <div class="grafico__barra" style="--v:5.1"><span>5,1</span></div>
+        <div class="grafico__barra" style="--v:13.3"><span>13,3</span></div>
+        <div class="grafico__barra" style="--v:17.5"><span>17,5</span></div>
+        <div class="grafico__barra" style="--v:22.5"><span>22,5</span></div>
+      </div>
+      <div class="grafico__eixo"><span><b>50 dias</b>2,4 m</span><span><b>70 dias</b>2,9 m</span><span><b>90 dias</b>3,6 m</span><span><b>110 dias</b>4,1 m</span></div>
+    </div>
+    <div class="grafico">
+      <p class="grafico__tit">Proteína bruta (% da matéria seca)</p>
+      <div class="grafico__area" style="--max:12">
+        <div class="grafico__barra grafico__barra--pb" style="--v:9.7"><span>9,7%</span></div>
+        <div class="grafico__barra grafico__barra--pb" style="--v:7.7"><span>7,7%</span></div>
+        <div class="grafico__barra grafico__barra--pb" style="--v:6.2"><span>6,2%</span></div>
+        <div class="grafico__barra grafico__barra--pb" style="--v:5.6"><span>5,6%</span></div>
+      </div>
+      <div class="grafico__eixo"><span><b>50 dias</b>2,4 m</span><span><b>70 dias</b>2,9 m</span><span><b>90 dias</b>3,6 m</span><span><b>110 dias</b>4,1 m</span></div>
+    </div>
+    <figcaption class="fonte">Idade de corte, altura da planta, produção e proteína da BRS Capiaçu. Fonte: Embrapa Gado de Leite, Comunicado Técnico 79 (2016).</figcaption>
+  </figure>
+  <div class="duas">
+    <div class="texto">
+      <h3 class="sub">Como decidir a hora do corte</h3>
+      <p><b>Para o cocho</b>, corte mais novo, quando a folha ainda tem mais proteína.</p>
+      <p><b>Para o silo</b>, corte mais maduro. O capim jovem tem água demais: fermenta mal e escorre no silo. Aos 50 dias, a BRS Capiaçu tem só 9,3% de matéria seca; aos 110, quase 20%.</p>
+    </div>
+    <div class="caixa caixa--noite">
+      <p class="caixa__tit">Silagem de capim-elefante em 3 cuidados</p>
+      <ul class="lista">
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--ganho)"><use href="#i-check"/></svg><span>Pique em pedaços de 1 a 2 cm.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--ganho)"><use href="#i-check"/></svg><span>Compacte muito bem e vede o silo.</span></li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--ganho)"><use href="#i-check"/></svg><span>Se precisar, use aditivos para melhorar a fermentação.</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="caixa caixa--sabia">
+    <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lampada"/></svg>Você sabia?</p>
+    <p>A BRS Capiaçu e a BRS Kurumi são meio-irmãs: as duas têm o capim-elefante Roxo como um dos pais. E <i class="it">purpureum</i>, o antigo sobrenome científico da espécie, quer dizer "cor de púrpura" em latim.</p>
+  </div>
+  <div class="caixa caixa--amarelo">
+    <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg>Cartão amarelo</p>
+    <p>Cada corte leva nutrientes embora. Sem adubação depois dos cortes (química ou com esterco de curral), a capineira enfraquece. E o capim-elefante não tolera solo encharcado.</p>
+  </div>
+  <div class="fala empurra">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Capim-elefante novinho e bem picado eu como com gosto. Passado, vira um talo duro que sobra no cocho.</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">18</span></footer>
+</section>
+
+<!-- 19 · A RÉGUA DO PASTO -->
+<section class="page page--suave page--colina" id="regua" aria-label="A régua do pasto">
+  <header class="cabeca">
+    <p class="olho">Na régua</p>
+    <h2 class="titulo">A régua do pasto</h2>
+    <p class="lide">Altura é o jeito mais simples de saber se o pasto está no ponto. A Embrapa criou uma régua com faixas para cada capim: dentro da faixa, o manejo está certo; abaixo dela, o pasto está sendo rapado; acima, o capim está passando do ponto.</p>
+  </header>
+  <div class="regua">
+    <div class="regua__grupo">
+      <p class="regua__gtit">Braquiárias <span>pastejo contínuo · da mínima à máxima, em cm</span></p>
+      <div class="regua__linha"><span class="regua__nome">BRS Tupi<small>humidícola</small></span><span class="regua__trilho" style="--de:10;--ate:20" role="img" aria-label="de 10 a 20 centímetros"><span class="regua__faixa"><b>10</b><b>20</b></span></span></div>
+      <div class="regua__linha"><span class="regua__nome">Decumbens</span><span class="regua__trilho" style="--de:15;--ate:30" role="img" aria-label="de 15 a 30 centímetros"><span class="regua__faixa"><b>15</b><b>30</b></span></span></div>
+      <div class="regua__linha"><span class="regua__nome">Marandu</span><span class="regua__trilho" style="--de:20;--ate:35" role="img" aria-label="de 20 a 35 centímetros"><span class="regua__faixa"><b>20</b><b>35</b></span></span></div>
+      <div class="regua__linha"><span class="regua__nome">BRS Paiaguás</span><span class="regua__trilho" style="--de:20;--ate:35" role="img" aria-label="de 20 a 35 centímetros"><span class="regua__faixa"><b>20</b><b>35</b></span></span></div>
+      <div class="regua__linha"><span class="regua__nome">BRS Ipyporã</span><span class="regua__trilho" style="--de:20;--ate:35" role="img" aria-label="de 20 a 35 centímetros"><span class="regua__faixa"><b>20</b><b>35</b></span></span></div>
+      <div class="regua__linha"><span class="regua__nome">BRS Piatã</span><span class="regua__trilho" style="--de:20;--ate:40" role="img" aria-label="de 20 a 40 centímetros"><span class="regua__faixa"><b>20</b><b>40</b></span></span></div>
+      <div class="regua__linha"><span class="regua__nome">Xaraés</span><span class="regua__trilho" style="--de:20;--ate:40" role="img" aria-label="de 20 a 40 centímetros"><span class="regua__faixa"><b>20</b><b>40</b></span></span></div>
+    </div>
+    <div class="regua__grupo">
+      <p class="regua__gtit">Panicuns <span>pastejo rotacionado · da saída à entrada, em cm</span></p>
+      <div class="regua__linha"><span class="regua__nome">BRS Tamani</span><span class="regua__trilho" style="--de:25;--ate:50" role="img" aria-label="saída com 25 e entrada com 50 centímetros"><span class="regua__faixa"><b>25</b><b>50</b></span></span></div>
+      <div class="regua__linha"><span class="regua__nome">Massai</span><span class="regua__trilho" style="--de:30;--ate:55" role="img" aria-label="saída com 30 e entrada com 55 centímetros"><span class="regua__faixa"><b>30</b><b>55</b></span></span></div>
+      <div class="regua__linha"><span class="regua__nome">BRS Quênia</span><span class="regua__trilho" style="--de:35;--ate:65" role="img" aria-label="saída com 35 e entrada com 65 centímetros"><span class="regua__faixa"><b>35</b><b>65</b></span></span></div>
+      <div class="regua__linha"><span class="regua__nome">Tanzânia</span><span class="regua__trilho" style="--de:35;--ate:70" role="img" aria-label="saída com 35 e entrada com 70 centímetros"><span class="regua__faixa"><b>35</b><b>70</b></span></span></div>
+      <div class="regua__linha"><span class="regua__nome">BRS Zuri</span><span class="regua__trilho" style="--de:40;--ate:80" role="img" aria-label="saída com 40 e entrada com 80 centímetros"><span class="regua__faixa"><b>40</b><b>80</b></span></span></div>
+      <div class="regua__linha"><span class="regua__nome">Mombaça</span><span class="regua__trilho" style="--de:45;--ate:85" role="img" aria-label="saída com 45 e entrada com 85 centímetros"><span class="regua__faixa"><b>45</b><b>85</b></span></span></div>
+    </div>
+    <div class="regua__grupo">
+      <p class="regua__gtit">Tifton e capim-elefante anão <span>pastejo rotacionado · da saída à entrada, em cm</span></p>
+      <div class="regua__linha"><span class="regua__nome">Tifton 85<small>faixa de pesquisas</small></span><span class="regua__trilho" style="--de:10;--ate:25" role="img" aria-label="saída com 10 a 15 e entrada com 20 a 25 centímetros"><span class="regua__faixa"><b>10</b><b>25</b></span></span></div>
+      <div class="regua__linha"><span class="regua__nome">BRS Kurumi<small>capim-elefante anão</small></span><span class="regua__trilho" style="--de:35;--ate:80" role="img" aria-label="saída com 35 a 40 e entrada com 75 a 80 centímetros"><span class="regua__faixa"><b>35</b><b>80</b></span></span></div>
+    </div>
+    <div class="regua__eixo" aria-hidden="true"><span style="left:0%">0</span><span style="left:11.11%">10</span><span style="left:22.22%">20</span><span style="left:33.33%">30</span><span style="left:44.44%">40</span><span style="left:55.56%">50</span><span style="left:66.67%">60</span><span style="left:77.78%">70</span><span style="left:88.89%">80</span><span style="left:100%">90</span></div>
+    <div class="regua__legenda">
+      <span><i style="background:var(--fundo-vermelho);border:1px solid var(--vermelho)"></i>Abaixo da faixa: pasto rapado</span>
+      <span><i style="background:var(--marca)"></i>Faixa certa de uso</span>
+      <span><i style="background:var(--fundo-amarelo);border:1px solid var(--ambar)"></i>Acima da faixa: passando do ponto</span>
+    </div>
+  </div>
+  <div class="duas">
+    <div class="texto">
+      <h3 class="sub">Por que essas alturas?</h3>
+      <p>Na altura de entrada, o capim está no auge da produção de folhas novas e ainda perde pouca folha velha. A altura de saída deixa folha suficiente para a planta rebrotar rápido.</p>
+    </div>
+    <div class="caixa caixa--sabia">
+      <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-regua"/></svg>Como medir</p>
+      <p>Segure a régua em pé, com a ponta no chão, e leia a altura das folhas em vários pontos: a Embrapa sugere 30 medições em áreas de até 5 ha, 40 até 10 ha e 50 ou mais acima disso. Sem régua? Marque as alturas num bambu.</p>
+    </div>
+  </div>
+  <p class="fonte">Fontes: Embrapa Gado de Corte, Régua de manejo de pastagens (2017); Embrapa Gado de Leite, BRS Kurumi; pesquisas brasileiras com Tifton 85.</p>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">19</span></footer>
+</section>
+
+<!-- 20 · TIRA-TEIMA -->
+<section class="page page--colina" id="tira-teima" aria-label="Tira-teima: os 4 lado a lado">
+  <header class="cabeca">
+    <p class="olho">Tira-teima</p>
+    <h2 class="titulo">Os 4 craques lado a lado</h2>
+    <p class="lide">Um resumo para consultar rápido. As notas são as mesmas das fichas e comparam os quatro entre si.</p>
+  </header>
+  <div class="tabela-wrap">
+    <table class="tira">
+      <thead>
+        <tr>
+          <th scope="col"><span class="vh">Característica</span></th>
+          <th scope="col"><span class="tira__cab"><span class="camisa"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>5</b></span>Braquiária</span></th>
+          <th scope="col"><span class="tira__cab"><span class="camisa"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>9</b></span>Panicum</span></th>
+          <th scope="col"><span class="tira__cab"><span class="camisa"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>10</b></span>Tifton</span></th>
+          <th scope="col"><span class="tira__cab"><span class="camisa"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>1</b></span>Capim-<br>elefante</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Posição</th><td>Volante</td><td>Centroavante</td><td>Meia</td><td>Goleiro</td></tr>
+        <tr><th scope="row">Jeito de crescer</th><td>Touceira ou rasteiro, conforme a espécie</td><td>Touceira</td><td>Rasteiro, em tapete</td><td>Touceira alta, parecida com cana</td></tr>
+        <tr><th scope="row">Como planta</th><td>Semente</td><td>Semente, bem rasa</td><td>Mudas</td><td>Colmos</td></tr>
+        <tr><th scope="row">Fertilidade do solo</th><td>Baixa a média</td><td>Média a alta</td><td>Alta</td><td>Muito alta</td></tr>
+        <tr><th scope="row">Uso principal</th><td>Pastejo de cria, recria e engorda; ILP</td><td>Pastejo rotacionado intensivo</td><td>Feno, leite e cavalos</td><td>Capineira e silagem; pastejo nas anãs</td></tr>
+        <tr><th scope="row">Manejo</th><td>Contínuo ou rotacionado</td><td>Rotacionado</td><td>Contínuo baixo, rotacionado ou corte</td><td>Corte; rotacionado nas anãs</td></tr>
+        <tr><th scope="row">Ponto forte</th><td>Rusticidade</td><td>Produção</td><td>Qualidade</td><td>Volume</td></tr>
+        <tr><th scope="row">Cuidado com</th><td>Encharcamento (Marandu) e cigarrinha</td><td>Passar do ponto</td><td>Falta de adubo e de água</td><td>Reposição de nutrientes e mão de obra</td></tr>
+        <tr class="tira__notas tira__sep"><th scope="row">Produção</th><td><span class="pips" data-n="3" role="img" aria-label="3 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="5" role="img" aria-label="5 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="4" role="img" aria-label="4 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="5" role="img" aria-label="5 de 5"><i></i><i></i><i></i><i></i><i></i></span></td></tr>
+        <tr class="tira__notas"><th scope="row">Valor nutritivo</th><td><span class="pips" data-n="3" role="img" aria-label="3 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="4" role="img" aria-label="4 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="5" role="img" aria-label="5 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="3" role="img" aria-label="3 de 5"><i></i><i></i><i></i><i></i><i></i></span></td></tr>
+        <tr class="tira__notas"><th scope="row">Rusticidade</th><td><span class="pips" data-n="5" role="img" aria-label="5 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="2" role="img" aria-label="2 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="1" role="img" aria-label="1 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="1" role="img" aria-label="1 de 5"><i></i><i></i><i></i><i></i><i></i></span></td></tr>
+        <tr class="tira__notas"><th scope="row">Facilidade de manejo</th><td><span class="pips" data-n="5" role="img" aria-label="5 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="2" role="img" aria-label="2 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="3" role="img" aria-label="3 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="2" role="img" aria-label="2 de 5"><i></i><i></i><i></i><i></i><i></i></span></td></tr>
+        <tr class="tira__notas"><th scope="row">Facilidade de plantio</th><td><span class="pips" data-n="5" role="img" aria-label="5 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="3" role="img" aria-label="3 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="2" role="img" aria-label="2 de 5"><i></i><i></i><i></i><i></i><i></i></span></td><td><span class="pips" data-n="2" role="img" aria-label="2 de 5"><i></i><i></i><i></i><i></i><i></i></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="caixa caixa--sabia">
+    <p class="caixa__tit">Exemplos de escalação</p>
+    <ul class="exemplos">
+      <li><b>Cria e recria a pasto</b><span>Braquiária como base; Panicum nas áreas mais férteis.</span></li>
+      <li><b>Engorda intensiva</b><span>Panicum em rotacionado e reserva de silagem para a seca.</span></li>
+      <li><b>Leite</b><span>Tifton, Panicum ou BRS Kurumi no pasto; capim-elefante na capineira.</span></li>
+      <li><b>Cavalos</b><span>Tifton, no pasto e no feno.</span></li>
+    </ul>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">20</span></footer>
+</section>
+
+<!-- 21 · QUAL CRAQUE ESCALAR -->
+<section class="page page--colina" id="escalar" aria-label="Qual craque escalar no seu campo">
+  <header class="cabeca">
+    <p class="olho">Escalação</p>
+    <h2 class="titulo">Qual craque escalar no seu campo?</h2>
+    <p class="lide">Comece pela pergunta 1 e siga as respostas. É um ponto de partida para conversar com o seu técnico, não uma receita pronta.</p>
+  </header>
+  <div class="perguntas">
+    <article class="pergunta" id="pergunta-1">
+      <p class="pergunta__n">Pergunta 1</p>
+      <h3 class="pergunta__q">O gado vai colher o capim direto no pasto?</h3>
+      <div class="resposta"><p class="resposta__se"><b>Sim</b>, é para pastejo.</p><a class="resposta__vai" href="#pergunta-2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg>Vá para a pergunta 2</a></div>
+      <div class="resposta resposta--fim"><p class="resposta__se"><b>Não</b>, vou cortar para fazer feno.</p><p class="resposta__vai"><span class="camisa camisa--clara"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>10</b></span>Escale o Tifton</p></div>
+      <div class="resposta resposta--fim"><p class="resposta__se"><b>Não</b>, vou cortar para o cocho ou para o silo.</p><p class="resposta__vai"><span class="camisa camisa--clara"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>1</b></span>Escale o capim-elefante, como a BRS Capiaçu</p></div>
+    </article>
+    <article class="pergunta" id="pergunta-2">
+      <p class="pergunta__n">Pergunta 2</p>
+      <h3 class="pergunta__q">O solo está corrigido e você vai adubar todo ano?</h3>
+      <div class="resposta"><p class="resposta__se"><b>Sim</b>: solo de média a alta fertilidade, com adubação.</p><a class="resposta__vai" href="#pergunta-4"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg>Vá para a pergunta 4</a></div>
+      <div class="resposta"><p class="resposta__se"><b>Não</b>, ou pouco: solo mais fraco e pouco adubo.</p><a class="resposta__vai" href="#pergunta-3"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg>Vá para a pergunta 3</a></div>
+    </article>
+    <article class="pergunta" id="pergunta-3">
+      <p class="pergunta__n">Pergunta 3</p>
+      <h3 class="pergunta__q">A área encharca na época das chuvas?</h3>
+      <div class="resposta resposta--fim"><p class="resposta__se"><b>Sim</b>: é baixada ou solo mal drenado.</p><p class="resposta__vai"><span class="camisa camisa--clara"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>5</b></span>Escale a braquiária humidícola</p></div>
+      <div class="resposta resposta--fim"><p class="resposta__se"><b>Não</b>: o solo drena bem.</p><p class="resposta__vai"><span class="camisa camisa--clara"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>5</b></span>Escale uma braquiária rústica: decumbens no solo mais fraco; Paiaguás ou Marandu no solo médio</p></div>
+    </article>
+    <article class="pergunta" id="pergunta-4">
+      <p class="pergunta__n">Pergunta 4</p>
+      <h3 class="pergunta__q">Vai dividir o pasto em piquetes e controlar a altura?</h3>
+      <div class="resposta resposta--fim"><p class="resposta__se"><b>Sim</b>: pastejo rotacionado.</p><p class="resposta__vai"><span class="camisa camisa--clara"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>9</b></span>Escale o Panicum: Mombaça, Zuri, Quênia ou Tamani. No leite, Tifton e BRS Kurumi também jogam bem</p></div>
+      <div class="resposta resposta--fim"><p class="resposta__se"><b>Não</b>: o gado fica no mesmo pasto.</p><p class="resposta__vai"><span class="camisa camisa--clara"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>5</b></span>Escale uma braquiária brizantha: Marandu, Xaraés ou Piatã</p></div>
+    </article>
+  </div>
+  <div class="caixa caixa--amarelo">
+    <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg>Vale para qualquer escolha</p>
+    <ul class="lista">
+      <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg><span>Faça a análise de solo antes de decidir.</span></li>
+      <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg><span>Área que encharca: evite Marandu, Quênia, Tamani e capim-elefante.</span></li>
+      <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-seta"/></svg><span>Diversifique: mais de um capim na fazenda reduz o risco de pragas e doenças.</span></li>
+    </ul>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">21</span></footer>
+</section>
+
+<!-- 22 · FORMAÇÃO DO PASTO -->
+<section class="page page--colina" id="formacao" aria-label="Formação do pasto em 6 jogadas">
+  <header class="cabeca">
+    <p class="olho">Jogada ensaiada</p>
+    <h2 class="titulo">Formação do pasto em 6 jogadas</h2>
+    <p class="lide">Pasto bem formado dura anos. Pasto mal formado vira problema já no primeiro ano. A ordem das jogadas importa.</p>
+  </header>
+  <div class="formacao-grade">
+    <ol class="passos">
+      <li><div><b>Análise de solo</b><p>Colete amostras da área, normalmente na camada de 0 a 20 cm, e mande para um laboratório. Toda recomendação de calcário e de adubo parte dela.</p></div></li>
+      <li><div><b>Correção com antecedência</b><p>Aplique o calcário, e o gesso se for indicado, com tempo para reagir no solo, de preferência antes das chuvas.</p></div></li>
+      <li><div><b>Preparo e limpeza</b><p>Prepare o solo e controle as plantas daninhas antes de plantar. No começo, elas competem forte com o capim.</p></div></li>
+      <li><div><b>Semente ou muda certa</b><p>Compre semente com laudo e confira o valor cultural (VC). Para Tifton e capim-elefante, use mudas sadias.</p></div></li>
+      <li><div><b>Plantio na hora certa</b><p>No início das chuvas, com o solo úmido. Semente pequena, como a do Panicum, fica bem rasa: coberta demais, não nasce.</p></div></li>
+      <li><div><b>Primeiro pastejo leve</b><p>Quando o capim chegar perto da altura de entrada, faça um pastejo rápido e leve, de preferência com animais mais leves. Ele estimula o perfilhamento e fecha o pasto.</p></div></li>
+    </ol>
+    <div class="blocos">
+    <div class="formula">
+      <p class="formula__tit">A conta da semente</p>
+      <p>O <b>valor cultural (VC)</b> diz quanto do saco é semente pura e viva.</p>
+      <p class="formula__conta">VC = pureza × germinação ÷ 100</p>
+      <p>Pureza de 80% e germinação de 75%: <span class="nq">80 × 75 ÷ 100 = <b>60%</b></span>.</p>
+      <p class="formula__conta">kg/ha = SPV × 100 ÷ VC</p>
+      <p>SPV são os quilos de sementes puras viáveis recomendados por hectare. Para o Marandu, a referência fica perto de 3 kg. Com VC de 60%: <span class="nq">3 × 100 ÷ 60 = <b>5 kg/ha</b></span>.</p>
+      <p class="formula__nota">Referências comerciais de SPV (kg/ha): Marandu 2,8 · Xaraés 4,5 · Piatã 4,0 · Mombaça 1,8 · Tanzânia 1,6. Fonte: Embrapa Amazônia Ocidental (2019).</p>
+    </div>
+      <div class="caixa caixa--sabia">
+        <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lampada"/></svg>Você sabia?</p>
+        <p>Quanto menor o VC, mais quilos vão para a terra. Com VC de 40%, você planta 2,5 vezes o peso de SPV recomendado. Com VC de 80%, só 1,25 vez.</p>
+      </div>
+      <div class="caixa caixa--amarelo">
+        <p class="caixa__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg>Cartão amarelo</p>
+        <p>Plantar no fim das águas deixa o capim pequeno para enfrentar a seca, e o pasto nasce ralo.</p>
+      </div>
+    </div>
+  </div>
+  <div class="fala empurra">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Semente barata com VC baixo sai cara: você paga por palha e por semente que não nasce.</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">22</span></footer>
+</section>
+
+<!-- 23 · CARTÕES VERMELHOS -->
+<section class="page page--colina" id="cartoes" aria-label="7 erros que tiram qualquer pasto do jogo">
+  <header class="cabeca">
+    <p class="olho">Cartão vermelho</p>
+    <h2 class="titulo">7 erros que tiram qualquer pasto do jogo</h2>
+    <p class="lide">A degradação quase nunca vem de um erro só. É a soma de pequenos descuidos, ano após ano.</p>
+  </header>
+  <div class="cartoes">
+    <article class="cartao-erro"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg><div><h3>1. Rapar o pasto</h3><p>Pastejar abaixo da altura de saída. A planta perde as folhas que fazem fotossíntese, gasta a reserva e enfraquece. É a porta de entrada da degradação.</p></div></article>
+    <article class="cartao-erro"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg><div><h3>2. Deixar passar do ponto</h3><p>Colocar o gado tarde demais. Sobra talo, falta folha e o gado desperdiça capim pisando.</p></div></article>
+    <article class="cartao-erro"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg><div><h3>3. Plantar sem análise de solo</h3><p>Sem corrigir a acidez e o fósforo, nenhum craque rende o que pode.</p></div></article>
+    <article class="cartao-erro"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg><div><h3>4. Esquecer a adubação de manutenção</h3><p>Todo pasto exporta nutrientes em carne, leite e forragem. Sem reposição, a produção cai ano após ano.</p></div></article>
+    <article class="cartao-erro"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg><div><h3>5. Capim errado no lugar errado</h3><p>Marandu em baixada encharcada, Panicum em solo fraco sem adubo, capim-elefante sem ninguém para cortar.</p></div></article>
+    <article class="cartao-erro"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg><div><h3>6. Escolher semente pelo preço do saco</h3><p>O que vale é o VC. Semente barata com VC baixo sai cara no fim da conta.</p></div></article>
+    <article class="cartao-erro cartao-erro--largo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg><div><h3>7. Fazenda de um capim só</h3><p>Se uma praga ou doença pega aquele capim, pega a fazenda inteira. A síndrome da morte do Marandu mostrou isso no Norte e no Centro-Oeste. Ter mais de um capim é o seguro do pasto.</p></div></article>
+  </div>
+  <div class="verde">
+    <p class="verde__tit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cartao"/></svg>Cartão verde: 4 hábitos de quem joga limpo</p>
+    <ul class="verde__lista">
+      <li><b>Medir sempre</b><span>Ande no pasto com a régua e ajuste a lotação pela altura do capim.</span></li>
+      <li><b>Adubar nas águas</b><span>Reponha os nutrientes quando tem chuva para o capim responder.</span></li>
+      <li><b>Planejar a seca</b><span>Separe reserva: feno, silagem, capineira ou pasto vedado no fim das águas.</span></li>
+      <li><b>Anotar tudo</b><span>Datas de entrada e saída, lotação e adubação: o histórico mostra o que funciona.</span></li>
+    </ul>
+  </div>
+  <div class="fala empurra">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Cartão vermelho no pasto quem paga sou eu: fico com menos comida, e você, com menos arroba.</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">23</span></footer>
+</section>
+
+<!-- 24 · TESTE DE CRAQUE -->
+<section class="page page--colina" id="jogos" aria-label="Teste de craque">
+  <header class="cabeca">
+    <p class="olho">Jogo 1</p>
+    <h2 class="titulo">Teste de craque</h2>
+    <p class="lide">Dez perguntas para ver se você prestou atenção no jogo. As respostas estão na página seguinte.</p>
+  </header>
+  <p class="placar so-tela" aria-live="polite">Placar: <b id="placar-texto">toque numa resposta</b></p>
+  <div class="quiz">
+    <div class="quiz__q" data-certa="b"><p class="quiz__p"><span>1.</span> Qual é a gramínea mais cultivada do Brasil?</p><div class="quiz__ops"><button type="button" class="quiz__op" data-op="a"><b>a</b>Mombaça</button><button type="button" class="quiz__op" data-op="b"><b>b</b>Marandu</button><button type="button" class="quiz__op" data-op="c"><b>c</b>Tifton 85</button></div></div>
+    <div class="quiz__q" data-certa="a"><p class="quiz__p"><span>2.</span> O que quer dizer "Marandu" em guarani?</p><div class="quiz__ops"><button type="button" class="quiz__op" data-op="a"><b>a</b>Novidade</button><button type="button" class="quiz__op" data-op="b"><b>b</b>Capim forte</button><button type="button" class="quiz__op" data-op="c"><b>c</b>Verde-escuro</button></div></div>
+    <div class="quiz__q" data-certa="b"><p class="quiz__p"><span>3.</span> Qual destes capins é plantado por mudas porque não forma semente viável?</p><div class="quiz__ops"><button type="button" class="quiz__op" data-op="a"><b>a</b>BRS Zuri</button><button type="button" class="quiz__op" data-op="b"><b>b</b>Tifton 85</button><button type="button" class="quiz__op" data-op="c"><b>c</b>Decumbens</button></div></div>
+    <div class="quiz__q" data-certa="c"><p class="quiz__p"><span>4.</span> Com que altura o gado entra no Mombaça, no pastejo rotacionado (Embrapa)?</p><div class="quiz__ops"><button type="button" class="quiz__op" data-op="a"><b>a</b>35 cm</button><button type="button" class="quiz__op" data-op="b"><b>b</b>55 cm</button><button type="button" class="quiz__op" data-op="c"><b>c</b>85 cm</button></div></div>
+    <div class="quiz__q" data-certa="b"><p class="quiz__p"><span>5.</span> Com 28 dias de descanso e 7 de ocupação, quantos piquetes são necessários?</p><div class="quiz__ops"><button type="button" class="quiz__op" data-op="a"><b>a</b>4</button><button type="button" class="quiz__op" data-op="b"><b>b</b>5</button><button type="button" class="quiz__op" data-op="c"><b>c</b>7</button></div></div>
+    <div class="quiz__q" data-certa="b"><p class="quiz__p"><span>6.</span> Qual braquiária mais tolera solo encharcado?</p><div class="quiz__ops"><button type="button" class="quiz__op" data-op="a"><b>a</b>Marandu</button><button type="button" class="quiz__op" data-op="b"><b>b</b>Humidícola</button><button type="button" class="quiz__op" data-op="c"><b>c</b>Ruziziensis</button></div></div>
+    <div class="quiz__q" data-certa="b"><p class="quiz__p"><span>7.</span> Quantos quilos de peso vivo tem uma unidade animal (UA)?</p><div class="quiz__ops"><button type="button" class="quiz__op" data-op="a"><b>a</b>350 kg</button><button type="button" class="quiz__op" data-op="b"><b>b</b>450 kg</button><button type="button" class="quiz__op" data-op="c"><b>c</b>600 kg</button></div></div>
+    <div class="quiz__q" data-certa="c"><p class="quiz__p"><span>8.</span> Com quantos dias a BRS Capiaçu vai para a silagem?</p><div class="quiz__ops"><button type="button" class="quiz__op" data-op="a"><b>a</b>30 dias</button><button type="button" class="quiz__op" data-op="b"><b>b</b>50 a 70 dias</button><button type="button" class="quiz__op" data-op="c"><b>c</b>90 a 110 dias</button></div></div>
+    <div class="quiz__q" data-certa="a"><p class="quiz__p"><span>9.</span> Semente com 80% de pureza e 50% de germinação tem VC de:</p><div class="quiz__ops"><button type="button" class="quiz__op" data-op="a"><b>a</b>40%</button><button type="button" class="quiz__op" data-op="b"><b>b</b>65%</button><button type="button" class="quiz__op" data-op="c"><b>c</b>130%</button></div></div>
+    <div class="quiz__q" data-certa="a"><p class="quiz__p"><span>10.</span> Qual parte do capim tem mais proteína e é a preferida do gado?</p><div class="quiz__ops"><button type="button" class="quiz__op" data-op="a"><b>a</b>A folha</button><button type="button" class="quiz__op" data-op="b"><b>b</b>O colmo</button><button type="button" class="quiz__op" data-op="c"><b>c</b>A raiz</button></div></div>
+  </div>
+  <div class="fala empurra">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Acertou 8 ou mais? É craque. Menos que isso? Volte ao aquecimento e tente de novo!</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">24</span></footer>
+</section>
+
+<!-- 25 · CAÇA-CAPIM E GABARITO -->
+<section class="page page--colina" aria-label="Caça-capim e gabarito">
+  <header class="cabeca">
+    <p class="olho">Jogo 2</p>
+    <h2 class="titulo">Caça-capim</h2>
+    <p class="lide">Encontre as 14 palavras escondidas. Elas estão na horizontal, na vertical ou na diagonal, sempre da esquerda para a direita e de cima para baixo. Sem acentos nem cedilha.</p>
+  </header>
+  <div class="caca-grade">
+    <div class="caca" id="caca" data-tam="13" data-semente="7" data-palavras="BRAQUIARIA,MARANDU,MOMBACA,TIFTON,CAPIACU,KURUMI,PERFILHO,TOUCEIRA,PIQUETE,SILAGEM,RIZOMA,COLMO,FENO,ZURI" role="img" aria-label="Grade de caça-palavras com 13 por 13 letras."></div>
+    <div class="texto">
+      <h3 class="sub">As 14 palavras</h3>
+      <ul class="palavras"><li>BRAQUIARIA</li><li>MARANDU</li><li>MOMBACA</li><li>TIFTON</li><li>CAPIACU</li><li>KURUMI</li><li>ZURI</li><li>PERFILHO</li><li>TOUCEIRA</li><li>COLMO</li><li>RIZOMA</li><li>PIQUETE</li><li>SILAGEM</li><li>FENO</li></ul>
+      <p class="nota so-tela">Toque nas letras para marcar.</p>
+    </div>
+  </div>
+  <div class="gabarito" id="gabarito">
+    <p class="caixa__tit">Gabarito (não vale espiar antes!)</p>
+    <button type="button" class="botao so-tela" id="ver-gabarito" aria-expanded="false" aria-controls="gabarito-corpo">Mostrar gabarito</button>
+    <div class="gabarito__corpo" id="gabarito-corpo">
+      <div class="texto">
+        <p class="sub">Teste de craque</p>
+        <ol><li><b>1 b</b> Marandu</li><li><b>2 a</b> Novidade</li><li><b>3 b</b> Tifton 85</li><li><b>4 c</b> 85 cm</li><li><b>5 b</b> 5 piquetes</li><li><b>6 b</b> Humidícola</li><li><b>7 b</b> 450 kg</li><li><b>8 c</b> 90 a 110 dias</li><li><b>9 a</b> 40%</li><li><b>10 a</b> A folha</li></ol>
+      </div>
+      <div class="caca caca--mini" id="caca-gabarito" role="img" aria-label="Solução do caça-palavras com as palavras destacadas."></div>
+    </div>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">25</span></footer>
+</section>
+
+<!-- 26 · DICIONÁRIO -->
+<section class="page page--colina" id="dicionario" aria-label="Dicionário do pasto">
+  <header class="cabeca">
+    <p class="olho">Dicionário do pasto</p>
+    <h2 class="titulo">Palavras do campo, sem complicação</h2>
+  </header>
+  <dl class="dicionario">
+    <div><dt>Altura de entrada e de saída</dt><dd>Alturas do capim para colocar e tirar o gado do piquete no pastejo rotacionado.</dd></div>
+    <div><dt>Bainha</dt><dd>Parte da folha que abraça o colmo.</dd></div>
+    <div><dt>Calagem</dt><dd>Aplicação de calcário para corrigir a acidez do solo e fornecer cálcio e magnésio.</dd></div>
+    <div><dt>Capineira</dt><dd>Área de capim plantada para corte e fornecimento no cocho.</dd></div>
+    <div><dt>Colmo</dt><dd>O "talo" do capim, onde ficam os nós.</dd></div>
+    <div><dt>Cultivar</dt><dd>Variedade melhorada e registrada de uma espécie. Ex.: o Marandu é uma cultivar de <i class="it">Urochloa brizantha</i>.</dd></div>
+    <div><dt>Degradação</dt><dd>Perda de vigor e de produção do pasto, com falhas no chão e plantas daninhas.</dd></div>
+    <div><dt>Envaretamento</dt><dd>Alongamento do colmo quando o capim passa do ponto.</dd></div>
+    <div><dt>Estolão</dt><dd>Caule que cresce rente ao chão e solta raízes nos nós.</dd></div>
+    <div><dt>Feno</dt><dd>Capim cortado e desidratado ao sol para ser guardado.</dd></div>
+    <div><dt>ILP</dt><dd>Integração lavoura-pecuária: lavoura e pasto na mesma área, em rotação ou consórcio.</dd></div>
+    <div><dt>Lotação</dt><dd>Quantidade de animais por área, geralmente em UA por hectare.</dd></div>
+    <div><dt>MS</dt><dd>Matéria seca: o que sobra do capim sem a água.</dd></div>
+    <div><dt>Pastejo contínuo</dt><dd>O gado fica no mesmo pasto o tempo todo.</dd></div>
+    <div><dt>Pastejo rotacionado</dt><dd>O pasto é dividido em piquetes e o gado muda de um para outro conforme a altura do capim.</dd></div>
+    <div><dt>PB</dt><dd>Proteína bruta, em porcentagem da matéria seca.</dd></div>
+    <div><dt>Perfilho</dt><dd>Brotação nova que nasce da base da planta.</dd></div>
+    <div><dt>Piquete</dt><dd>Cada divisão do pasto no pastejo rotacionado.</dd></div>
+    <div><dt>Pré-secado</dt><dd>Capim cortado, murcho até perder parte da água e conservado sem ar, como uma silagem mais seca.</dd></div>
+    <div><dt>Rizoma</dt><dd>Caule que cresce debaixo da terra.</dd></div>
+    <div><dt>Silagem</dt><dd>Forragem picada e fermentada sem ar, dentro de um silo.</dd></div>
+    <div><dt>SPV</dt><dd>Sementes puras viáveis: a parte do lote que é semente pura e capaz de nascer.</dd></div>
+    <div><dt>Superpastejo e subpastejo</dt><dd>Pastejo forte demais (capim rapado) ou fraco demais (capim passando do ponto).</dd></div>
+    <div><dt>Touceira</dt><dd>Moita formada por muitos perfilhos juntos.</dd></div>
+    <div><dt>UA</dt><dd>Unidade animal: 450 kg de peso vivo.</dd></div>
+    <div><dt>VC</dt><dd>Valor cultural da semente: pureza × germinação ÷ 100.</dd></div>
+  </dl>
+  <div class="fala empurra">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Pronto: agora você fala a língua do pasto. Na próxima conversa com o técnico, ninguém te pega no contrapé!</p>
+  </div>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">26</span></footer>
+</section>
+
+<!-- 27 · APITO FINAL E FONTES -->
+<section class="page page--colina" id="apito-final" aria-label="Apito final e fontes">
+  <header class="cabeca">
+    <p class="olho">Apito final</p>
+    <h2 class="titulo">O craque certo no lugar certo</h2>
+    <p class="lide">Não existe capim campeão sozinho. Existe o craque certo para cada posição, com o manejo certo. Para guardar na memória:</p>
+  </header>
+  <ul class="escalacao">
+    <li><span class="camisa"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>5</b></span><div><p><span class="escalacao__nome">Braquiária</span><span class="escalacao__pos">Volante</span></p><p>Rústica e versátil, a base do pasto brasileiro. Respeite a altura mínima.</p></div></li>
+    <li><span class="camisa"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>9</b></span><div><p><span class="escalacao__nome">Panicum</span><span class="escalacao__pos">Centroavante</span></p><p>Produção alta com solo fértil, adubo e rodízio. Entre e saia na altura certa.</p></div></li>
+    <li><span class="camisa"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>10</b></span><div><p><span class="escalacao__nome">Tifton</span><span class="escalacao__pos">Meia</span></p><p>Folha de qualidade para feno, leite e cavalos. Adube e corte na hora certa.</p></div></li>
+    <li><span class="camisa"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-camisa"/></svg><b>1</b></span><div><p><span class="escalacao__nome">Capim-elefante</span><span class="escalacao__pos">Goleiro</span></p><p>Volume para o cocho e o silo na seca. Devolva os nutrientes depois de cada corte.</p></div></li>
+  </ul>
+  <div class="fala">
+    <svg class="fala__avatar" viewBox="0 0 120 120" aria-hidden="true"><use href="#mimosa"/></svg>
+    <p class="fala__balao"><span class="fala__quem">Mimosa comenta</span>Obrigada por jogar com a gente! Agora é com você: pegue a régua e vá medir o pasto.</p>
+  </div>
+  <div class="texto">
+    <h3 class="sub">De onde vêm os números</h3>
+    <ol class="fontes">
+      <li><b>Embrapa Gado de Corte.</b> Régua de manejo de pastagens: edição revisada. Comunicado Técnico 135. Campo Grande, MS, 2017.</li>
+      <li><b>Embrapa Rondônia.</b> Pastejo rotacionado: metas de manejo e planejamento do sistema rotativo (folder).</li>
+      <li><b>Embrapa (CNPGC).</b> <i class="it">Brachiaria brizantha</i> cv. Marandu. Documentos. Campo Grande, MS, 1984.</li>
+      <li><b>Embrapa.</b> Novas cultivares de pastagem. Pasto Extraordinário, 2018.</li>
+      <li><b>Dias-Filho, M. B. (Embrapa Amazônia Oriental).</b> Entendendo a síndrome da morte do capim-marandu, 2005.</li>
+      <li><b>Embrapa Gado de Leite.</b> BRS Capiaçu: cultivar de capim-elefante de alto rendimento para produção de silagem. Comunicado Técnico 79. Juiz de Fora, MG, 2016.</li>
+      <li><b>Embrapa Gado de Leite.</b> Informações sobre a cultivar de capim-elefante BRS Kurumi. Comunicado Técnico 75.</li>
+      <li><b>Embrapa Amazônia Ocidental.</b> Densidades de semeadura no estabelecimento de cultivares de gramíneas forrageiras no Amazonas. Comunicado Técnico 142. Manaus, AM, 2019.</li>
+      <li><b>USDA-ARS.</b> Tifton 85 Bermudagrass. Tifton, Geórgia, Estados Unidos.</li>
+    </ol>
+  </div>
+  <p class="nota empurra">Os 4 Craques do Pasto · 1ª edição, novembro de 2026 · Rebanho. Este <span class="nq">e-book</span> tem caráter educativo: cultivar, adubação e manejo devem ser ajustados por um técnico para cada propriedade.</p>
+  <footer class="folio"><span class="folio__t">Os 4 Craques do Pasto</span><span class="folio__n">27</span></footer>
+</section>
+
+<!-- 28 · CONTRACAPA -->
+<section class="page page--escura page--contra" aria-label="Contracapa">
+  <div class="contra__bloco">
+    <p class="contra__marca">Rebanho</p>
+    <p class="contra__tag">Cada animal, cada quilo.</p>
+    <p class="contra__txt">Gostou do jogo? Toda segunda-feira, a <b>Porteira</b>, newsletter gratuita do Rebanho, traz mercado do boi, clima e gestão da fazenda.</p>
+  </div>
+  <svg class="contra__arte" viewBox="0 0 800 560" aria-hidden="true">
+    <path d="M0 250C130 200 262 226 392 208C528 188 652 226 800 194V560H0Z" fill="#035237"/>
+    <path d="M0 330C150 292 286 322 428 310C566 298 684 322 800 302V560H0Z" fill="#0B5E40"/>
+    <g data-capim="elefante" data-x="96" data-y="410" data-h="330" data-w="130" data-k="1" data-semente="81" data-paleta="escuro"></g>
+    <g data-capim="braquiaria" data-x="236" data-y="414" data-h="170" data-w="150" data-k=".95" data-semente="82" data-paleta="escuro"></g>
+    <g data-capim="touceira" data-x="590" data-y="410" data-h="250" data-w="160" data-k="1" data-semente="83" data-paleta="escuro"></g>
+    <g data-capim="tifton" data-x="724" data-y="414" data-h="66" data-w="140" data-k=".95" data-semente="84" data-paleta="escuro"></g>
+    <use href="#mimosa" x="330" y="236" width="170" height="170"/>
+    <path d="M0 398C150 380 300 392 450 388C600 384 700 398 800 386V560H0Z" fill="#013D2F"/>
+    <g stroke="#B8895A" stroke-width="4" stroke-linecap="round"><path d="M0 446H800M0 472H800"/></g>
+    <g fill="#B8895A">
+      <rect x="22" y="428" width="12" height="70" rx="4"/><rect x="114" y="428" width="12" height="70" rx="4"/><rect x="206" y="428" width="12" height="70" rx="4"/>
+      <rect x="298" y="428" width="12" height="70" rx="4"/><rect x="390" y="428" width="12" height="70" rx="4"/><rect x="482" y="428" width="12" height="70" rx="4"/>
+      <rect x="574" y="428" width="12" height="70" rx="4"/><rect x="666" y="428" width="12" height="70" rx="4"/><rect x="758" y="428" width="12" height="70" rx="4"/>
+    </g>
+  </svg>
+  <div class="capa__rodape"><span>Os 4 Craques do Pasto</span><span>1ª edição · 2026</span></div>
+</section>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+  document.documentElement.classList.add('js');
+  var NS = 'http://www.w3.org/2000/svg';
+
+  function gerador(semente) {
+    var s = (Math.imul((semente | 0) + 1, 2654435761) >>> 0) || 1;
+    return function () { s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; };
+  }
+  var PALETAS = {
+    claro: { folhas: ['#035237', '#058149', '#3E9F4A', '#6DB55A'], colmo: '#2E7D3A', no: '#035237', flor: '#B98A52', florClara: '#D9B877', raiz: '#B8895A' },
+    escuro: { folhas: ['#0E8A4A', '#25A74B', '#4DDF35', '#9FE38C'], colmo: '#2FA54A', no: '#0B5E40', flor: '#D9B877', florClara: '#F0DDB0', raiz: '#B8895A' }
+  };
+  function no(tag, at, pai) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); pai.appendChild(e); return e; }
+  function r1(n) { return Math.round(n * 10) / 10; }
+  function pontos(lista) { return lista.map(function (p) { return r1(p[0]) + ' ' + r1(p[1]); }).join('L'); }
+  function sorteia(r, lista) { return lista[Math.floor(r() * lista.length)]; }
+  function haste(x, y, ang, alt, curva, n) {
+    var pts = [[x, y]], px = x, py = y;
+    for (var i = 1; i <= n; i++) { var a = ang + curva * Math.pow(i / n, 2); px += Math.sin(a) * alt / n; py -= Math.cos(a) * alt / n; pts.push([px, py]); }
+    return pts;
+  }
+  function traco(g, pts, cor, larg) { no('path', { d: 'M' + pontos(pts), fill: 'none', stroke: cor, 'stroke-width': r1(larg), 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g); }
+
+  // Lâmina foliar: a linha central vai curvando para fora e a largura afina até a ponta.
+  function lamina(g, x, y, ang, comp, curva, larg, cor, chao) {
+    var n = 16, ds = comp / n, sinal = ang >= 0 ? 1 : -1, esq = [], dir = [], px = x, py = y;
+    for (var i = 0; i <= n; i++) {
+      var t = i / n, a = ang + sinal * curva * Math.pow(t, 1.5);
+      var w = i === n ? 0 : larg * Math.pow(1 - t, 0.7) * (t < 0.12 ? 0.55 + 3.75 * t : 1);
+      var nx = Math.cos(a) * w / 2, ny = Math.sin(a) * w / 2;
+      esq.push([px - nx, py - ny]); dir.push([px + nx, py + ny]);
+      if (i < n) {
+        var qx = px + Math.sin(a) * ds, qy = py - Math.cos(a) * ds;
+        if (qy > chao - 1.5 && i > 3) { esq.push([qx, chao - 1.5]); break; }
+        px = qx; py = qy;
+      }
+    }
+    no('path', { d: 'M' + pontos(esq.concat(dir.reverse())) + 'Z', fill: cor }, g);
+  }
+
+  function panicula(g, x, y, ang, alt, k, r, c) {
+    var pts = haste(x, y, ang, alt, (ang >= 0 ? 1 : -1) * 0.22, 12);
+    traco(g, pts, c.colmo, 1.6 * k);
+    for (var i = 7; i <= 12; i++) {
+      var lados = i === 12 ? [-1, 1] : [i % 2 ? 1 : -1];
+      for (var j = 0; j < lados.length; j++) {
+        var lado = lados[j], comp = (16 + r() * 14) * k * (1.25 - (i - 7) * 0.09);
+        var ramo = haste(pts[i][0], pts[i][1], ang + lado * (0.55 + r() * 0.45), comp, lado * 0.9, 5);
+        traco(g, ramo, c.flor, 0.9 * k);
+        for (var m = 2; m < ramo.length; m++) no('circle', { cx: r1(ramo[m][0]), cy: r1(ramo[m][1]), r: r1(1.5 * k), fill: c.florClara }, g);
+      }
+    }
+  }
+  function racemo(g, x, y, ang, alt, k, r, c) {
+    var pts = haste(x, y, ang, alt, ang * -0.3, 12);
+    traco(g, pts, c.colmo, 1.8 * k);
+    lamina(g, pts[4][0], pts[4][1], ang - (0.55 + r() * 0.35), alt * (0.24 + r() * 0.08), 0.5 + r() * 0.4, 4.2 * k, sorteia(r, c.folhas), 1e9);
+    lamina(g, pts[7][0], pts[7][1], ang + (0.55 + r() * 0.35), alt * (0.2 + r() * 0.08), 0.5 + r() * 0.4, 3.8 * k, sorteia(r, c.folhas), 1e9);
+    for (var j = 0; j < 4; j++) {
+      var lado = j % 2 ? 1 : -1, base = pts[9 + j];
+      var ram = haste(base[0], base[1], ang + lado * (0.75 + r() * 0.25), (11 + r() * 5) * k, lado * 0.35, 4);
+      traco(g, ram, c.flor, 3.8 * k);
+      traco(g, ram, c.florClara, 1.5 * k);
+    }
+  }
+  function braquiaria(g, o, r, c) {
+    if (o.flor) for (var i = 0; i < 3; i++) racemo(g, o.x + (r() - 0.5) * o.w * 0.22, o.y, (r() - 0.5) * 0.55, o.h * (0.95 + r() * 0.12), o.k, r, c);
+    var n = o.n || 36;
+    for (var j = 0; j < n; j++) { var u = r() * 2 - 1; lamina(g, o.x + u * o.w * 0.14, o.y, u * 0.95 + (r() - 0.5) * 0.3, o.h * (0.42 + r() * 0.42), 0.45 + r() * 0.75, (5.2 + r() * 2.6) * o.k, sorteia(r, c.folhas), o.chao); }
+  }
+  function touceira(g, o, r, c) {
+    if (o.flor) for (var i = 0; i < 3; i++) panicula(g, o.x + (r() - 0.5) * o.w * 0.16, o.y, (r() - 0.5) * 0.4, o.h * (1.02 + r() * 0.14), o.k, r, c);
+    var n = o.n || 48;
+    for (var j = 0; j < n; j++) { var u = r() * 2 - 1; lamina(g, o.x + u * o.w * 0.1, o.y, u * 0.8 + (r() - 0.5) * 0.28, o.h * (0.55 + r() * 0.45) * (1 - Math.abs(u) * 0.22), 0.35 + r() * 0.65, (4.2 + r() * 2.8) * o.k, sorteia(r, c.folhas), o.chao); }
+  }
+  function decumbens(g, o, r, c) {
+    for (var s = 0; s < 4; s++) {
+      var lado = s % 2 ? 1 : -1, compH = o.w * (0.2 + r() * 0.12) * (s < 2 ? 1 : 0.62), px = o.x, py = o.y - 1.5;
+      for (var i = 1; i <= 3; i++) {
+        var nx = o.x + lado * compH * i / 3, ny = o.y - 1.5 - i * 1.4;
+        traco(g, [[px, py], [nx, ny]], c.colmo, 2.6 * o.k); px = nx; py = ny;
+        for (var q = 0; q < 3; q++) traco(g, [[px, py + 1], [px + (r() - 0.5) * 7 * o.k, py + (6 + r() * 7) * o.k]], c.raiz, 1.1 * o.k);
+        if (i < 3) lamina(g, px, py, lado * (0.5 + r() * 0.5), o.h * (0.18 + r() * 0.1), 0.6, 4 * o.k, sorteia(r, c.folhas), o.chao);
+      }
+      var sobe = haste(px, py, lado * 0.55, o.h * (0.5 + r() * 0.3), -lado * 0.5, 6);
+      traco(g, sobe, c.colmo, 2.4 * o.k);
+      for (var f = 2; f < sobe.length; f++) lamina(g, sobe[f][0], sobe[f][1], lado * (0.25 + r() * 0.6) * (f % 2 ? 1 : -0.7), o.h * (0.22 + r() * 0.16), 0.6 + r() * 0.5, 4.4 * o.k, sorteia(r, c.folhas), o.chao);
+    }
+    for (var j = 0; j < 12; j++) { var u = r() * 2 - 1; lamina(g, o.x + u * 4, o.y, u * 0.9, o.h * (0.35 + r() * 0.3), 0.6 + r() * 0.6, 4.6 * o.k, sorteia(r, c.folhas), o.chao); }
+  }
+  function tifton(g, o, r, c) {
+    if (o.solo) {
+      for (var z = 0; z < 3; z++) {
+        var ld0 = z === 1 ? 1 : -1, prof = 13 + z * 8, rz = [];
+        for (var i = 0; i <= 8; i++) rz.push([o.x + ld0 * (o.w * (0.4 - z * 0.06)) * i / 8, o.y + prof + Math.sin(i * 1.2 + z) * 2.5]);
+        traco(g, rz, c.raiz, 2.8 * o.k);
+        for (var i2 = 2; i2 <= 8; i2 += 2) { traco(g, [[rz[i2][0], rz[i2][1]], [rz[i2][0] + 3, rz[i2][1] + 8 * o.k]], c.raiz, 1.1 * o.k); no('circle', { cx: r1(rz[i2][0]), cy: r1(rz[i2][1]), r: r1(2 * o.k), fill: c.no }, g); }
+      }
+    }
+    for (var s = 0; s < 4; s++) {
+      var ld = s % 2 ? 1 : -1, comp = o.w * (0.32 + r() * 0.14) * (s < 2 ? 1 : 0.7), passo = 15 * o.k, nos = Math.max(2, Math.round(comp / passo)), px = o.x, py = o.y - 1.2;
+      for (var j = 1; j <= nos; j++) {
+        var nx = px + ld * passo * (0.85 + r() * 0.3), ny = o.y - 1.2 - Math.abs(Math.sin(j * 1.1 + s)) * 2 * o.k;
+        traco(g, [[px, py], [nx, ny]], c.colmo, 2.2 * o.k); px = nx; py = ny;
+        if (o.solo) traco(g, [[px, py + 1], [px + (r() - 0.5) * 4, py + 7 * o.k]], c.raiz, 1 * o.k);
+        var nf = 2 + Math.floor(r() * 3), alt = o.h * (0.3 + r() * 0.32) * (1 - (j / nos) * 0.45);
+        for (var f = 0; f < nf; f++) lamina(g, px, py, ld * (0.1 + r() * 0.75) * (f === 0 ? -0.5 : 1), alt * (0.7 + r() * 0.3), 0.35 + r() * 0.45, 3.5 * o.k, sorteia(r, c.folhas), o.chao);
+      }
+    }
+    for (var t = 0; t < 16; t++) { var u = r() * 2 - 1; lamina(g, o.x + u * 6 * o.k, o.y, u * 0.85, o.h * (0.45 + r() * 0.45), 0.3 + r() * 0.45, 3.6 * o.k, sorteia(r, c.folhas), o.chao); }
+    if (o.flor) for (var d = 0; d < 4; d++) {
+      var hb = haste(o.x + (r() - 0.5) * o.w * 0.3, o.y, (r() - 0.5) * 0.5, o.h * (0.9 + r() * 0.3), 0, 6), topo = hb[hb.length - 1];
+      traco(g, hb, c.colmo, 1.5 * o.k);
+      for (var dd = 0; dd < 5; dd++) { var aa = -0.9 + dd * 0.45 + (r() - 0.5) * 0.15; traco(g, haste(topo[0], topo[1], aa, (9 + r() * 5) * o.k, aa * 0.4, 3), c.flor, 1.9 * o.k); }
+    }
+  }
+  function elefante(g, o, r, c) {
+    var n = o.n || 6, canas = [];
+    for (var i = 0; i < n; i++) { var u = n === 1 ? 0 : (i / (n - 1)) * 2 - 1; canas.push({ x: o.x + u * o.w * 0.11, ang: u * 0.13 + (r() - 0.5) * 0.05, alt: o.h * (0.74 + r() * 0.24) }); }
+    canas.sort(function (a, b) { return b.alt - a.alt; });
+    canas.forEach(function (cana, ci) {
+      var seg = 9, pts = haste(cana.x, o.y, cana.ang, cana.alt, 0, seg);
+      for (var s = 0; s < seg; s++) traco(g, [pts[s], pts[s + 1]], c.colmo, (7.2 - s * 0.45) * o.k);
+      for (var m = 1; m < seg; m++) traco(g, [[pts[m][0] - 3.6 * o.k, pts[m][1]], [pts[m][0] + 3.6 * o.k, pts[m][1]]], c.no, 1.5 * o.k);
+      for (var f = 2; f <= seg; f++) { var lado = (f + ci) % 2 ? 1 : -1; lamina(g, pts[f][0], pts[f][1], cana.ang + lado * (0.45 + r() * 0.45), o.h * (0.25 + r() * 0.14), 1.05 + r() * 0.7, (6.4 + r() * 2.4) * o.k, sorteia(r, c.folhas), o.chao); }
+      if (o.flor && ci < 2) {
+        var tp = pts[seg], esp = haste(tp[0], tp[1], cana.ang, 30 * o.k, 0.12, 4);
+        traco(g, esp, c.flor, 8 * o.k);
+        traco(g, esp, c.florClara, 3 * o.k);
+      }
+    });
+    for (var b = 0; b < 10; b++) { var u2 = r() * 2 - 1; lamina(g, o.x + u2 * 8, o.y, u2 * 0.9, o.h * (0.25 + r() * 0.2), 0.9 + r() * 0.6, 6 * o.k, sorteia(r, c.folhas), o.chao); }
+  }
+  var TIPOS = { braquiaria: braquiaria, touceira: touceira, decumbens: decumbens, tifton: tifton, elefante: elefante };
+  Array.prototype.forEach.call(document.querySelectorAll('[data-capim]'), function (g) {
+    var d = g.dataset, f = TIPOS[d.capim];
+    if (!f) return;
+    var o = { x: +d.x, y: +d.y, h: +d.h, w: +d.w, k: +(d.k || 1), n: d.n ? +d.n : 0, flor: d.flor !== '0', solo: d.solo === '1' };
+    o.chao = d.chao ? +d.chao : o.y;
+    f(g, o, gerador(+(d.semente || 1)), PALETAS[d.paleta] || PALETAS.claro);
+  });
+
+  // Caça-palavras: posiciona as palavras sempre do mesmo jeito (semente fixa).
+  (function cacaPalavras() {
+    var alvo = document.getElementById('caca');
+    if (!alvo) return;
+    var gab = document.getElementById('caca-gabarito');
+    var palavras = alvo.getAttribute('data-palavras').split(','), tam = +alvo.getAttribute('data-tam'), base = +alvo.getAttribute('data-semente');
+    var dirs = [[0, 1], [1, 0], [1, 1]], letras = 'ABCDEFGHIJLMNOPQRSTUVXZ';
+    for (var tentativa = 0; tentativa < 300; tentativa++) {
+      var r = gerador(base + tentativa), grade = [], usadas = [];
+      for (var i = 0; i < tam; i++) { grade.push([]); for (var j = 0; j < tam; j++) grade[i].push(''); }
+      var ok = palavras.slice().sort(function (a, b) { return b.length - a.length; }).every(function (p) {
+        for (var t = 0; t < 500; t++) {
+          var d = dirs[Math.floor(r() * 3)], l = Math.floor(r() * tam), c = Math.floor(r() * tam), k;
+          if (l + d[0] * (p.length - 1) >= tam || c + d[1] * (p.length - 1) >= tam) continue;
+          var cabe = true;
+          for (k = 0; k < p.length; k++) { var ch = grade[l + d[0] * k][c + d[1] * k]; if (ch && ch !== p[k]) { cabe = false; break; } }
+          if (!cabe) continue;
+          var cel = [];
+          for (k = 0; k < p.length; k++) { grade[l + d[0] * k][c + d[1] * k] = p[k]; cel.push((l + d[0] * k) * tam + c + d[1] * k); }
+          usadas.push(cel);
+          return true;
+        }
+        return false;
+      });
+      if (!ok) continue;
+      var achadas = {};
+      usadas.forEach(function (cel) { cel.forEach(function (x) { achadas[x] = 1; }); });
+      var html = '', mini = '';
+      for (var a = 0; a < tam; a++) for (var b = 0; b < tam; b++) {
+        if (!grade[a][b]) grade[a][b] = letras[Math.floor(r() * letras.length)];
+        html += '<span>' + grade[a][b] + '</span>';
+        mini += '<span' + (achadas[a * tam + b] ? ' class="achada"' : '') + '>' + grade[a][b] + '</span>';
+      }
+      alvo.innerHTML = html;
+      if (gab) gab.innerHTML = mini;
+      Array.prototype.forEach.call(alvo.children, function (s) { s.addEventListener('click', function () { s.classList.toggle('marcada'); }); });
+      return;
+    }
+  })();
+
+  // Teste de craque: toque numa opção para conferir.
+  (function quiz() {
+    var qs = document.querySelectorAll('.quiz__q'), placar = document.getElementById('placar-texto'), certas = 0, feitas = 0;
+    Array.prototype.forEach.call(qs, function (q) {
+      var botoes = q.querySelectorAll('.quiz__op');
+      Array.prototype.forEach.call(botoes, function (b) {
+        b.addEventListener('click', function () {
+          if (q.classList.contains('feita')) return;
+          q.classList.add('feita'); feitas++;
+          var acertou = b.getAttribute('data-op') === q.getAttribute('data-certa');
+          if (acertou) certas++;
+          b.classList.add(acertou ? 'acertou' : 'errou');
+          q.querySelector('[data-op="' + q.getAttribute('data-certa') + '"]').classList.add('certa');
+          Array.prototype.forEach.call(botoes, function (x) { x.setAttribute('aria-disabled', 'true'); });
+          if (placar) {
+            var fim = feitas === qs.length ? (certas >= 8 ? ' · Craque!' : certas >= 5 ? ' · Bom jogo!' : ' · Bora treinar!') : '';
+            placar.textContent = certas + ' de ' + feitas + fim;
+          }
+        });
+      });
+    });
+  })();
+
+  var botaoGab = document.getElementById('ver-gabarito');
+  if (botaoGab) botaoGab.addEventListener('click', function () {
+    var g = document.getElementById('gabarito'), aberto = g.classList.toggle('aberto');
+    botaoGab.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+    botaoGab.textContent = aberto ? 'Esconder gabarito' : 'Mostrar gabarito';
+  });
+})();
+</script>
+</body>
+</html>

@@ -134,6 +134,18 @@ npm run render:aula
 
 Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/complexidade/`. O passo a passo completo (baixar do Drive, converter o HDR do iPhone, transcrever, cortar, renderizar) está em `scripts/aulas/README.md`; os componentes da lousa ficam em `remotion/lousa/`.
 
+## E-books
+
+Materiais longos para levar o público à newsletter, um por pasta em `ebooks/`, com o HTML (fonte) e o PDF pronto.
+
+- **Os 4 Craques do Pasto** (Rebanho): guia lúdico sobre Braquiária, Panicum, Tifton e Capim-elefante. Veja `ebooks/os-4-craques-do-pasto/README.md`.
+
+```bash
+node scripts/ebook/gerar-pdf.mjs ebooks/os-4-craques-do-pasto
+```
+
+Gera o PDF de novo depois de editar o HTML (precisa do Playwright: `npm i --no-save playwright && npx playwright install chromium`).
+
 ## Estrutura
 
 ```
@@ -142,6 +154,8 @@ remotion/           templates de vídeo: cenas, elemento de cada marca, fontes
 remotion/lousa/     lousa no estilo Excalidraw (formas à mão, texto manuscrito, canvas infinito)
 remotion/aulas/     aulas da comunidade (cenas, cortes e EDL de cada aula)
 scripts/aulas/      pipeline das aulas: Drive, HDR→SDR, transcrição, cortes, voz, rosto
+scripts/ebook/      gera o PDF dos e-books
+ebooks/             e-books em HTML + PDF, um por pasta
 src/coleta/         RSS e APIs de dados
 src/agentes/        editor, redator, revisor e editor da newsletter (Claude)
 src/video/          render do Reel
