@@ -8,7 +8,7 @@ relacionados: [2, 4, 7, 24]
 
 ## O essencial
 
-O PACELC estende o CAP e diz: se houver uma **P**artição, escolha entre disponibilidade (**A**vailability) e **C**onsistência; senão (**E**lse), escolha entre **L**atência e **C**onsistência. Mesmo quando a rede está funcionando bem, você continua trocando leituras lentas, mas consistentes, por leituras rápidas, mas eventualmente consistentes.
+O PACELC estende o CAP e diz: se houver uma **P**artição, escolha entre disponibilidade (**A**vailability) e **C**onsistência; senão (**E**lse), escolha entre **L**atência e **C**onsistência. Mesmo quando a rede está funcionando bem, você continua tendo de escolher entre leituras lentas, mas consistentes, e leituras rápidas, mas eventualmente consistentes.
 
 Sistemas que sincronizam dados entre regiões muitas vezes pagam em latência para manter a consistência forte. Isso explica por que alguns bancos de dados são rápidos, mas um pouco desatualizados, enquanto outros são mais lentos, mas sempre precisos.
 
@@ -35,7 +35,7 @@ Com réplicas no mesmo datacenter, a consistência sai quase de graça. Com rép
 Bancos no estilo Dynamo deixam você girar esse botão. Com 3 réplicas (N = 3), você define quantas precisam confirmar cada escrita (W) e quantas respondem cada leitura (R):
 
 - **W = 1, R = 1:** responde a réplica mais rápida. Latência mínima, mas a leitura pode cair numa réplica que ainda não recebeu a escrita. É o EL.
-- **W = 2, R = 2:** como R + W > N, todo conjunto de leitura cruza com o de escrita, e a leitura sempre encontra pelo menos uma réplica com a escrita mais recente. Em troca, cada operação espera a segunda réplica mais lenta. É o EC.
+- **W = 2, R = 2:** como R + W > N, todo conjunto de leitura cruza com o de escrita, e a leitura sempre encontra pelo menos uma réplica com a escrita mais recente. Em troca, cada operação espera a segunda resposta, e não só a mais rápida. É o EC.
 
 Na partição, o mesmo botão decide o PAC: se o cliente só alcança uma réplica, exigir W = 2 significa recusar a escrita (PC); aceitar com W = 1 mantém o sistema no ar, ao custo de conflitos para resolver depois (PA).
 
