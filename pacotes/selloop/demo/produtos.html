@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Produtos da Nova Rota</title>
+<!-- Ilustrações das embalagens fictícias da Nova Rota. Cada <section> vira um PNG 800×600 (gerar-produtos.mjs). -->
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap");
+  body { margin: 0; font-family: Poppins, sans-serif; }
+  section { width: 800px; height: 600px; position: relative; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
+  .chao { position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(#0000, #0000000d); }
+  .sombra { position: absolute; bottom: 88px; width: 300px; height: 34px; border-radius: 50%; background: radial-gradient(#0003, #0000 70%); }
+  svg { position: relative; z-index: 1; margin-bottom: 95px; filter: drop-shadow(0 18px 22px #0002); }
+  text { font-family: Poppins, sans-serif; }
+</style>
+</head>
+<body>
+
+<!-- Café -->
+<section id="cafe" style="background: radial-gradient(circle at 50% 35%, #fff4e6, #f3dcc0)">
+  <div class="chao"></div><div class="sombra"></div>
+  <svg width="300" height="400" viewBox="0 0 300 400">
+    <defs><linearGradient id="cafe-g" x1="0" x2="1"><stop offset="0" stop-color="#5a3420"/><stop offset=".5" stop-color="#7b4a2c"/><stop offset="1" stop-color="#4a2a19"/></linearGradient></defs>
+    <path d="M40 30 Q150 10 260 30 L275 370 Q150 392 25 370 Z" fill="url(#cafe-g)"/>
+    <rect x="40" y="18" width="220" height="26" rx="6" fill="#3d2213"/>
+    <rect x="62" y="150" width="176" height="170" rx="16" fill="#fff4e6"/>
+    <ellipse cx="150" cy="200" rx="26" ry="34" fill="#6b3d22" transform="rotate(-20 150 200)"/>
+    <path d="M140 172 Q156 200 142 228" stroke="#fff4e6" stroke-width="5" fill="none"/>
+    <text x="150" y="268" text-anchor="middle" font-size="34" font-weight="800" fill="#4a2a19">CAFÉ</text>
+    <text x="150" y="296" text-anchor="middle" font-size="13" font-weight="600" fill="#7b4a2c">Torrado e moído · 500 g</text>
+  </svg>
+</section>
+
+<!-- Açúcar -->
+<section id="acucar" style="background: radial-gradient(circle at 50% 35%, #eef5ff, #d6e6fb)">
+  <div class="chao"></div><div class="sombra" style="width:340px"></div>
+  <svg width="320" height="400" viewBox="0 0 320 400">
+    <path d="M30 40 Q160 20 290 40 L300 370 Q160 390 20 370 Z" fill="#ffffff"/>
+    <path d="M30 40 Q160 20 290 40 L292 70 Q160 52 28 70 Z" fill="#e8eef7"/>
+    <rect x="22" y="170" width="276" height="120" fill="#1f5fd1"/>
+    <text x="160" y="226" text-anchor="middle" font-size="40" font-weight="800" fill="#fff">AÇÚCAR</text>
+    <text x="160" y="266" text-anchor="middle" font-size="22" font-weight="600" fill="#cfe0ff">CRISTAL</text>
+    <text x="160" y="340" text-anchor="middle" font-size="44" font-weight="800" fill="#1f5fd1">5 kg</text>
+  </svg>
+</section>
+
+<!-- Arroz -->
+<section id="arroz" style="background: radial-gradient(circle at 50% 35%, #f3faef, #dcefd2)">
+  <div class="chao"></div><div class="sombra" style="width:340px"></div>
+  <svg width="320" height="400" viewBox="0 0 320 400">
+    <defs><pattern id="graos" width="16" height="12" patternUnits="userSpaceOnUse"><ellipse cx="6" cy="6" rx="5" ry="2.2" fill="#f4efe3"/><ellipse cx="14" cy="11" rx="5" ry="2.2" fill="#ece5d5" transform="rotate(30 14 11)"/></pattern></defs>
+    <path d="M30 40 Q160 20 290 40 L300 370 Q160 390 20 370 Z" fill="#fbf8f1"/>
+    <path d="M30 40 Q160 20 290 40 L300 370 Q160 390 20 370 Z" fill="url(#graos)" opacity=".9"/>
+    <rect x="22" y="70" width="276" height="96" fill="#2f8f46"/>
+    <text x="160" y="118" text-anchor="middle" font-size="44" font-weight="800" fill="#fff">ARROZ</text>
+    <text x="160" y="150" text-anchor="middle" font-size="20" font-weight="600" fill="#d7f5df">TIPO 1 · AGULHINHA</text>
+    <rect x="96" y="300" width="128" height="52" rx="12" fill="#2f8f46"/>
+    <text x="160" y="337" text-anchor="middle" font-size="32" font-weight="800" fill="#fff">5 kg</text>
+  </svg>
+</section>
+
+<!-- Azeite -->
+<section id="azeite" style="background: radial-gradient(circle at 50% 35%, #fbf7e7, #efe6c2)">
+  <div class="chao"></div><div class="sombra" style="width:200px"></div>
+  <svg width="180" height="430" viewBox="0 0 180 430">
+    <defs><linearGradient id="vidro" x1="0" x2="1"><stop offset="0" stop-color="#1d3b1c"/><stop offset=".45" stop-color="#3f6b2b"/><stop offset="1" stop-color="#162d15"/></linearGradient></defs>
+    <rect x="70" y="0" width="40" height="46" rx="6" fill="#b8902e"/>
+    <path d="M72 46 L108 46 L112 110 Q160 140 160 190 L160 410 Q160 426 144 426 L36 426 Q20 426 20 410 L20 190 Q20 140 68 110 Z" fill="url(#vidro)"/>
+    <rect x="30" y="220" width="120" height="150" rx="10" fill="#f6eed2"/>
+    <text x="90" y="262" text-anchor="middle" font-size="22" font-weight="800" fill="#2c4a1f">AZEITE</text>
+    <text x="90" y="288" text-anchor="middle" font-size="12" font-weight="600" fill="#6b5a1f">EXTRA VIRGEM</text>
+    <ellipse cx="90" cy="320" rx="16" ry="10" fill="#7a8f2e"/>
+    <text x="90" y="356" text-anchor="middle" font-size="16" font-weight="700" fill="#2c4a1f">500 ml</text>
+  </svg>
+</section>
+
+<!-- Refrigerante (fardo) -->
+<section id="refri" style="background: radial-gradient(circle at 50% 35%, #fff1ec, #fbd9cc)">
+  <div class="chao"></div><div class="sombra" style="width:420px"></div>
+  <svg width="430" height="400" viewBox="0 0 430 400">
+    <defs><linearGradient id="pet" x1="0" x2="1"><stop offset="0" stop-color="#3a0d07"/><stop offset=".5" stop-color="#6a1a10"/><stop offset="1" stop-color="#2c0905"/></linearGradient></defs>
+    <g id="garrafa">
+      <rect x="44" y="10" width="32" height="26" rx="5" fill="#e4572e"/>
+      <path d="M46 36 L74 36 L78 80 Q110 100 110 140 L110 380 Q110 392 98 392 L22 392 Q10 392 10 380 L10 140 Q10 100 42 80 Z" fill="url(#pet)"/>
+      <rect x="10" y="200" width="100" height="90" fill="#e4572e"/>
+      <text x="60" y="246" text-anchor="middle" font-size="24" font-weight="800" fill="#fff">COLA</text>
+      <text x="60" y="272" text-anchor="middle" font-size="13" font-weight="600" fill="#ffe1d6">2 litros</text>
+    </g>
+    <use href="#garrafa" x="155"/>
+    <use href="#garrafa" x="310"/>
+    <rect x="0" y="300" width="430" height="70" rx="8" fill="#ffffffcc"/>
+    <text x="215" y="346" text-anchor="middle" font-size="26" font-weight="800" fill="#b8361a">FARDO COM 6</text>
+  </svg>
+</section>
+
+<!-- Água (fardo) -->
+<section id="agua" style="background: radial-gradient(circle at 50% 35%, #eefbff, #cdeefb)">
+  <div class="chao"></div><div class="sombra" style="width:440px"></div>
+  <svg width="440" height="330" viewBox="0 0 440 330">
+    <defs><linearGradient id="agua-g" x1="0" x2="1"><stop offset="0" stop-color="#bfe9fb"/><stop offset=".5" stop-color="#ecfaff"/><stop offset="1" stop-color="#a9dff6"/></linearGradient></defs>
+    <g id="aguinha">
+      <rect x="18" y="0" width="28" height="22" rx="4" fill="#1d7fd1"/>
+      <path d="M20 22 L44 22 L48 52 Q64 64 64 86 L64 310 Q64 320 54 320 L10 320 Q0 320 0 310 L0 86 Q0 64 16 52 Z" fill="url(#agua-g)" stroke="#9fd6f2"/>
+      <rect x="0" y="150" width="64" height="60" fill="#1d7fd1"/>
+    </g>
+    <use href="#aguinha" x="20"/><use href="#aguinha" x="95"/><use href="#aguinha" x="170"/><use href="#aguinha" x="245"/><use href="#aguinha" x="320"/>
+    <rect x="10" y="150" width="420" height="60" fill="#1d7fd1"/>
+    <text x="220" y="190" text-anchor="middle" font-size="28" font-weight="800" fill="#fff">ÁGUA MINERAL</text>
+    <rect x="70" y="236" width="300" height="56" rx="10" fill="#ffffffd9"/>
+    <text x="220" y="273" text-anchor="middle" font-size="22" font-weight="700" fill="#1d7fd1">500 ml · fardo com 12</text>
+  </svg>
+</section>
+
+<!-- Suco de uva -->
+<section id="suco" style="background: radial-gradient(circle at 50% 35%, #f7efff, #e5d3fa)">
+  <div class="chao"></div><div class="sombra" style="width:220px"></div>
+  <svg width="200" height="420" viewBox="0 0 200 420">
+    <defs><linearGradient id="uva-g" x1="0" x2="1"><stop offset="0" stop-color="#3b0b4f"/><stop offset=".5" stop-color="#6a1b86"/><stop offset="1" stop-color="#2e083d"/></linearGradient></defs>
+    <rect x="76" y="0" width="48" height="40" rx="6" fill="#d9b23a"/>
+    <path d="M78 40 L122 40 L126 96 Q180 120 180 170 L180 400 Q180 416 164 416 L36 416 Q20 416 20 400 L20 170 Q20 120 74 96 Z" fill="url(#uva-g)"/>
+    <rect x="28" y="200" width="144" height="150" rx="12" fill="#fff7e8"/>
+    <circle cx="86" cy="240" r="12" fill="#7a2a9a"/><circle cx="106" cy="240" r="12" fill="#8d38ad"/><circle cx="96" cy="258" r="12" fill="#6a1b86"/><circle cx="116" cy="258" r="12" fill="#7a2a9a"/>
+    <path d="M100 222 Q108 210 120 214" stroke="#3f8f3a" stroke-width="5" fill="none"/>
+    <text x="100" y="300" text-anchor="middle" font-size="19" font-weight="800" fill="#4a0f61">SUCO DE UVA</text>
+    <text x="100" y="326" text-anchor="middle" font-size="14" font-weight="600" fill="#7a2a9a">Integral · 1 litro</text>
+  </svg>
+</section>
+
+<!-- Biscoito -->
+<section id="biscoito" style="background: radial-gradient(circle at 50% 35%, #fffbe8, #f8ebb8)">
+  <div class="chao"></div><div class="sombra" style="width:360px"></div>
+  <svg width="360" height="300" viewBox="0 0 360 300">
+    <path d="M10 60 L350 60 L350 270 Q350 290 330 290 L30 290 Q10 290 10 270 Z" fill="#f2b705"/>
+    <path d="M10 60 L40 20 L320 20 L350 60 Z" fill="#ffd54a"/>
+    <rect x="30" y="90" width="300" height="80" rx="12" fill="#b3261e"/>
+    <text x="180" y="142" text-anchor="middle" font-size="31" font-weight="800" fill="#fff">CREAM CRACKER</text>
+    <g fill="#e9c27a" stroke="#c99a4a" stroke-width="3">
+      <rect x="70" y="190" width="70" height="70" rx="8"/><rect x="150" y="196" width="70" height="70" rx="8" transform="rotate(8 185 231)"/>
+    </g>
+    <g fill="#c99a4a"><circle cx="90" cy="210" r="3"/><circle cx="120" cy="210" r="3"/><circle cx="90" cy="240" r="3"/><circle cx="120" cy="240" r="3"/><circle cx="175" cy="220" r="3"/><circle cx="200" cy="225" r="3"/><circle cx="172" cy="248" r="3"/><circle cx="197" cy="252" r="3"/></g>
+    <text x="290" y="250" text-anchor="middle" font-size="30" font-weight="800" fill="#7a3d00">400 g</text>
+  </svg>
+</section>
+
+</body>
+</html>

@@ -75,7 +75,7 @@ async function abrirNavegador(a) {
     timezoneId: "America/Sao_Paulo",
     proxy,
     // Sem este flag o screencast do Chromium headless entrega os quadros em 1x, mesmo com escala 2.
-    args: ["--hide-scrollbars", `--force-device-scale-factor=${a.escala}`],
+    args: ["--hide-scrollbars", "--lang=pt-BR", `--force-device-scale-factor=${a.escala}`],
   });
   const page = ctx.pages()[0] ?? (await ctx.newPage());
   return { page, ctx, fechar: () => ctx.close() };

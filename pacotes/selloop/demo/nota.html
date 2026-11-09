@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>NF-e 4521 · Nova Rota Distribuidora</title>
+<!-- Nota fiscal fictícia (layout simplificado de DANFE) usada na demo de "Notas e pedidos". -->
+<style>
+  @page { size: A4; margin: 14mm; }
+  body { font-family: Arial, Helvetica, sans-serif; color: #111; font-size: 10.5px; }
+  .caixa { border: 1px solid #222; padding: 6px 8px; }
+  .linha { display: flex; gap: 0; }
+  .linha > div { border: 1px solid #222; margin: -1px 0 0 -1px; padding: 4px 6px; }
+  .rot { font-size: 8px; text-transform: uppercase; color: #444; }
+  .val { font-size: 11px; font-weight: bold; margin-top: 2px; }
+  h1 { font-size: 18px; margin: 0; letter-spacing: 1px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  th, td { border: 1px solid #222; padding: 4px 5px; text-align: left; }
+  th { font-size: 8px; text-transform: uppercase; background: #f1f1f1; }
+  td.n { text-align: right; }
+  .aviso { margin-top: 18px; text-align: center; color: #b00; font-weight: bold; font-size: 11px; border: 1px dashed #b00; padding: 6px; }
+</style>
+</head>
+<body>
+  <div class="linha">
+    <div style="flex: 1.4">
+      <div class="val" style="font-size:14px">NOVA ROTA DISTRIBUIDORA DE ALIMENTOS LTDA</div>
+      <div>Rua das Gaivotas, 120 · Centro · Florianópolis/SC · 88010-000</div>
+      <div>Fone (48) 3209-4100</div>
+    </div>
+    <div style="flex: .7; text-align:center">
+      <h1>DANFE</h1>
+      <div>Documento Auxiliar da Nota Fiscal Eletrônica</div>
+      <div class="val">0 - ENTRADA &nbsp; <b style="border:1px solid #222;padding:0 6px">1</b> &nbsp; 1 - SAÍDA</div>
+      <div class="val">Nº 000.004.521 · SÉRIE 1</div>
+    </div>
+    <div style="flex: 1.2">
+      <div class="rot">Chave de acesso</div>
+      <div class="val" style="font-size:10px">4226 1141 2785 5300 0100 5500 1000 0045 2110 0004 5210</div>
+      <div class="rot" style="margin-top:6px">Protocolo de autorização</div>
+      <div class="val">142260000045210 · 03/11/2026 14:12</div>
+    </div>
+  </div>
+  <div class="linha">
+    <div style="flex:1"><div class="rot">Natureza da operação</div><div class="val">VENDA DE MERCADORIA</div></div>
+    <div style="flex:1"><div class="rot">CNPJ do emitente</div><div class="val">41.278.553/0001-00</div></div>
+  </div>
+  <div class="caixa" style="margin-top:8px">
+    <div class="rot">Destinatário / remetente</div>
+    <div class="linha" style="margin-top:4px">
+      <div style="flex:1.6"><div class="rot">Nome / razão social</div><div class="val">MERCADO BOM DIA LTDA</div></div>
+      <div style="flex:1"><div class="rot">CNPJ</div><div class="val">23.456.789/0001-10</div></div>
+      <div style="flex:.7"><div class="rot">Data de emissão</div><div class="val">03/11/2026</div></div>
+    </div>
+    <div class="linha">
+      <div style="flex:1.6"><div class="rot">Endereço</div><div class="val">Av. Beira-Mar, 845 · Estreito</div></div>
+      <div style="flex:1"><div class="rot">Município / UF</div><div class="val">Florianópolis / SC</div></div>
+      <div style="flex:.7"><div class="rot">Data de saída</div><div class="val">04/11/2026</div></div>
+    </div>
+  </div>
+  <table>
+    <thead><tr><th>Código</th><th>Descrição do produto</th><th>NCM</th><th>Un.</th><th>Qtd.</th><th>Valor unit.</th><th>Valor total</th></tr></thead>
+    <tbody>
+      <tr><td>CAF-500</td><td>CAFÉ TORRADO E MOÍDO 500 G</td><td>0901.21.00</td><td>PCT</td><td class="n">20</td><td class="n">18,90</td><td class="n">378,00</td></tr>
+      <tr><td>ACU-5K</td><td>AÇÚCAR CRISTAL 5 KG</td><td>1701.99.00</td><td>PCT</td><td class="n">12</td><td class="n">21,50</td><td class="n">258,00</td></tr>
+      <tr><td>REF-2L6</td><td>REFRIGERANTE COLA 2 L FARDO C/ 6</td><td>2202.10.00</td><td>FD</td><td class="n">10</td><td class="n">47,40</td><td class="n">474,00</td></tr>
+      <tr><td>AGU-12</td><td>ÁGUA MINERAL 500 ML FARDO C/ 12</td><td>2201.10.00</td><td>FD</td><td class="n">6</td><td class="n">16,80</td><td class="n">100,80</td></tr>
+      <tr><td>BIS-400</td><td>BISCOITO CREAM CRACKER 400 G</td><td>1905.31.00</td><td>PCT</td><td class="n">12</td><td class="n">6,15</td><td class="n">73,80</td></tr>
+    </tbody>
+  </table>
+  <div class="linha" style="margin-top:8px">
+    <div style="flex:1"><div class="rot">Valor dos produtos</div><div class="val">R$ 1.284,60</div></div>
+    <div style="flex:1"><div class="rot">Frete</div><div class="val">R$ 0,00</div></div>
+    <div style="flex:1"><div class="rot">Desconto</div><div class="val">R$ 0,00</div></div>
+    <div style="flex:1"><div class="rot">Valor total da nota</div><div class="val" style="font-size:14px">R$ 1.284,60</div></div>
+  </div>
+  <div class="caixa" style="margin-top:8px"><div class="rot">Informações complementares</div><div>Pedido 1187 · Vendedor: Diogo Campos · Pagamento: boleto 14 dias.</div></div>
+  <div class="aviso">DOCUMENTO FICTÍCIO PARA DEMONSTRAÇÃO · SEM VALOR FISCAL</div>
+</body>
+</html>
