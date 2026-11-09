@@ -4,15 +4,17 @@ import { instalarDemo } from "../demo/servidor.mjs";
 export const APP = "https://app.selloop.com.br";
 /** Terça, 10/11/2026, 10:32 em Florianópolis: o "agora" das cenas do vídeo 1. */
 export const MANHA = new Date("2026-11-10T10:32:00-03:00");
+/** A mesma terça, 23:47: o time já foi para casa e a Lia atende (vídeo 3). */
+export const NOITE = new Date("2026-11-10T23:47:00-03:00");
 
 /** Cria uma cena que instala a demo antes de abrir a página e guarda o controle em `cena.demo`. */
-export function cenaDemo({ nome, usuario = "patricia", agora = MANHA, caminho = "/atendimento", preparar, gravar }) {
+export function cenaDemo({ nome, usuario = "patricia", agora = MANHA, cenario = "dia", caminho = "/atendimento", preparar, gravar }) {
   const cena = {
     nome,
     url: `${APP}${caminho}`,
     demo: null,
     antes: async (page) => {
-      cena.demo = await instalarDemo(page, { usuario, agora, avisar: true });
+      cena.demo = await instalarDemo(page, { usuario, agora, cenario, avisar: true });
     },
     preparar: async (page) => {
       await page.waitForTimeout(1200);

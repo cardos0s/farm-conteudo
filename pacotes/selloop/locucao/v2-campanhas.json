@@ -57,6 +57,11 @@
       "texto": "Quando o cliente responde, quem atende pode ser o seu time ou o agente de IA, na hora."
     },
     {
+      "id": "v2-07b",
+      "voz": "narrador",
+      "texto": "Confira o resumo, confirme, e a campanha fica agendada."
+    },
+    {
       "id": "v2-08",
       "voz": "narrador",
       "texto": "No relatório, você acompanha quem recebeu, quem leu e quem respondeu."

@@ -8,7 +8,8 @@ import eventosE from "../../../public/selloop/telas/v1-e-concluir/eventos.json";
 import eventosF from "../../../public/selloop/telas/v1-f-indicadores/eventos.json";
 import type { Plano } from "../camera";
 import { foco, marca, type Gravacao } from "../gravacao";
-import { duracaoBloco, duracaoTotal, inicios, transicaoAntes, Video, type Bloco, type Edicao, type FalaLocucao, type Sobreposicao } from "../Video";
+import { criarMontagem, type Trecho } from "../montagem";
+import { duracaoTotal, Video, type Edicao, type FalaLocucao, type Sobreposicao } from "../Video";
 
 // Vídeo 1 · Ambiente de atendimento.
 // A edição é guiada pela locução: cada trecho de tela tem a sua fala e ajusta a velocidade para caber nela.
@@ -22,35 +23,10 @@ const g = {
   "v1-e-concluir": eventosE as unknown as Gravacao,
   "v1-f-indicadores": eventosF as unknown as Gravacao,
 };
-type Cena = keyof typeof g;
 const loc = locucaoV1.falas as unknown as FalaLocucao[];
-const durFala = (id: string) => loc.find((f) => f.id === id)?.duracao ?? 0;
-const palavra = (id: string, texto: string) => loc.find((f) => f.id === id)?.palavras?.find((p) => p.texto.startsWith(texto))?.de ?? 0;
-
-const URL = "app.selloop.com.br/atendimento";
 const TRANSICAO = 0.35;
+const { durFala, palavra, trecho, fechar } = criarMontagem(loc, { url: "app.selloop.com.br/atendimento", transicao: TRANSICAO, pastaLocucao: "selloop/locucao/v1" });
 const [A, B, C, D, E, F] = Object.values(g);
-
-type Trecho = { bloco: Bloco; fala?: string; antes: number; depois?: number; velMin?: number; velMax?: number; vel?: number; legenda?: boolean };
-
-/**
- * Um trecho de tela com a sua fala. A velocidade sai depois (velocidades()): é a que faz o trecho
- * durar a fala + folgas, limitada entre velMin e velMax (fora disso o trecho fica mais longo que a fala).
- */
-function trecho(cena: Cena, de: number, ate: number, o: { fala?: string; antes?: number; depois?: number; velMin?: number; velMax?: number; vel?: number; planos?: Plano[]; zoomCliques?: number } = {}): Trecho {
-  return { bloco: { tipo: "tela", cena, url: URL, de, ate, planos: o.planos, zoomCliques: o.zoomCliques }, fala: o.fala, antes: o.antes ?? 0.45, depois: o.depois ?? 0.5, velMin: o.velMin, velMax: o.velMax, vel: o.vel };
-}
-
-/** Velocidade de cada trecho de tela; a transição só conta quando o trecho não continua o anterior. */
-function velocidades(lista: Trecho[]) {
-  const bl = lista.map((x) => x.bloco);
-  lista.forEach((x, i) => {
-    const b = x.bloco;
-    if (b.tipo !== "tela") return;
-    const alvo = x.fala ? durFala(x.fala) + x.antes + (x.depois ?? 0.5) + transicaoAntes({ blocos: bl, transicao: TRANSICAO }, i) : b.ate - b.de;
-    b.velocidade = x.vel ?? Math.min(x.velMax ?? 3, Math.max(x.velMin ?? 0.6, (b.ate - b.de) / alvo));
-  });
-}
 
 // Enquadramentos (px CSS da tela gravada, 1600×900)
 const LISTA = { x: 96, y: 150, w: 330, h: 720 };
@@ -84,22 +60,7 @@ const trechos: Trecho[] = [
   // a frase já está na tela: sem legenda
   { bloco: { tipo: "encerramento", dur: 4.8, frase: "Atenda e venda sem trocar de tela." }, fala: "v1-10", antes: 0.5, legenda: false },
 ];
-velocidades(trechos);
-
-const blocos = trechos.map((x) => x.bloco);
-const ed0: Omit<Edicao, "falas" | "sobreposicoes"> = { blocos, transicao: TRANSICAO, pastaLocucao: "selloop/locucao/v1" };
-const ini = inicios(ed0);
-const inicioBloco = (i: number) => ini[i];
-const fimBloco = (i: number) => ini[i] + duracaoBloco(blocos[i]);
-/** Instante do vídeo em que um momento da gravação (tRec) aparece dentro do bloco i. */
-const noBloco = (i: number, tRec: number) => {
-  const b = blocos[i] as Extract<Bloco, { tipo: "tela" }>;
-  return ini[i] + (tRec - b.de) / (b.velocidade ?? 1);
-};
-
-const falas = trechos.flatMap((x, i) => (x.fala ? [{ id: x.fala, em: inicioBloco(i) + transicaoAntes(ed0, i) * 0.5 + x.antes, legenda: x.legenda }] : []));
-const emFala = (id: string) => falas.find((f) => f.id === id)!.em;
-const idx = (fala: string) => trechos.findIndex((x) => x.fala === fala);
+const { edicao: ed0, inicioBloco, fimBloco, noBloco, emFala, idx } = fechar(trechos);
 
 const CHIP = { x: 1500, y: 140 };
 const chipRecurso = (fala: string, texto: string): Sobreposicao => ({ tipo: "chip", texto, ...CHIP, de: emFala(fala) - 0.1, ate: fimBloco(idx(fala)), destaque: true });
@@ -131,7 +92,6 @@ const sobreposicoes: Sobreposicao[] = [
 
 export const edicaoV1: Edicao = {
   ...ed0,
-  falas,
   sobreposicoes,
   trilha: { arquivo: "selloop/sons/trilha.wav", volume: 0.2, volumeFala: 0.075 },
 };

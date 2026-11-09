@@ -251,3 +251,81 @@ export const lia = {
   modelo: "claude-sonnet-4-5",
   chaveConfigurada: true,
 };
+
+/**
+ * Vídeo 3: a Nova Rota às 23h47, com o time em casa e a Lia atendendo nos três canais.
+ * Mesmo formato de `conversas` e `historicos`; no histórico, quem = "lia" marca a mensagem da agente
+ * e o 5º item traz campos extras da mensagem (áudio, transcrição).
+ */
+export const noite = {
+  conversas: [
+    { chave: "fabio", contato: "Fábio Martins", empresa: "Lanchonete do Porto", canal: "whatsapp", fone: "+55 47 99812-4410", equipe: null, atendente: null, min: 0, naoLidas: 1, ultima: "Áudio", tipoUltima: "audio", etiquetas: ["Lead"] },
+    { chave: "bianca", contato: "Bianca Duarte", empresa: "Café Aroma", canal: "instagram", fone: "@cafearoma.floripa", equipe: null, atendente: null, min: 6, naoLidas: 0, ultima: "Perfeito, vou dar uma olhada!", etiquetas: ["Lead"] },
+    { chave: "marcos", contato: "Marcos Teixeira", empresa: "Restaurante Sabor da Ilha", canal: "facebook", fone: "Marcos Teixeira", equipe: null, atendente: null, min: 14, naoLidas: 0, ultima: "Show, obrigado!", etiquetas: ["Restaurantes"] },
+    { chave: "helena", contato: "Helena Prado", empresa: "Mercado Bom Preço", canal: "whatsapp", fone: "+55 48 99620-1180", equipe: null, atendente: null, min: 31, naoLidas: 0, ultima: "Recebi, obrigada! 🙏", etiquetas: ["Cliente ativo", "Mercados"] },
+  ],
+  historicos: {
+    fabio: [
+      ["in", 0, "", null, { type: "audio", fileUrl: "/api/uploads/demo/audios/fabio-01.mp3", transcription: "Opa, boa noite! Vocês entregam lá em Joinville? Tô precisando de quarenta fardos de refrigerante até sexta." }],
+    ],
+    bianca: [
+      ["in", 9, "Oi! Vocês vendem café em grão pra cafeteria? 😊"],
+      ["out", 8, "Oi, Bianca! Vendemos sim ☕ Chegou a nossa linha de cafés especiais, com preço de atacado. Já te mando o catálogo.", "lia"],
+      ["in", 6, "Perfeito, vou dar uma olhada!"],
+    ],
+    marcos: [
+      ["in", 16, "Boa noite! Qual o pedido mínimo pra entregar em Palhoça?"],
+      ["out", 15, "Boa noite, Marcos! O pedido mínimo é de R$ 300 e a entrega em Palhoça sai em até 48 h. No Pix tem 3% de desconto. 😉", "lia"],
+      ["in", 14, "Show, obrigado!"],
+    ],
+    helena: [
+      ["in", 34, "Boa noite, preciso da 2ª via do boleto do pedido 1188"],
+      ["out", 33, "Claro, Helena! Aqui está a 2ª via do boleto do pedido 1188, com vencimento em 14/11. 📄", "lia"],
+      ["in", 31, "Recebi, obrigada! 🙏"],
+    ],
+  },
+};
+
+/** O que a Lia fala no vídeo 3 (mesmos textos das locuções lia-*). */
+export const falasLia = {
+  resposta: "Boa noite, Fábio! Entregamos em Joinville, sim. Pra quarenta fardos, consigo entregar já na quinta. Te mando o orçamento?",
+};
+
+/**
+ * Funil "Vendas" (módulo Vendas/CRM). `noite: true` = card que a Lia criou às 23h48 (só no cenário
+ * da noite). `etapa` = índice em `etapas`; `dias` = há quantos dias o card foi criado.
+ */
+export const funil = {
+  id: id("funil:vendas"),
+  nome: "Vendas",
+  etapas: [
+    { chave: "novo", nome: "Novo lead", tipo: "open", cor: "#64748b" },
+    { chave: "qualificacao", nome: "Qualificação", tipo: "open", cor: "#2849db" },
+    { chave: "proposta", nome: "Proposta enviada", tipo: "open", cor: "#7c3aed" },
+    { chave: "negociacao", nome: "Negociação", tipo: "open", cor: "#f59e0b" },
+    { chave: "ganhos", nome: "Ganhos", tipo: "won", cor: "#10b981" },
+    { chave: "perdas", nome: "Perdas", tipo: "lost", cor: "#ef4444" },
+  ],
+  cards: [
+    { chave: "porto", nome: "Lanchonete do Porto · 40 fardos", empresa: "Lanchonete do Porto", contato: "Fábio Martins", etapa: 0, valor: 1839.12, temperatura: "hot", fonte: "Agente IA · Lia", dono: "diogo", noite: true, min: 1 },
+    { chave: "aroma", nome: "Café Aroma · cafés especiais", empresa: "Café Aroma", contato: "Bianca Duarte", etapa: 0, valor: 2350, temperatura: "warm", fonte: "Agente IA · Lia", dono: "diogo", noite: true, min: 7 },
+    { chave: "mare", nome: "Restaurante Maré Alta · reposição", empresa: "Restaurante Maré Alta", contato: "Ana Souza", etapa: 0, valor: 3120, temperatura: "warm", fonte: "WhatsApp", dono: "diogo", dias: 1 },
+    { chave: "dourado", nome: "Padaria Pão Dourado · café e açúcar", empresa: "Padaria Pão Dourado", contato: "Carla Mendes", etapa: 1, valor: 1480, temperatura: "warm", fonte: "Facebook", dono: "diogo", dias: 2 },
+    { chave: "serra", nome: "Empório Serra Verde · azeites", empresa: "Empório Serra Verde", contato: "Gustavo Lima", etapa: 1, valor: 2760, temperatura: "cold", fonte: "Instagram", dono: "diogo", dias: 4 },
+    { chave: "bomdia", nome: "Mercado Bom Dia · pedido 1189", empresa: "Mercado Bom Dia", contato: "Marina Costa", etapa: 2, valor: 1076.7, temperatura: "hot", fonte: "WhatsApp", dono: "diogo", dias: 0 },
+    { chave: "ponto", nome: "Lanchonete Ponto Certo · bebidas", empresa: "Lanchonete Ponto Certo", contato: "Thiago Rocha", etapa: 2, valor: 1925, temperatura: "warm", fonte: "Campanha · Semana do Atacado", dono: "diogo", dias: 3 },
+    { chave: "litoral", nome: "Supermercado Litoral · contrato mensal", empresa: "Supermercado Litoral", contato: "Roberto Alves", etapa: 3, valor: 12400, temperatura: "hot", fonte: "Indicação", dono: "diogo", dias: 6 },
+    { chave: "cantina", nome: "Cantina Bella · bebidas", empresa: "Cantina Bella", contato: "Juliana Prado", etapa: 4, valor: 3890, temperatura: "decided", fonte: "WhatsApp", dono: "diogo", dias: 8 },
+  ],
+};
+
+/** Agenda (módulo Tarefas). `noite: true` = a visita que a Lia marcou com o Diogo. */
+export const tarefas = [
+  { chave: "visita-porto", nome: "Visita · Lanchonete do Porto", tipo: "visita", quando: "2026-11-12T10:00:00-03:00", duracao: 30, dono: "diogo", card: "porto", noite: true, descricao: "Marcada pela Lia (agente de IA): fechar o pedido de 40 fardos e apresentar a linha de cafés especiais." },
+  { chave: "ligar-litoral", nome: "Ligar · Supermercado Litoral", tipo: "ligar", quando: "2026-11-13T09:30:00-03:00", duracao: 15, dono: "diogo", card: "litoral" },
+  { chave: "reuniao-serra", nome: "Reunião · Empório Serra Verde", tipo: "reuniao", quando: "2026-11-16T14:00:00-03:00", duracao: 45, dono: "diogo", card: "serra" },
+  { chave: "visita-dourado", nome: "Visita · Padaria Pão Dourado", tipo: "visita", quando: "2026-11-13T15:00:00-03:00", duracao: 30, dono: "diogo", card: "dourado" },
+  { chave: "whats-ponto", nome: "WhatsApp · Lanchonete Ponto Certo", tipo: "whatsapp", quando: "2026-11-12T16:00:00-03:00", duracao: 10, dono: "diogo", card: "ponto" },
+  { chave: "visita-cantina", nome: "Visita · Cantina Bella", tipo: "visita", quando: "2026-11-05T10:00:00-03:00", duracao: 30, dono: "diogo", card: "cantina", feita: true },
+  { chave: "ligar-mare", nome: "Ligar · Restaurante Maré Alta", tipo: "ligar", quando: "2026-11-09T11:00:00-03:00", duracao: 15, dono: "diogo", card: "mare", feita: true },
+];

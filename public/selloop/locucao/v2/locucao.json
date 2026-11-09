@@ -773,6 +773,68 @@
    "assinatura": "6915456a02a7"
   },
   {
+   "id": "v2-07b",
+   "voz": "narrador",
+   "texto": "Confira o resumo, confirme, e a campanha fica agendada.",
+   "arquivo": "v2-07b.mp3",
+   "duracao": 3.6,
+   "palavras": [
+    {
+     "texto": "Confira",
+     "de": 0.0,
+     "ate": 0.32
+    },
+    {
+     "texto": "o",
+     "de": 0.36,
+     "ate": 0.4
+    },
+    {
+     "texto": "resumo,",
+     "de": 0.44,
+     "ate": 1.04
+    },
+    {
+     "texto": "confirme,",
+     "de": 1.104,
+     "ate": 1.84
+    },
+    {
+     "texto": "e",
+     "de": 1.88,
+     "ate": 1.92
+    },
+    {
+     "texto": "a",
+     "de": 1.96,
+     "ate": 2.0
+    },
+    {
+     "texto": "campanha",
+     "de": 2.06,
+     "ate": 2.48
+    },
+    {
+     "texto": "fica",
+     "de": 2.544,
+     "ate": 2.8
+    },
+    {
+     "texto": "agendada.",
+     "de": 2.88,
+     "ate": 3.6
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Confira o resumo, confirme, e a campanha fica agendada.",
+     "de": 0.0,
+     "ate": 3.6
+    }
+   ],
+   "assinatura": "3e04cd0e1457"
+  },
+  {
    "id": "v2-08",
    "voz": "narrador",
    "texto": "No relatório, você acompanha quem recebeu, quem leu e quem respondeu.",

@@ -10,6 +10,7 @@ import { FPS as FPS_SELLOOP } from "./selloop/marca";
 import { Abertura as SelloopAbertura, Encerramento as SelloopEncerramento } from "./selloop/Vinhetas";
 import { DURACAO_TESTE, SelloopTeste } from "./selloop/Teste";
 import { DURACAO_V1, SelloopAtendimento } from "./selloop/v1/Atendimento";
+import { DURACAO_V2, SelloopCampanhas } from "./selloop/v2/Campanhas";
 
 export const Root: React.FC = () => (
   <>
@@ -46,6 +47,14 @@ export const Root: React.FC = () => (
       height={1080}
       fps={FPS_SELLOOP}
       durationInFrames={Math.round(DURACAO_V1 * FPS_SELLOOP)}
+    />
+    <Composition
+      id="SelloopCampanhas"
+      component={SelloopCampanhas}
+      width={1920}
+      height={1080}
+      fps={FPS_SELLOOP}
+      durationInFrames={Math.round(DURACAO_V2 * FPS_SELLOOP)}
     />
     <Composition id="SelloopAbertura" component={SelloopAbertura} width={1920} height={1080} fps={FPS_SELLOOP} durationInFrames={Math.round(2 * FPS_SELLOOP)} />
     <Composition

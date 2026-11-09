@@ -38,7 +38,9 @@ function permissoes(papel) {
   return p;
 }
 
-export function criarEstado({ usuario = "patricia", agora = new Date() } = {}) {
+export function criarEstado({ usuario = "patricia", agora = new Date(), cenario = "dia" } = {}) {
+  // "noite" (vídeo 3): outras conversas, todas com a Lia atendendo
+  const fonte = cenario === "noite" ? D.noite : { conversas: D.conversas, historicos: D.historicos };
   const t = (minAtras) => new Date(agora.getTime() - minAtras * 60000).toISOString();
   const eu = D.usuarios[usuario];
   const papeis = {
@@ -50,7 +52,7 @@ export function criarEstado({ usuario = "patricia", agora = new Date() } = {}) {
   const conversas = [];
   const mensagens = {};
   let protocolo = 1;
-  for (const c of D.conversas) {
+  for (const c of fonte.conversas) {
     const contatoId = D.id(`ct:${c.chave}`);
     const canal = D.canais[c.canal];
     contatos[c.chave] = {
@@ -73,7 +75,7 @@ export function criarEstado({ usuario = "patricia", agora = new Date() } = {}) {
       isPinned: false,
       snoozedUntil: null,
       assignedUserId: c.atendente ? D.usuarios[c.atendente].id : null,
-      assignedTeamId: D.equipes[c.equipe].id,
+      assignedTeamId: c.equipe ? D.equipes[c.equipe].id : null,
       prioridade: "normal",
       lastMessageAt: ultimaEntrada,
       waWindowExpiresAt: canal.tipo === "whatsapp" ? new Date(new Date(ultimaEntrada).getTime() + 86400000).toISOString() : null,
@@ -91,18 +93,23 @@ export function criarEstado({ usuario = "patricia", agora = new Date() } = {}) {
       updatedAt: ultimaEntrada,
       peerAddress: c.fone,
       lastMessagePreview: c.ultima,
-      lastMessageType: "text",
+      lastMessageType: c.tipoUltima ?? "text",
       contact: contatos[c.chave],
       channel: { id: canal.id, type: canal.tipo, name: canal.nome, identifier: canal.identificador },
     });
-    const hist = D.historicos[c.chave] ?? [["in", c.min, c.ultima]];
-    mensagens[conversaId] = hist.map(([dir, min, texto, quem], i) => mensagem({ conversaId, contatoId, dir, criado: t(min), texto, quem, i }));
+    const hist = fonte.historicos[c.chave] ?? [["in", c.min, c.ultima]];
+    mensagens[conversaId] = hist.map(([dir, min, texto, quem, extra], i) => mensagem({ conversaId, contatoId, dir, criado: t(min), texto, quem, i, extra }));
+  }
+  const extras = {};
+  if (cenario === "noite") {
+    const L = D.lia;
+    extras.agentePorConversa = Object.fromEntries(conversas.map((c) => [c.id, { id: L.id, nome: L.nome, apelido: L.apelido, fotoUrl: L.fotoUrl }]));
   }
 
   // Relógio da demo: começa em `agora` e anda junto com o relógio real (como o page.clock da página).
   const inicioReal = Date.now();
   const agoraSim = () => new Date(agora.getTime() + (Date.now() - inicioReal));
-  return { agora, agoraSim, t, eu, usuario, papeis, contatos, conversas, mensagens, cobrancas: {}, enviados: {}, extras: {}, ws: null, log: [] };
+  return { agora, agoraSim, t, eu, usuario, cenario, papeis, contatos, conversas, mensagens, cobrancas: {}, enviados: {}, extras, ws: null, log: [] };
 }
 
 const brl = (v) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -316,7 +323,9 @@ function pixCopiaCola(valor) {
 }
 
 function mensagem({ conversaId, contatoId, dir, criado, texto, quem, i, tipo = "text", extra = {} }) {
-  const u = quem ? D.usuarios[quem] : null;
+  // quem = "lia": mensagem da agente de IA (sem usuário, com o agente que respondeu)
+  const lia = quem === "lia";
+  const u = quem && !lia ? D.usuarios[quem] : null;
   const sistema = dir === "system";
   return {
     id: D.id(`msg:${conversaId}:${i}:${criado}`),
@@ -351,11 +360,11 @@ function mensagem({ conversaId, contatoId, dir, criado, texto, quem, i, tipo = "
     flow: null,
     assignTeamId: null,
     clientKey: null,
-    aiAgentId: null,
+    aiAgentId: lia ? D.lia.id : null,
     createdAt: criado,
     updatedAt: criado,
     deletedAt: null,
-    senderNome: u?.nome ?? null,
+    senderNome: lia ? D.lia.nome : u?.nome ?? null,
     ...extra,
   };
 }
@@ -477,7 +486,26 @@ function rotas(s) {
     ["GET", /^carteira\/[^/]+\/me\/notice$/, () => null],
     ["GET", /^carteira\/[^/]+\/me\/telefonia$/, () => ({ ativo: false })],
     ["GET", /^carteira\/[^/]+\/support-tickets\/nao-lidas$/, () => ({ total: 0 })],
-    ["GET", /^carteira\/[^/]+\/(units|companies|pipelines|roles|lists|functions)$/, () => lista([])],
+    ["GET", /^carteira\/[^/]+\/(units|companies|roles|lists|functions)$/, () => lista([])],
+    // Vendas (funil) e Agenda
+    ["GET", /^carteira\/[^/]+\/pipelines$/, () => lista([funilApi(s)])],
+    ["GET", /^carteira\/[^/]+\/pipelines\/([0-9a-f-]{36})$/, () => ({ ...funilApi(s), stages: etapasApi(s), cardCount: cardsDoCenario(s).length })],
+    ["GET", /^carteira\/[^/]+\/cards\/board$/, () => ({
+      stages: D.funil.etapas.map((e, i) => {
+        const cards = cardsDoCenario(s).filter((c) => c.etapa === i).map((c, k) => cardApi(s, c, k));
+        return { stageId: D.id(`etapa:${e.chave}`), cards, total: cards.length, totalUnico: cards.reduce((n, c) => n + c.valueSingle, 0), totalMensal: 0, nextCursor: null };
+      }),
+    })],
+    ["GET", /^carteira\/[^/]+\/tasks$/, (_m, q) => {
+      const de = q.get("from") ? new Date(q.get("from")) : null;
+      const ate = q.get("to") ? new Date(q.get("to")) : null;
+      const lista_ = D.tarefas
+        .filter((t) => !t.noite || s.cenario === "noite")
+        .filter((t) => (!de || new Date(t.quando) >= de) && (!ate || new Date(t.quando) <= ate))
+        .filter((t) => q.get("status") !== "pending" || !t.feita)
+        .map((t) => tarefaApi(s, t));
+      return lista(lista_);
+    }],
     ["GET", /^carteira\/[^/]+\/tags$/, () => lista([...new Set([...Object.keys(D.etiquetasCarteira), ...D.conversas.flatMap((c) => c.etiquetas)])].map((n) => ({ id: D.id(`tag:${n}`), name: n, description: null, color: "#2849db", type: "contact", workspaceId: D.WS, createdAt: s.t(9000), updatedAt: s.t(9000), deletedAt: null })))],
     ["GET", /^carteira\/[^/]+\/segments$/, () => lista(["Mercados e supermercados", "Bares e restaurantes", "Padarias e cafés"].map((n) => ({ id: D.id(`seg:${n}`), name: n, description: "", status: "active", workspaceId: D.WS, createdAt: s.t(9000), updatedAt: s.t(9000), deletedAt: null })))],
     ["GET", /^carteira\/[^/]+\/teams$/, () => lista(Object.values(D.equipes).map((e) => ({ id: e.id, name: e.nome, description: "", color: e.cor, isDepartment: true, workspaceId: D.WS, createdAt: s.t(9000), updatedAt: s.t(9000), deletedAt: null, isSystem: false })))],
@@ -493,7 +521,7 @@ function rotas(s) {
       return { data: lst, limit: 50, offset: 0, nextBefore: null };
     }],
     ["GET", /^carteira\/[^/]+\/conversations\/([^/]+)\/agente$/, (m) => ({ agente: s.extras.agentePorConversa?.[m[1]] ?? null })],
-    ["GET", /^carteira\/[^/]+\/conversations\/([^/]+)\/notes$/, () => ({ data: [] })],
+    ["GET", /^carteira\/[^/]+\/conversations\/([^/]+)\/notes$/, (m) => ({ data: s.extras.notas?.[m[1]] ?? [] })],
     ["GET", /^carteira\/[^/]+\/conversations\/([0-9a-f-]{36})$/, (m) => {
       const c = s.conversas.find((x) => x.id === m[1]);
       if (!c) return { __status: 404, corpo: { error: "not_found" } };
@@ -574,7 +602,7 @@ function rotas(s) {
     }],
     ["GET", /^carteira\/[^/]+\/(quick-messages|chatbots|scheduled-messages|catalogos)$/, () => ({ data: [] })],
     // Campanhas
-    ["GET", /^carteira\/[^/]+\/campaigns$/, (_m, q) => ({ data: [...D.campanhas.map((c) => campanhaApi(s, c)), ...(s.extras.campanhasNovas ?? [])].filter((c) => q.get("arquivadas") === "1" ? c.archivedAt : !c.archivedAt) })],
+    ["GET", /^carteira\/[^/]+\/campaigns$/, (_m, q) => ({ data: [...(s.extras.campanhasNovas ?? []), ...D.campanhas.map((c) => campanhaApi(s, c))].filter((c) => q.get("arquivadas") === "1" ? c.archivedAt : !c.archivedAt) })],
     ["GET", /^carteira\/[^/]+\/campaigns\/indicadores$/, (_m, q) => indicadoresCampanhas(s, Number(q.get("dias") ?? 30))],
     ["GET", /^carteira\/[^/]+\/campaigns\/(interagiram|nao-interagiram)$/, (m) => {
       const pessoas = contatosCarteira(m[1] === "interagiram" ? 38 : 64, m[1] === "interagiram" ? 7 : 9);
@@ -607,9 +635,7 @@ function rotas(s) {
     }],
     ["POST", /^carteira\/[^/]+\/campaigns\/audience\/preview$/, (_m, _q, corpo = {}) => {
       const etiquetas = (corpo.etiquetasIds ?? []).map((tid) => Object.keys(D.etiquetasCarteira).find((n) => D.id(`tag:${n}`) === tid)).filter(Boolean);
-      let total = corpo.todaCarteira ? 1580 : etiquetas.reduce((n, e, i) => n + Math.round(D.etiquetasCarteira[e] * (i === 0 ? 1 : 0.82)), 0);
-      total += (corpo.contatosIncluidosIds ?? []).length;
-      total = Math.max(0, total - (corpo.contatosExcluidosIds ?? []).length);
+      const total = tamanhoPublico(corpo);
       return { total, data: contatosCarteira(Math.min(total, 30), etiquetas.length + 1).map((c) => ({ ...c, excluido: (corpo.contatosExcluidosIds ?? []).includes(c.id) })) };
     }],
     ["POST", /^carteira\/[^/]+\/campaigns\/audience\/validar-whatsapp$/, (_m, _q, corpo = {}) => {
@@ -622,7 +648,7 @@ function rotas(s) {
     ["POST", /^carteira\/[^/]+\/campaigns$/, (_m, _q, corpo = {}) => {
       const id = D.id(`camp:nova:${(s.extras.campanhasNovas ?? []).length}`);
       const agora = s.agoraSim().toISOString();
-      const nova = { id, workspaceId: D.WS, name: corpo.name, channelId: corpo.channelId, teamId: corpo.teamId, enableReceptive: corpo.enableReceptive ?? true, acaoResposta: corpo.acaoResposta ?? null, templateName: corpo.templateName, templateLanguage: corpo.templateLanguage ?? "pt_BR", templateParams: corpo.templateParams ?? {}, sequencia: corpo.sequencia ?? [], acoesSaida: corpo.acoesSaida ?? null, audience: corpo.audience, dispatchConfig: corpo.dispatchConfig, status: corpo.scheduledFor ? "agendada" : "rascunho", scheduledFor: corpo.scheduledFor ?? null, startedAt: null, finishedAt: null, nextSendAt: null, pauseReason: null, pausedAt: null, recipientCount: corpo.recipientCount ?? 0, archivedAt: null, createdByUserId: s.eu.id, createdAt: agora, updatedAt: agora, deletedAt: null, sentCount: 0, totais: { enviados: 0, falhas: 0, cancelados: 0, pendentes: 0, entregues: 0, lidos: 0, respondidos: 0 } };
+      const nova = { id, workspaceId: D.WS, name: corpo.name, channelId: corpo.channelId, teamId: corpo.teamId, enableReceptive: corpo.enableReceptive ?? true, acaoResposta: corpo.acaoResposta ?? null, templateName: corpo.templateName, templateLanguage: corpo.templateLanguage ?? "pt_BR", templateParams: corpo.templateParams ?? {}, sequencia: corpo.sequencia ?? [], acoesSaida: corpo.acoesSaida ?? null, audience: corpo.audience, dispatchConfig: corpo.dispatchConfig, status: corpo.scheduledFor ? "agendada" : "rascunho", scheduledFor: corpo.scheduledFor ?? null, startedAt: null, finishedAt: null, nextSendAt: null, pauseReason: null, pausedAt: null, recipientCount: corpo.recipientCount ?? (corpo.audience ? tamanhoPublico(corpo.audience) : 0), archivedAt: null, createdByUserId: s.eu.id, createdAt: agora, updatedAt: agora, deletedAt: null, sentCount: 0, totais: { enviados: 0, falhas: 0, cancelados: 0, pendentes: 0, entregues: 0, lidos: 0, respondidos: 0 } };
       (s.extras.campanhasNovas ??= []).unshift(nova);
       return nova;
     }],
@@ -717,6 +743,95 @@ function avatarUsuario(u) {
 const NOMES = ["Ana", "Bruno", "Carla", "Daniel", "Eduarda", "Felipe", "Gabriela", "Henrique", "Isabela", "João", "Karina", "Leonardo", "Mariana", "Nicolas", "Olívia", "Paulo", "Rafaela", "Sérgio", "Tatiane", "Vinícius"];
 const SOBRENOMES = ["Silva", "Souza", "Oliveira", "Pereira", "Costa", "Rodrigues", "Almeida", "Nascimento", "Lima", "Araújo", "Fernandes", "Carvalho", "Gomes", "Martins", "Rocha"];
 const NEGOCIOS = ["Mercado Bela Vista", "Padaria Pão Nosso", "Restaurante Maré Alta", "Lanchonete Ponto Certo", "Empório Serra Verde", "Bar do Porto", "Mercearia São José", "Cantina Bella", "Supermercado Litoral", "Café da Praça", "Padaria Trigo de Ouro", "Bistrô Lagoa", "Mercado Central", "Hamburgueria Fogo", "Pizzaria Forno a Lenha"];
+
+/** O funil de vendas no formato da API (lista e detalhe). */
+function funilApi(s) {
+  return { id: D.funil.id, name: D.funil.nome, description: null, isDefault: true, visibilityRestricted: false, viewerUserIds: null, schedulingAutomation: null, celebrateOnWon: true, createdAt: s.t(60 * 24 * 90), updatedAt: s.t(60 * 24 * 2) };
+}
+
+function cardsDoCenario(s) {
+  return D.funil.cards.filter((c) => !c.noite || s.cenario === "noite");
+}
+
+function etapasApi(s) {
+  return D.funil.etapas.map((e, i) => ({ id: D.id(`etapa:${e.chave}`), pipelineId: D.funil.id, name: e.nome, type: e.tipo, order: i, color: e.cor, description: null, cardCount: cardsDoCenario(s).filter((c) => c.etapa === i).length }));
+}
+
+function cardApi(s, c, ordem) {
+  const dono = D.usuarios[c.dono];
+  const criado = c.min != null ? s.t(c.min) : s.t(60 * 24 * (c.dias ?? 0) + 120);
+  const etapa = D.funil.etapas[c.etapa];
+  return {
+    id: D.id(`card:${c.chave}`),
+    name: c.nome,
+    pipelineId: D.funil.id,
+    stageId: D.id(`etapa:${etapa.chave}`),
+    order: ordem,
+    valueSingle: c.valor,
+    valueRecurring: 0,
+    products: [],
+    temperature: c.temperatura,
+    coolingLevel: null,
+    businessDueDate: null,
+    proposalValidityDays: null,
+    leadSourceName: c.fonte,
+    leadSourceId: D.id(`fonte:${c.fonte}`),
+    ownerName: dono.nome,
+    ownerUserId: dono.id,
+    ownerImage: avatarUsuario(c.dono),
+    sdrUserId: null,
+    sdrName: null,
+    closerUserId: null,
+    closerName: null,
+    lossReasonId: null,
+    lossObservation: null,
+    status: etapa.tipo === "won" ? "won" : etapa.tipo === "lost" ? "lost" : "open",
+    progress: c.min != null ? "new" : "in_progress",
+    pausedAt: null,
+    contactCount: 1,
+    companyCount: 1,
+    taskCount: D.tarefas.filter((t) => t.card === c.chave && (!t.noite || s.cenario === "noite")).length,
+    overdueTaskCount: 0,
+    primaryCompany: { id: D.id(`emp:${c.empresa}`), name: c.empresa },
+    primaryContact: { id: D.id(`ctf:${c.contato}`), name: c.contato },
+    createdAt: criado,
+    updatedAt: criado,
+  };
+}
+
+function tarefaApi(s, t) {
+  const dono = D.usuarios[t.dono];
+  const card = D.funil.cards.find((c) => c.chave === t.card);
+  return {
+    id: D.id(`tarefa:${t.chave}`),
+    cardId: card ? D.id(`card:${card.chave}`) : null,
+    companyId: card ? D.id(`emp:${card.empresa}`) : null,
+    userId: dono.id,
+    type: t.tipo,
+    name: t.nome,
+    description: t.descricao ?? null,
+    date: new Date(t.quando).toISOString(),
+    durationMinutes: t.duracao,
+    contactIds: card ? [D.id(`ctf:${card.contato}`)] : [],
+    status: t.feita ? "done" : "pending",
+    serviceResultId: null,
+    observation: null,
+    completedAt: t.feita ? new Date(t.quando).toISOString() : null,
+    createdAt: t.noite ? s.t(0) : s.t(60 * 24 * 3),
+    meetingLink: null,
+    seriesId: null,
+    noShowAt: null,
+    attendedAt: null,
+  };
+}
+
+/** Quantos contatos um público de campanha alcança (tags da carteira, inclusões e exclusões). */
+function tamanhoPublico(publico = {}) {
+  const etiquetas = (publico.etiquetasIds ?? []).map((tid) => Object.keys(D.etiquetasCarteira).find((n) => D.id(`tag:${n}`) === tid)).filter(Boolean);
+  let total = publico.todaCarteira ? 1580 : etiquetas.reduce((n, e, i) => n + Math.round(D.etiquetasCarteira[e] * (i === 0 ? 1 : 0.82)), 0);
+  total += (publico.contatosIncluidosIds ?? []).length;
+  return Math.max(0, total - (publico.contatosExcluidosIds ?? []).length);
+}
 
 /** Contatos fictícios da carteira (para o público e os destinatários das campanhas). */
 function contatosCarteira(n, semente = 1) {
@@ -920,7 +1035,7 @@ export async function instalarDemo(page, opcoes = {}) {
       return demo.chegar(chave, { texto: opcao, extra: { replyId: enquete?.id ?? null } });
     },
     /** O cliente devolve o orçamento montado no WhatsApp. */
-    solicitarOrcamento(chave, itens) {
+    solicitarOrcamento(chave, itens, { entrega = "Entrega · Florianópolis/SC" } = {}) {
       const c = demo.conversa(chave);
       const doc = D.documentosErp[chave]?.cliente;
       const linhas = itens.map(([chaveProd, qtd]) => {
@@ -930,13 +1045,36 @@ export async function instalarDemo(page, opcoes = {}) {
       });
       const produtos = linhas.reduce((n, l) => n + l.subtotal, 0);
       const desconto = Math.round(produtos * 0.03);
-      const sol = { confirmacao: false, nome: c.contact.name, empresa: doc?.nome ?? null, cnpj: doc?.documento ?? null, entrega: "Entrega · Florianópolis/SC", itens: linhas, produtos, desconto, pagamento: "Pix", frete: "CIF", valorFrete: 0, freteACombinar: false, total: produtos - desconto, observacoes: null };
+      const sol = { confirmacao: false, nome: c.contact.name, empresa: doc?.nome ?? null, cnpj: doc?.documento ?? null, entrega, itens: linhas, produtos, desconto, pagamento: "Pix", frete: "CIF", valorFrete: 0, freteACombinar: false, total: produtos - desconto, observacoes: null };
       return demo.chegar(chave, { texto: "Solicitação de orçamento", extra: { solicitacaoOrcamento: sol } });
     },
     /** O cliente responde o formulário (o texto que a Selloop monta com as respostas). */
     responderFormulario(chave, nome, respostas) {
       const texto = `📋 Formulário respondido: ${nome}\n\n` + respostas.map(([p, r]) => `*${p}*\n${r}`).join("\n\n");
       return demo.chegar(chave, { texto });
+    },
+    /**
+     * A conversa passa para uma equipe (como a Lia faz ao transferir): mensagem de sistema, equipe
+     * nova no cabeçalho e, se houver resumo, uma nota interna com ele.
+     */
+    transferir(chave, equipe, { resumo, autor = "Lia" } = {}) {
+      const c = demo.conversa(chave);
+      const eq = D.equipes[equipe];
+      c.assignedTeamId = eq.id;
+      if (resumo) {
+        (s.extras.notas ??= {})[c.id] = [...(s.extras.notas[c.id] ?? []), { id: D.id(`nota:${c.id}:${resumo.length}`), conversationId: c.id, body: resumo, authorName: autor, authorId: null, createdAt: s.agoraSim().toISOString() }];
+      }
+      demo.chegar(chave, { texto: `Conversa transferida para ${eq.nome}.`, dir: "system" });
+      s.ws?.send(JSON.stringify({ kind: "conversation", conversationId: c.id }));
+    },
+    /**
+     * Derruba o WebSocket do realtime: a página reconecta em ~2 s e, ao reconectar, recarrega tudo da
+     * conversa (é o único caminho para as notas internas aparecerem sem trocar de conversa).
+     */
+    reconectar() {
+      try {
+        s.ws?.close();
+      } catch {}
     },
     /** O cliente paga a cobrança: o balão muda para "Pago" ao vivo. */
     pagar(chave) {

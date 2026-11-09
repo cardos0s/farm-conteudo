@@ -97,9 +97,9 @@ export default cenaDemo({
     await g.esperar(900);
     await g.clicar(topo().getByRole("button", { name: "Confirmar e agendar" }), { depois: 1400 });
     g.marca("agendada");
-    // desce até a lista: a campanha nova aparece agendada para 01/12, 09:00
+    // desce até a lista: a campanha nova aparece no topo, agendada para 01/12, 09:00
     await g.mover({ x: 800, y: 600 });
-    await g.rolar(700, { dur: 1.0 });
+    await g.rolar(560, { dur: 1.0 });
     await g.foco(page.getByText(NOME).first(), "linha-nova");
     await g.mover(page.getByText(NOME).first());
     await g.esperar(1600);

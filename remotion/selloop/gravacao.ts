@@ -66,3 +66,10 @@ export function foco(g: Gravacao, nome: string): Caixa {
   if (!e || e.tipo !== "foco") throw new Error(`Foco "${nome}" não existe na gravação ${g.cena}`);
   return e.caixa;
 }
+
+/** Instante de um foco nomeado. */
+export function tempoFoco(g: Gravacao, nome: string): number {
+  const e = g.eventos.find((x) => x.tipo === "foco" && x.nome === nome);
+  if (!e) throw new Error(`Foco "${nome}" não existe na gravação ${g.cena}`);
+  return e.t;
+}
