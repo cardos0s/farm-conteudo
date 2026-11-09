@@ -37,7 +37,7 @@ No servidor:
 1. Tenta gravar a chave numa tabela com restrição de unicidade, com status "em processamento".
 2. Se conseguiu, executa a cobrança e salva a resposta junto da chave, de preferência na mesma transação.
 3. Se a chave já existia com resposta pronta, devolve a resposta guardada, sem cobrar de novo. Se o corpo veio diferente do original, recusa: é uso errado da chave.
-4. Se a chave existe mas ainda está em processamento (duas requisições simultâneas), responde com erro de conflito, e o cliente tenta depois.
+4. Se a chave existe mas ainda está em processamento (duas requisições simultâneas), responde com erro de conflito (`409`), e o cliente tenta depois.
 5. As chaves expiram depois de um prazo, de horas a dias, para a tabela não crescer para sempre.
 
 ![A resposta da primeira tentativa se perde; o retry chega com a mesma chave, e o servidor devolve a resposta guardada sem cobrar de novo.](../../diagramas/36-chave-idempotencia.svg)
@@ -76,7 +76,7 @@ No bar, pedir "mais uma" ao garçom não é idempotente: se ele não ouviu direi
 - **Idempotente não quer dizer mesma resposta.** O primeiro `DELETE /pedidos/42` devolve `204`; o segundo pode devolver `404`. O que se repete é o efeito no servidor: o pedido não existe mais.
 - **Efeitos colaterais quebram a idempotência.** "Definir status = ativo" é idempotente no banco, mas não se cada chamada dispara um e-mail de boas-vindas.
 - **"Consultar e depois inserir" tem corrida.** Duas requisições simultâneas consultam, não acham a chave e inserem as duas. Quem garante é a restrição de unicidade do banco.
-- **Atualização:** sistemas que prometem entrega "exatamente uma vez" (exactly-once), como o Kafka, fazem isso combinando entrega pelo menos uma vez com idempotência e deduplicação. Exatamente uma vez, na rede, não existe de graça.
+- **"Exatamente uma vez" tem asterisco.** Sistemas que prometem entrega exactly-once, como o Kafka, combinam entrega pelo menos uma vez com idempotência e deduplicação. Na rede, exatamente uma vez não existe de graça.
 
 ## Teste-se
 

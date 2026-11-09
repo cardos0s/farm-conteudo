@@ -40,7 +40,7 @@ Quando o supermercado muda um preço, o caixa passa a cobrar o valor novo na hor
 
 ## No mundo real
 
-- **Amazon S3:** até 2020, sobrescrever um objeto e lê-lo logo depois podia devolver a versão antiga. Desde dezembro de 2020, o S3 garante consistência forte de leitura após escrita em todas as operações, sem custo extra.
+- **Amazon S3:** até 2020, sobrescrever um objeto e lê-lo logo depois podia devolver a versão antiga. Desde dezembro de 2020, o S3 garante consistência forte de leitura após escrita para objetos (gravações, sobrescritas, exclusões e listagens), sem custo extra.
 - **PostgreSQL:** a replicação por streaming é assíncrona por padrão, e uma réplica pode estar atrasada. Com `synchronous_commit = remote_apply`, o commit só retorna depois que a réplica síncrona aplicou a mudança e já a mostra nas consultas.
 - **DNS** é eventual por desenho: uma mudança de registro só chega a todos quando os caches expiram, conforme o TTL (cap. 16).
 - **Google Spanner** oferece consistência forte entre regiões, com relógios sincronizados (TrueTime) e consenso, ao custo de escritas mais lentas.

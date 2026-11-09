@@ -52,7 +52,7 @@ Numa mudança, chamar mais amigos ajuda a encaixotar e a levar as caixas até o 
 
 ## No mundo real
 
-- **Processadores com muitos núcleos:** um programa com 10% de código sequencial nunca passa de 10× mais rápido, tenha a máquina 64 ou 128 núcleos. Depois de certo ponto, núcleos extras rendem pouco.
+- **Processadores com muitos núcleos:** um programa que passa 10% do tempo em trechos sequenciais nunca fica mais de 10× mais rápido, tenha a máquina 64 ou 128 núcleos. Depois de certo ponto, núcleos extras rendem pouco.
 - **MapReduce e Spark:** o processamento se divide entre centenas de máquinas, mas cada etapa só termina quando a tarefa mais lenta termina, e juntar o resultado final num lugar só é trabalho sequencial. O artigo original do MapReduce (Google, 2004) já descrevia tarefas de reserva para não ficar refém dessas retardatárias.
 - **Bancos com um único primário:** no PostgreSQL e no MySQL com replicação tradicional, todas as escritas passam pelo primário; réplicas aumentam a capacidade de leitura, mas não a de escrita.
 
