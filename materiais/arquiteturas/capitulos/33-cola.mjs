@@ -30,7 +30,7 @@ function fluxograma() {
     {
       pergunta: "Como as partes\nconversam?",
       opcoes: [
-        ["na dúvida", "Chamada direta", "cap. 18"],
+        ["na dúvida", "Chamada direta", "caps. 12 e 18"],
         ["várias reações", "Eventos", "cap. 20"],
         ["vários bancos", "Saga", "cap. 23"],
       ],
@@ -78,7 +78,8 @@ ${resumo(
 
 <p>Use estas páginas em três momentos: antes de uma decisão (para lembrar as opções), numa revisão de código ou de
 arquitetura (para conferir o "evite quando") e numa entrevista (para explicar cada estilo em uma frase). Quando precisar do
-detalhe, siga o número do capítulo.</p>
+detalhe, siga o número do capítulo. Para ir além da cola, a parte V traz o comparativo completo (capítulo 27), as
+árvores de decisão (28), as combinações (29), a migração sem parar o sistema (30), os anti-padrões (31) e os ADRs (32).</p>
 
 ${fig(fluxograma(), "Quatro perguntas, quatro decisões independentes. A caixa verde é o ponto de partida; as azuis só entram quando o problema escrito em cima delas existe de verdade. O capítulo 28 tem as árvores completas.", "grande")}
 
@@ -122,7 +123,7 @@ ${tabela(
   [
     [arq("Monólito", 11), "Um código, um artefato, um deploy; tudo no mesmo processo.", "Produto novo; um ou poucos times; consistência forte.", "Fila de deploy entre muitos times; escala muito desigual."],
     [arq("Monólito modular", 12), "Um deploy só, mas módulos com API pública e dados próprios.", "Domínio crescendo, dois ou mais times, fronteiras ainda mudando.", "App pequeno; partes que exigem escala, stack ou isolamento de falha próprios."],
-    [arq("SOA", 13), "Serviços corporativos ligados por um barramento central (ESB).", "Empresa grande, com legado e contratos formais.", "Produto novo de poucos times; ninguém para operar o ESB."],
+    [arq("SOA", 13), "Serviços corporativos, em geral ligados por um barramento (ESB).", "Empresa grande, com legado e contratos formais.", "Produto novo de poucos times; ninguém para operar o ESB."],
     [arq("Microsserviços", 14), "Serviços independentes, cada um com seus dados e seu deploy.", "Times travados no mesmo deploy, com automação pronta.", "Time pequeno; domínio incerto; sem automação nem observabilidade."],
     [arq("Serverless", 15), "Funções disparadas por eventos; o provedor escala e cobra pelo uso.", "Tráfego irregular, eventos, tarefas agendadas.", "Latência mínima constante; processo longo; carga alta e estável."],
     [arq("Micro-frontends", 16), "Front-end dividido por área de negócio, cada pedaço de um time.", "Três ou mais times no mesmo produto web.", "Um time só no front; app pequeno; telas muito entrelaçadas."],
@@ -139,7 +140,7 @@ ${tabela(
     [arq("Peer-to-peer", 19), "Cada nó é cliente e servidor ao mesmo tempo, sem centro.", "Arquivo grande para muitos; chamada 1:1; uso offline.", "Fonte única da verdade; controle e exclusão de dados."],
     [arq("Orientada a eventos", 20), "Quem publica anuncia um fato; quem se interessa reage no seu tempo.", "Várias reações a uma ação; picos; parceiros instáveis.", "Usuário precisa da resposta na hora; transação forte; sistema pequeno."],
     [arq("CQRS", 21), "Um modelo para escrever (comandos) e outro para ler (consultas).", "Leitura muito diferente da escrita, ou em volume muito maior.", "CRUD; índice, view ou réplica de leitura já resolvem a lentidão."],
-    [arq("Event Sourcing", 22), "Guarda cada fato, em ordem; o estado sai deles.", "Dinheiro, auditoria e a pergunta \"como estava em tal data?\".", "CRUD; basta auditoria; usar no sistema todo."],
+    [arq("Event Sourcing", 22), "Guarda cada fato, em ordem; o estado sai deles.", "Dinheiro, auditoria e a pergunta \"como estava em tal data?\".", "CRUD; um log de auditoria já basta; usar no sistema todo."],
     [arq("Sagas", 23), "Transações locais em sequência, cada passo com uma compensação.", "Operação que atravessa serviços com bancos próprios.", "Dados no mesmo banco; regra que exige consistência imediata."],
     [arq("Space-based", 24), "Dados em memória replicada; o banco é atualizado depois.", "Picos enormes (ingressos, leilões); banco no limite.", "Carga previsível; dados grandes demais para a memória."],
     [arq("Modelo de atores", 25), "Unidades com estado privado que só conversam por mensagens, uma por vez.", "Muitas entidades vivas: chat, jogos, IoT, conexões longas.", "CRUD sem estado; lote e análise; transação forte entre muitas entidades."],
@@ -155,11 +156,12 @@ ${tabela(
     ["<b>Acoplamento</b>", "Quanto uma parte depende de outra. Alto: mudar uma obriga a mexer na outra."],
     ["<b>ADR</b>", "<i>Architecture Decision Record</i>: registro curto de uma decisão e do porquê dela (capítulo 32)."],
     ["<b>Agregado</b>", "Objetos que mudam juntos e protegem suas regras numa transação (termo do <i>Domain-Driven Design</i>)."],
+    ["<b>API gateway</b>", "Porta de entrada única dos clientes: roteia cada chamada ao serviço certo e cuida de autenticação e limites."],
     ["<b>Assíncrono</b>", "Envia (por uma fila, por exemplo) e segue sem esperar. Síncrono é o oposto: espera a resposta."],
     ["<b>Broker</b>", "Intermediário que recebe, guarda e entrega mensagens, como Kafka, RabbitMQ ou SQS."],
     ["<b>Coesão</b>", "Quanto o que está dentro de uma parte pertence junto. Alta: tudo ali muda pelo mesmo motivo."],
     ["<b>Compensação</b>", "Ação de negócio que desfaz um passo anterior (estornar, liberar reserva). É a base das sagas."],
-    ["<b>Consistência eventual</b>", "As cópias dos dados ficam iguais depois de um tempo, não no mesmo instante da mudança."],
+    ["<b>Consistência eventual</b>", "As cópias ficam iguais depois de um tempo; até lá, uma leitura pode trazer o valor antigo."],
     ["<b>Consistência forte</b>", "Toda leitura vê a última escrita confirmada, não importa de onde se lê."],
     ["<b>Contexto delimitado</b>", "<i>Bounded context</i>: fronteira em que cada termo tem um significado só, como \"cliente\" no financeiro."],
     ["<b>Contrato</b>", "O que uma parte promete a quem a usa (rotas, formatos, eventos). Mudar sem aviso quebra os outros."],
@@ -173,7 +175,7 @@ ${tabela(
     ["<b>Observabilidade</b>", "Logs, métricas e rastreamento (<i>traces</i>) para entender o que o sistema faz, até entre serviços."],
     ["<b>Orquestração</b>", "Um coordenador manda cada parte agir. O oposto é a coreografia: cada parte reage aos eventos."],
     ["<b>Outbox</b>", "Tabela gravada na mesma transação do dado; um processo separado publica os eventos a partir dela."],
-    ["<b>Partida a frio</b>", "<i>Cold start</i>: demora extra da primeira execução de uma função serverless que estava parada."],
+    ["<b>Partida a frio</b>", "<i>Cold start</i>: atraso extra quando a função serverless precisa subir do zero (estava parada ou a carga subiu)."],
     ["<b>Particionamento</b>", "<i>Sharding</i>: dividir os dados entre máquinas por uma chave, como cliente ou região."],
     ["<b>Projeção</b>", "Cópia dos dados no formato que uma tela precisa: o modelo de leitura do CQRS e do event sourcing."],
     ["<b>Raio de impacto</b>", "<i>Blast radius</i>: quanto do sistema e dos clientes uma única falha consegue atingir."],
