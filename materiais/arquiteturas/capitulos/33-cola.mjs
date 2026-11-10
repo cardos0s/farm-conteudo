@@ -179,6 +179,7 @@ ${tabela(
     ["<b>Particionamento</b>", "<i>Sharding</i>: dividir os dados entre máquinas por uma chave, como cliente ou região."],
     ["<b>Projeção</b>", "Cópia dos dados no formato que uma tela precisa: o modelo de leitura do CQRS e do event sourcing."],
     ["<b>Raio de impacto</b>", "<i>Blast radius</i>: quanto do sistema e dos clientes uma única falha consegue atingir."],
+    ["<b>Réplica de leitura</b>", "Cópia do banco que recebe as escritas do principal e atende só leituras. Pode ficar um pouco atrasada."],
     ["<b>Throughput</b>", "Vazão: quantas operações o sistema completa por unidade de tempo (pedidos por segundo)."],
   ],
   "compacta",

@@ -98,13 +98,13 @@ function supervisao() {
 export default `
 ${resumo(
   "O sistema vira um monte de <b>atores</b>: pequenas unidades com estado privado que só conversam por <b>mensagens</b>. Cada ator tem a sua caixa de entrada e trata uma mensagem por vez, então ninguém precisa de lock.",
-  "Um escritório onde cada pessoa tem uma bandeja de entrada na mesa. Ninguém mexe na gaveta do colega: para pedir algo, deixa um bilhete na bandeja dele. Cada um lê um bilhete por vez, responde, manda bilhetes ou chama um ajudante. Se alguém passa mal, o chefe coloca outra pessoa no lugar.",
+  "Um escritório em que cada pessoa tem uma bandeja de entrada. Ninguém mexe na gaveta do colega: deixa um bilhete na bandeja dele. Cada um lê um bilhete por vez. Se alguém passa mal, o chefe põe outra pessoa no lugar.",
 )}
 
-<p>O modelo de atores foi proposto por Carl Hewitt em 1973, como um modelo teórico de computação concorrente. Ele ficou
-famoso na prática com o Erlang, linguagem criada na Ericsson para centrais telefônicas, que precisavam atender muitas
-ligações ao mesmo tempo e não podiam parar. Ao contrário dos capítulos da parte II, que falam de como organizar o código,
-este fala de como as partes do sistema <b>rodam ao mesmo tempo</b> e conversam entre si, na mesma máquina ou em várias.</p>
+<p>O modelo de atores foi proposto por Carl Hewitt em 1973, como modelo teórico de computação concorrente. Ficou famoso na
+prática com o Erlang, criado na Ericsson para centrais telefônicas, que atendem muitas ligações ao mesmo tempo e não podem
+parar. Ao contrário dos capítulos da parte II, que organizam o código, este trata de como as partes do sistema <b>rodam ao
+mesmo tempo</b> e conversam, numa máquina ou em várias.</p>
 
 ${fig(anatomia(), "Um ator por dentro: as mensagens entram na caixa, são tratadas uma por vez e podem mudar o estado, gerar novas mensagens ou criar atores.", "grande")}
 
@@ -157,17 +157,17 @@ ${alerta(
 
 <h4>Transparência de localização</h4>
 <p>Você manda mensagem para um <b>endereço</b> (o PID no Erlang, o <code>ActorRef</code> no Akka, a chave do <i>grain</i> no
-Orleans), e não para um objeto na memória. Ele pode apontar para a mesma máquina ou para outro servidor do cluster, e o
-código de quem manda é o mesmo. Em cluster, recursos como o Cluster Sharding do Akka e o próprio Orleans espalham os
-atores pelos servidores usando a chave da entidade (o id da conta, por exemplo). Só não confunda mesmo código com mesma
-falha: pela rede, a mensagem pode atrasar ou sumir.</p>
+Orleans), e não para um objeto na memória. O ator pode estar na mesma máquina ou em outro servidor, e o código de quem
+manda é o mesmo. O Cluster Sharding do Akka e o Orleans usam isso para espalhar os atores pelo cluster pela chave da
+entidade (o id da conta, por exemplo). Só não confunda mesmo código com mesma falha: pela rede, a mensagem pode atrasar ou
+sumir.</p>
 
 <h4>Onde o modelo existe pronto</h4>
 ${tabela(
   ["Plataforma", "O que tem de especial"],
   [
     ["<b>Erlang/OTP</b> (BEAM)", "Processos levíssimos (milhões numa máquina), supervisores e distribuição nativa. O RabbitMQ é feito nele."],
-    ["<b>Elixir</b> (BEAM)", "Criada pelo brasileiro José Valim: sintaxe moderna com todo o OTP. É a base do framework web Phoenix."],
+    ["<b>Elixir</b> (BEAM)", "Criada pelo brasileiro José Valim: OTP com sintaxe moderna. Base do framework Phoenix."],
     ["<b>Akka</b> (JVM)", "Atores tipados, cluster, sharding e persistência. Em 2022 trocou a licença aberta pela BSL; o fork aberto é o Apache Pekko."],
     ["<b>Orleans</b> (.NET)", "Atores virtuais (<i>grains</i>): você nunca cria nem destrói um; o runtime ativa sob demanda, em algum servidor, e desativa quando fica parado. Nasceu na Microsoft Research."],
     ["<b>Dapr actors</b>", "Atores virtuais no estilo Orleans, via sidecar, com SDK para JavaScript/TypeScript."],
@@ -183,19 +183,19 @@ ${quando(
     "Estado quente em memória, com resposta rápida, sem ir ao banco a cada evento.",
   ],
   [
-    "CRUD sem estado entre requisições: servidor web + banco resolve com menos peças.",
-    "Processamento de dados em lote: veja pipes and filters (capítulo 10) e arquiteturas de dados (capítulo 26).",
-    "O negócio exige transação forte entre muitas entidades: com atores, isso vira uma saga (capítulo 23).",
-    "O produto vive de consultas que cruzam muitas entidades (relatórios, buscas): estado espalhado em milhões de atores não se consulta como uma tabela (veja CQRS, capítulo 21).",
+    "CRUD sem estado entre requisições: servidor web + banco resolve.",
+    "Processamento de dados em lote: veja os capítulos 10 e 26.",
+    "Transação forte entre muitas entidades: com atores, vira saga (capítulo 23).",
+    "Relatórios e buscas que cruzam muitas entidades: ator não se consulta como tabela (capítulo 21).",
   ],
 )}
 
 ${medidor({ complexidade: 4, escala: 5, operacao: 3, aprendizado: 4, time: "times pequenos já vão longe com Elixir; em cluster grande, alguém experiente na plataforma" })}
 
 <h3>Como usar na prática</h3>
-<p>Para entender o mecanismo, um ator mínimo em TypeScript. O Node tem uma thread principal só, mas ainda tem concorrência:
-com <code>await</code>, duas requisições se intercalam, e um saque que confere o saldo, espera o banco e só depois desconta
-deixa dois saques simultâneos passarem pela mesma conferência. A caixa de mensagens põe tudo em fila.</p>
+<p>Para entender o mecanismo, um ator mínimo em TypeScript. O Node tem uma thread só, mas tem concorrência: com
+<code>await</code>, um saque que confere o saldo, espera o banco e só depois desconta deixa outro saque passar pela mesma
+conferência. A caixa de mensagens põe tudo em fila.</p>
 
 ${codigo(
   `
@@ -212,9 +212,8 @@ export abstract class Ator<M> {
 
   private async processar() {
     this.ocupado = true;
-    while (this.caixa.length > 0) {
+    while (this.caixa.length > 0) { // a próxima espera esta terminar
       const msg = this.caixa.shift()!;
-      // a próxima só começa quando esta termina (o erro iria para um supervisor)
       await this.receber(msg).catch((erro) => console.error("falhou", msg, erro));
     }
     this.ocupado = false;
@@ -234,22 +233,19 @@ type Msg =
 export class Carteira extends Ator<Msg> {
   private saldo = 0; // só este ator lê e escreve
   constructor(private registrar: (valor: number) => Promise<void>) { super(); }
-
   protected async receber(msg: Msg) {
     if (msg.tipo === "depositar") {
       this.saldo += msg.valor;
       return this.registrar(msg.valor);
     }
-    const ok = msg.valor <= this.saldo;
-    if (ok) {
-      await this.registrar(-msg.valor); // await no meio...
-      this.saldo -= msg.valor; // ...e mesmo assim ninguém furou a fila
-    }
-    msg.responder(ok);
+    if (msg.valor > this.saldo) return msg.responder(false);
+    await this.registrar(-msg.valor); // await no meio...
+    this.saldo -= msg.valor; // ...e mesmo assim ninguém furou a fila
+    msg.responder(true);
   }
 }
 
-// uso: dois saques ao mesmo tempo, sem lock nenhum
+// uso: dois saques ao mesmo tempo, sem lock
 const carteira = new Carteira(async () => {}); // aqui entraria o extrato no banco
 carteira.enviar({ tipo: "depositar", valor: 100 });
 const sacar = (valor: number) =>

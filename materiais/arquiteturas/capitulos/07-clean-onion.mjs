@@ -129,7 +129,7 @@ ${resumo(
 próprio Martin diz que a Clean tenta juntar numa ideia só várias arquiteturas parecidas, entre elas a hexagonal
 (capítulo 6) e a Onion. Por isso estão juntas aqui: é o mesmo princípio, com nomes diferentes para os anéis.</p>
 
-${fig(aneis(), "Os quatro anéis da Clean Architecture. Quanto mais para dentro, mais perto do negócio e mais estável; quanto mais para fora, mais técnico e mais sujeito a troca.")}
+${fig(aneis(), "Os quatro anéis da Clean: quanto mais para dentro, mais perto do negócio e mais estável; quanto mais para fora, mais técnico.")}
 
 <h3>Como funciona</h3>
 <p>Os anéis da Clean, de dentro para fora:</p>
@@ -161,7 +161,7 @@ por uma <b>input port</b> (porta de entrada). O caso de uso faz o trabalho e ent
 (porta de saída), sem saber quem está do outro lado. Do outro lado está o <b>presenter</b>, que implementa essa porta e
 formata a resposta para a tela ou para o JSON.</p>
 
-${fig(fluxo(), "O fluxo vai do controller ao caso de uso e volta pelo presenter, mas as setas de dependência só apontam para dentro. O truque está nas duas interfaces do anel de casos de uso.")}
+${fig(fluxo(), "A chamada vai e volta, mas a dependência só entra. O truque está nas duas interfaces do anel de casos de uso.")}
 
 <p>Entre os anéis só passam <b>dados simples</b> (DTOs, do inglês <i>data transfer objects</i>): o caso de uso não recebe o
 <code>req</code> do Express nem devolve a entidade ou a linha do banco. Assim, mudar a tabela não quebra a API, e mudar
@@ -173,14 +173,12 @@ a API não mexe na regra.</p>
 <li><b>Modelo de domínio</b>: as entidades e suas regras (equivale às entidades da Clean).</li>
 <li><b>Serviços de domínio</b>: regras que envolvem várias entidades e, em geral, as interfaces de repositório.</li>
 <li><b>Serviços de aplicação</b>: os casos de uso.</li>
-<li><b>Casca externa</b>: interface do usuário, infraestrutura (banco, e-mail, filas) e testes. Equivale aos dois anéis
-de fora da Clean.</li>
+<li><b>Casca externa</b>: interface do usuário, infraestrutura (banco, e-mail, filas) e testes.</li>
 </ul>
-<p>As regras de Palermo são as mesmas da Clean: anéis internos definem interfaces e os externos as implementam; o
-acoplamento aponta para o centro (um anel pode usar qualquer anel mais interno, não só o vizinho); e o núcleo compila e
-roda sem a infraestrutura.</p>
+<p>As regras de Palermo são as da Clean: anéis internos definem interfaces e os externos as implementam; o acoplamento
+aponta para o centro (qualquer anel mais interno, não só o vizinho); e o núcleo compila e roda sem a infraestrutura.</p>
 
-${fig(inversao(), "A diferença essencial para as camadas tradicionais: a seta entre o negócio e os dados muda de sentido. Quem define a interface é o negócio; o código do banco se adapta a ela.")}
+${fig(inversao(), "A seta entre negócio e dados muda de sentido: quem define a interface é o negócio, e o código do banco se adapta a ela.")}
 
 ${tabela(
   ["", "Onde fica o banco", "O que ela destaca"],
@@ -189,7 +187,8 @@ ${tabela(
     ["<b>Hexagonal</b> (cap. 6)", "fora, atrás de uma porta", "entradas e saídas; não divide o núcleo"],
     ["<b>Onion</b>", "na casca externa", "o modelo de domínio no centro, em anéis"],
     ["<b>Clean</b>", "na borda, atrás de gateways", "casos de uso explícitos, presenter e DTOs nas fronteiras"],
-  ],  "compacta",
+  ],
+  "compacta",
 )}
 
 <p>Em uma linha: Clean e Onion são a hexagonal com o núcleo dividido em anéis com nome, e as três são as camadas com a
