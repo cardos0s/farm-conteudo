@@ -184,8 +184,8 @@ saber de qual pergunta cada arquitetura é resposta.</p>
 ${fig(mapa(), "As arquiteturas dos capítulos 4 a 26, agrupadas pela pergunta que respondem. O número na bolinha é o capítulo.", "grande")}
 
 <h3>Três perguntas, três famílias</h3>
-<p>Cada parte do meio do livro responde a uma pergunta. Elas mexem em coisas diferentes e são sentidas por pessoas
-diferentes:</p>
+<p>Cada parte do meio do livro responde a uma pergunta. Elas mexem em coisas diferentes e são sentidas primeiro por
+pessoas diferentes.</p>
 
 ${tabela(
   ["Família", "A pergunta", "O que muda quando você decide", "Caps."],
@@ -391,10 +391,10 @@ ${pratica(
 
 ${combina([
   [2, "Os critérios que decidem a escolha", "o que pesa em cada família"],
+  [11, "Monólito", "o ponto de partida do espectro"],
   [27, "Comparativo geral", "as notas lado a lado"],
   [28, "Árvore de decisão", "das perguntas à escolha"],
   [29, "Combinações que funcionam", "uma peça de cada família"],
-  [11, "Monólito", "o ponto de partida do espectro"],
   [33, "Cola final", "o mapa numa página"],
 ])}
 

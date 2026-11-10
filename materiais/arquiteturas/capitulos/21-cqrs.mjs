@@ -26,7 +26,7 @@ function fluxo() {
   s += bloco(580, 198, 140, 56, "projeção", { preench: claro.laranja, tam: 17 });
   s += seta(650, 256, 650, 298, { cor: cor.verde, espessura: 2 });
   s += passo(560, 277, "4", cor.verde) + txt(578, 277, "atualiza", { tam: 15, cor: cor.verde, ancora: "start" });
-  s += txt(335, 222, "entre 3 e 4 existe um atraso:\na leitura pode ficar um instante para trás", { tam: 15, cor: cor.vermelho });
+  s += txt(335, 222, "entre gravar (2) e atualizar (4) há um atraso:\na leitura pode ficar um instante para trás", { tam: 15, cor: cor.vermelho });
   // leitura
   s += banco(590, 300, 120, 96, "banco de\nleitura", { preench: claro.verde, tam: 15 });
   s += bloco(220, 306, 230, 84, "", { preench: claro.verde, hachura: "solid" });
@@ -104,11 +104,11 @@ ${fig(fluxo(), "Em cima, a escrita: o comando passa pelas regras e é gravado. O
 <h3>Como funciona</h3>
 <ul>
 <li><b>Comando</b>: um pedido para mudar algo, com nome no imperativo (<code>ConfirmarPedido</code>,
-<code>CancelarAssinatura</code>). Pode ser recusado. Não devolve dados de tela: no máximo um id ou um "ok". Na API, costuma virar um <code>POST</code>; a consulta, um <code>GET</code>.</li>
+<code>CancelarAssinatura</code>). Expressa uma intenção do negócio, e não "atualize esta linha". Pode ser recusado. Não devolve dados de tela: no máximo um id ou um "ok". Na API, o comando costuma virar <code>POST</code>, <code>PUT</code> ou <code>DELETE</code>; a consulta, um <code>GET</code>.</li>
 <li><b>Modelo de escrita</b>: entidades com as regras do negócio, num banco normalizado, feito para gravar com segurança.
 Cada comando tem um <b>command handler</b> (tratador do comando): carrega, aplica a regra, grava.</li>
 <li><b>Evento</b>: o fato que aconteceu, com nome no passado (<code>PedidoConfirmado</code>). Ao contrário do comando, não
-pode ser recusado: já aconteceu. É ele que avisa o lado de leitura.</li>
+pode ser recusado: já aconteceu. Quando os dois lados ficam separados, é ele que avisa o lado de leitura.</li>
 <li><b>Projeção</b>: código que escuta os eventos e atualiza o modelo de leitura, uma tabela "achatada" com as colunas
 que a tela mostra.</li>
 <li><b>Modelo de leitura</b>: dados prontos para consultar, sem regra. Cada consulta tem um <b>query handler</b> (tratador
@@ -124,21 +124,22 @@ ${fig(niveis(), "Do nível 1 ao 3, a leitura ganha liberdade para ter o seu pró
 <ul>
 <li><b>Nível 1: só o código separado.</b> Mesmo banco, mesmas tabelas. Comandos passam pelas entidades; consultas leem
 direto com SQL e devolvem objetos simples. Já resolve muito, sem atraso nenhum.</li>
-<li><b>Nível 2: tabelas de leitura no mesmo banco.</b> Tabelas desnormalizadas ou <i>views</i> materializadas, feitas
-para a tela. Atualizadas na mesma transação do comando, ficam sempre em dia.</li>
+<li><b>Nível 2: tabelas de leitura no mesmo banco.</b> Tabelas desnormalizadas, feitas para a tela. Se o comando as
+atualiza na mesma transação, ficam sempre em dia. Uma <i>view</i> materializada também serve, mas no Postgres ela só muda
+quando alguém roda o <code>REFRESH</code>: até lá, fica para trás.</li>
 <li><b>Nível 3: banco só de leitura.</b> A escrita fica, por exemplo, no Postgres, e a leitura num índice de busca ou
 num cache. Uma projeção, alimentada por eventos, mantém os dois em sincronia.</li>
 </ul>
 
 <h4>A leitura atrasa: consistência eventual</h4>
 <p>No nível 3, a leitura é atualizada depois da gravação: milissegundos no dia a dia, segundos ou mais num pico. É a
-<b>consistência eventual</b>: os dois lados vão concordar, mas não no mesmo instante. O risco clássico: o cliente confirma
-o pedido, a lista ainda mostra "aguardando" e ele clica de novo. Jeitos comuns de lidar com isso:</p>
+<b>consistência eventual</b>: os dois lados vão concordar, mas não no mesmo instante. O risco clássico: o cliente faz um
+pedido, abre "Meus pedidos", o pedido ainda não aparece e ele faz tudo de novo. Jeitos comuns de lidar com isso:</p>
 <ul>
 <li>A tela usa a resposta do próprio comando para se atualizar, sem esperar a consulta.</li>
 <li>Logo depois de gravar, aquele item específico é lido do lado de escrita (<i>read your own writes</i>, "leia o que você escreveu").</li>
 <li>A tela mostra "processando" e se atualiza quando a projeção chega (por <i>polling</i> ou notificação).</li>
-<li>O comando aceita uma chave de idempotência, para o segundo clique não criar um segundo pedido.</li>
+<li>O comando aceita uma chave de idempotência, para a segunda tentativa não criar um segundo pedido.</li>
 </ul>
 
 <h4>Com ou sem event sourcing</h4>
@@ -181,11 +182,14 @@ src/pedidos/
 
 ${codigo(
   `
+// eventos.ts: o fato, com nome no passado
+export type PedidoConfirmado = {
+  tipo: "PedidoConfirmado"; pedidoId: string; clienteId: string;
+  total: number; versao: number; em: string;
+};
+
 // comandos/confirmar-pedido.ts: muda o estado e não devolve dados de tela
 export type ConfirmarPedido = { pedidoId: string };
-export type PedidoConfirmado = {
-  tipo: "PedidoConfirmado"; pedidoId: string; clienteId: string; total: number; em: string;
-};
 
 export class ConfirmarPedidoHandler {
   constructor(private pedidos: RepositorioDePedidos) {}
@@ -195,27 +199,28 @@ export class ConfirmarPedidoHandler {
     pedido.confirmar(); // a regra mora na entidade: só confirma pedido pago
     const evento: PedidoConfirmado = {
       tipo: "PedidoConfirmado", pedidoId: pedido.id, clienteId: pedido.clienteId,
-      total: pedido.total, em: new Date().toISOString(),
+      total: pedido.total, versao: pedido.versao, em: new Date().toISOString(),
     };
     // grava o pedido e o evento (na tabela outbox) na MESMA transação
     await this.pedidos.salvarComEvento(pedido, evento);
   }
 }`,
-  "src/pedidos/comandos/confirmar-pedido.ts",
+  "src/pedidos/eventos.ts e src/pedidos/comandos/confirmar-pedido.ts",
 )}
 
 ${codigo(
   `
 // projecoes/meus-pedidos.ts: escuta eventos e mantém a tabela da tela "Meus pedidos"
 export async function projetarPedidoConfirmado(e: PedidoConfirmado, db: Pool) {
-  // upsert idempotente (evento repetido não muda nada); o where ignora evento antigo atrasado
+  // upsert idempotente: evento repetido ou fora de ordem (versão menor ou igual) não muda nada
   await db.query(
-    \`insert into meus_pedidos (pedido_id, cliente_id, status, total, atualizado_em)
-     values ($1, $2, 'confirmado', $3, $4)
+    \`insert into meus_pedidos (pedido_id, cliente_id, status, total, versao, atualizado_em)
+     values ($1, $2, 'confirmado', $3, $4, $5)
      on conflict (pedido_id) do update
-       set status = 'confirmado', total = excluded.total, atualizado_em = excluded.atualizado_em
-       where meus_pedidos.atualizado_em <= excluded.atualizado_em\`,
-    [e.pedidoId, e.clienteId, e.total, e.em],
+       set status = 'confirmado', total = excluded.total,
+           versao = excluded.versao, atualizado_em = excluded.atualizado_em
+       where meus_pedidos.versao < excluded.versao\`,
+    [e.pedidoId, e.clienteId, e.total, e.versao, e.em],
   );
 }
 fila.assinar("PedidoConfirmado", (e: PedidoConfirmado) => projetarPedidoConfirmado(e, pool));`,
@@ -225,7 +230,9 @@ fila.assinar("PedidoConfirmado", (e: PedidoConfirmado) => projetarPedidoConfirma
 ${codigo(
   `
 // consultas/listar-meus-pedidos.ts: só lê; nada de entidade nem de regra
-export type ResumoDePedido = { pedidoId: string; status: string; total: number; atualizadoEm: string };
+export type ResumoDePedido = {
+  pedidoId: string; status: string; total: number; atualizadoEm: Date;
+};
 export class ListarMeusPedidosHandler {
   constructor(private db: Pool) {}
   async executar(q: { clienteId: string; pagina: number }): Promise<ResumoDePedido[]> {
@@ -243,7 +250,7 @@ export class ListarMeusPedidosHandler {
 
 ${alerta(
   "Gravar e publicar: o problema da escrita dupla",
-  "<p>Se o código salvasse o pedido e depois publicasse o evento na fila, uma queda entre as duas coisas deixaria a tabela de leitura desatualizada para sempre. Por isso o exemplo usa <code>salvarComEvento</code>: o evento vai para uma tabela <b>outbox</b> na mesma transação do pedido, e um processo separado lê essa tabela e publica na fila. É o padrão <i>transactional outbox</i>. Ferramentas de CDC (<i>change data capture</i>, captura de mudanças), como o Debezium, fazem esse papel lendo o log do banco.</p>",
+  "<p>Se o código salvasse o pedido e depois publicasse o evento na fila, uma queda entre as duas coisas deixaria a tabela de leitura desatualizada para sempre. Por isso o exemplo usa <code>salvarComEvento</code>: o evento vai para uma tabela <b>outbox</b> na mesma transação do pedido, e um processo separado lê essa tabela e publica na fila. É o padrão <i>transactional outbox</i>. Ele pode publicar o mesmo evento duas vezes, e é por isso que a projeção precisa ser idempotente. Ferramentas de CDC (<i>change data capture</i>, captura de mudanças), como o Debezium, fazem esse papel lendo o log do banco.</p>",
 )}
 
 <h4>Passo a passo para adotar</h4>
@@ -252,7 +259,7 @@ ${passos([
   "Nas consultas, pule as entidades: leia direto com SQL e devolva objetos no formato da tela.",
   "Ache a tela que dói (lenta, cheia de joins, ou que precisa de busca textual). Só para ela, crie uma tabela de leitura (nível 2) ou um banco próprio (nível 3).",
   "Defina os eventos que alimentam essa leitura, com nomes no passado, e publique com garantia (outbox).",
-  "Escreva projeções idempotentes e tenha um comando para reconstruir a tabela de leitura do zero, reprocessando os eventos ou relendo o lado de escrita.",
+  "Escreva projeções idempotentes e tenha um script para reconstruir a tabela de leitura do zero, reprocessando os eventos ou relendo o lado de escrita.",
   "Combine com quem desenha o produto como cada tela lida com o atraso, e monitore o atraso das projeções (o <i>lag</i>) com alerta.",
 ])}
 
@@ -277,6 +284,8 @@ para o atraso e torne o comando idempotente.</li>
 <li><b>Projeção frágil</b>: soma o total de novo quando o mesmo evento chega duas vezes (a maioria das filas entrega
 "pelo menos uma vez"), ou não tem como ser reconstruída quando corrompe.</li>
 <li><b>Regra de negócio na projeção ou na consulta</b>: a projeção só copia e reorganiza dados. Quem decide é o lado de escrita.</li>
+<li><b>Decidir com o modelo de leitura</b>: o comando confere estoque ou saldo na tabela de leitura, que pode estar
+atrasada, e aprova o que não devia. Validação de comando usa os dados do lado de escrita.</li>
 </ul>
 
 ${pratica(

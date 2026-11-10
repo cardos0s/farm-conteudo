@@ -129,7 +129,7 @@ ${resumo(
 próprio Martin diz que a Clean tenta juntar numa ideia só várias arquiteturas parecidas, entre elas a hexagonal
 (capítulo 6) e a Onion. Por isso estão juntas aqui: é o mesmo princípio, com nomes diferentes para os anéis.</p>
 
-${fig(aneis(), "Os quatro anéis da Clean: quanto mais para dentro, mais perto do negócio e mais estável; quanto mais para fora, mais técnico.")}
+${fig(aneis(), "Os quatro anéis da Clean: quanto mais para dentro, mais perto do negócio e mais estável; mais para fora, mais técnico.")}
 
 <h3>Como funciona</h3>
 <p>Os anéis da Clean, de dentro para fora:</p>
@@ -361,9 +361,8 @@ framework sem medo.</li>
 
 <h3>Erros comuns</h3>
 <ul>
-<li><b>Entidade com cara de tabela</b>: decorators do ORM (<code>@Entity()</code>, <code>@Column()</code>) na classe de
-domínio prendem o centro a um framework. Deixe o modelo de persistência no adaptador (ou registre o atalho num ADR,
-capítulo 32).</li>
+<li><b>Entidade com cara de tabela</b>: <code>@Entity()</code> e <code>@Column()</code> do ORM na entidade prendem o
+centro ao framework. Mapeie no adaptador (ou registre o atalho num ADR, capítulo 32).</li>
 <li><b>Entidade atravessando a fronteira</b>: devolver o objeto <code>Pedido</code> direto no JSON expõe campos internos
 e amarra o contrato da API ao modelo. Use o DTO de saída.</li>
 <li><b>Transação no lugar errado</b>: abrir <code>BEGIN</code> com o cliente do <code>pg</code> dentro do caso de uso traz

@@ -1,8 +1,9 @@
 // Capítulo 33: Cola final. Capítulo de consulta rápida da parte V, então a estrutura é própria:
 // abertura → fluxograma de bolso → 10 regras de ouro → cada arquitetura em uma linha (uma tabela por parte)
-// → glossário → para lembrar → recado de despedida da Julia.
+// → glossário → para lembrar → recado de despedida da Julia. Os capítulos 27 a 32 aparecem no parágrafo de abertura
+// (no lugar do "combina com"), para o glossário, o lembre e o recado caberem na mesma página.
 
-import { combina, fig, lembre, passos, pratica, resumo, tabela } from "../componentes.mjs";
+import { fig, lembre, passos, pratica, resumo, tabela } from "../componentes.mjs";
 import { bloco, claro, cor, linha, passo, quadro, semear, seta, txt } from "../desenho.mjs";
 
 /** Fluxograma de bolso: quatro perguntas, da esquerda para a direita; em cada uma, o padrão "na dúvida"
@@ -156,16 +157,15 @@ ${tabela(
     ["<b>Acoplamento</b>", "Quanto uma parte depende de outra. Alto: mudar uma obriga a mexer na outra."],
     ["<b>ADR</b>", "<i>Architecture Decision Record</i>: registro curto de uma decisão e do porquê dela (capítulo 32)."],
     ["<b>Agregado</b>", "Objetos que mudam juntos e protegem suas regras numa transação (termo do <i>Domain-Driven Design</i>)."],
-    ["<b>API gateway</b>", "Porta de entrada única dos clientes: roteia cada chamada ao serviço certo e cuida de autenticação e limites."],
+    ["<b>API gateway</b>", "Porta de entrada única: roteia cada chamada ao serviço certo e cuida de autenticação e limites."],
     ["<b>Assíncrono</b>", "Envia (por uma fila, por exemplo) e segue sem esperar. Síncrono é o oposto: espera a resposta."],
     ["<b>Broker</b>", "Intermediário que recebe, guarda e entrega mensagens, como Kafka, RabbitMQ ou SQS."],
     ["<b>Coesão</b>", "Quanto o que está dentro de uma parte pertence junto. Alta: tudo ali muda pelo mesmo motivo."],
     ["<b>Compensação</b>", "Ação de negócio que desfaz um passo anterior (estornar, liberar reserva). É a base das sagas."],
-    ["<b>Consistência eventual</b>", "As cópias ficam iguais depois de um tempo; até lá, uma leitura pode trazer o valor antigo."],
+    ["<b>Consistência&nbsp;eventual</b>", "As cópias ficam iguais depois de um tempo; até lá, uma leitura pode trazer o valor antigo."],
     ["<b>Consistência forte</b>", "Toda leitura vê a última escrita confirmada, não importa de onde se lê."],
     ["<b>Contexto delimitado</b>", "<i>Bounded context</i>: fronteira em que cada termo tem um significado só, como \"cliente\" no financeiro."],
     ["<b>Contrato</b>", "O que uma parte promete a quem a usa (rotas, formatos, eventos). Mudar sem aviso quebra os outros."],
-    ["<b>Deploy independente</b>", "Colocar uma parte no ar sem precisar publicar as outras junto."],
     ["<b>Disponibilidade</b>", "Fração do tempo em que o sistema responde. 99,9% ≈ 8,8 horas fora por ano; 99,99% ≈ 53 minutos."],
     ["<b>Escala horizontal</b>", "Mais máquinas iguais dividindo a carga. A escala vertical é trocar por uma máquina maior."],
     ["<b>Função de aptidão</b>", "<i>Fitness function</i>: teste automático que confere uma regra de arquitetura (capítulo 32)."],
@@ -175,33 +175,24 @@ ${tabela(
     ["<b>Observabilidade</b>", "Logs, métricas e rastreamento (<i>traces</i>) para entender o que o sistema faz, até entre serviços."],
     ["<b>Orquestração</b>", "Um coordenador manda cada parte agir. O oposto é a coreografia: cada parte reage aos eventos."],
     ["<b>Outbox</b>", "Tabela gravada na mesma transação do dado; um processo separado publica os eventos a partir dela."],
-    ["<b>Partida a frio</b>", "<i>Cold start</i>: atraso extra quando a função serverless precisa subir do zero (estava parada ou a carga subiu)."],
+    ["<b>Partida a frio</b>", "<i>Cold start</i>: atraso quando a função precisa subir do zero (estava parada ou a carga subiu)."],
     ["<b>Particionamento</b>", "<i>Sharding</i>: dividir os dados entre máquinas por uma chave, como cliente ou região."],
     ["<b>Projeção</b>", "Cópia dos dados no formato que uma tela precisa: o modelo de leitura do CQRS e do event sourcing."],
     ["<b>Raio de impacto</b>", "<i>Blast radius</i>: quanto do sistema e dos clientes uma única falha consegue atingir."],
-    ["<b>Réplica de leitura</b>", "Cópia do banco que recebe as escritas do principal e atende só leituras. Pode ficar um pouco atrasada."],
+    ["<b>Réplica de leitura</b>", "Cópia do banco que só atende leituras e recebe as escritas do principal, às vezes com atraso."],
     ["<b>Throughput</b>", "Vazão: quantas operações o sistema completa por unidade de tempo (pedidos por segundo)."],
   ],
   "compacta",
 )}
 
-${combina([
-  [27, "Comparativo geral", "todas lado a lado, critério por critério"],
-  [28, "Árvore de decisão", "a versão completa do fluxograma"],
-  [29, "Combinações que funcionam", "como misturar as linhas da tabela"],
-  [30, "Como migrar sem parar o sistema", "quando a escolha de ontem não serve mais"],
-  [31, "Anti-padrões", "o \"evite quando\" que deu errado na vida real"],
-  [32, "ADRs e revisão", "para registrar o porquê de cada escolha"],
-])}
-
 ${lembre([
-  "Não existe arquitetura sem custo: existe a que custa menos para o seu problema, o seu time e o seu momento.",
+  "Toda arquitetura tem custo: escolha a que custa menos para o seu problema, time e momento.",
   "Comece pela caixa verde e suba um degrau por vez, só quando uma dor medida pedir.",
   "Fronteiras pelo negócio, dados com dono e decisões registradas valem em qualquer arquitetura do livro.",
 ])}
 
 ${pratica(
   "Um recado da Julia",
-  "<p>Se você chegou até aqui, já tem o que muita gente que fala de arquitetura com confiança em reunião não tem: sabe perguntar <b>qual dor</b> uma escolha resolve e <b>qual custo</b> ela cobra. Agora é praticar. Na próxima feature, no próximo projeto, na próxima entrevista, volte a esta cola e me conta o que você construiu lá no @juliacardoso.dev. Obrigada por ler até o fim. Um abraço, Julia.</p>",
+  "<p>Se você chegou até aqui, já sabe fazer as duas perguntas que mais importam: <b>qual dor</b> esta escolha resolve e <b>qual custo</b> ela cobra. Agora é praticar: no próximo projeto ou na próxima entrevista, volte a esta cola. E me conta lá no @juliacardoso.dev o que você construiu. Obrigada por ler. Um abraço, Julia.</p>",
 )}
 `;

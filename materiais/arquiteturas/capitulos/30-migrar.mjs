@@ -2,7 +2,7 @@
 // de migração incremental (strangler fig, branch by abstraction, execução em paralelo, lançamento escuro,
 // canário e flags), o roteiro para extrair um módulo, a separação do banco, a camada anticorrupção e as métricas.
 
-import { alerta, codigo, combina, fig, lembre, passos, pratica, resumo, tabela } from "../componentes.mjs";
+import { alerta, codigo, combina, dica, fig, lembre, passos, pratica, resumo, tabela } from "../componentes.mjs";
 import { banco, bloco, claro, cor, linha, navegador, pessoa, quadro, semear, seta, txt, xis } from "../desenho.mjs";
 
 /* ------------------------------------------------------------------ diagramas */
@@ -17,31 +17,31 @@ function estrangulamento() {
     { titulo: "3. legado desligado", legado: [], novo: ["/catalogo", "/pedidos", "/pagamento"], nota: "tudo no sistema novo" },
   ];
   // separadores entre os momentos
-  for (const x of [253, 507]) s += linha([[x, 14], [x, 392]], { cor: cor.cinza, tracejado: true, espessura: 1.2 });
+  for (const x of [253, 507]) s += linha([[x, 14], [x, 362]], { cor: cor.cinza, tracejado: true, espessura: 1.2 });
   etapas.forEach((e, i) => {
     const px = i * 254 + 4;
     const cx = px + 123;
     s += txt(cx, 24, e.titulo, { tam: 17 });
-    s += navegador(cx - 48, 44, 96, 58, "usuários");
-    s += seta(cx, 106, cx, 136, { espessura: 2 });
-    s += bloco(cx - 70, 140, 140, 44, "proxy", { preench: claro.amarelo, tam: 17 });
+    s += navegador(cx - 48, 40, 96, 54, "usuários");
+    s += seta(cx, 98, cx, 124, { espessura: 2 });
+    s += bloco(cx - 70, 128, 140, 42, "proxy", { preench: claro.amarelo, tam: 17 });
     // legado (esquerda) e novo (direita)
-    const lx = px + 12, nx = px + 129, by = 252, bw = 106, bh = 112;
+    const lx = px + 12, nx = px + 129, by = 226, bw = 106, bh = 106;
     const legadoVivo = e.legado.length > 0, novoVivo = e.novo.length > 0;
     s += bloco(lx, by, bw, bh, "", { preench: legadoVivo ? claro.laranja : undefined, tracejado: !legadoVivo, cor: legadoVivo ? cor.tinta : cor.cinza });
     s += bloco(nx, by, bw, bh, "", { preench: novoVivo ? claro.verde : undefined, tracejado: !novoVivo, cor: novoVivo ? cor.tinta : cor.cinza });
     s += txt(lx + bw / 2, by + 20, "legado", { tam: 16, cor: legadoVivo ? cor.tinta : cor.cinza });
     s += txt(nx + bw / 2, by + 20, "novo", { tam: 16, cor: novoVivo ? cor.tinta : cor.cinza });
-    e.legado.forEach((r, k) => (s += txt(lx + bw / 2, by + 50 + k * 21, r, { tam: 15 })));
-    e.novo.forEach((r, k) => (s += txt(nx + bw / 2, by + 50 + k * 21, r, { tam: 15 })));
-    if (!novoVivo) s += txt(nx + bw / 2, by + 66, "em\nconstrução", { tam: 15, cor: cor.cinza });
-    if (!legadoVivo) s += xis(lx + bw / 2, by + 56, 26) + txt(lx + bw / 2, by + 90, "desligado", { tam: 15, cor: cor.cinza });
+    e.legado.forEach((r, k) => (s += txt(lx + bw / 2, by + 46 + k * 21, r, { tam: 15 })));
+    e.novo.forEach((r, k) => (s += txt(nx + bw / 2, by + 46 + k * 21, r, { tam: 15 })));
+    if (!novoVivo) s += txt(nx + bw / 2, by + 62, "em\nconstrução", { tam: 15, cor: cor.cinza });
+    if (!legadoVivo) s += xis(lx + bw / 2, by + 52, 26) + txt(lx + bw / 2, by + 84, "desligado", { tam: 15, cor: cor.cinza });
     // tráfego: seta grossa para quem atende
-    if (legadoVivo) s += seta(cx - 30, 186, lx + bw / 2, by - 4, { espessura: novoVivo ? 2 : 2.8, cor: cor.laranja });
-    if (novoVivo) s += seta(cx + 30, 186, nx + bw / 2, by - 4, { espessura: legadoVivo ? 2 : 2.8, cor: cor.verde });
-    s += txt(cx, 392, e.nota, { tam: 15, cor: cor.azul });
+    if (legadoVivo) s += seta(cx - 30, 172, lx + bw / 2, by - 4, { espessura: novoVivo ? 2 : 2.8, cor: cor.laranja });
+    if (novoVivo) s += seta(cx + 30, 172, nx + bw / 2, by - 4, { espessura: legadoVivo ? 2 : 2.8, cor: cor.verde });
+    s += txt(cx, 360, e.nota, { tam: 15, cor: cor.azul });
   });
-  return quadro(760, 410, s);
+  return quadro(760, 376, s);
 }
 
 /** Diagrama 2: execução em paralelo. O cliente recebe a resposta do legado; o novo só é comparado. */
@@ -114,8 +114,10 @@ ${resumo(
 <p>Todo sistema que dá certo envelhece: o framework fica sem suporte, o banco não aguenta, o monólito virou bola de lama
 (capítulo 31). A tentação é parar e reescrever do zero, e quase sempre é a pior opção: enquanto a versão nova não fica
 pronta, a antiga continua mudando, e a nova corre atrás de um alvo que se move. Este capítulo mostra o caminho oposto, a
-<b>migração incremental</b>: passos pequenos, cada um medido e reversível. As técnicas servem para extrair serviços, mas
-também para trocar framework, banco ou provedor de pagamento. Só comece por uma dor concreta e medida, nunca por moda.</p>
+<b>migração incremental</b>: passos pequenos, cada um medido e reversível. Ela também custa (dois sistemas no ar por
+meses, um proxy a mais, dados para sincronizar), mas nenhum passo é uma aposta grande. As técnicas servem para extrair
+serviços e também para trocar framework, banco ou provedor de pagamento. Só comece por uma dor concreta e medida, nunca
+por moda.</p>
 
 <h3>Strangler Fig: o legado vai encolhendo</h3>
 <p>Martin Fowler deu o nome em 2004, inspirado nas figueiras-estranguladoras: a semente nasce no alto de outra árvore, solta
@@ -127,6 +129,8 @@ load balancer (nginx, Envoy, Kong ou o gateway do provedor de nuvem). Os cliente
 onde vai cada rota. Vale também para filas (um roteador repassa cada tipo de mensagem) e para telas (as páginas
 reescritas vêm do app novo, capítulo 16).</p>
 
+${fig(estrangulamento(), "O mesmo sistema em três momentos. O usuário fala sempre com o proxy; o que muda é para onde ele manda cada rota.", "grande")}
+
 ${passos([
   "<b>Proxy na frente, sem mudar nada.</b> Todo o tráfego ainda vai para o legado. Meça erros e latência: essa é a sua linha de base.",
   "<b>Escolha a primeira fatia</b>: pequena, com poucas dependências e baixo risco (catálogo antes de pagamento). Ela serve para aprender o caminho, não para ganhar a guerra.",
@@ -135,8 +139,6 @@ ${passos([
   "<b>Apague a fatia do legado e repita.</b> Quando não sobrar rota, o legado é desligado. Sem apagar, você mantém dois sistemas para sempre.",
 ])}
 
-${fig(estrangulamento(), "O mesmo sistema em três momentos. O usuário fala sempre com o proxy; o que muda é para onde ele manda cada rota.", "grande")}
-
 <h4>O proxy em código</h4>
 ${codigo(
   `
@@ -144,18 +146,20 @@ ${codigo(
 import express from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 
-const LEGADO = "http://legado:8080", CATALOGO = "http://catalogo:3000";
+const LEGADO = "http://legado:8080", NOVO = "http://catalogo:3000";
 
-// prefixo da rota -> % dos usuários que vão para o serviço novo (busca: canário)
-const migradas: Record<string, number> = { "/catalogo": 100, "/busca": 10 };
+// prefixo da rota -> % dos usuários que vão para o serviço novo
+const migradas: Record<string, number> = { "/catalogo": 100, "/busca": 10 }; // busca: canário
 
-// o mesmo usuário cai sempre no mesmo lado (número de 0 a 99)
+// o mesmo usuário cai sempre no mesmo número (de 0 a 99)
 const balde = (id: string) => [...id].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 0) % 100;
 
 export function destino(caminho: string, usuario: string): string {
   const prefixo = Object.keys(migradas).find((p) => caminho === p || caminho.startsWith(p + "/"));
   if (!prefixo) return LEGADO; // o que não foi migrado segue igual
-  return balde(usuario) < migradas[prefixo] ? CATALOGO : LEGADO;
+  const pct = migradas[prefixo];
+  if (pct >= 100) return NOVO;
+  return usuario && balde(usuario) < pct ? NOVO : LEGADO; // sem id conhecido: fica no legado
 }
 
 const app = express();
@@ -172,14 +176,16 @@ app.listen(80);`,
 )}
 
 <p>Três detalhes importam. O padrão é sempre o legado: uma rota esquecida não quebra. O canário é por usuário, não por
-requisição: a mesma pessoa não pula de um sistema para o outro a cada clique. E reverter é trocar <code>100</code> por
-<code>0</code>. Em produção, esse mapa costuma vir de um serviço de configuração ou de feature flags, para mudar sem novo
-deploy.</p>
+requisição: a mesma pessoa não pula de um sistema para o outro a cada clique (e quem chega sem id fica no legado, em vez
+de cair todo no mesmo número). E reverter é trocar <code>100</code> por <code>0</code>, mas só enquanto o novo não
+guarda dados próprios: depois que ele passa a gravar, voltar exige levar essas gravações para o legado (veja a seção do
+banco, adiante). Em produção, o mapa costuma vir de um serviço de configuração ou de feature flags, para mudar sem deploy.</p>
 
 <h3>Branch by abstraction: trocar por dentro</h3>
 <p>O proxy só enxerga o que passa pela rede. Quando a peça a trocar está dentro do código (um cálculo de frete, o ORM, a
-biblioteca de PDF), use <b>branch by abstraction</b> (ramificar por abstração). Apesar do nome, não tem a ver com branch do
-Git; a ideia é o contrário: trabalhar no branch principal, em vez de manter um branch de meses que nunca consegue fazer merge.</p>
+biblioteca de PDF), use <b>branch by abstraction</b> (ramificar por abstração). O nome engana: a ideia é justamente não
+abrir um branch de meses no Git, que nunca consegue fazer merge. Todo mundo segue no branch principal, e a "ramificação"
+acontece no código, atrás de uma interface.</p>
 <ol>
 <li>Crie uma interface na frente do código antigo e faça todo mundo chamar a interface. Nada muda de comportamento.</li>
 <li>Escreva a implementação nova atrás da mesma interface, aos poucos, indo para produção desligada.</li>
@@ -218,7 +224,9 @@ export class FreteComparado implements CalculadoraDeFrete {
 Na <b>execução em paralelo</b> (<i>parallel run</i>), o antigo e o novo recebem a mesma entrada de produção, o cliente recebe
 só a resposta do antigo e um comparador registra cada diferença. Assim aparecem os casos que ninguém lembraria de testar (o
 CEP de zona rural, o cupom antigo que ainda vale) sem nenhum cliente ver o erro. A classe <code>FreteComparado</code> faz
-isso dentro do código; o mesmo vale no proxy, para serviços inteiros.</p>
+isso dentro do código; o mesmo vale no proxy, para serviços inteiros. Existem bibliotecas prontas para isso, como a
+Scientist, que o GitHub abriu como código aberto: ela roda o código antigo e o novo, devolve sempre o resultado do antigo e
+publica as diferenças.</p>
 
 ${fig(emParalelo(), "O roteador manda a requisição ao legado e uma cópia ao novo. Só a resposta do legado volta ao cliente; as duas são comparadas e cada diferença vira um caso para investigar.")}
 
@@ -237,8 +245,9 @@ vira só alarme falso.</li>
 <ul>
 <li><b>Lançamento escuro</b> (<i>dark launch</i>): o código novo já roda em produção com tráfego real ou uma cópia dele, mas
 ninguém vê o resultado. Testa carga, conexões e configuração antes de valer.</li>
-<li><b>Canário</b> (<i>canary release</i>): uma fatia pequena e real de usuários usa a versão nova (1%, 5%, 25%, 100%). O
-nome vem dos canários que os mineiros levavam para a mina: se o pássaro passava mal, era hora de sair.</li>
+<li><b>Canário</b> (<i>canary release</i>): uma fatia pequena e real de usuários usa a versão nova, e a fatia cresce enquanto
+os números estiverem bons. O nome vem dos canários que os mineiros levavam para a mina: se o pássaro passava mal, era hora
+de sair.</li>
 <li><b>Feature flag</b> (interruptor de funcionalidade): um <code>if</code> que lê uma configuração em tempo de execução e
 liga ou desliga sem deploy, por cliente ou porcentagem (Unleash, LaunchDarkly e o padrão OpenFeature ajudam). Flag de
 migração tem data para morrer: apague junto com o código antigo.</li>
@@ -261,7 +270,7 @@ ${passos([
   "<b>Escolha pelo motivo.</b> Bons candidatos: um módulo que muda muito, que precisa escalar sozinho ou que outro time vai assumir. Entre eles, o que tem menos dependências.",
   "<b>Modularize dentro do monólito primeiro</b> (capítulo 12): o resto do código fala com clientes só por uma interface pública, e ninguém mais faz <code>join</code> nas tabelas dele. Se isso é difícil dentro de um processo, pela rede será pior.",
   "<b>Escreva testes de contrato</b> para essa interface e suba o serviço novo implementando a mesma interface (no começo, lendo uma réplica do banco do monólito).",
-  "<b>Troque a implementação interna por um cliente HTTP</b> (branch by abstraction), atrás de uma flag. Rode em paralelo e depois como canário.",
+  "<b>Troque a implementação interna por um cliente HTTP</b> (branch by abstraction), atrás de uma flag. O que era chamada de função agora pode demorar ou falhar: defina timeout e o que fazer quando o serviço cair. Rode em paralelo e depois como canário.",
   "<b>Mova os dados</b> para o banco do serviço (próxima seção). Costuma ser a etapa mais longa.",
   "<b>Apague o módulo do monólito</b> e a flag, e registre a decisão num ADR (capítulo 32).",
 ])}
@@ -278,8 +287,9 @@ ${fig(donoUnico(), "À esquerda, dois sistemas escrevendo na mesma tabela. À di
 <li><b>Mapeie</b> quem lê e quem escreve cada tabela (logs do banco e busca no código). As surpresas aparecem aqui: o
 relatório noturno, o script do financeiro, a integração esquecida.</li>
 <li><b>Escritas</b> passam a ir pela API do dono. Se o legado grava cliente em dez lugares, cada um vira uma chamada.</li>
-<li><b>Leituras</b> do legado vão para uma <b>cópia</b>, sincronizada por eventos ou por <b>CDC</b> (<i>change data
-capture</i>, captura de mudanças: uma ferramenta como o Debezium lê o log de alterações do banco e publica cada mudança).
+<li><b>Leituras</b> do legado vão para uma <b>cópia</b>. Ela começa com uma carga do histórico (<i>backfill</i>) e depois é
+mantida em dia por eventos ou por <b>CDC</b> (<i>change data capture</i>, captura de mudanças: uma ferramenta como o
+Debezium lê o log de alterações do banco e publica cada mudança).
 Uma <b>visão</b> (<i>view</i>) com o nome e as colunas da tabela antiga faz o código legado ler a cópia sem perceber.</li>
 <li><b>Joins</b> entre donos diferentes viram composição na API ou um modelo só de leitura (capítulo 21).</li>
 <li><b>Corte</b>: quando ninguém mais lê a cópia, apague a sincronização e a tabela velha.</li>
@@ -290,13 +300,18 @@ ${alerta(
   "<p>Parece simples: o código grava no banco antigo e no novo, um depois do outro. Mas, se a segunda escrita falhar (rede, timeout, deploy no meio), os bancos divergem e ninguém fica sabendo. Prefira CDC ou o padrão outbox (capítulo 20): grava num lugar só e a mudança é propagada de forma confiável.</p>",
 )}
 
+${dica(
+  "Mudar o esquema sem parar: expandir e contrair",
+  "<p>Mesmo sem trocar de sistema, renomear uma coluna ou mudar um formato pode derrubar a versão do código que ainda está no ar. A saída é fazer em três etapas, cada uma num deploy: <b>expandir</b> (cria a coluna nova sem tirar a antiga, o código grava nas duas na mesma transação e um script copia o histórico), <b>migrar</b> as leituras para a nova e <b>contrair</b> (apaga a antiga quando ninguém mais usa). Em cada etapa, a versão anterior do código continua funcionando, então dá para voltar atrás.</p>",
+)}
+
 <h3>Camada anticorrupção</h3>
 <p>Durante meses, o sistema novo vai conversar com o legado, e o risco é o modelo velho vazar para o novo: colunas como
 <code>ST_CLI = 'A'</code>, datas em texto, códigos com zeros à esquerda. A <b>camada anticorrupção</b> (<i>anticorruption
 layer</i>, termo do livro <i>Domain-Driven Design</i>, de Eric Evans) é um tradutor na fronteira. Ele recebe
 <code>{ CD_CLI: "000123", ST_CLI: "A" }</code> do legado e entrega <code>{ id: "123", ativo: true }</code> ao sistema
-novo, que só enxerga os próprios conceitos. Toda a esquisitice do legado fica presa num lugar só. Na prática, é um adaptador
-de saída da arquitetura hexagonal (capítulo 6), e é apagado junto com o legado.</p>
+novo, que só enxerga os próprios conceitos. Toda a esquisitice do legado fica presa num lugar só. Na arquitetura hexagonal
+(capítulo 6), ela mora nos adaptadores que falam com o legado, e é apagada junto com ele.</p>
 
 <h3>Como saber se a migração está funcionando</h3>
 <p>Migração sem número vira opinião. Meça o legado <b>antes</b> de começar (a linha de base) e acompanhe o legado e o novo
@@ -306,7 +321,7 @@ ${tabela(
   ["Métrica", "O que mostra", "Sinal de alerta"],
   [
     ["Taxa de erro, novo x legado", "Se o novo está pior que o antigo", "Erro do novo acima do legado na mesma rota"],
-    ["Latência p95 e p99 (o tempo que 95% e 99% das requisições não ultrapassam)", "A experiência dos usuários mais lentos", "p99 subindo a cada etapa: cada salto na rede soma"],
+    ["Latência p95 e p99", "O tempo que 95% (ou 99%) das requisições não ultrapassam: a experiência dos mais lentos", "p99 subindo a cada etapa: cada salto na rede soma"],
     ["Divergências na execução em paralelo", "Se o novo calcula igual", "Diferenças sem explicação que não param de aparecer"],
     ["% do tráfego no novo", "O progresso de verdade", "Parado no mesmo número há semanas"],
     ["Rotas e tabelas ainda no legado", "Quanto falta", "A lista não diminui, ou cresce"],
@@ -326,7 +341,8 @@ ${tabela(
 <ul>
 <li><b>Reescrever tudo de uma vez</b> (<i>big bang rewrite</i>): o time some por um ano, o legado continua mudando, a versão
 nova nunca alcança e, no dia da virada, aparecem as regras que só existiam no código antigo. Se a virada dá errado, não há
-volta fácil.</li>
+volta fácil. Reescrever de uma vez só é razoável quando o sistema é pequeno (cabe em poucas semanas) ou pode ficar
+congelado durante a obra.</li>
 <li><b>Migração que nunca termina</b>: as fatias fáceis migram, as difíceis ficam, e o legado vive para sempre com parte do
 tráfego. Agora são dois sistemas para manter. Planeje o fim e apague código a cada etapa.</li>
 <li><b>Mover o código e deixar o banco compartilhado</b>: o serviço novo continua preso ao esquema do legado.</li>
@@ -346,7 +362,7 @@ ${combina([
   [14, "Microsserviços", "o destino mais comum das extrações"],
   [6, "Hexagonal", "a camada anticorrupção é um adaptador"],
   [20, "Orientada a eventos", "outbox e eventos para sincronizar dados"],
-  [31, "Anti-padrões", "big bang rewrite e monólito distribuído"],
+  [31, "Anti-padrões", "monólito distribuído e outras armadilhas"],
   [32, "ADRs", "cada etapa da migração vira uma decisão registrada"],
 ])}
 

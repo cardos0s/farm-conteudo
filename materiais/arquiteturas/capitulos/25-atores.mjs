@@ -1,6 +1,6 @@
 // Capítulo 25 — Modelo de atores. Segue a estrutura do capítulo-modelo (06-hexagonal.mjs).
 
-import { alerta, codigo, combina, fig, lembre, medidor, passos, pastas, pratica, quando, resumo, tabela } from "../componentes.mjs";
+import { alerta, codigo, combina, dica, fig, lembre, medidor, passos, pastas, pratica, quando, resumo, tabela } from "../componentes.mjs";
 import { bloco, claro, cor, elipse, engrenagem, envelope, passo, quadro, ret, semear, seta, txt, xis } from "../desenho.mjs";
 
 /** Ator desenhado como elipse (o jeito clássico de desenhar atores). */
@@ -346,6 +346,11 @@ inesperado derruba o ator.</li>
 ${pratica(
   "No mundo real",
   "<p>O WhatsApp construiu seu servidor de mensagens em Erlang, e a equipe mostrou em palestras públicas como poucos servidores seguravam um número enorme de conexões ao mesmo tempo. O padrão típico em Erlang é um processo leve para cada usuário conectado: se um processo cai, só aquela conexão sente, e o supervisor cuida do resto. O Discord também conta no blog de engenharia que usa Elixir na sua parte de tempo real.</p>",
+)}
+
+${dica(
+  "Atores e os canais do Go",
+  "<p>As goroutines do Go conversam por <b>canais</b>, no estilo CSP (<i>Communicating Sequential Processes</i>), que é outro modelo. No ator, a mensagem vai para um endereço que pertence a ele; no CSP, vai para um canal, que qualquer goroutine com acesso pode ler, e o envio sem buffer espera alguém receber. Dá para imitar um ator com uma goroutine dona do estado lendo um canal, mas supervisão e distribuição ficam por sua conta.</p>",
 )}
 
 ${alerta(

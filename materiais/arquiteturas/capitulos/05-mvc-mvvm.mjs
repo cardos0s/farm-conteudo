@@ -1,15 +1,15 @@
 // Capítulo 5: MVC, MVP e MVVM. Segue a estrutura do capítulo-modelo (06-hexagonal.mjs).
 
-import { alerta, codigo, combina, dica, fig, lembre, medidor, passos, pastas, pratica, quando, resumo, tabela } from "../componentes.mjs";
+import { codigo, combina, dica, fig, lembre, medidor, passos, pastas, pratica, quando, resumo, tabela } from "../componentes.mjs";
 import { banco, bloco, claro, cor, linha, navegador, quadro, ret, semear, seta, txt } from "../desenho.mjs";
 
 // 1. Os três padrões lado a lado: mesma View, mesmo Model, muda a peça do meio.
 function comparacao() {
   semear("mvc-mvvm-1");
   let s = "";
-  const Y1 = 96, Y2 = 200, Y3 = 304, H = 54;
+  const Y1 = 96, Y2 = 190, Y3 = 284, H = 54;
   const sep = { cor: cor.cinza, tracejado: true, espessura: 1.2 };
-  s += linha([[253, 14], [253, 418]], sep) + linha([[507, 14], [507, 418]], sep);
+  s += linha([[253, 14], [253, 394]], sep) + linha([[507, 14], [507, 394]], sep);
 
   const titulo = (cx, t, sub) => txt(cx, 22, t, { tam: 24 }) + txt(cx, 48, sub, { tam: 15, cor: cor.cinza });
   const clique = (x) => txt(x, 68, "clique", { tam: 15, cor: cor.laranja }) + seta(x, 78, x, Y1 - 2, { cor: cor.laranja, espessura: 2 });
@@ -32,7 +32,7 @@ function comparacao() {
   s += txt(206, (Y1 + H + Y3) / 2, "altera", { tam: 15 });
   s += seta(100, Y3 - 2, 68, Y1 + H + 2, { espessura: 2, tracejado: true, cor: cor.verde });
   s += txt(46, (Y1 + H + Y3) / 2, "avisa", { tam: 15, cor: cor.verde });
-  s += txt(127, 396, "a View observa o Model\ne se redesenha sozinha", { tam: 15 });
+  s += txt(127, 372, "a View observa o Model\ne se redesenha sozinha", { tam: 15 });
 
   // MVP: cadeia, a View é passiva
   s += titulo(380, "MVP", "view passiva");
@@ -42,7 +42,7 @@ function comparacao() {
   s += model(380);
   s += par(380, Y1 + H, Y2, "evento", "atualiza");
   s += par(380, Y2 + H, Y3, "pede", "dados");
-  s += txt(380, 396, "o Presenter diz à View\no que ela deve mostrar", { tam: 15 });
+  s += txt(380, 372, "o Presenter diz à View\no que ela deve mostrar", { tam: 15 });
 
   // MVVM: cadeia com binding
   s += titulo(633, "MVVM", "data binding");
@@ -53,8 +53,8 @@ function comparacao() {
   s += par(633, Y1 + H, Y2, "comando", "estado", { tracejado: true, cor: cor.violeta });
   s += txt(633, (Y1 + H + Y2) / 2, "binding", { tam: 15, cor: cor.violeta });
   s += par(633, Y2 + H, Y3, "chama", "dados");
-  s += txt(633, 396, "a View se liga ao estado;\no ViewModel nem sabe dela", { tam: 15 });
-  return quadro(760, 422, s);
+  s += txt(633, 372, "a View se liga ao estado;\no ViewModel nem sabe dela", { tam: 15 });
+  return quadro(760, 398, s);
 }
 
 // 2. O MVC dos frameworks web: um ciclo inteiro a cada requisição.
@@ -122,8 +122,7 @@ function borda() {
   s += txt(210, 276, "borda: MVC, MVP ou MVVM", { tam: 15, cor: cor.azul });
   s += linha([[470, 246], [470, 256], [600, 256], [600, 246]], { cor: cor.laranja, espessura: 1.4 });
   s += txt(535, 276, "regras de negócio", { tam: 15, cor: cor.laranja });
-  s += txt(380, 308, "a borda traduz e repassa; quem decide é o núcleo", { tam: 16, cor: cor.vermelho });
-  return quadro(760, 326, s);
+  return quadro(760, 292, s);
 }
 
 export default `
@@ -137,8 +136,8 @@ Smalltalk. A ideia era separar três coisas: o que o programa <b>sabe</b> (Model
 <b>trata a entrada</b> do usuário (Controller). Dele nasceram dois parentes muito usados: o <b>MVP</b> (Model-View-Presenter)
 e o <b>MVVM</b> (Model-View-ViewModel).</p>
 
-<p>Esses padrões não organizam o sistema inteiro: organizam a <b>apresentação</b>, a parte que conversa com o usuário
-(o andar de cima das camadas do capítulo 4). Por isso combinam bem com hexagonal e Clean (capítulos 6 e 7).</p>
+<p>Eles não organizam o sistema inteiro, só a <b>apresentação</b>: a parte que conversa com o usuário (o andar de cima
+das camadas do capítulo 4).</p>
 
 ${fig(comparacao(), "Mesmo Model e mesma View nos três. Muda a peça do meio e o caminho que o clique faz até a tela mudar.", "grande")}
 
@@ -163,10 +162,9 @@ JSON. O Express sozinho não é MVC: você monta o padrão com rotas, controller
 <p>No MVP, a View não fala com o Model. Ela recebe o clique e repassa ao <b>Presenter</b> ("o usuário tocou em salvar").
 O Presenter busca ou altera o Model e depois diz à View exatamente o que mostrar, chamando métodos de uma interface:
 <code>mostrarCarregando()</code>, <code>mostrarErro(msg)</code>. Na variante <i>Passive View</i> (view passiva), a View
-quase não tem lógica, então quase não precisa de teste; na <i>Supervising Controller</i>, ela resolve as ligações simples
-com os dados e o Presenter cuida do resto. Nos dois casos, o Presenter é testado com uma View falsa. O MVP foi muito usado
-onde a ligação automática entre tela e dados (<i>binding</i>) era fraca ou não existia: WinForms no .NET e Android antes
-do Jetpack, quando as Activities viviam gigantes.</p>
+não tem lógica; na <i>Supervising Controller</i>, ela faz as ligações simples com os dados. Em ambas, o Presenter é
+testado com uma View falsa. O MVP brilhou onde a ligação automática entre tela e dados (<i>binding</i>) era fraca ou não
+existia: WinForms no .NET e Android antes do Jetpack, com suas Activities gigantes.</p>
 
 <h4>MVVM: ViewModel e data binding</h4>
 <p>No MVVM, a peça do meio é o <b>ViewModel</b>: um objeto que expõe o <b>estado</b> da tela (a lista de pedidos, se está
@@ -174,10 +172,10 @@ carregando, a mensagem de erro) e <b>comandos</b> (recarregar, cancelar). A View
 binding</b> (ligação de dados): quando o estado muda, a tela se atualiza sozinha. A diferença para o MVP é essa: o
 ViewModel <b>não conhece a View</b>. Ele não chama <code>mostrarErro()</code>; só muda o estado, e quem estiver ligado
 reage.</p>
-<p>O padrão se popularizou com o WPF, da Microsoft, e hoje está em quase todo front moderno. Angular e Vue trazem
-binding pronto (<code>[(ngModel)]</code>, <code>v-model</code>); no Android, a classe <code>ViewModel</code> do Jetpack
-(que sobrevive à rotação da tela) é usada com Compose; em SwiftUI, um objeto observável faz o papel. No Compose e no
-React, a recomendação é a mão única: o estado desce para a tela e os eventos sobem como comandos.</p>
+<p>O padrão se popularizou com o WPF, da Microsoft. Angular e Vue trazem binding pronto (<code>[(ngModel)]</code>,
+<code>v-model</code>); no Android, o <code>ViewModel</code> do Jetpack (que sobrevive à rotação da tela) é usado com
+Compose; em SwiftUI, um objeto observável faz o papel. No Compose e no React, a recomendação é a mão única: o estado
+desce para a tela e os eventos sobem como comandos.</p>
 
 <h4>Onde esses padrões ficam num sistema maior</h4>
 <p>Num sistema real é comum ter os dois: MVVM no front e MVC no back. Com regras de negócio ricas, o controller
@@ -195,17 +193,15 @@ ${quando(
   ],
   [
     "Esperar que o MVC organize o negócio: com regra rica, ponha um núcleo atrás (cap. 6 e 7).",
-    "Componentes pequenos que só mostram dados: um ViewModel para cada botão é cerimônia.",
+    "Componentes que só mostram dados: ViewModel para cada botão é cerimônia.",
     "Forçar MVP em React, Compose ou SwiftUI: você briga com o framework.",
     "Binding de duas vias em telas enormes: ninguém sabe quem mudou o quê.",
   ],
 )}
 
-${medidor({ complexidade: 1, escala: 3, operacao: 1, aprendizado: 2, time: "qualquer tamanho; com muitos devs no mesmo app, divida em módulos (cap. 12)" })}
+${medidor({ complexidade: 1, escala: 3, operacao: 1, aprendizado: 2, time: "qualquer tamanho; com muitos devs, divida em módulos (cap. 12)" })}
 
 <h3>Como usar na prática</h3>
-
-<p>O exemplo abaixo tem os dois lados de uma loja: o back em Express (MVC) e o front em React (MVVM).</p>
 
 ${pastas(`
 api/                                 # back: MVC na web (Express)
@@ -218,7 +214,7 @@ web/src/pedidos/                     # front: MVVM (React)
 ├── usePedidos.ts                    # ViewModel: estado + comandos
 ├── PedidosTela.tsx                  # View: só desenha
 └── pedidosApi.ts                    # Model do front: fala com a API
-`)}
+`, "uma loja: back em Express (MVC), front em React (MVVM)")}
 
 ${codigo(
   `
@@ -246,25 +242,6 @@ const pedidos = new PedidosController(buscarPedido, cancelarPedido);
 app.get("/pedidos/:id", pedidos.mostrar);
 app.post("/pedidos/:id/cancelar", pedidos.cancelarPedido);`,
   "api/src/pedidos: pedidos.controller.ts e rotas.ts",
-)}
-
-${codigo(
-  `
-// PedidosTela.tsx: a View só desenha o estado e repassa os cliques
-import { usePedidos } from "./usePedidos";
-
-export function PedidosTela() {
-  const { estado, recarregar, cancelar } = usePedidos();
-  if (estado.tipo === "carregando") return <p>Carregando...</p>;
-  if (estado.tipo === "erro")
-    return <p>{estado.mensagem} <button onClick={recarregar}>Tentar de novo</button></p>;
-  return <ul>{estado.pedidos.map((p) => (
-    <li key={p.id}>
-      Pedido {p.numero}: {p.status} <button onClick={() => cancelar(p.id)}>Cancelar</button>
-    </li>
-  ))}</ul>;
-}`,
-  "web/src/pedidos/PedidosTela.tsx",
 )}
 
 ${codigo(
@@ -298,14 +275,32 @@ export function usePedidos() {
   "web/src/pedidos/usePedidos.ts",
 )}
 
+${codigo(
+  `
+// PedidosTela.tsx: a View só desenha o estado e repassa os cliques
+import { usePedidos } from "./usePedidos";
+export function PedidosTela() {
+  const { estado, recarregar, cancelar } = usePedidos();
+  if (estado.tipo === "carregando") return <p>Carregando...</p>;
+  if (estado.tipo === "erro")
+    return <p>{estado.mensagem} <button onClick={recarregar}>Tentar de novo</button></p>;
+  return <ul>{estado.pedidos.map((p) => (
+    <li key={p.id}>
+      Pedido {p.numero}: {p.status} <button onClick={() => cancelar(p.id)}>Cancelar</button>
+    </li>
+  ))}</ul>;
+}`,
+  "web/src/pedidos/PedidosTela.tsx",
+)}
+
 <p>O React não impõe MVVM: aqui o hook customizado faz o papel de ViewModel. Repare que ele não sabe como a tela é:
 amanhã ela pode virar uma tabela, ou ir para o React Native, e o hook não muda. Em MVP seria o contrário: a View implementaria uma interface (<code>TelaDePedidos</code>) e o Presenter chamaria
 <code>tela.mostrarPedidos(lista)</code> ou <code>tela.mostrarErro(msg)</code>.</p>
 
 <h4>Passo a passo para adotar</h4>
 ${passos([
-  "Siga a convenção do seu framework. Rails, Laravel e Spring MVC já trazem pastas e nomes; no Express ou Fastify, crie um controller por recurso (<code>PedidosController</code>) e registre as rotas num só lugar.",
-  "Deixe o controller magro: ler parâmetros, validar o formato, chamar <b>um</b> caso de uso ou serviço e escolher a resposta (View, JSON ou status). Regra de bolso: se um método passa de umas 20 linhas, alguma regra fugiu para ele.",
+  "Siga a convenção do framework (Rails, Laravel e Spring MVC já trazem pastas e nomes). No Express ou Fastify, crie um controller por recurso e registre as rotas num só lugar.",
+  "Deixe o controller magro: ler parâmetros, validar o formato, chamar <b>um</b> caso de uso e escolher a resposta (View, JSON ou status). Método longo é sinal de regra fugida.",
   "Ponha as regras no Model ou, em sistemas maiores, no núcleo (capítulos 6 e 7). Nada de desconto calculado no controller nem <code>if</code> de negócio no template.",
   "No front, crie um ViewModel por tela (um hook, um composable, uma classe <code>ViewModel</code>) que expõe estado e comandos com nomes do usuário: <code>cancelar</code>, <code>recarregar</code>.",
   "Modele o estado como um tipo com todos os casos (carregando, erro, pronto). Assim a View não fica com cinco <code>booleans</code> que se contradizem.",
@@ -316,10 +311,10 @@ ${passos([
 ${tabela(
   ["Você ganha", "Você paga"],
   [
-    ["Tela, entrada e regra separadas: mudar o visual não quebra a regra", "Mais arquivos e mais pulos para seguir um fluxo simples"],
-    ["Frameworks prontos já organizam assim: quem chega se acha rápido", "O framework decide muito; sair da convenção dele custa caro"],
-    ["Presenter e ViewModel testáveis sem desenhar nenhuma tela", "Binding automático pode esconder bugs e dificultar a depuração"],
-    ["Várias Views para o mesmo Model (site, app, relatório em PDF)", "Sozinho, não organiza o negócio: controller e model incham"],
+    ["Mudar o visual não quebra a regra", "Mais arquivos e pulos num fluxo simples"],
+    ["Quem chega se acha rápido: o framework já organiza", "Sair da convenção do framework custa caro"],
+    ["Presenter e ViewModel testáveis sem tela", "Binding automático pode esconder bugs"],
+    ["Várias Views para o mesmo Model (site, app, PDF)", "Sozinho não organiza o negócio: tudo incha"],
   ],
 )}
 
@@ -335,6 +330,9 @@ vai para o Model, e a View só mostra <code>pedido.freteGratis</code>.</li>
 <li><b>ViewModel que conhece a tela</b>: importa componentes, mexe no DOM ou navega direto. No Android, guardar uma
 Activity ou uma View dentro do ViewModel ainda vaza memória, porque ele vive mais que a tela. Ele expõe estado e
 comandos; quem decide como desenhar é a View.</li>
+<li><b>Model que é só a tabela</b>: o model vira a classe do ORM com campos, e a regra vai para o controller ou a View.
+O extremo oposto também dói: "skinny controller, fat model" (lema famoso na comunidade Rails) levado longe demais cria
+um <code>Usuario</code> que faz tudo. Com regra rica, o Model vira o núcleo do capítulo 6.</li>
 </ul>
 
 ${pratica(
@@ -347,18 +345,13 @@ ${dica(
   "<p>O Django fala em <b>MTV</b> (Model, Template, View): o que ele chama de <i>view</i> faz o papel do controller, e o <i>template</i> é a View. No UIKit da Apple, o controller fica no meio, entre View e Model, bem parecido com um Presenter. E você vai ouvir falar de <b>MVI</b> (Model-View-Intent) e de Redux: variações de mão única, com um único objeto de estado. Não brigue com os nomes. Pergunte: quem recebe a entrada, quem guarda a regra e quem desenha?</p>",
 )}
 
-${alerta(
-  "Model não é a tabela do banco",
-  "<p>No MVC, o Model é tudo o que a aplicação sabe e decide: regras, validações de negócio, cálculos. Se o seu model é só a classe do ORM com campos, a regra vai parar no controller ou na View. O extremo oposto também dói: o lema \"skinny controller, fat model\" (controller magro, model gordo), famoso na comunidade Rails, levado longe demais cria um <code>Usuario</code> que faz tudo. Com regra rica, o Model vira o núcleo do capítulo 6, dividido em casos de uso e entidades.</p>",
-)}
-
 ${combina([
-  [4, "Camadas", "MVC é a camada de apresentação"],
-  [6, "Hexagonal", "o controller vira um adaptador de entrada"],
-  [7, "Clean Architecture e Onion", "controllers e presenters no anel de fora"],
-  [12, "Monólito modular", "um MVC por módulo, como no Shopify"],
-  [16, "Micro-frontends", "cada pedaço do front com seus ViewModels"],
-  [18, "Cliente-servidor", "MVVM no cliente, MVC no servidor"],
+  [4, "Camadas", "MVC é a apresentação"],
+  [6, "Hexagonal", "controller como adaptador"],
+  [7, "Clean e Onion", "controllers no anel de fora"],
+  [12, "Monólito modular", "um MVC por módulo"],
+  [16, "Micro-frontends", "ViewModels em cada pedaço"],
+  [18, "Cliente-servidor", "MVVM no front, MVC no back"],
 ])}
 
 ${lembre([
