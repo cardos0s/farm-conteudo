@@ -373,7 +373,7 @@ mandando, não contando. Publique <code>ClienteCadastrado</code> e deixe o servi
 <li><b>Mensagem envenenada</b> (<i>poison message</i>): um evento com defeito falha sempre, volta para a fila e trava todo o
 resto. Limite as tentativas e mande para a DLQ.</li>
 <li><b>Pedir resposta por evento</b>: publicar <code>ConsultarSaldo</code> e esperar a resposta numa fila de retorno
-costuma ser uma chamada síncrona disfarçada e mais frágil. Precisa da resposta agora? Chame a API (capítulo 18).</li>
+costuma ser uma chamada síncrona disfarçada. Precisa da resposta agora? Chame a API (capítulo 18).</li>
 <li><b>Evento que espelha a tabela</b>: um <code>PedidoAtualizado</code> com todas as colunas amarra os consumidores ao
 seu banco. Publique o fato do negócio, com os dados que importam.</li>
 <li><b>Fliperama de eventos</b>: A publica, B reage e publica, C reage e publica... ninguém sabe mais explicar o fluxo.
@@ -382,7 +382,7 @@ Quando a cadeia passa de três ou quatro saltos e tem regras de falha, troque po
 
 ${pratica(
   "No mundo real",
-  "<p>Imagine um app de delivery. Quando o restaurante aceita o pedido, Pedidos publica <code>PedidoAceito</code> e cinco consumidores reagem: push para o cliente, busca de entregador, previsão de entrega, painel do restaurante e analytics. Numa sexta à noite, o serviço de push cai por dez minutos. Com chamadas em sequência, o restaurante não conseguiria aceitar pedidos. Com eventos, as mensagens esperam no broker e são processadas quando o push volta: o cliente é avisado um pouco depois, e nenhum pedido se perde.</p>",
+  "<p>Imagine um app de delivery. Quando o restaurante aceita o pedido, Pedidos publica <code>PedidoAceito</code> e cinco consumidores reagem: push para o cliente, busca de entregador, previsão de entrega, painel do restaurante e analytics. Numa sexta à noite, o serviço de push cai por dez minutos. Com chamadas em sequência, o restaurante não conseguiria aceitar pedidos. Com eventos, as mensagens esperam no broker e são processadas quando o push volta: o cliente é avisado depois e nenhum pedido se perde.</p>",
 )}
 
 ${dica(
@@ -396,12 +396,12 @@ ${alerta(
 )}
 
 ${combina([
-  [14, "Microsserviços", "o jeito padrão de serviços conversarem sem se acoplar"],
-  [23, "Sagas", "transações longas por coreografia ou orquestração"],
-  [12, "Monólito modular", "eventos internos entre módulos"],
-  [21, "CQRS", "eventos atualizam os modelos de leitura"],
-  [22, "Event Sourcing", "os mesmos eventos que guardam o estado podem ser publicados"],
-  [15, "Serverless", "funções disparadas por filas e tópicos"],
+  [14, "Microsserviços", "comunicação assíncrona"],
+  [23, "Sagas", "transações longas entre serviços"],
+  [12, "Monólito modular", "eventos entre módulos"],
+  [21, "CQRS", "eventos atualizam a leitura"],
+  [22, "Event Sourcing", "eventos guardam o estado"],
+  [15, "Serverless", "funções disparadas por filas"],
 ])}
 
 ${lembre([

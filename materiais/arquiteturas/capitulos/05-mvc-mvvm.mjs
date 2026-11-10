@@ -82,7 +82,7 @@ function cicloWeb() {
   s += seta(72, 222, 72, 132, { espessura: 2, cor: cor.azul });
   s += txt(185, 206, "5. HTML pronto", { tam: 15, cor: cor.azul });
   s += txt(380, 296, "a cada requisição o ciclo recomeça: ninguém fica observando o Model", { tam: 15, cor: cor.vermelho });
-  return quadro(760, 316, s);
+  return quadro(760, 292, `<g transform="translate(0,-18)">${s}</g>`);
 }
 
 // 3. Onde esses padrões ficam num sistema maior: na borda, em volta do núcleo.
@@ -162,10 +162,11 @@ JSON. O Express sozinho não é MVC: você monta o padrão com rotas, controller
 <h4>MVP: a View passiva</h4>
 <p>No MVP, a View não fala com o Model. Ela recebe o clique e repassa ao <b>Presenter</b> ("o usuário tocou em salvar").
 O Presenter busca ou altera o Model e depois diz à View exatamente o que mostrar, chamando métodos de uma interface:
-<code>mostrarCarregando()</code>, <code>mostrarErro(msg)</code>. Na variante mais comum (<i>Passive View</i>), a View quase
-não tem lógica, então quase não precisa de teste. O Presenter é testado com uma View falsa. O MVP foi muito usado onde
-a tela não tem <i>binding</i> automático: WinForms no .NET e Android antes do Jetpack, quando as Activities viviam
-gigantes.</p>
+<code>mostrarCarregando()</code>, <code>mostrarErro(msg)</code>. Na variante <i>Passive View</i> (view passiva), a View
+quase não tem lógica, então quase não precisa de teste; na <i>Supervising Controller</i>, ela resolve as ligações simples
+com os dados e o Presenter cuida do resto. Nos dois casos, o Presenter é testado com uma View falsa. O MVP foi muito usado
+onde a ligação automática entre tela e dados (<i>binding</i>) era fraca ou não existia: WinForms no .NET e Android antes
+do Jetpack, quando as Activities viviam gigantes.</p>
 
 <h4>MVVM: ViewModel e data binding</h4>
 <p>No MVVM, a peça do meio é o <b>ViewModel</b>: um objeto que expõe o <b>estado</b> da tela (a lista de pedidos, se está
@@ -173,10 +174,10 @@ carregando, a mensagem de erro) e <b>comandos</b> (recarregar, cancelar). A View
 binding</b> (ligação de dados): quando o estado muda, a tela se atualiza sozinha. A diferença para o MVP é essa: o
 ViewModel <b>não conhece a View</b>. Ele não chama <code>mostrarErro()</code>; só muda o estado, e quem estiver ligado
 reage.</p>
-<p>O padrão nasceu no mundo Microsoft, com o WPF, e hoje está em quase todo front moderno. Angular e Vue trazem binding
-pronto (<code>[(ngModel)]</code>, <code>v-model</code>); no Android, a classe <code>ViewModel</code> do Jetpack (que
-sobrevive à rotação da tela) é usada com Compose; em SwiftUI, um objeto observável faz o papel. Nesses frameworks
-declarativos (e no React) o comum é a mão única: o estado desce para a tela e os eventos sobem como comandos.</p>
+<p>O padrão se popularizou com o WPF, da Microsoft, e hoje está em quase todo front moderno. Angular e Vue trazem
+binding pronto (<code>[(ngModel)]</code>, <code>v-model</code>); no Android, a classe <code>ViewModel</code> do Jetpack
+(que sobrevive à rotação da tela) é usada com Compose; em SwiftUI, um objeto observável faz o papel. No Compose e no
+React, a recomendação é a mão única: o estado desce para a tela e os eventos sobem como comandos.</p>
 
 <h4>Onde esses padrões ficam num sistema maior</h4>
 <p>Num sistema real é comum ter os dois: MVVM no front e MVC no back. Com regras de negócio ricas, o controller
@@ -200,7 +201,7 @@ ${quando(
   ],
 )}
 
-${medidor({ complexidade: 1, escala: 3, operacao: 1, aprendizado: 2, time: "qualquer tamanho; com muitos devs no mesmo app, some módulos (cap. 12)" })}
+${medidor({ complexidade: 1, escala: 3, operacao: 1, aprendizado: 2, time: "qualquer tamanho; com muitos devs no mesmo app, divida em módulos (cap. 12)" })}
 
 <h3>Como usar na prática</h3>
 
@@ -208,15 +209,15 @@ ${medidor({ complexidade: 1, escala: 3, operacao: 1, aprendizado: 2, time: "qual
 
 ${pastas(`
 api/                                 # back: MVC na web (Express)
+├── views/pedidos/mostrar.ejs        # V: o template que vira HTML
 └── src/pedidos/
     ├── pedidos.controller.ts        # C: traduz HTTP, chama o caso de uso
-    ├── views/mostrar.ejs            # V: monta o HTML
+    ├── rotas.ts                     # liga cada URL a uma ação
     └── nucleo/                      # M: casos de uso e regras (cap. 6)
-web/                                 # front: MVVM (React)
-└── src/pedidos/
-    ├── usePedidos.ts                # ViewModel: estado + comandos
-    ├── PedidosTela.tsx              # View: só desenha
-    └── pedidosApi.ts                # Model do front: fala com a API
+web/src/pedidos/                     # front: MVVM (React)
+├── usePedidos.ts                    # ViewModel: estado + comandos
+├── PedidosTela.tsx                  # View: só desenha
+└── pedidosApi.ts                    # Model do front: fala com a API
 `)}
 
 ${codigo(
@@ -244,7 +245,7 @@ export class PedidosController {
 const pedidos = new PedidosController(buscarPedido, cancelarPedido);
 app.get("/pedidos/:id", pedidos.mostrar);
 app.post("/pedidos/:id/cancelar", pedidos.cancelarPedido);`,
-  "api/src/pedidos/pedidos.controller.ts",
+  "api/src/pedidos: pedidos.controller.ts e rotas.ts",
 )}
 
 ${codigo(
@@ -256,7 +257,7 @@ export function PedidosTela() {
   const { estado, recarregar, cancelar } = usePedidos();
   if (estado.tipo === "carregando") return <p>Carregando...</p>;
   if (estado.tipo === "erro")
-    return <button onClick={recarregar}>{estado.mensagem} Tentar de novo</button>;
+    return <p>{estado.mensagem} <button onClick={recarregar}>Tentar de novo</button></p>;
   return <ul>{estado.pedidos.map((p) => (
     <li key={p.id}>
       Pedido {p.numero}: {p.status} <button onClick={() => cancelar(p.id)}>Cancelar</button>
@@ -297,8 +298,8 @@ export function usePedidos() {
   "web/src/pedidos/usePedidos.ts",
 )}
 
-<p>Repare que o hook não sabe como a tela é: amanhã ela pode virar uma tabela ou um app nativo, e o ViewModel não
-muda. Em MVP seria o contrário: a View implementaria uma interface (<code>TelaDePedidos</code>) e o Presenter chamaria
+<p>O React não impõe MVVM: aqui o hook customizado faz o papel de ViewModel. Repare que ele não sabe como a tela é:
+amanhã ela pode virar uma tabela, ou ir para o React Native, e o hook não muda. Em MVP seria o contrário: a View implementaria uma interface (<code>TelaDePedidos</code>) e o Presenter chamaria
 <code>tela.mostrarPedidos(lista)</code> ou <code>tela.mostrarErro(msg)</code>.</p>
 
 <h4>Passo a passo para adotar</h4>
@@ -331,7 +332,8 @@ desenho. O apelido brinca com a própria sigla MVC. No Android antigo, o mesmo a
 tirar a lógica para um ViewModel ou Presenter.</li>
 <li><b>Regra na View</b>: o template decide "se o cliente é VIP e o pedido passa de R$ 200, o frete é grátis". A regra
 vai para o Model, e a View só mostra <code>pedido.freteGratis</code>.</li>
-<li><b>ViewModel que conhece a tela</b>: importa componentes, mexe no DOM ou navega direto. Ele expõe estado e
+<li><b>ViewModel que conhece a tela</b>: importa componentes, mexe no DOM ou navega direto. No Android, guardar uma
+Activity ou uma View dentro do ViewModel ainda vaza memória, porque ele vive mais que a tela. Ele expõe estado e
 comandos; quem decide como desenhar é a View.</li>
 </ul>
 
@@ -347,7 +349,7 @@ ${dica(
 
 ${alerta(
   "Model não é a tabela do banco",
-  "<p>No MVC, o Model é tudo o que a aplicação sabe e decide: regras, validações de negócio, cálculos. Se o seu model é só a classe do ORM com campos, a regra vai parar no controller (fat controller) ou na View. O extremo oposto também dói: o lema do Rails \"skinny controller, fat model\" (controller magro, model gordo) levado longe demais cria um <code>Usuario</code> que faz tudo. Em sistemas com regra rica, o Model vira o núcleo do capítulo 6, dividido em casos de uso e entidades.</p>",
+  "<p>No MVC, o Model é tudo o que a aplicação sabe e decide: regras, validações de negócio, cálculos. Se o seu model é só a classe do ORM com campos, a regra vai parar no controller ou na View. O extremo oposto também dói: o lema \"skinny controller, fat model\" (controller magro, model gordo), famoso na comunidade Rails, levado longe demais cria um <code>Usuario</code> que faz tudo. Com regra rica, o Model vira o núcleo do capítulo 6, dividido em casos de uso e entidades.</p>",
 )}
 
 ${combina([

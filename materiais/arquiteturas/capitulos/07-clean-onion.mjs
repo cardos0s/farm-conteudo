@@ -9,12 +9,12 @@ import { banco, bloco, claro, cor, elipse, linha, navegador, passo, quadro, ret,
 function aneis() {
   semear("clean-onion-1");
   let s = "";
-  const cx = 380, cy = 214;
+  const cx = 380, cy = 194;
   const camadas = [
-    [740, 408, claro.azul],
-    [570, 306, claro.verde],
-    [400, 204, claro.vermelho],
-    [220, 102, claro.amarelo],
+    [740, 368, claro.azul],
+    [570, 276, claro.verde],
+    [400, 184, claro.vermelho],
+    [220, 92, claro.amarelo],
   ];
   for (const [w, h, c] of camadas) {
     s += elipse(cx, cy, w, h, { preench: "#ffffff", hachura: "solid", cor: "#ffffff", espessura: 1 });
@@ -22,19 +22,19 @@ function aneis() {
   }
   const nome = (y, t, tam = 17) => txt(cx, y, t, { tam, halo: 6 });
   const ex = (y, t) => txt(cx, y, t, { tam: 15, cor: cor.cinza, halo: 6 });
-  s += nome(36, "Frameworks e drivers");
-  s += nome(87, "Adaptadores de interface");
-  s += nome(138, "Casos de uso");
-  s += nome(203, "Entidades", 19);
-  s += ex(229, "Pedido, Cliente");
-  s += ex(290, "ex.: CriarPedido");
-  s += ex(341, "controllers, presenters");
-  s += ex(392, "Express, Postgres, React");
+  s += nome(33, "Frameworks e drivers");
+  s += nome(79, "Adaptadores de interface");
+  s += nome(125, "Casos de uso");
+  s += nome(183, "Entidades", 19);
+  s += ex(207, "Pedido, Cliente");
+  s += ex(263, "ex.: CriarPedido");
+  s += ex(309, "controllers, presenters");
+  s += ex(355, "Express, Postgres, React");
   // a regra de dependência: de fora para dentro
   s += seta(24, cy, 264, cy, { cor: cor.vermelho, espessura: 2.6, ponta: 15 });
   s += seta(736, cy, 496, cy, { cor: cor.vermelho, espessura: 2.6, ponta: 15 });
-  s += txt(cx, 440, "o código só pode depender de quem está mais para dentro", { tam: 16, cor: cor.vermelho });
-  return quadro(760, 456, s);
+  s += txt(cx, 400, "o código só pode depender de quem está mais para dentro", { tam: 16, cor: cor.vermelho });
+  return quadro(760, 414, s);
 }
 
 /** O caminho de uma requisição: controller → input port → interactor → output port → presenter. */
@@ -45,44 +45,44 @@ function fluxo() {
   s += txt(85, 22, "frameworks", { tam: 16, cor: cor.azul });
   s += txt(295, 22, "adaptadores", { tam: 16, cor: cor.verde });
   s += txt(590, 22, "casos de uso", { tam: 16, cor: cor.vermelho });
-  s += linha([[175, 40], [175, 338]], { tracejado: true, cor: cor.cinza, espessura: 1.4 });
-  s += linha([[420, 40], [420, 338]], { tracejado: true, cor: cor.cinza, espessura: 1.4 });
+  s += linha([[175, 40], [175, 310]], { tracejado: true, cor: cor.cinza, espessura: 1.4 });
+  s += linha([[420, 40], [420, 310]], { tracejado: true, cor: cor.cinza, espessura: 1.4 });
   // interface = caixa branca tracejada
   const interfaceBox = (x, y, w, h, nome) =>
     ret(x, y, w, h, { preench: "#ffffff", hachura: "solid", tracejado: true, espessura: 2 }) + txt(x + w / 2, y + h / 2, nome, { tam: 16 });
   // linha de cima: a requisição entra
-  s += navegador(20, 62, 130, 76, "POST /pedidos");
-  s += bloco(200, 72, 190, 56, "Controller", { preench: claro.verde });
-  s += txt(590, 56, "(interface)", { tam: 15, cor: cor.cinza });
-  s += interfaceBox(450, 72, 280, 56, "CriarPedidoInputPort");
+  s += navegador(20, 56, 130, 70, "POST /pedidos");
+  s += bloco(200, 64, 190, 52, "Controller", { preench: claro.verde });
+  s += txt(590, 50, "(interface)", { tam: 15, cor: cor.cinza });
+  s += interfaceBox(450, 64, 280, 52, "CriarPedidoInputPort");
   // meio: o caso de uso
-  s += bloco(450, 172, 280, 56, "CriarPedido (interactor)", { preench: claro.vermelho, tam: 16 });
+  s += bloco(450, 150, 280, 52, "CriarPedido (interactor)", { preench: claro.vermelho, tam: 16 });
   // linha de baixo: a resposta sai
-  s += navegador(20, 252, 130, 76, "JSON");
-  s += bloco(200, 262, 190, 56, "Presenter", { preench: claro.verde });
-  s += txt(590, 246, "(interface)", { tam: 15, cor: cor.cinza });
-  s += interfaceBox(450, 262, 280, 56, "CriarPedidoOutputPort");
+  s += navegador(20, 232, 130, 70, "JSON");
+  s += bloco(200, 240, 190, 52, "Presenter", { preench: claro.verde });
+  s += txt(590, 226, "(interface)", { tam: 15, cor: cor.cinza });
+  s += interfaceBox(450, 240, 280, 52, "CriarPedidoOutputPort");
   // dependências: todas para a direita (para dentro)
-  s += seta(152, 100, 198, 100, { espessura: 2 });
-  s += seta(392, 100, 448, 100, { espessura: 2 });
-  s += seta(520, 170, 520, 131, { espessura: 2, tracejado: true });
-  s += seta(660, 230, 660, 260, { espessura: 2 });
-  s += seta(152, 290, 198, 290, { espessura: 2 });
-  s += seta(392, 290, 448, 290, { espessura: 2, tracejado: true });
+  s += seta(152, 90, 198, 90, { espessura: 2 });
+  s += seta(392, 90, 448, 90, { espessura: 2 });
+  s += seta(520, 148, 520, 119, { espessura: 2, tracejado: true });
+  s += seta(660, 204, 660, 237, { espessura: 2 });
+  s += seta(152, 266, 198, 266, { espessura: 2 });
+  s += seta(392, 266, 448, 266, { espessura: 2, tracejado: true });
   // ordem da requisição
-  s += passo(175, 74, "1");
-  s += passo(420, 74, "2");
-  s += passo(420, 316, "3");
-  s += passo(175, 316, "4");
+  s += passo(175, 66, "1");
+  s += passo(420, 66, "2");
+  s += passo(420, 292, "3");
+  s += passo(175, 292, "4");
   // legenda
-  s += seta(20, 370, 70, 370, { espessura: 2 });
-  s += txt(80, 371, "chama / usa", { tam: 15, ancora: "start" });
-  s += seta(220, 370, 270, 370, { espessura: 2, tracejado: true });
-  s += txt(280, 371, "implementa", { tam: 15, ancora: "start" });
-  s += passo(420, 370, "1");
-  s += txt(440, 371, "ordem da requisição (vai e volta)", { tam: 15, ancora: "start" });
-  s += txt(380, 404, "toda seta que cruza uma fronteira aponta para dentro", { tam: 16, cor: cor.vermelho });
-  return quadro(760, 418, s);
+  s += seta(20, 342, 70, 342, { espessura: 2 });
+  s += txt(80, 343, "chama / usa", { tam: 15, ancora: "start" });
+  s += seta(220, 342, 270, 342, { espessura: 2, tracejado: true });
+  s += txt(280, 343, "implementa", { tam: 15, ancora: "start" });
+  s += passo(420, 342, "1");
+  s += txt(440, 343, "ordem da requisição (vai e volta)", { tam: 15, ancora: "start" });
+  s += txt(380, 376, "toda seta que cruza uma fronteira aponta para dentro", { tam: 16, cor: cor.vermelho });
+  return quadro(760, 392, s);
 }
 
 /** Camadas x Clean/Onion: a seta entre negócio e dados vira de lado. */
@@ -189,11 +189,11 @@ ${tabela(
     ["<b>Hexagonal</b> (cap. 6)", "fora, atrás de uma porta", "entradas e saídas; não divide o núcleo"],
     ["<b>Onion</b>", "na casca externa", "o modelo de domínio no centro, em anéis"],
     ["<b>Clean</b>", "na borda, atrás de gateways", "casos de uso explícitos, presenter e DTOs nas fronteiras"],
-  ],
+  ],  "compacta",
 )}
 
 <p>Em uma linha: Clean e Onion são a hexagonal com o núcleo dividido em anéis com nome, e as três são as camadas com a
-dependência do banco invertida. Um projeto bem feito em qualquer uma delas fica muito parecido.</p>
+dependência do banco invertida.</p>
 
 ${quando(
   [
@@ -402,8 +402,8 @@ ${combina([
 ])}
 
 ${lembre([
-  "Anéis do mais estável (entidades) ao mais técnico (frameworks e drivers); o código só depende de anéis mais internos.",
-  "Inversão de dependência: o centro declara interfaces e a borda as implementa. O fluxo vai e volta; a dependência só entra.",
-  "Clean, Onion e hexagonal são a mesma ideia com nomes diferentes; use tantos anéis quanto a regra de negócio justificar.",
+  "Anéis do mais estável (entidades) ao mais técnico (frameworks); o código só depende de anéis mais internos.",
+  "O centro declara interfaces e a borda as implementa: o fluxo vai e volta, a dependência só entra.",
+  "Clean, Onion e hexagonal são a mesma ideia; use tantos anéis quanto a regra de negócio justificar.",
 ])}
 `;

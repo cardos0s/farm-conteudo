@@ -3,7 +3,7 @@
 // uma escolha de cada família, o espectro monólito → serverless, a tabela de todas as arquiteturas
 // (capítulos 4 a 26), como ler o medidor e um roteiro de leitura.
 
-import { alerta, codigo, combina, dica, fig, lembre, medidor, passos, pratica, resumo, tabela } from "../componentes.mjs";
+import { alerta, combina, dica, fig, lembre, medidor, passos, pratica, resumo, tabela } from "../componentes.mjs";
 import { banco, bloco, caminho, claro, cor, engrenagem, etiqueta, fila, linha, nuvem, passo, quadro, ret, semear, seta, txt } from "../desenho.mjs";
 
 /** Hexágono achatado (o mesmo desenho do capítulo 6). */
@@ -109,9 +109,11 @@ function umDeCada() {
   s += seta(130, y1, 130, y2, { cor: cor.laranja, espessura: 2 });
   s += txt(142, 202, "PedidoCriado", { tam: 15, cor: cor.laranja, ancora: "start" });
   s += seta(345, y2, 345, y1, { cor: cor.laranja, espessura: 2 });
+  s += txt(333, 202, "ouve", { tam: 15, cor: cor.cinza, ancora: "end" });
   s += seta(415, y1, 415, y2, { cor: cor.laranja, espessura: 2 });
   s += txt(427, 202, "PagamentoAprovado", { tam: 15, cor: cor.laranja, ancora: "start" });
   s += seta(640, y2, 640, y1, { cor: cor.laranja, espessura: 2 });
+  s += txt(652, 202, "ouve", { tam: 15, cor: cor.cinza, ancora: "start" });
   s += fila(30, 232, 700, 34, "fila / broker de eventos");
   // legenda: cada cor é uma família
   s += etiqueta(130, 322, "por fora: microsserviços", { preench: claro.verde, tam: 15 });
@@ -168,12 +170,10 @@ function espectro() {
   return quadro(760, 308, s);
 }
 
-const D = "Por dentro", F = "Por fora", C = "Comunicação";
-
 export default `
 ${resumo(
   "Existem dezenas de arquiteturas, mas elas respondem a só <b>três perguntas</b>: como organizar o código por dentro, em quantas partes o sistema vai para o ar e como essas partes conversam e guardam dados. Todo sistema real tem uma resposta para cada uma.",
-  "Abrir um restaurante pede três decisões: como organizar a cozinha (estações de trabalho), quantas unidades abrir (uma casa grande ou várias filiais) e como os pedidos circulam (comanda de papel, tela na cozinha, entregador). Ninguém pergunta \"estações ou filiais?\": são perguntas diferentes, e todo restaurante responde as três.",
+  "Abrir um restaurante pede três decisões: como organizar a cozinha (estações de trabalho), quantas unidades abrir (uma casa grande ou várias filiais) e como os pedidos circulam (comanda de papel, tela na cozinha, entregador). Ninguém pergunta \"estações ou filiais?\": são perguntas diferentes, e todo restaurante responde às três.",
 )}
 
 <p>Listas na internet costumam colocar lado a lado "camadas, microsserviços, eventos, hexagonal, serverless", como se fossem
@@ -232,7 +232,7 @@ cadastro, fica em camadas; pagamentos, cheio de regra, ganha hexagonal. O capít
 
 ${pratica(
   "No mundo real",
-  "<p>Casos públicos mostram combinações bem diferentes. A <b>Shopify</b> manteve seu grande monólito Rails e o organizou em módulos com fronteiras vigiadas pela ferramenta Packwerk: por fora, monólito modular (capítulo 12). A <b>Netflix</b> é conhecida pelos microsserviços, e o time de estúdio contou num artigo de 2020 que adotou hexagonal dentro dos seus apps: microsserviços por fora, hexagonal por dentro. E o <b>WhatsApp</b> é conhecido por usar Erlang, linguagem feita de processos isolados que só trocam mensagens, a ideia do modelo de atores (capítulo 25).</p>",
+  "<p>Casos públicos mostram combinações bem diferentes. A <b>Shopify</b> manteve seu grande monólito Rails e o organizou em módulos com fronteiras vigiadas pela ferramenta Packwerk: por fora, monólito modular (capítulo 12). A <b>Netflix</b> é conhecida pelos microsserviços, e o time de estúdio contou num artigo de 2020 que adotou hexagonal dentro dos seus apps: microsserviços por fora, hexagonal por dentro. E o <b>WhatsApp</b> é conhecido por usar Erlang, linguagem em que o programa é feito de processos isolados que só trocam mensagens: a ideia do modelo de atores (capítulo 25).</p>",
 )}
 
 <h3>O espectro: do monólito ao serverless</h3>
@@ -253,38 +253,55 @@ funções serverless é comum) e até voltar uma casa. A maioria dos sistemas vi
 
 ${dica(
   "E SOA, micro-frontends e células?",
-  "<p>As outras três da parte III não são pontos dessa linha. <b>SOA</b> (capítulo 13) é a antecessora dos microsserviços: serviços maiores, feitos para reuso entre sistemas da empresa e muitas vezes ligados por um barramento central (ESB). <b>Micro-frontends</b> (16) levam a divisão por times para a interface. <b>Células</b> (17) são cópias isoladas do conjunto inteiro, cada uma com uma parte dos clientes: se uma cai, as outras seguem.</p>",
+  "<p>As outras três da parte III não são pontos dessa linha; elas se combinam com ela. <b>SOA</b> (capítulo 13) é a antecessora dos microsserviços: serviços maiores, feitos para reuso entre sistemas da empresa e muitas vezes ligados por um barramento central (ESB). <b>Micro-frontends</b> (16) levam a divisão por times para a interface. <b>Células</b> (17) são cópias isoladas do conjunto inteiro, cada uma com uma parte dos clientes: se uma cai, as outras seguem.</p>",
 )}
 
 <h3>Todas as arquiteturas do livro</h3>
-<p>O índice do mapa, para consultar quando um nome aparecer numa conversa ("Comunicação" = comunicação e dados).</p>
+<p>O índice do mapa, para consultar quando um nome aparecer numa conversa.</p>
 
+<h4>O código por dentro (parte II)</h4>
 ${tabela(
-  ["Arquitetura", "Família", "O que é, em uma linha", "Cap."],
+  ["Arquitetura", "O que é, em uma linha", "Cap."],
   [
-    ["<b>Camadas</b>", D, "Código empilhado: tela, negócio e dados.", "4"],
-    ["<b>MVC, MVP e MVVM</b>", D, "Separam tela, dados e a lógica que liga os dois.", "5"],
-    ["<b>Hexagonal</b>", D, "Núcleo com portas; banco e HTTP viram adaptadores.", "6"],
-    ["<b>Clean e Onion</b>", D, "Domínio no centro dos anéis; dependências para dentro.", "7"],
-    ["<b>Vertical Slice</b>", D, "Código por funcionalidade, não por camada técnica.", "8"],
-    ["<b>Microkernel</b>", D, "Núcleo pequeno; o resto entra como plugin (VS Code).", "9"],
-    ["<b>Pipes and Filters</b>", D, "Dados passam por etapas, como no <code>|</code> do terminal.", "10"],
-    ["<b>Monólito</b>", F, "Uma aplicação, um deploy e, em geral, um banco.", "11"],
-    ["<b>Monólito modular</b>", F, "Um deploy só, com módulos de fronteiras vigiadas.", "12"],
-    ["<b>SOA</b>", F, "Serviços da empresa para reuso, muitas vezes via ESB.", "13"],
-    ["<b>Microsserviços</b>", F, "Serviços pequenos, com deploy e dados próprios.", "14"],
-    ["<b>Serverless</b>", F, "Funções sob demanda; servidores e escala do provedor.", "15"],
-    ["<b>Micro-frontends</b>", F, "Interface em pedaços que cada time publica sozinho.", "16"],
-    ["<b>Células</b>", F, "Cópias isoladas do sistema; a falha fica numa célula.", "17"],
-    ["<b>Cliente-servidor</b>", C, "Cliente pede, servidor responde; N camadas físicas.", "18"],
-    ["<b>Peer-to-peer</b>", C, "Cada nó é cliente e servidor (como no BitTorrent).", "19"],
-    ["<b>Orientada a eventos</b>", C, "Partes avisam \"isso aconteceu\"; quem quiser, reage.", "20"],
-    ["<b>CQRS</b>", C, "Modelos separados para escrever e para ler.", "21"],
-    ["<b>Event Sourcing</b>", C, "Guarda os eventos, não só o estado atual.", "22"],
-    ["<b>Sagas</b>", C, "Operação entre serviços em passos, com compensação.", "23"],
-    ["<b>Space-based</b>", C, "Dados em memória replicada, para picos extremos.", "24"],
-    ["<b>Modelo de atores</b>", C, "Unidades isoladas que só se falam por mensagens.", "25"],
-    ["<b>Arquiteturas de dados</b>", C, "Lambda, Kappa, Lakehouse, Data Mesh: grandes volumes.", "26"],
+    ["<b>Camadas</b>", "Código empilhado: tela, regra de negócio e dados.", "4"],
+    ["<b>MVC, MVP e MVVM</b>", "Separam a tela, os dados e a lógica que liga os dois.", "5"],
+    ["<b>Hexagonal</b>", "Núcleo com portas; banco, HTTP e filas entram como adaptadores.", "6"],
+    ["<b>Clean e Onion</b>", "Domínio no centro dos anéis; as dependências apontam para dentro.", "7"],
+    ["<b>Vertical Slice</b>", "Código organizado por funcionalidade, não por camada técnica.", "8"],
+    ["<b>Microkernel</b>", "Núcleo pequeno; o resto entra como plugin (como no VS Code).", "9"],
+    ["<b>Pipes and Filters</b>", "Os dados passam por etapas encadeadas, como no <code>|</code> do terminal.", "10"],
+  ],
+  "compacta",
+)}
+
+<h4>O sistema por fora (parte III)</h4>
+${tabela(
+  ["Arquitetura", "O que é, em uma linha", "Cap."],
+  [
+    ["<b>Monólito</b>", "Uma aplicação, um deploy e, em geral, um banco.", "11"],
+    ["<b>Monólito modular</b>", "Um deploy só, com módulos de fronteiras vigiadas por dentro.", "12"],
+    ["<b>SOA</b>", "Serviços da empresa feitos para reuso, muitas vezes ligados por um ESB.", "13"],
+    ["<b>Microsserviços</b>", "Serviços pequenos, cada um com deploy e dados próprios.", "14"],
+    ["<b>Serverless</b>", "Funções sob demanda; servidores e escala ficam com o provedor.", "15"],
+    ["<b>Micro-frontends</b>", "A interface em pedaços que cada time publica sozinho.", "16"],
+    ["<b>Células</b>", "Cópias isoladas do sistema; uma falha fica presa numa célula.", "17"],
+  ],
+  "compacta",
+)}
+
+<h4>Comunicação e dados (parte IV)</h4>
+${tabela(
+  ["Arquitetura", "O que é, em uma linha", "Cap."],
+  [
+    ["<b>Cliente-servidor</b>", "O cliente pede, o servidor responde; inclui as N camadas físicas.", "18"],
+    ["<b>Peer-to-peer</b>", "Cada nó é cliente e servidor ao mesmo tempo (como no BitTorrent).", "19"],
+    ["<b>Orientada a eventos</b>", "As partes avisam \"isso aconteceu\" e quem se interessa reage.", "20"],
+    ["<b>CQRS</b>", "Modelos separados para escrever e para ler.", "21"],
+    ["<b>Event Sourcing</b>", "A fonte da verdade é a lista de eventos; o estado sai dela.", "22"],
+    ["<b>Sagas</b>", "Uma operação entre serviços feita em passos, com compensação.", "23"],
+    ["<b>Space-based</b>", "Dados e processamento em memória replicada, para picos extremos.", "24"],
+    ["<b>Modelo de atores</b>", "Unidades isoladas, com estado próprio, que só se falam por mensagens.", "25"],
+    ["<b>Arquiteturas de dados</b>", "Lambda, Kappa, Lakehouse e Data Mesh, para grandes volumes.", "26"],
   ],
   "compacta",
 )}
@@ -293,11 +310,11 @@ ${tabela(
 <p>Você viu no capítulo 1 que cada arquitetura dos capítulos 4 a 26 ganha um medidor: quatro notas de 1 a 5 e uma faixa de
 tamanho de time. Este é o do monólito modular (capítulo 12):</p>
 
-${medidor({ complexidade: 2, escala: 4, operacao: 2, aprendizado: 3, time: "de 1 a vários times; ponto ideal: times médios" })}
+${medidor({ complexidade: 2, escala: 4, operacao: 1, aprendizado: 3, time: "de 1 a vários times; ideal: times médios, domínio crescendo" })}
 
 <p>Lendo nota por nota: <b>complexidade 2</b>, porque dá para começar com uma pasta por módulo e uma regra de quem pode
-importar quem; <b>escala 4</b>, porque aguenta muito código e vários times antes de pedir serviços separados; <b>operar 2</b>,
-porque continua sendo um deploy e um banco; <b>aprendizado 3</b>, porque o difícil não é a ferramenta, é desenhar boas
+importar quem; <b>escala 4</b>, porque aguenta muito código e vários times antes de pedir serviços separados; <b>operar 1</b>,
+porque continua sendo um deploy e um banco, sem nada novo no ar; <b>aprendizado 3</b>, porque o difícil não é a ferramenta, é desenhar boas
 fronteiras entre os módulos.</p>
 
 ${tabela(
@@ -315,10 +332,10 @@ ${tabela(
 <ul>
 <li><b>Leia o custo de operar junto com o tamanho de time.</b> Nota 4 ou 5 em operar com um time de cinco pessoas é sinal
 vermelho: alguém vai cuidar mais da infraestrutura do que do produto.</li>
-<li><b>Escala alta não é meta.</b> Se o seu sistema precisa de 2, a arquitetura nota 5 cobra o preço de 5 (em complexidade e
-operação) e entrega uma folga que você não vai usar.</li>
+<li><b>Escala alta não é meta.</b> Se o seu sistema precisa de 2, uma arquitetura nota 5 costuma cobrar caro em complexidade
+e operação e entregar uma folga que você não vai usar.</li>
 <li><b>Numa combinação, as famílias pesam diferente.</b> As arquiteturas da parte II quase não mexem no custo de operar
-(hexagonal, clean e vertical slice têm nota 1), porque não colocam nada novo no ar. Quem decide a conta de operação são as
+(camadas, MVC, hexagonal, clean e vertical slice têm nota 1), porque não colocam nada novo no ar. Quem decide a conta de operação são as
 escolhas das partes III e IV.</li>
 <li><b>A curva depende do time.</b> As notas valem para um time típico. Quem já operou eventos em produção sente menos a curva
 do capítulo 20; quem nunca operou, sente mais.</li>
@@ -330,9 +347,11 @@ do capítulo 20; quem nunca operou, sente mais.</li>
 dá para ter as duas.</li>
 <li><b>Achar que eventos exigem microsserviços</b>: módulos de um monólito podem publicar e ouvir eventos dentro do mesmo
 processo (capítulos 12 e 20).</li>
-<li><b>Achar que cada família pede algo sofisticado</b>: camadas (por dentro) e monólito (por fora) são respostas completas,
-não etapas a superar.</li>
-<li><b>Ler "serverless" como "sem servidor"</b>: o servidor existe; ele só é do provedor, que cuida dele e cobra pelo uso.</li>
+<li><b>Tratar eventos, event sourcing e CQRS como uma coisa só</b>: eventos são um jeito de as partes conversarem (capítulo 20);
+event sourcing é um jeito de guardar dados (22); CQRS separa o modelo de escrita do de leitura (21). Andam muito juntos, mas
+um não exige o outro.</li>
+<li><b>Ler "serverless" como "sem servidor"</b>: o servidor existe; ele só é do provedor, que cuida dele e cobra pelo uso.
+E serverless é também um jeito de hospedar: dá para rodar numa função tanto uma tarefa pequena quanto uma API inteira.</li>
 </ul>
 
 ${alerta(
@@ -362,28 +381,12 @@ ${passos([
   "<b>29 a 32 (combinações, migração, anti-padrões e ADRs)</b>: para propor e registrar mudanças no sistema real sem parar a operação.",
 ])}
 
-<h4>Por interesse</h4>
-<ul>
-<li><b>Front-end e mobile</b>: 5 (MVC, MVP e MVVM), 16 (micro-frontends) e 18 (cliente-servidor).</li>
-<li><b>Dados e analytics</b>: 10 (pipes and filters), 20 (eventos) e 26 (arquiteturas de dados).</li>
-<li><b>Alta escala e disponibilidade</b>: 17 (células), 24 (space-based) e 25 (modelo de atores).</li>
-<li><b>Produtos com extensões e integrações</b>: 9 (microkernel) e 6 (hexagonal).</li>
-</ul>
+<p><b>Por interesse.</b> Front-end e mobile: 5, 16 e 18. Dados e analytics: 10, 20 e 26. Alta escala e
+disponibilidade: 17, 24 e 25. Produtos com extensões e integrações: 9 e 6.</p>
 
 ${pratica(
   "Exercício: o mapa do seu sistema",
-  "<p>Pegue o sistema em que você trabalha (ou um projeto pessoal) e escreva uma linha por família, como no exemplo abaixo. Se uma linha ficar difícil de preencher, a resposta provavelmente é a mais simples, que só ainda não tinha nome. Guarde a ficha: ela vai servir nos capítulos 28 e 29.</p>",
-)}
-
-${codigo(
-  `
-Sistema:      app de delivery regional (6 devs)
-Por dentro:   camadas no cardápio; hexagonal em pagamentos
-Por fora:     monólito modular, um deploy por dia
-Comunicação:  API REST para o app; eventos entre os módulos
-Dados:        um Postgres, cada módulo dono das suas tabelas`,
-  "o mapa do sistema em cinco linhas",
-  { realce: false },
+  "<p>Pegue o sistema em que você trabalha (ou um projeto pessoal) e escreva uma linha por família, como na tabela de exemplos deste capítulo. Acrescente uma quarta linha: onde os dados moram (um banco para tudo? um por módulo?). Se uma linha ficar difícil de preencher, a resposta provavelmente é a mais simples, que só ainda não tinha nome. Guarde a ficha: ela vai servir nos capítulos 28 e 29.</p>",
 )}
 
 ${combina([

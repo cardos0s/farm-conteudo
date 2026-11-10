@@ -234,6 +234,11 @@ ${fig(lambda(), "Lambda: dois caminhos. A visão batch é precisa, mas atrasada;
 painel ao vivo não bate com o relatório do dia seguinte. Hoje, motores como Apache Flink e Spark Structured Streaming rodam o
 mesmo código em lote e em fluxo, o que tirou boa parte da razão de existir da Lambda.</p>
 
+${alerta(
+  "Não confunda com AWS Lambda",
+  "<p>A arquitetura Lambda não tem relação com o AWS Lambda, o serviço de funções serverless da Amazon (capítulo 15). Só o nome é igual: uma é um jeito de organizar o processamento de dados; o outro é um produto para rodar funções sob demanda.</p>",
+)}
+
 <p>A <b>arquitetura Kappa</b>, proposta em 2014 por Jay Kreps (um dos criadores do Apache Kafka), corta a camada batch. Tudo
 é streaming, e o segredo é um <b>log de eventos guardado por muito tempo</b>: um tópico do Kafka pode reter eventos por dias,
 meses ou sem prazo. Para mudar uma regra ou corrigir um bug, você sobe uma versão nova do processador, que relê o log desde o
@@ -323,8 +328,8 @@ ${tabela(
     ["<b>Data warehouse</b>", "onde", "SQL rápido, dados confiáveis, BI fácil", "caro com muito volume; dado não estruturado fica de fora"],
     ["<b>Data lake</b>", "onde", "armazenamento barato, qualquer formato, bom para ML", "sem transações nem catálogo, vira pântano"],
     ["<b>Lakehouse</b>", "onde", "preço de lake com tabelas confiáveis; formato aberto", "mais peças para manter (compactar arquivos pequenos, catálogo)"],
-    ["<b>Lambda</b>", "como", "precisão do batch com a velocidade do streaming", "a mesma regra em dois códigos; números que não batem"],
-    ["<b>Kappa</b>", "como", "um código só; reprocessa relendo o log", "retenção longa e streaming bem feito (ordem, duplicatas)"],
+    ["<b>Lambda</b>", "como", "precisão do batch, rapidez do stream", "regra duplicada; números que não batem"],
+    ["<b>Kappa</b>", "como", "um código só; reprocessa relendo o log", "retenção longa; tratar ordem e duplicatas"],
     ["<b>Data Mesh</b>", "quem", "escala com o número de times; dados com quem entende deles", "mudança de organização; exige plataforma e governança maduras"],
   ],
 )}
@@ -345,18 +350,13 @@ ${pratica(
   "<p>O Apache Iceberg nasceu na Netflix. As tabelas do data lake da empresa eram enormes, e o jeito antigo de saber quais arquivos formavam cada tabela (listar as pastas no armazenamento) era lento e inseguro com várias gravações ao mesmo tempo. O Iceberg passou a registrar os arquivos de cada versão em metadados próprios, foi doado à Fundação Apache e virou um dos formatos-base do lakehouse. O Delta Lake veio da Databricks, que popularizou o termo lakehouse, e o Apache Hudi, da Uber.</p>",
 )}
 
-${alerta(
-  "Não confunda com AWS Lambda",
-  "<p>A arquitetura Lambda não tem relação com o AWS Lambda, o serviço de funções serverless da Amazon (capítulo 15). Só o nome é igual: uma é um jeito de organizar o processamento de dados; o outro é um produto para rodar funções sob demanda.</p>",
-)}
-
 ${combina([
-  [20, "Orientada a eventos", "os eventos que alimentam o streaming"],
-  [22, "Event Sourcing", "log imutável e reprocessamento, como na Kappa"],
-  [21, "CQRS", "o warehouse é um grande modelo de leitura"],
-  [14, "Microsserviços", "Data Mesh é a mesma divisão por domínio, para dados"],
-  [10, "Pipes and Filters", "pipelines de transformação em etapas"],
-  [15, "Serverless", "motores de consulta pagos por uso"],
+  [20, "Orientada a eventos", "a origem do streaming"],
+  [22, "Event Sourcing", "log relido, como na Kappa"],
+  [21, "CQRS", "warehouse como modelo de leitura"],
+  [14, "Microsserviços", "divisão por domínio"],
+  [10, "Pipes and Filters", "pipelines em etapas"],
+  [15, "Serverless", "consulta paga por uso"],
 ])}
 
 ${lembre([
