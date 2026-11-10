@@ -246,8 +246,8 @@ corrigir cálculos: conserte a regra e <b>reprocesse</b> o histórico numa proje
 Você não reescreve os eventos antigos. Escolha a saída mais leve que resolver:</p>
 <ul>
 <li><b>Campo novo opcional</b>: o código trata a ausência com um valor padrão. Resolve a maioria dos casos.</li>
-<li><b>Upcasting</b>: cada evento guarda a versão do seu formato e, ao ler, o formato antigo é convertido para o atual, um degrau
-por vez (v1 para v2, v2 para v3). O banco não muda, e o resto do código só conhece a versão mais nova.</li>
+<li><b>Upcasting</b>: cada evento guarda a versão do formato e, ao ler, o formato antigo vira o atual, um degrau por vez
+(v1 para v2, v2 para v3). O banco não muda; o resto do código só vê a versão nova.</li>
 <li><b>Tipo novo de evento</b>, quando o <i>significado</i> muda; e, como último recurso, <b>migrar o stream</b> (copiar os
 eventos para um stream novo, transformando no caminho).</li>
 </ul>
@@ -313,7 +313,7 @@ intenção do negócio: <code>ValorSacado</code>, <code>TarifaCobrada</code>.</l
 <li><b>Editar eventos antigos para "consertar"</b>: um UPDATE no event store destrói a auditoria e deixa as projeções erradas.
 Corrija com um evento novo (<code>SaqueEstornado</code>), como faz a contabilidade.</li>
 <li><b>Validar ou causar efeitos dentro do <code>aplicar()</code></b>: se a regra mudar, eventos antigos deixam de carregar; se
-ele envia e-mail, o cliente recebe de novo a cada recarga da conta. Regras ficam no método que decide; efeitos, fora, reagindo
+ele envia e-mail, o cliente recebe de novo toda vez que a conta é reconstruída. Regras ficam no método que decide; efeitos, fora, reagindo
 só a eventos novos.</li>
 <li><b>Consultar sem projeção</b>: carregar milhares de streams para responder "quais contas estão negativas?". Pergunta
 frequente merece uma projeção.</li>
