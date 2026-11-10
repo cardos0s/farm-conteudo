@@ -3,7 +3,7 @@
 // uma escolha de cada família, o espectro monólito → serverless, a tabela de todas as arquiteturas
 // (capítulos 4 a 26), como ler o medidor e um roteiro de leitura.
 
-import { alerta, combina, dica, fig, lembre, medidor, passos, pratica, resumo, tabela } from "../componentes.mjs";
+import { alerta, combina, dica, fig, lembre, medidor, novaPagina, passos, pratica, resumo, tabela } from "../componentes.mjs";
 import { banco, bloco, caminho, claro, cor, engrenagem, etiqueta, fila, linha, nuvem, passo, quadro, ret, semear, seta, txt } from "../desenho.mjs";
 
 /** Hexágono achatado (o mesmo desenho do capítulo 6). */
@@ -289,6 +289,7 @@ ${tabela(
   "compacta",
 )}
 
+${novaPagina()}
 <h4>Comunicação e dados (parte IV)</h4>
 ${tabela(
   ["Arquitetura", "O que é, em uma linha", "Cap."],
