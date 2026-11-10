@@ -163,7 +163,7 @@ Um dos textos mais famosos sobre o tema é <i>Big Ball of Mud</i>, de Brian Foot
 apesar de todo o estudo sobre arquiteturas elegantes, a estrutura mais comum nos sistemas reais era a falta de estrutura:
 código que cresceu sem plano, remendo sobre remendo, até virar uma bola de lama.</p>
 
-<p>A seguir estão os 13 anti-padrões que mais aparecem, em três grupos: <b>no código</b>, <b>na divisão do sistema</b> e
+<p>A seguir estão 13 anti-padrões clássicos, em três grupos: <b>no código</b>, <b>na divisão do sistema</b> e
 <b>nas decisões</b>. Cada um tem o mesmo formato: o que é, uma pergunta para o seu time (o <b>teste rápido</b>) e uma tabela
 com <b>como reconhecer</b>, <b>por que dói</b> e <b>como sair</b>.</p>
 
@@ -176,12 +176,12 @@ ${anti(
   1,
   "Bola de lama (big ball of mud)",
   "Código sem estrutura reconhecível: qualquer parte usa qualquer outra e ninguém sabe onde termina uma responsabilidade. Quase nunca é escolhida; acontece um atalho de cada vez.",
-  "chega uma regra nova de frete; todo mundo do time aponta para o mesmo lugar do código?",
+  "chega uma regra nova de frete: o time concorda sobre onde ela entra, ou cada um aponta para um arquivo diferente?",
   ["Dependências circulares e uma pasta <code>utils</code> que todo mundo importa.", "Mudança pequena quebra algo longe dali; \"só o fulano entende isso\"."],
   ["Cada mudança custa mais que a anterior.", "Para testar uma parte, é preciso subir tudo."],
   [
     "Não reescreva do zero: mapeie as dependências (dependency-cruiser, madge) e desenhe fronteiras pelo negócio.",
-    "Transforme cada fronteira em módulo com API pública (capítulo 12), protegido por checagem no CI.",
+    "Transforme cada fronteira em módulo com API pública (capítulo 12), protegido por checagem no CI. Migre um pedaço de cada vez (capítulo 30).",
   ],
 )}
 
@@ -240,7 +240,7 @@ class Pedido {
 )}
 
 <h4>Grupo 2 · Na divisão do sistema</h4>
-<p>Aqui mora o anti-padrão mais caro da última década: dividir o sistema em serviços sem dividir o acoplamento.</p>
+<p>Os seis seguintes aparecem quando o sistema é dividido em partes que rodam separadas. A armadilha de fundo é quase sempre a mesma: dividir o deploy sem dividir o acoplamento.</p>
 
 ${fig(distribuido(), "Em cima, serviços separados que dependem do mesmo banco e esperam a resposta uns dos outros, e por isso vão para o ar juntos. Embaixo, cada serviço é dono dos seus dados e avisa os outros por eventos.", "grande")}
 
@@ -282,11 +282,11 @@ ${anti(
   "Banco compartilhado entre serviços",
   "Vários serviços leem e escrevem nas mesmas tabelas. A tabela vira o contrato entre eles, só que sem versão, sem dono e sem documentação.",
   "você consegue renomear uma coluna sem perguntar a outro time?",
-  ["Ninguém sabe ao certo quem escreve em cada tabela.", "Migração de banco exige reunião entre times."],
-  ["Acoplamento invisível: o código não mostra a dependência, o banco sim.", "Um serviço grava direto e pula as regras do dono; uma consulta pesada deixa todos lentos."],
+  ["Ninguém sabe quem escreve em cada tabela.", "Migração de banco exige reunião entre times."],
+  ["Acoplamento invisível: está no banco, não no código.", "Um serviço pula as regras do dono; uma consulta pesada deixa todos lentos."],
   [
-    "Um dono por tabela; os outros usam API ou eventos. Dividir o servidor não é obrigatório: comece com um schema por serviço.",
-    "Para operações que mexem em dados de vários donos, use sagas (capítulo 23).",
+    "Um dono por tabela; os outros usam API ou eventos. Basta um schema por serviço, mesmo no mesmo servidor.",
+    "Escrita em dados de vários donos vira saga (capítulo 23); relatório que cruza tudo usa uma base analítica (capítulo 26).",
   ],
 )}
 
@@ -310,6 +310,8 @@ for (const item of carrinho.itens) {
   item.preco = await catalogo.buscarPreco(item.produtoId);
 }
 
+// Promise.all em paralelo reduz a espera, mas continua com 50 chamadas e 50 chances de falha
+
 // DEPOIS: uma chamada em lote, um mapa de preços na volta
 const ids = carrinho.itens.map((item) => item.produtoId);
 const precos: Record<string, number> = await catalogo.buscarPrecos(ids);
@@ -320,13 +322,13 @@ for (const item of carrinho.itens) item.preco = precos[item.produtoId];`,
 ${anti(
   10,
   "ESB \"deus\"",
-  "No SOA (capítulo 13), o barramento (ESB, <i>enterprise service bus</i>) deveria transportar e traduzir mensagens. Aos poucos ele ganha regras de negócio e orquestração, até virar o lugar onde a lógica da empresa mora.",
+  "No SOA (capítulo 13), o barramento (ESB, <i>enterprise service bus</i>) deveria rotear e traduzir mensagens entre sistemas. Aos poucos ele ganha regras de negócio e orquestração, até virar o lugar onde a lógica da empresa mora.",
   "mudar uma regra de negócio exige o time do barramento?",
   ["Fila de pedidos para o \"time de integração\" a cada feature.", "Regras escritas em configuração do barramento, sem testes."],
   ["Gargalo de pessoas e ponto único de falha.", "Lógica difícil de testar e de versionar."],
   [
     "Pontas inteligentes, canos burros (<i>smart endpoints and dumb pipes</i>, do artigo de James Lewis e Martin Fowler, 2014): a regra volta para os serviços.",
-    "Tire uma integração de cada vez (capítulo 30).",
+    "Tire uma integração de cada vez do barramento, sem big bang (capítulo 30).",
   ],
 )}
 
@@ -350,13 +352,13 @@ ${anti(
   "este módulo precisa mesmo de histórico de eventos ou de um modelo de leitura separado?",
   ["Salvou e a tela mostra o dado antigo: consistência eventual que ninguém pediu.", "Mais tempo com projeções e versões de evento do que com regra de negócio."],
   ["Complexidade em módulos que não precisavam dela.", "Bugs difíceis: projeção atrasada, evento antigo que o código novo não entende."],
-  ["Use só onde o ganho é claro (financeiro, auditoria); o resto é CRUD.", "Para tirar event sourcing de um módulo: grave o estado atual em tabelas e passe a escrever nelas."],
+  ["Use só onde o ganho é claro (financeiro, auditoria); o resto é CRUD.", "Para tirar event sourcing de um módulo: gere o estado atual a partir dos eventos, grave em tabelas comuns e passe a escrever nelas (os eventos antigos ficam como histórico)."],
 )}
 
 ${anti(
   13,
   "Martelo de ouro",
-  "\"Para quem só tem martelo, todo problema parece prego.\" O time usa a mesma solução para tudo porque é a que conhece ou a que deu certo da última vez: microsserviços em todo projeto novo, Kafka para qualquer comunicação.",
+  "\"Para quem só tem martelo, todo problema parece prego.\" O time usa a mesma solução para tudo porque é a que conhece ou a que deu certo da última vez: microsserviços em todo projeto novo, Kafka para qualquer comunicação. Vale também para as arquiteturas deste livro: hexagonal num script de 50 linhas é martelo de ouro.",
   "quando foi a última vez que o time comparou duas alternativas antes de decidir?",
   ["\"Aqui a gente sempre usa X\", antes de ouvir o problema.", "Gambiarras para encaixar o problema na ferramenta."],
   ["Custo demais onde não precisa, força de menos onde precisa."],
@@ -383,7 +385,7 @@ ${alerta(
 
 ${dica(
   "Anti-padrão depende de contexto",
-  "<p>Banco compartilhado é normal dentro de um monólito. Modelo simples, sem comportamento, serve num CRUD. Um pouco de sinkhole é esperado em qualquer sistema em camadas. A pergunta certa não é \"isso tem nome de anti-padrão?\", e sim <b>\"quanto isso está custando, aqui, agora?\"</b></p>",
+  "<p>Banco compartilhado é normal dentro de um monólito. Modelo simples, sem comportamento, serve num CRUD. Um pouco de sinkhole é esperado em qualquer sistema em camadas. Separar dados de funções puras, no estilo funcional, também não é domínio anêmico, desde que as regras fiquem num lugar só e os tipos impeçam estados inválidos. A pergunta certa não é \"isso tem nome de anti-padrão?\", e sim <b>\"quanto isso está custando, aqui, agora?\"</b></p>",
 )}
 
 ${combina([

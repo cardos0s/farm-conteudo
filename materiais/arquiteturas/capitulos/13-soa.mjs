@@ -137,8 +137,8 @@ ${fig(diagrama(), "Ninguém chama um serviço direto: tudo passa pelo ESB. Atrá
 <h3>Como funciona</h3>
 <ul>
 <li><b>Serviços corporativos</b>: cada serviço é uma capacidade do negócio e atende a empresa inteira. O "Serviço de
-Clientes" é o único jeito de consultar um cliente, seja no internet banking, na agência ou no call center. São serviços
-grandes, feitos para serem <b>reutilizados</b>.</li>
+Clientes" é o único jeito de consultar um cliente, seja no internet banking, na agência ou no call center. Costumam ser
+serviços grandes (de granularidade grossa), feitos para serem <b>reutilizados</b>.</li>
 <li><b>Contratos formais</b>: o consumidor só conhece o contrato, nunca o sistema por trás. No SOA clássico, o contrato é
 um <b>WSDL</b> (operações e mensagens), os dados seguem um <b>XSD</b> (esquema XML) e a mensagem viaja num envelope
 <b>SOAP</b>. Depois, muitas empresas trocaram por REST, JSON e OpenAPI, mantendo a ideia.</li>
@@ -147,7 +147,8 @@ um <b>WSDL</b> (operações e mensagens), os dados seguem um <b>XSD</b> (esquema
 <li><b>ESB</b> (<i>Enterprise Service Bus</i>): a peça do meio. Faz <b>roteamento</b> (manda cada mensagem ao serviço
 certo, às vezes olhando o conteúdo), <b>transformação</b> (JSON para XML, SOAP para fila, registro posicional do
 mainframe para o canônico) e <b>orquestração</b> (chama vários serviços em ordem para montar um processo, como "abrir
-conta"), além de aplicar segurança, log e auditoria.</li>
+conta", muitas vezes descrito numa linguagem de processos como o BPEL), além de aplicar segurança, log e auditoria. Fala
+tanto síncrono (pedido e resposta) quanto assíncrono (filas).</li>
 <li><b>Governança central</b>: um time de arquitetura mantém o catálogo de serviços, aprova contratos, define padrões e
 controla versões e SLAs (acordos de nível de serviço: disponibilidade e tempo de resposta prometidos).</li>
 </ul>
@@ -168,7 +169,8 @@ ${fig(canos(), "Na SOA, a inteligência mora no barramento e os dados costumam s
 ${tabela(
   ["", "SOA", "Microsserviços"],
   [
-    ["<b>Tamanho</b>", "Grande: uma capacidade da empresa inteira (Clientes)", "Pequeno: uma parte de um domínio, de um time só"],
+    ["<b>Objetivo</b>", "Reuso: escrever uma vez, usar na empresa toda", "Independência: mudar e publicar sem esperar ninguém"],
+    ["<b>Tamanho</b>", "Grande: uma capacidade da empresa inteira (Clientes)", "Menor: um contexto do negócio, com um time dono"],
     ["<b>Dados</b>", "Muitas vezes um banco corporativo compartilhado", "Cada serviço é dono dos seus dados"],
     ["<b>Comunicação</b>", "Canos inteligentes: o ESB roteia, transforma e orquestra", "Canos burros: HTTP ou fila; a lógica fica nas pontas"],
     ["<b>Contratos</b>", "Formais (WSDL, XSD) e um modelo canônico único", "Leves (OpenAPI, JSON, eventos), cada serviço com o seu modelo"],
@@ -214,15 +216,6 @@ integracao/
 └── catalogo.yaml                 # serviços, donos, versões e SLAs
 `)}
 
-<h4>Passo a passo para expor um sistema como serviço</h4>
-${passos([
-  "Comece pela capacidade do negócio, não pelo sistema: o serviço se chama <code>Clientes</code>, não <code>ServicoDoCRM</code>. Se o CRM for trocado, o contrato fica.",
-  "Escreva o contrato antes do código: operações, dados no modelo canônico e erros (WSDL + XSD em SOAP; OpenAPI em REST).",
-  "Escreva o adaptador: ele traduz do canônico para o sistema de trás e de volta, e conhece as manias do legado (espaços, códigos, datas).",
-  "No barramento, registre só o que é integração: rota, transformação, segurança e log. Regra de negócio fica no serviço.",
-  "Publique no catálogo com dono, versão e SLA. Mudança que quebra vira v2, e a v1 fica no ar por um prazo anunciado. Monitore latência, erros e filas: alarme no barramento é alarme da empresa inteira.",
-])}
-
 ${codigo(
   `
 // contratos/clientes/v1.ts: o que qualquer sistema da empresa pode pedir ao Serviço de Clientes
@@ -238,8 +231,13 @@ export interface ServicoDeClientesV1 {
 }
 
 // os erros também fazem parte do contrato: o consumidor trata pelo código, não pelo texto
+export type CodigoDeErro =
+  | "CLI-404"   // o cliente não existe
+  | "CLI-502"   // o sistema de trás respondeu algo que não dá para traduzir
+  | "CLI-503";  // o sistema de trás está fora do ar ou lento demais
+
 export class ErroDeServico extends Error {
-  constructor(public readonly codigo: "CLI-404" | "CLI-503", mensagem: string) {
+  constructor(public readonly codigo: CodigoDeErro, mensagem: string) {
     super(mensagem);
   }
 }`,
@@ -261,13 +259,18 @@ export class ClientesViaCrmLegado implements ServicoDeClientesV1 {
   constructor(private crm: soap.Client) {}
 
   async buscarCliente({ id }: { id: string }): Promise<ClienteCanonico> {
-    const [resp] = await this.crm.ConsultarClienteAsync({ codCli: id });
-    if (!resp?.Cliente) throw new ErroDeServico("CLI-404", "cliente " + id + " não existe no CRM");
+    const [resp] = await this.crm
+      .ConsultarClienteAsync({ codCli: id }, { timeout: 3000 }) // nunca espere para sempre
+      .catch(() => { throw new ErroDeServico("CLI-503", "CRM fora do ar ou lento"); });
+    const c = resp?.Cliente;
+    if (!c) throw new ErroDeServico("CLI-404", "cliente " + id + " não existe no CRM");
+    const segmento = SEGMENTO[c.CodSeg];   // códigos do CRM viram nomes do canônico
+    if (!segmento) throw new ErroDeServico("CLI-502", "segmento desconhecido: " + c.CodSeg);
     return {
       id,
-      nome: resp.Cliente.NomeRazao.trim(),                 // o CRM completa com espaços
-      documento: resp.Cliente.CpfCnpj.replace(/\\D/g, ""), // "123.456.789-09" vira "12345678909"
-      segmento: SEGMENTO[resp.Cliente.CodSeg] ?? "varejo",  // códigos do CRM viram nomes
+      nome: c.NomeRazao.trim(),                // o CRM completa com espaços
+      documento: c.CpfCnpj.replace(/\\D/g, ""), // "123.456.789-09" vira "12345678909"
+      segmento,
     };
   }
 }
@@ -275,6 +278,15 @@ export class ClientesViaCrmLegado implements ServicoDeClientesV1 {
 // na montagem: new ClientesViaCrmLegado(await soap.createClientAsync(urlDoWsdl))`,
   "integracao/adaptadores/crm-legado.ts (o adaptador)",
 )}
+
+<h4>Passo a passo para expor um sistema como serviço</h4>
+${passos([
+  "Comece pela capacidade do negócio, não pelo sistema: o serviço se chama <code>Clientes</code>, não <code>ServicoDoCRM</code>. Se o CRM for trocado, o contrato fica.",
+  "Escreva o contrato antes do código: operações, dados no modelo canônico e erros (WSDL + XSD em SOAP; OpenAPI em REST).",
+  "Escreva o adaptador: ele traduz do canônico para o sistema de trás e de volta, e conhece as manias do legado (espaços, códigos, datas).",
+  "No barramento, registre só o que é integração: rota, transformação, segurança e log. Regra de negócio fica no serviço.",
+  "Publique no catálogo com dono, versão e SLA. Mudança que quebra vira v2, e a v1 fica no ar por um prazo anunciado. Monitore latência, erros e filas: alarme no barramento é alarme da empresa inteira.",
+])}
 
 <h3>Vantagens e custos</h3>
 ${tabela(
@@ -317,13 +329,18 @@ ${dica(
   "<p>SOA é um estilo de arquitetura; SOAP é um protocolo. Dá para fazer SOA com REST e JSON. E SOAP continua por aí: quem integra a emissão de Nota Fiscal Eletrônica (NF-e) encontra web services SOAP, com XML assinado por certificado digital.</p>",
 )}
 
+${dica(
+  "SOA sem ESB pesado",
+  "<p>Muitas empresas mantêm as boas ideias da SOA (serviços com contrato, catálogo, nomes do negócio) sem o barramento central: serviços REST com OpenAPI, um API gateway na frente só para autenticação e limites, e eventos (capítulo 20) para integrar sem cascatas. Na nuvem, plataformas de integração como serviço (iPaaS) fazem o papel do barramento para ligar sistemas comprados. E um processo longo entre serviços pode ser coreografado por eventos em vez de orquestrado num lugar só: é o assunto das sagas (capítulo 23).</p>",
+)}
+
 ${combina([
   [14, "Microsserviços", "serviços menores, dados próprios e canos burros"],
   [30, "Como migrar sem parar o sistema", "sair do ESB aos poucos, rota por rota"],
   [20, "Orientada a eventos", "integração assíncrona no lugar de cascatas síncronas"],
   [23, "Sagas", "processos entre serviços sem um orquestrador central gigante"],
   [6, "Hexagonal", "adaptadores de integração dentro de cada serviço"],
-  [18, "Cliente-servidor e N camadas", "como cada serviço roda por baixo"],
+  [31, "Anti-padrões", "o \"ESB deus\", que acumula a regra da empresa"],
 ])}
 
 ${lembre([

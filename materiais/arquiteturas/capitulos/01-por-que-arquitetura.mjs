@@ -52,10 +52,10 @@ function curvaDoCusto() {
   semear("por-que-arquitetura-2");
   let s = "";
   // eixos
-  s += seta(80, 212, 555, 212, { espessura: 2 });
-  s += seta(80, 212, 80, 26, { espessura: 2 });
+  s += seta(80, 244, 555, 244, { espessura: 2 });
+  s += seta(80, 244, 80, 26, { espessura: 2 });
   s += txt(94, 22, "custo para mudar a decisão", { tam: 15, ancora: "start" });
-  s += txt(555, 258, "tempo de vida do sistema", { tam: 15, ancora: "end" });
+  s += txt(555, 290, "tempo de vida do sistema", { tam: 15, ancora: "end" });
   const marcas = [
     [125, "semana 1"],
     [240, "mês 6"],
@@ -63,23 +63,23 @@ function curvaDoCusto() {
     [500, "ano 5"],
   ];
   for (const [x, rot] of marcas) {
-    s += linha([[x, 206], [x, 218]], { espessura: 1.6 });
-    s += txt(x, 234, rot, { tam: 15, cor: cor.cinza });
+    s += linha([[x, 238], [x, 250]], { espessura: 1.6 });
+    s += txt(x, 266, rot, { tam: 15, cor: cor.cinza });
   }
   // as duas curvas
-  s += curva([[86, 202], [180, 198], [300, 178], [420, 126], [535, 46]], { cor: cor.vermelho, espessura: 3.2 });
-  s += curva([[86, 200], [250, 197], [400, 192], [535, 187]], { cor: cor.verde, espessura: 3.2 });
+  s += curva([[86, 232], [180, 228], [300, 206], [420, 146], [535, 50]], { cor: cor.vermelho, espessura: 3.2 });
+  s += curva([[86, 230], [250, 227], [400, 222], [535, 217]], { cor: cor.verde, espessura: 3.2 });
   // rótulos das curvas, à direita do fim de cada uma
-  s += txt(565, 42, "arquitetura", { tam: 18, cor: cor.vermelho, ancora: "start" });
-  s += txt(565, 68, "ex.: trocar o banco", { tam: 15, cor: cor.cinza, ancora: "start" });
-  s += txt(565, 172, "design de código", { tam: 18, cor: cor.verde, ancora: "start" });
-  s += txt(565, 198, "ex.: renomear função", { tam: 15, cor: cor.cinza, ancora: "start" });
+  s += txt(565, 46, "arquitetura", { tam: 18, cor: cor.vermelho, ancora: "start" });
+  s += txt(565, 72, "ex.: trocar o banco", { tam: 15, cor: cor.cinza, ancora: "start" });
+  s += txt(565, 202, "design de código", { tam: 18, cor: cor.verde, ancora: "start" });
+  s += txt(565, 228, "ex.: renomear função", { tam: 15, cor: cor.cinza, ancora: "start" });
   // anotações
-  s += txt(150, 140, "no começo,\nerrar é barato", { tam: 15, cor: cor.cinza });
-  s += seta(150, 164, 128, 192, { cor: cor.cinza, espessura: 1.4, ponta: 10 });
-  s += txt(330, 84, "ano 5: a mesma troca\nvira meses de migração", { tam: 15, cor: cor.vermelho });
-  s += seta(420, 96, 484, 86, { cor: cor.vermelho, espessura: 1.4, ponta: 10 });
-  return quadro(760, 268, s);
+  s += txt(150, 160, "no começo,\nerrar é barato", { tam: 15, cor: cor.cinza });
+  s += seta(150, 184, 128, 220, { cor: cor.cinza, espessura: 1.4, ponta: 10 });
+  s += txt(330, 96, "ano 5: a mesma troca\nvira meses de migração", { tam: 15, cor: cor.vermelho });
+  s += seta(422, 104, 476, 104, { cor: cor.vermelho, espessura: 1.4, ponta: 10 });
+  return quadro(760, 300, s);
 }
 
 /** Diagrama 3: o último momento responsável. */
@@ -87,24 +87,24 @@ function ultimoMomento() {
   semear("por-que-arquitetura-3");
   let s = "";
   // as duas curvas: o que você sabe sobe, as opções abertas descem
-  s += curva([[60, 124], [220, 110], [380, 84], [540, 60], [700, 46]], { cor: cor.azul, espessura: 3 });
-  s += curva([[60, 44], [220, 58], [380, 84], [540, 110], [700, 124]], { cor: cor.violeta, espessura: 3 });
+  s += curva([[60, 172], [220, 150], [380, 108], [540, 66], [690, 48]], { cor: cor.azul, espessura: 3 });
+  s += curva([[60, 44], [220, 66], [380, 108], [540, 150], [690, 172]], { cor: cor.violeta, espessura: 3 });
   s += txt(60, 20, "opções ainda abertas", { tam: 16, cor: cor.violeta, ancora: "start" });
-  s += txt(700, 22, "o que você sabe do problema", { tam: 16, cor: cor.azul, ancora: "end" });
+  s += txt(690, 22, "o que você sabe do problema", { tam: 16, cor: cor.azul, ancora: "end" });
   // linha do tempo
-  s += linha([[380, 84], [380, 142]], { tracejado: true, cor: cor.verde, espessura: 2 });
-  s += seta(30, 152, 730, 152, { espessura: 2.2 });
-  s += txt(730, 174, "tempo", { tam: 15, cor: cor.cinza, ancora: "end" });
+  s += linha([[380, 108], [380, 196]], { tracejado: true, cor: cor.verde, espessura: 2 });
+  s += seta(30, 206, 690, 206, { espessura: 2.2 });
+  s += txt(698, 206, "tempo", { tam: 15, cor: cor.cinza, ancora: "start" });
   // três momentos
   const momento = (x, titulo, l1, l2, c) =>
-    elipse(x, 152, 18, 18, { preench: c, hachura: "solid", cor: c }) +
-    txt(x, 186, titulo, { tam: 17, cor: c }) +
-    txt(x, 210, l1, { tam: 15 }) +
-    txt(x, 230, l2, { tam: 15 });
+    elipse(x, 206, 18, 18, { preench: c, hachura: "solid", cor: c }) +
+    txt(x, 240, titulo, { tam: 17, cor: c }) +
+    txt(x, 264, l1, { tam: 15 }) +
+    txt(x, 284, l2, { tam: 15 });
   s += momento(130, "cedo demais", "decide no chute,", "sabendo pouco", cor.laranja);
   s += momento(380, "último momento responsável", "já sabe o bastante", "e ainda pode escolher", cor.verde);
-  s += momento(630, "tarde demais", "a decisão foi tomada", "por omissão", cor.vermelho);
-  return quadro(760, 246, s);
+  s += momento(620, "tarde demais", "a decisão foi tomada", "por omissão", cor.vermelho);
+  return quadro(760, 300, s);
 }
 
 export default `
@@ -115,13 +115,15 @@ ${resumo(
 
 <p>Todo sistema tem uma arquitetura, mesmo que ninguém tenha escolhido uma. Quando ninguém escolhe, ela aparece sozinha,
 um atalho de cada vez, até virar o que Brian Foote e Joseph Yoder batizaram em 1997 de <b>Big Ball of Mud</b> (grande bola
-de lama): tudo depende de tudo, e mexer num canto quebra outro bem longe dali (capítulo 31). Este livro existe para você
-escolher a arquitetura de propósito, sabendo o que cada opção entrega e o que ela cobra.</p>
+de lama): tudo depende de tudo, e mexer num canto quebra outro bem longe dali (capítulo 31). O erro oposto também
+existe: arquitetura demais (microsserviços para três devs, cinco camadas para um cadastro simples) cobra o custo de um
+sistema grande sem trazer os ganhos. Este livro existe para você escolher a arquitetura de
+propósito, sabendo o que cada opção entrega e o que ela cobra.</p>
 
 ${fig(doisZooms(), "O mesmo sistema em dois níveis de zoom. De longe, as partes e as ligações entre elas (arquitetura). De perto, as classes e funções de uma das partes (design de código).", "grande")}
 
 <h3>O que é arquitetura de software</h3>
-<p>Não existe uma definição única, aceita por todo mundo. Mas as boas definições giram em torno de três ingredientes:</p>
+<p>Não existe definição única, mas as boas giram em torno de três ingredientes:</p>
 <ul>
 <li><b>Estrutura</b>: quais são as partes grandes do sistema (módulos, serviços, bancos de dados, filas, apps) e como
 elas se ligam. É o famoso desenho de caixas e setas.</li>
@@ -131,7 +133,7 @@ meses para desfazer. Por exemplo: um banco de dados para o sistema todo ou um pa
 nunca lê a tabela de outro" ou "regra de negócio não importa framework" (capítulo 6).</li>
 </ul>
 <p>Mark Richards e Neal Ford (<i>Fundamentals of Software Architecture</i>) somam um quarto: as <b>características</b> que o
-sistema precisa ter, como desempenho, disponibilidade e segurança. Elas decidem a escolha e são o assunto do capítulo 2.</p>
+sistema precisa ter (desempenho, disponibilidade, segurança...), assunto do capítulo 2.</p>
 
 <h3>Arquitetura x design de código</h3>
 <p>A fronteira entre os dois não é uma linha exata, mas existe um bom teste: <b>quanto custa mudar de ideia?</b> Se dá
@@ -143,22 +145,22 @@ ${tabela(
   [
     ["<b>Pergunta típica</b>", "Monólito ou serviços? Qual banco? Síncrono ou assíncrono?", "Que classes criar? Que nome dar? Qual padrão usar aqui?"],
     ["<b>Alcance</b>", "O sistema todo, às vezes vários times", "Um módulo, um arquivo, uma função"],
-    ["<b>Custo de mudar depois</b>", "Semanas ou meses, às vezes com migração de dados", "Minutos ou horas: um refactor"],
+    ["<b>Custo de mudar depois</b>", "Semanas ou meses, às vezes com migração de dados", "Minutos ou horas: uma refatoração"],
     ["<b>Quem sente um erro</b>", "Todo mundo, por anos", "Quem mexe naquele trecho"],
   ],
 )}
 
-<p>As duas importam. Os capítulos da parte II (camadas, hexagonal, clean...) ficam bem na fronteira: organizam o código
-por dentro, mas viram regra para o time todo e custam caro para trocar depois de dois anos. Por isso estão neste livro.</p>
+<p>As duas importam. Os capítulos da parte II (camadas, hexagonal, clean...) ficam na fronteira: organizam o código por
+dentro, mas viram regra para o time todo e custam caro para trocar depois de dois anos.</p>
 
 
 <h3>A curva do custo de mudar</h3>
 <p>Toda decisão fica mais cara de mudar com o tempo, porque mais código, mais dados e mais pessoas passam a depender
 dela. O que muda de uma decisão para outra é a inclinação da curva.</p>
 <p>Na primeira semana, trocar MongoDB por PostgreSQL é uma tarde de trabalho: quase não há dados nem código. Dois anos
-depois, são milhões de registros, relatórios, integrações e um time acostumado com o jeito antigo. A mesma troca virou
-um projeto de meses, com migração de dados e risco de perder informação no caminho. Já renomear uma função custa quase
-o mesmo no primeiro dia e no quinto ano: o editor faz isso por você.</p>
+depois, com milhões de registros, relatórios e integrações em cima, a mesma troca vira um projeto de meses, com migração
+de dados e risco de perder informação. Já renomear uma função custa quase o mesmo no primeiro dia e no quinto ano: o
+editor faz isso por você.</p>
 
 ${fig(curvaDoCusto(), "No começo, as duas custam pouco. Com o tempo, a decisão de arquitetura dispara; a de design quase não sai do lugar.")}
 
@@ -170,11 +172,11 @@ ${tabela(
   ["A decisão", "Opções comuns", "Onde ver"],
   [
     ["<b>Quantas partes</b>", "um monólito, um monólito modular ou vários serviços", "caps. 11 a 14"],
-    ["<b>Código por dentro</b>", "camadas, MVC, hexagonal, clean, vertical slice", "caps. 4 a 8"],
-    ["<b>Dados</b>", "um banco para tudo ou um por serviço; relacional ou de documentos", "caps. 14, 21, 22 e 26"],
-    ["<b>Comunicação</b>", "síncrono (chama e espera, como HTTP) ou assíncrono (manda e segue, como filas)", "caps. 18 e 20"],
-    ["<b>Onde roda</b>", "servidores próprios, máquinas na nuvem, contêineres ou funções serverless", "caps. 15, 17 e 18"],
-    ["<b>Consistência</b>", "uma transação só, sagas ou consistência eventual (certos após alguns instantes)", "cap. 23"],
+    ["<b>Organização do código</b>", "camadas, MVC, hexagonal, clean, vertical slice", "caps. 4 a 8"],
+    ["<b>Dados</b>", "um banco para tudo ou um por serviço; relacional ou de documentos", "caps. 14, 21, 22, 26"],
+    ["<b>Comunicação</b>", "síncrona (chama e espera, como HTTP) ou assíncrona (envia e segue, como uma fila)", "caps. 18 e 20"],
+    ["<b>Onde roda</b>", "servidores próprios, nuvem, contêineres ou funções serverless", "caps. 15, 17 e 18"],
+    ["<b>Consistência</b>", "uma transação só, sagas ou consistência eventual (os dados se acertam depois de alguns instantes)", "cap. 23"],
   ],
 )}
 
@@ -185,18 +187,19 @@ ${pratica(
 
 <h3>Por que a resposta honesta é "depende"</h3>
 <p>Pergunte a uma pessoa experiente se microsserviços são melhores que um monólito e a resposta vai ser "depende". Não é
-fuga: cada arquitetura compra uma coisa e paga com outra. Microsserviços compram <b>deploy</b> (colocar uma versão nova no
-ar) independente para cada time e escala por parte; pagam com chamadas pela rede, mais coisas para monitorar e dados
-espalhados. O monólito compra simplicidade e transações fáceis; paga quando dezenas de pessoas disputam o mesmo deploy.
+fuga: cada arquitetura compra uma coisa e paga com outra. Microsserviços compram <b>deploy</b> independente (cada time
+coloca a sua versão nova no ar sem esperar os outros) e escala por parte; pagam com chamadas pela rede, mais coisas para
+monitorar e dados espalhados. O monólito compra simplicidade e transações fáceis; paga quando dezenas de pessoas disputam o mesmo deploy.
 Essa troca tem nome: <b>trade-off</b> (o que se ganha e o que se perde numa escolha). Para Richards e Ford, essa é a
-primeira lei da arquitetura de software: tudo em arquitetura é um trade-off.</p>
+primeira lei da arquitetura de software: tudo em arquitetura é um trade-off. Se parece que uma opção só tem vantagens,
+é porque o custo dela ainda não apareceu.</p>
 
 ${pratica(
   "No mundo real",
   "<p>O Stack Overflow, um dos sites mais usados por devs no mundo, roda como um monólito em poucos servidores. A Shopify mantém um monólito Rails grande, dividido em módulos, com as fronteiras entre eles checadas pela ferramenta Packwerk. A Netflix é um dos exemplos mais citados de microsserviços. As três escolhas fazem sentido no contexto de cada empresa, e nenhuma delas seria a certa para as outras duas.</p>",
 )}
 
-<p>Mas "depende" sozinho é resposta preguiçosa. A resposta boa diz <b>do quê</b> depende e termina com uma escolha. Um
+<p>Mas "depende" sozinho é resposta preguiçosa. A resposta boa diz <b>do que</b> depende e termina com uma escolha. Um
 roteiro que funciona em reunião, em entrevista e em revisão de projeto:</p>
 ${passos([
   "<b>Contexto</b>: tamanho do time, carga esperada, prazo, o que não pode falhar.",
@@ -225,6 +228,8 @@ repositório, e não com o driver do banco (capítulo 6).</li>
 <li><b>Separe em módulos antes de separar em serviços.</b> Módulos bem cortados viram serviços depois com bem menos dor
 (capítulos 12 e 30).</li>
 <li><b>Na dúvida, prefira o que é fácil de desfazer</b>: um deploy só, um banco gerenciado comum, uma fila a menos.</li>
+<li><b>Proteja as decisões com checagens automáticas</b>: um teste na integração contínua (CI) que falha quando um
+módulo importa o que não devia. A arquitetura evolutiva chama isso de <i>fitness function</i> (função de aptidão).</li>
 <li><b>Registre o porquê</b> de cada decisão grande num ADR (registro de decisão de arquitetura, capítulo 32). Quando o
 contexto mudar, você sabe o que revisar. Richards e Ford têm uma segunda lei para isso: o porquê é mais importante que o como.</li>
 </ul>
@@ -251,12 +256,11 @@ decisão de arquitetura começa com um "isso aqui está doendo".</li>
 
 ${dica(
   "Lei de Conway",
-  "<p>Em 1968, Melvin Conway observou que as organizações tendem a criar sistemas que copiam a sua própria estrutura de comunicação. Arquitetura e organização dos times andam juntas: se dois times precisam conversar toda hora para entregar qualquer coisa, a fronteira entre as partes deles provavelmente está no lugar errado (capítulos 2 e 14).</p>",
+  "<p>Em 1968, Melvin Conway observou que as organizações tendem a criar sistemas que copiam a sua própria estrutura de comunicação. Arquitetura e organização dos times andam juntas: se dois times precisam conversar toda hora para entregar qualquer coisa, a fronteira entre as partes deles provavelmente está no lugar errado. Há empresas que fazem o caminho inverso e montam os times no formato da arquitetura que querem (a <b>manobra inversa de Conway</b>, capítulos 2 e 14).</p>",
 )}
 
 <h3>Como usar este livro</h3>
-<p>O livro tem cinco partes. A primeira prepara o terreno; as três do meio apresentam as arquiteturas, cada uma
-respondendo a uma pergunta diferente; a última junta tudo para você escolher.</p>
+<p>O livro tem cinco partes. As três do meio apresentam as arquiteturas, cada uma respondendo a uma pergunta diferente:</p>
 
 ${tabela(
   ["Parte", "A pergunta que ela responde", "Capítulos"],
@@ -276,18 +280,19 @@ uns aos outros por eventos (parte IV). A parte V mostra como montar essas combin
 <h4>A estrutura de cada capítulo</h4>
 <p>Do capítulo 4 ao 26, cada arquitetura aparece sempre na mesma ordem. Assim você vai direto ao que precisa:</p>
 ${passos([
-  "<b>Em uma frase</b> e <b>pense assim</b>: a ideia central e uma analogia do dia a dia.",
+  "<b>Em uma frase</b> e <b>pense assim</b>: a ideia central, uma analogia do dia a dia e, quando a origem é conhecida, de onde ela veio.",
   "<b>Diagrama</b> e <b>como funciona</b>: as peças e como elas se ligam.",
   "<b>Use quando</b> x <b>evite quando</b>, lado a lado, e o <b>medidor</b> de 1 a 5.",
   "<b>Como usar na prática</b>: estrutura de pastas, código em TypeScript e passo a passo.",
-  "<b>Vantagens e custos</b>, <b>erros comuns</b> e um caso do <b>mundo real</b>.",
+  "<b>Vantagens e custos</b>, <b>erros comuns</b>, um caso do <b>mundo real</b> e caixas com variações e confusões comuns.",
   "<b>Combina com</b> (arquiteturas que andam junto) e <b>para lembrar</b> (os três pontos principais).",
 ])}
 
 <h4>O medidor de 1 a 5</h4>
 <p>Cada arquitetura recebe quatro notas de 1 a 5 e uma faixa de tamanho de time. As notas comparam as arquiteturas
-entre si: 5 não quer dizer "melhor", quer dizer "mais". E quem decide é o seu contexto: nota alta em escala não ajuda se
-você tem dois mil usuários e três devs. Este é o medidor da arquitetura hexagonal (capítulo 6):</p>
+entre si e são uma avaliação, não uma medição: 5 quer dizer "mais", não "melhor". Em escala, mais é bom; nas outras três,
+mais pesa. E quem decide é o contexto: nota alta em escala não ajuda se você tem três devs e dois mil usuários. Este é o
+medidor da hexagonal (capítulo 6):</p>
 
 ${medidor({ complexidade: 3, escala: 4, operacao: 1, aprendizado: 3, time: "qualquer tamanho; brilha a partir de 3 a 4 devs" })}
 
@@ -295,7 +300,7 @@ ${medidor({ complexidade: 3, escala: 4, operacao: 1, aprendizado: 3, time: "qual
 <li><b>Complexidade para começar</b>: quanto custa montar o básico. Hexagonal: 3 (interfaces desde o dia 1).</li>
 <li><b>Até onde escala</b>: quanto aguenta crescer em carga, em código e em gente. Hexagonal: 4.</li>
 <li><b>Custo de operar</b>: servidores, deploys, monitoramento, plantão. Hexagonal: 1 (nada a mais no ar).</li>
-<li><b>Curva de aprendizado</b>: quanto estudar até usar bem. Hexagonal: 3 (portas e injeção de dependência).</li>
+<li><b>Curva de aprendizado</b>: quanto estudar até usar bem. Hexagonal: 3 (injeção de dependência).</li>
 </ul>
 
 <h4>As caixas</h4>
@@ -305,7 +310,7 @@ apresentado como exemplo), regras de bolso e frases prontas. A <b>verde</b> é a
 
 <h4>Por onde começar</h4>
 <ul>
-<li><b>Está começando?</b> Parte I inteira, depois os capítulos 4 (camadas), 11 (monólito) e 12 (monólito modular).</li>
+<li><b>Está começando?</b> Parte I, depois os capítulos 4 (camadas), 11 (monólito) e 12 (monólito modular).</li>
 <li><b>Tem uma decisão para tomar?</b> Capítulo 28 (árvore de decisão) e, de lá, as arquiteturas candidatas.</li>
 <li><b>Vai mudar um sistema que já existe?</b> Capítulos 30 (como migrar) e 31 (anti-padrões).</li>
 <li><b>Quer revisar antes de uma entrevista?</b> Capítulo 33, a cola final.</li>
@@ -313,7 +318,7 @@ apresentado como exemplo), regras de bolso e frases prontas. A <b>verde</b> é a
 
 ${lembre([
   "Arquitetura é a estrutura do sistema, as decisões caras de mudar e os princípios que mantêm tudo de pé.",
-  "Toda escolha é um trade-off: responda \"depende\" dizendo do quê depende, o que você escolhe e o que faria você mudar de ideia.",
+  "Toda escolha é um trade-off: responda \"depende\" dizendo do que depende, o que você escolhe e o que faria você mudar de ideia.",
   "Decida o que é caro no último momento responsável e mantenha as opções abertas até lá; o que é barato, decida rápido.",
 ])}
 `;
