@@ -16,6 +16,7 @@
     "test": "vitest run",
     "render:aula": "tsx src/cli/render-aula.ts",
     "pdf:whatsapp": "node materiais/whatsapp/gerar.mjs",
+    "pdf:arquiteturas": "node materiais/arquiteturas/gerar.mjs",
     "reels:whatsapp": "node materiais/whatsapp/reels.mjs",
     "render:reels-whatsapp": "tsx src/cli/render-reels-whatsapp.ts",
     "sons:whatsapp": "python3 materiais/whatsapp/sons.py"
