@@ -1,6 +1,6 @@
 // Capítulo 28: Árvore de decisão (qual usar). Capítulo da parte V, então a estrutura muda um pouco em relação
-// aos capítulos de arquitetura: abertura → árvore do sistema por fora → árvore do código por dentro → perguntas de
-// comunicação e dados → como usar com o time → seis cenários resolvidos → sinais de que está na hora de mudar.
+// aos capítulos de arquitetura: abertura → árvore do sistema por fora → árvore do código por dentro → perguntas por
+// família → como usar com o time → seis cenários resolvidos → sinais de que está na hora de mudar.
 
 import { alerta, combina, dica, fig, lembre, passos, pratica, resumo, tabela } from "../componentes.mjs";
 import { bloco, claro, cor, curva, linha, quadro, semear, seta, txt } from "../desenho.mjs";
@@ -58,26 +58,25 @@ function arvoreDentro() {
   let s = "";
   const sim = { cor: cor.verde, espessura: 1.9 };
   const nao = { cor: cor.vermelho, espessura: 1.9 };
-  s += pergunta(30, 14, 220, 62, "É código de interface\n(tela web, app, desktop)?");
-  s += pergunta(450, 14, 220, 62, "A regra de negócio é rica\ne muda com frequência?");
-  s += pergunta(190, 150, 220, 62, "Muitas features que mudam\ncada uma no seu ritmo?");
-  s += pergunta(505, 150, 235, 62, "Time grande, que precisa de\nregras explícitas por anel?");
-  s += seta(252, 45, 446, 45, nao) + rot(349, 30, false);
-  s += seta(72, 76, 73, 293, sim) + rot(94, 100, true);
-  s += seta(490, 76, 362, 148, nao) + rot(408, 100, false);
-  s += seta(630, 76, 640, 148, sim) + rot(656, 104, true);
-  s += seta(245, 212, 228, 293, nao) + rot(220, 238, false);
-  s += seta(355, 212, 382, 293, sim) + rot(386, 236, true);
-  s += seta(560, 212, 544, 293, nao) + rot(533, 238, false);
-  s += seta(690, 212, 694, 293, sim) + rot(713, 238, true);
-  s += folha(8, 296, 130, 72, "MVC, MVP\nou MVVM", "cap. 5", claro.laranja);
-  s += folha(158, 296, 138, 72, "Camadas", "cap. 4", claro.cinza);
-  s += folha(316, 296, 138, 72, "Vertical\nSlice", "cap. 8", claro.verde);
-  s += folha(474, 296, 140, 72, "Hexagonal", "cap. 6", claro.azul);
-  s += folha(634, 296, 118, 72, "Clean ou\nOnion", "cap. 7", claro.violeta);
-  s += txt(380, 396, "e também: extensões de terceiros? microkernel (cap. 9)", { tam: 15, cor: cor.cinza });
-  s += txt(380, 418, "processamento em etapas sobre um fluxo? pipes and filters (cap. 10)", { tam: 15, cor: cor.cinza });
-  return quadro(760, 436, s);
+  s += pergunta(30, 6, 220, 56, "É código de interface\n(tela web, app, desktop)?");
+  s += pergunta(450, 6, 220, 56, "A regra de negócio é rica\ne muda com frequência?");
+  s += pergunta(190, 100, 220, 56, "Muitas features que mudam\ncada uma no seu ritmo?");
+  s += pergunta(505, 100, 235, 56, "Time grande, que precisa de\nregras explícitas por anel?");
+  s += seta(252, 34, 446, 34, nao) + rot(349, 19, false);
+  s += seta(72, 62, 73, 189, sim) + rot(94, 86, true);
+  s += seta(490, 62, 362, 98, nao) + rot(416, 66, false);
+  s += seta(630, 62, 640, 98, sim) + rot(656, 80, true);
+  s += seta(245, 156, 228, 189, nao) + rot(214, 171, false);
+  s += seta(355, 156, 382, 189, sim) + rot(390, 170, true);
+  s += seta(560, 156, 544, 189, nao) + rot(530, 171, false);
+  s += seta(690, 156, 694, 189, sim) + rot(713, 171, true);
+  s += folha(8, 192, 130, 70, "MVC, MVP\nou MVVM", "cap. 5", claro.laranja);
+  s += folha(158, 192, 138, 70, "Camadas", "cap. 4", claro.cinza);
+  s += folha(316, 192, 138, 70, "Vertical\nSlice", "cap. 8", claro.verde);
+  s += folha(474, 192, 140, 70, "Hexagonal", "cap. 6", claro.azul);
+  s += folha(634, 192, 118, 70, "Clean ou\nOnion", "cap. 7", claro.violeta);
+  s += txt(380, 284, "responda para cada módulo: partes diferentes podem ter respostas diferentes", { tam: 15, cor: cor.vermelho });
+  return quadro(760, 298, s);
 }
 
 function evolucao() {
@@ -100,7 +99,7 @@ function evolucao() {
   // o caminho tem volta
   s += curva([[505, 70], [440, 26], [340, 30], [268, 150]], { cor: cor.vermelho, espessura: 1.8, tracejado: true });
   s += seta(275, 136, 267, 154, { cor: cor.vermelho, espessura: 1.8, ponta: 11 });
-  s += txt(118, 58, "custo de operar\nmaior que o ganho?\njunte de volta", { tam: 15, cor: cor.vermelho });
+  s += txt(180, 62, "custo de operar\nmaior que o ganho?\njunte de volta", { tam: 15, cor: cor.vermelho });
   s += txt(480, 292, "em laranja: o sinal que justifica subir o degrau; sem ele, é só custo", { tam: 15, cor: cor.laranja });
   return quadro(760, 310, s);
 }
@@ -112,10 +111,11 @@ ${resumo(
 )}
 
 <p>Os capítulos anteriores mostraram cada arquitetura sozinha, e o capítulo 27 colocou todas lado a lado. Este capítulo
-transforma isso num roteiro: duas árvores de perguntas de sim ou não, um quadro de perguntas para comunicação e dados, seis
-cenários resolvidos e os sinais de que a escolha de hoje já não serve. As perguntas resumem os critérios do capítulo 2
-(tamanho do time, carga, ritmo de mudança, custo de operar). Responda pensando no sistema de hoje e no que é provável para o
-próximo ano, não no cenário dos sonhos: arquitetura escolhida para um tráfego que não existe é custo pago adiantado.</p>
+transforma isso num roteiro: duas árvores de perguntas de sim ou não, um quadro de perguntas por família, seis cenários
+resolvidos e os sinais de que a escolha de hoje já não serve. As perguntas vêm dos critérios do capítulo 2: a forma dos
+times, os atributos de qualidade que mais pesam (escala, disponibilidade, facilidade de mudar) e as restrições que você não
+escolhe. Responda pensando no sistema de hoje e no que é provável para o próximo ano, não no cenário dos sonhos: arquitetura
+escolhida para um tráfego que não existe é custo pago adiantado.</p>
 
 <h3>Árvore 1: o sistema por fora</h3>
 <p>A primeira decisão é física: quantas <b>unidades de deploy</b> (partes que vão para produção separadas) o sistema vai ter.
@@ -127,7 +127,7 @@ ${fig(arvoreFora(), "Leia de cima para baixo. As caixas coloridas são o ponto d
 <ul>
 <li><b>Vários times precisam fazer deploy sem esperar uns pelos outros?</b> É a pergunta que mais separa monólito de
 serviços. Microsserviços resolvem antes de tudo um problema de <b>organização</b>: deixar times publicarem sem fila. Com um
-único time, que cabe numa mesma reunião diária, a resposta quase sempre é não.</li>
+único time, a resposta quase sempre é não.</li>
 <li><b>A carga vem em picos e fica ociosa boa parte do tempo?</b> Pense num sistema de inscrições que lota dois dias por
 mês, ou num processamento disparado por upload de arquivo. Serverless escala sozinho e cobra pelo uso, então brilha aqui. Com
 carga alta e constante, máquinas ou containers sempre ligados costumam sair mais baratos e previsíveis.</li>
@@ -138,13 +138,14 @@ chamada de rede, e nasce o <b>monólito distribuído</b> (capítulo 31). Arrume 
 primeiro; extraia depois.</li>
 <li><b>Escala muito grande e uma falha não pode atingir todos?</b> Quando um deploy ruim ou um cliente gigante pode
 derrubar todo mundo, o sistema inteiro é copiado em <b>células</b> isoladas, cada uma atendendo uma fatia do tráfego. A AWS
-fala publicamente desse modelo, e o Slack migrou para ele em 2023. Vale para poucos: para a maioria, microsserviços com boas
-práticas de resiliência bastam.</li>
+fala publicamente desse modelo, e o Slack contou em 2023 sua migração para ele. As células aparecem depois dos
+microsserviços porque é ali que costumam surgir, mas dentro de cada célula pode rodar até um monólito. Vale para poucos: para
+a maioria, boas práticas de resiliência bastam.</li>
 </ul>
 
 ${dica(
   "Serverless não é o oposto de monólito",
-  "<p>Serverless fala de <b>como</b> as partes vão para o ar, não de <b>quantas</b> são. Dá para rodar um monólito pequeno num container serverless ou montar microsserviços com funções. Na árvore ele aparece como resposta ao padrão de carga, que é o que mais pesa nessa escolha.</p>",
+  "<p>Serverless fala de <b>como</b> as partes vão para o ar, não de <b>quantas</b> são: dá para rodar um monólito num container serverless ou montar microsserviços com funções. Na árvore ele responde ao padrão de carga, o fator que mais pesa nessa escolha.</p>",
 )}
 
 <h3>Árvore 2: o código por dentro</h3>
@@ -152,7 +153,7 @@ ${dica(
 decisão é mais barata de mudar e pode variar dentro do mesmo sistema: o módulo de relatórios pode ser em camadas e o de
 pagamentos, hexagonal.</p>
 
-${fig(arvoreDentro(), "Responda para cada aplicação ou módulo. Misturar é normal: vertical slice na organização geral e um núcleo hexagonal nas fatias que têm regra rica.", "grande")}
+${fig(arvoreDentro(), "Misturar é normal: vertical slice na organização geral e um núcleo hexagonal nas fatias com regra rica.", "grande")}
 
 <h4>As perguntas, uma a uma</h4>
 <ul>
@@ -168,13 +169,17 @@ resolvem com menos regras.</li>
 <li><b>Time grande, que precisa de regras explícitas por anel?</b> Hexagonal e Clean isolam o núcleo do mesmo jeito. A Clean
 dá nome e responsabilidade a cada anel (entidades, casos de uso, adaptadores, frameworks), o que ajuda quando muita gente
 precisa seguir a mesma convenção. Com um time menor, a hexagonal entrega o mesmo isolamento com menos estrutura.</li>
+<li><b>Fora da árvore</b>: dois estilos resolvem problemas mais específicos. Se terceiros precisam acrescentar funções sem
+mexer no núcleo, pense em microkernel (capítulo 9), como as extensões do VS Code. Se o trabalho é processar dados em etapas
+encadeadas (importar, validar, transformar), pense em pipes and filters (capítulo 10).</li>
 </ul>
 
-<h3>Perguntas-chave para comunicação e dados</h3>
-<p>As árvores decidem a forma do sistema. As perguntas abaixo decidem como as partes conversam e guardam dados, e são
-independentes das árvores: um monólito pode publicar eventos, e microsserviços podem ser quase todos síncronos. Só adote o
-padrão quando a resposta for um "sim" claro.</p>
+<h3>Perguntas-chave por família</h3>
+<p>As árvores decidem a forma do sistema. As perguntas abaixo cobrem o resto: como as partes conversam, como guardam dados
+e alguns casos especiais. Elas são independentes das árvores: um monólito pode publicar eventos, e microsserviços podem ser
+quase todos síncronos. Só adote o padrão quando a resposta for um "sim" claro.</p>
 
+<h4>Comunicação e dados</h4>
 ${tabela(
   ["Família", "Pergunta-chave", "Se a resposta for sim"],
   [
@@ -185,9 +190,18 @@ ${tabela(
     ["Dados", "Você precisa do histórico completo e de por que cada valor mudou?", "Event Sourcing (cap. 22), só nas partes que pedem isso"],
     ["Dados", "Uma operação grava em vários serviços, cada um com seu banco?", "Saga com compensação (cap. 23). Se cabe num banco só, use uma transação comum"],
     ["Dados", "Os dados servem para análise e vêm de vários sistemas?", "Lakehouse, streaming ou Data Mesh (cap. 26)"],
+  ],
+  "compacta",
+)}
+
+<h4>Casos especiais</h4>
+${tabela(
+  ["Família", "Pergunta-chave", "Se a resposta for sim"],
+  [
     ["Escala extrema", "O banco é gargalo mesmo com cache e fila (ingressos, leilões)?", "Space-based (cap. 24): dados em memória replicada"],
     ["Escala extrema", "Milhões de entidades pequenas com estado, cada uma recebendo mensagens?", "Modelo de atores (cap. 25): Erlang/OTP, Akka, Orleans"],
-    ["Extensão", "Terceiros precisam acrescentar funções sem mexer no núcleo?", "Microkernel (cap. 9), como as extensões do VS Code"],
+    ["Front-end", "Vários times mexem no mesmo front-end grande e brigam pelo deploy?", "Micro-frontends (cap. 16). Com um time só, um front-end bem modularizado basta"],
+    ["Integração", "A empresa precisa integrar muitos sistemas existentes (ERP, legados) com contratos padronizados?", "SOA (cap. 13), sem deixar a regra de negócio migrar para o barramento"],
   ],
   "compacta",
 )}
@@ -197,7 +211,7 @@ ${passos([
   "Escreva o contexto em meia página: pessoas e times, carga esperada (e se tem picos), regras de negócio críticas, exigências legais e prazo. Sem isso, cada pessoa responde pensando num sistema diferente.",
   "Percorra a árvore 1 com fatos, não com desejos. \"Um dia vamos ter milhões de usuários\" não conta; \"o Natal dobra os pedidos\" conta, se os dados mostram isso.",
   "Percorra a árvore 2 para cada parte que saiu da árvore 1. Partes diferentes podem ter respostas diferentes.",
-  "Passe pela tabela de comunicação e dados e marque só os \"sim\" claros. Cada padrão a mais (fila, CQRS, saga) é uma peça a mais para operar.",
+  "Passe pelas tabelas de perguntas por família e marque só os \"sim\" claros. Cada padrão a mais (fila, CQRS, saga) é uma peça a mais para operar.",
   "Registre a decisão num ADR (capítulo 32): o contexto, a escolha, as alternativas descartadas e o motivo.",
   "Anote os sinais que fariam o time revisar a escolha (veja o fim deste capítulo). Assim a mudança vira um combinado, não uma briga.",
 ])}
@@ -247,7 +261,8 @@ parte das visitas é navegação; só uma fração vira compra.</p>
 Vitrine e catálogo servidos por CDN e cache, com um índice de busca próprio (leitura separada da escrita, a ideia do CQRS,
 capítulo 21). O checkout faz na hora só o essencial (reservar estoque e autorizar o pagamento) e publica o pedido numa fila
 (capítulo 20); nota fiscal, e-mail e transportadora vêm depois, no ritmo que esses sistemas aguentam. Se estoque, pagamento e
-entrega forem serviços separados, a compra vira uma saga (capítulo 23).</li>
+entrega forem serviços separados, a compra vira uma saga (capítulo 23). Por dentro, o checkout concentra a regra que vale
+dinheiro (preço, cupom, estoque) e merece um núcleo isolado, como na hexagonal (capítulo 6).</li>
 <li><b>Por quê</b>: o pico é previsível e quase todo de leitura. O cache absorve a leitura e a fila absorve a escrita, então
 o banco de pedidos não precisa aguentar o pico inteiro de uma vez.</li>
 <li><b>Evite</b>: escalar tudo junto, até o que não está no pico; checkout que chama pagamento, estoque, frete e e-mail em
@@ -283,8 +298,9 @@ ou o app aparece na TV, chega uma multidão no mesmo minuto.</p>
 sozinho e cobra pelo uso.</li>
 <li><b>Evite</b>: mandar a notificação para todos de uma vez (envie em lotes, para não criar o próprio pico); milhares de
 funções abrindo conexão direto num banco relacional (use um proxy de conexões ou um banco que aguente esse padrão); mudar a
-API sem manter compatibilidade, porque muita gente demora a atualizar o app. E meça o <i>cold start</i> (a demora da primeira
-execução de uma função) nas rotas sensíveis à latência.</li>
+API sem manter compatibilidade, porque muita gente demora a atualizar o app. Meça o <i>cold start</i> (a demora da primeira
+execução de uma função) nas rotas sensíveis à latência e confira antes da campanha o limite de execuções simultâneas da sua
+conta no provedor: serverless escala sozinho, mas não sem teto.</li>
 </ul>
 
 <h4>6. Plataforma de dados</h4>
@@ -294,7 +310,7 @@ das lojas físicas e do app.</p>
 <li><b>Escolha</b>: um lakehouse (capítulo 26) como destino central, alimentado por pipelines em etapas (pipes and filters,
 capítulo 10): extrair, limpar, juntar, publicar. Para tirar dados dos sistemas de origem sem pesar neles, eventos de domínio
 ou CDC (<i>change data capture</i>, que lê as mudanças direto do log do banco). Se alguma parte precisa de tempo real
-(estoque, fraude), um fluxo de streaming no estilo Kappa só para ela.</li>
+(estoque, fraude), um fluxo de streaming só para ela.</li>
 <li><b>Por quê</b>: painéis e previsões costumam aceitar dados de horas atrás, e processar em lote é mais simples e barato
 de operar. Tempo real só onde o negócio perde dinheiro esperando.</li>
 <li><b>Evite</b>: relatórios pesados rodando no banco de produção; Lambda architecture (a mesma conta escrita duas vezes, em
@@ -308,7 +324,7 @@ ${tabela(
   [
     ["Startup com 3 devs", "Monólito", "Camadas ou vertical slice", "Banco único, chamadas diretas"],
     ["SaaS B2B crescendo", "Monólito modular", "Hexagonal nos módulos ricos, camadas no resto", "API interna entre módulos, dados por <i>tenant</i>"],
-    ["E-commerce na Black Friday", "Modular + checkout separado", "Hexagonal no checkout", "CDN, cache, fila; saga se houver serviços"],
+    ["E-commerce na Black Friday", "Núcleo como está + vitrine e busca separadas", "Hexagonal no checkout", "CDN, cache, fila; saga se houver serviços"],
     ["Fintech regulada", "Modular ou poucos serviços", "Hexagonal ou Clean", "Event sourcing no ledger, sagas, idempotência"],
     ["App mobile com picos", "Serverless + CDN", "MVVM no app", "Fila, BFF, API compatível"],
     ["Plataforma de dados", "Lakehouse + pipelines", "Pipes and filters", "CDC ou eventos; streaming só onde precisa"],
@@ -323,7 +339,7 @@ ${pratica(
 
 <h3>Sinais de que está na hora de mudar</h3>
 <p>A arquitetura certa hoje pode ficar errada daqui a dois anos: o time cresce, a carga muda, o negócio muda. A Lei de
-Conway (Melvin Conway, 1968) lembra que o sistema tende a copiar a forma como a organização se comunica, então mudanças de
+Conway (Melvin Conway, 1968, vista no capítulo 2) lembra que o sistema tende a copiar a forma como a organização se comunica, então mudanças de
 times costumam pedir mudanças de arquitetura. Em vez de esperar a dor virar crise, combine com o time quais sinais disparam
 uma revisão.</p>
 

@@ -11,9 +11,9 @@ function diagrama() {
   s += ret(20, 36, 720, 260, { tracejado: true, cor: cor.cinza, espessura: 1.6 });
   s += txt(380, 18, "uma aplicação · um processo · um deploy", { tam: 17 });
   const modulos = [
-    [45, "Pagamentos", claro.ciano],
+    [45, "Catálogo", claro.laranja],
     [295, "Pedidos", claro.amarelo],
-    [545, "Catálogo", claro.laranja],
+    [545, "Pagamentos", claro.ciano],
   ];
   for (const [x, nome, c] of modulos) {
     s += bloco(x, 60, 170, 216, "", { preench: c, gap: 8 });
@@ -34,9 +34,9 @@ function diagrama() {
   s += xis(505, 214, 18);
   // dados: um schema por módulo, sem join entre eles
   s += ret(40, 312, 680, 112, { tracejado: true, cor: cor.cinza, espessura: 1.4 });
-  s += banco(70, 324, 120, 66, "schema\npagamentos", { preench: claro.ciano, tam: 15 });
+  s += banco(70, 324, 120, 66, "schema\ncatálogo", { preench: claro.laranja, tam: 15 });
   s += banco(320, 324, 120, 66, "schema\npedidos", { preench: claro.amarelo, tam: 15 });
-  s += banco(570, 324, 120, 66, "schema\ncatálogo", { preench: claro.laranja, tam: 15 });
+  s += banco(570, 324, 120, 66, "schema\npagamentos", { preench: claro.ciano, tam: 15 });
   s += seta(446, 360, 562, 360, { cor: cor.vermelho, espessura: 2, tracejado: true, duplo: true });
   s += xis(504, 360, 18);
   s += txt(504, 338, "join", { tam: 15, cor: cor.vermelho });
@@ -85,31 +85,31 @@ function extrair() {
   semear("monolito-modular-3");
   let s = "";
   // antes: tudo no mesmo deploy
-  s += txt(20, 72, "antes", { tam: 18, ancora: "start" });
-  s += ret(100, 16, 470, 106, { tracejado: true, cor: cor.cinza, espessura: 1.5 });
-  s += txt(112, 32, "um deploy", { tam: 15, cor: cor.cinza, ancora: "start" });
-  s += bloco(115, 50, 120, 46, "Pedidos", { preench: claro.amarelo });
-  s += seta(237, 73, 283, 73, { espessura: 2 });
-  s += bloco(285, 38, 270, 76, "", { preench: claro.laranja, gap: 8 });
-  s += bloco(297, 46, 246, 32, "buscarProduto(id): local", { preench: claro.verde, hachura: "solid", tam: 15 });
-  s += txt(420, 97, "Catálogo (internos)", { tam: 15 });
-  s += seta(557, 76, 608, 76, { espessura: 1.8 });
-  s += banco(610, 44, 120, 64, "schema\ncatálogo", { preench: claro.laranja, tam: 15 });
-  s += txt(670, 124, "mesmo banco", { tam: 15, cor: cor.cinza });
+  s += txt(20, 56, "antes", { tam: 18, ancora: "start" });
+  s += ret(100, 10, 470, 92, { tracejado: true, cor: cor.cinza, espessura: 1.5 });
+  s += txt(112, 24, "um deploy", { tam: 15, cor: cor.cinza, ancora: "start" });
+  s += bloco(115, 40, 120, 46, "Pedidos", { preench: claro.amarelo });
+  s += seta(237, 63, 283, 63, { espessura: 2 });
+  s += bloco(285, 28, 270, 68, "", { preench: claro.laranja, gap: 8 });
+  s += bloco(297, 35, 246, 30, "buscarProduto(id): local", { preench: claro.verde, hachura: "solid", tam: 15 });
+  s += txt(420, 81, "Catálogo (internos)", { tam: 15 });
+  s += seta(557, 63, 608, 63, { espessura: 1.8 });
+  s += banco(610, 30, 120, 64, "schema\ncatálogo", { preench: claro.laranja, tam: 15 });
+  s += txt(670, 110, "mesmo banco", { tam: 15, cor: cor.cinza });
   // depois: o módulo virou serviço
-  s += txt(20, 202, "depois", { tam: 18, ancora: "start" });
-  s += ret(100, 148, 300, 106, { tracejado: true, cor: cor.cinza, espessura: 1.5 });
-  s += txt(112, 164, "monólito", { tam: 15, cor: cor.cinza, ancora: "start" });
-  s += bloco(115, 180, 100, 46, "Pedidos", { preench: claro.amarelo });
-  s += seta(217, 203, 233, 203, { espessura: 2, ponta: 9 });
-  s += bloco(235, 172, 152, 62, "buscarProduto(id)\ncliente HTTP", { preench: claro.verde, hachura: "solid", tam: 15 });
-  s += seta(389, 203, 452, 203, { espessura: 2.2, cor: cor.azul, rotulo: "rede", corRotulo: cor.azul });
-  s += bloco(454, 176, 150, 54, "serviço\nCatálogo", { preench: claro.laranja, tam: 16 });
-  s += seta(606, 203, 640, 203, { espessura: 1.8 });
-  s += banco(642, 171, 100, 64, "banco\ncatálogo", { preench: claro.laranja, tam: 15 });
-  s += txt(692, 252, "banco próprio", { tam: 15, cor: cor.cinza });
-  s += txt(380, 284, "quem chama continua usando buscarProduto(id): só a implementação mudou", { tam: 15, cor: cor.vermelho });
-  return quadro(760, 302, s);
+  s += txt(20, 176, "depois", { tam: 18, ancora: "start" });
+  s += ret(100, 130, 300, 92, { tracejado: true, cor: cor.cinza, espessura: 1.5 });
+  s += txt(112, 144, "monólito", { tam: 15, cor: cor.cinza, ancora: "start" });
+  s += bloco(115, 158, 100, 46, "Pedidos", { preench: claro.amarelo });
+  s += seta(217, 181, 233, 181, { espessura: 2, ponta: 9 });
+  s += bloco(235, 152, 152, 58, "buscarProduto(id)\ncliente HTTP", { preench: claro.verde, hachura: "solid", tam: 15 });
+  s += seta(389, 181, 452, 181, { espessura: 2.2, cor: cor.azul, rotulo: "rede", corRotulo: cor.azul });
+  s += bloco(454, 154, 150, 54, "serviço\nCatálogo", { preench: claro.laranja, tam: 16 });
+  s += seta(606, 181, 640, 181, { espessura: 1.8 });
+  s += banco(642, 149, 100, 64, "banco\ncatálogo", { preench: claro.laranja, tam: 15 });
+  s += txt(692, 230, "banco próprio", { tam: 15, cor: cor.cinza });
+  s += txt(380, 258, "quem chama continua usando buscarProduto(id): só a implementação mudou", { tam: 15, cor: cor.vermelho });
+  return quadro(760, 274, s);
 }
 
 export default `
@@ -119,17 +119,18 @@ ${resumo(
 )}
 
 <p>No capítulo 11 você viu o monólito: um sistema, um deploy. O que costuma dar errado nele não é rodar num processo só, é o
-código virar uma teia em que tudo chama tudo. O monólito modular ataca exatamente esse ponto. Continua sendo um deploy só, mas o
-código é dividido em módulos que se comportam quase como serviços separados. Em 2015, Martin Fowler defendeu no artigo
-<i>Monolith First</i> que a maioria dos sistemas deveria começar como monólito e só se dividir depois, cuidando desde cedo da
-modularidade, tanto nas APIs quanto na forma de guardar os dados. O monólito modular é essa recomendação levada a sério.</p>
+código virar uma teia em que tudo chama tudo (a "bola de lama" do capítulo 31). O monólito modular ataca exatamente esse ponto.
+Continua sendo um deploy só, mas o código é dividido em módulos que se comportam quase como serviços separados. Em 2015, no
+artigo <i>Monolith First</i>, Martin Fowler defendeu não começar um sistema novo com microsserviços e citou um caminho: desenhar
+o monólito com cuidado, prestando atenção à modularidade tanto nas APIs quanto na forma de guardar os dados. O monólito
+modular é esse conselho levado a sério.</p>
 
 ${fig(diagrama(), "Três módulos no mesmo deploy. Cada um tem uma porta de entrada (API pública), internos que ninguém de fora toca e um schema só seu no banco.", "grande")}
 
 <h3>Como funciona</h3>
 <ul>
-<li><b>Um deploy, um processo</b>: um build, um artefato no ar. Um módulo chama o outro com uma chamada de função comum, sem
-rede no meio.</li>
+<li><b>Um deploy, um processo</b>: um build, um artefato no ar (pode haver várias cópias atrás de um balanceador, mas
+todas iguais). Um módulo chama o outro com uma chamada de função comum, sem rede no meio.</li>
 <li><b>Módulos por área do negócio</b>, não por camada técnica: catálogo, pedidos, pagamentos. Cada módulo é um <b>contexto
 delimitado</b> (<i>bounded context</i>, conceito do DDD, o <i>Domain-Driven Design</i>): uma parte do negócio com vocabulário
 e regras próprios. "Produto" no catálogo tem foto e descrição; em entregas, tem peso e tamanho da caixa.</li>
@@ -160,7 +161,7 @@ ${quando(
   ],
 )}
 
-${medidor({ complexidade: 2, escala: 4, operacao: 2, aprendizado: 3, time: "de 1 a vários times; ponto ideal: times médios" })}
+${medidor({ complexidade: 2, escala: 4, operacao: 1, aprendizado: 3, time: "de 1 a vários times; ideal: times médios, domínio crescendo" })}
 
 <h3>Como usar na prática</h3>
 ${pastas(`
@@ -188,9 +189,14 @@ export type ProdutoResumo = { id: string; nome: string; precoEmCentavos: number;
 
 export async function buscarProduto(id: string): Promise<ProdutoResumo | null> {
   const p = await produtoPorId(id); // entidade interna: não sai do módulo
-  return p && { id: p.id, nome: p.nome, precoEmCentavos: p.preco.centavos, ativo: p.ativo };
-}
+  if (!p) return null;
+  return { id: p.id, nome: p.nome, precoEmCentavos: p.preco.centavos, ativo: p.ativo };
+}`,
+  "src/modulos/catalogo/index.ts",
+)}
 
+${codigo(
+  `
 // modulos/pedidos/interno/criar-pedido.ts
 import { buscarProduto } from "../../catalogo";                    // pode: API pública
 // import { produtoPorId } from "../../catalogo/interno/repositorio"; // barrado no CI
@@ -203,20 +209,17 @@ export async function criarPedido(clienteId: string, itens: Item[]) {
     linhas.push({ ...item, precoEmCentavos: produto.precoEmCentavos }); // cópia, sem join
   }
   return pedidos.salvar(Pedido.novo(clienteId, linhas)); // grava no schema "pedidos"
-}`,
-  "src/modulos/catalogo e src/modulos/pedidos",
-)}
+}
 
-${codigo(
-  `
 // compartilhado/barramento.ts: eventos entre módulos, dentro do mesmo processo
-const ouvintes = new Map<string, ((dados: any) => Promise<void>)[]>();
+type Ouvinte = (dados: any) => Promise<void>;
+const ouvintes = new Map<string, Ouvinte[]>();
 export const barramento = {
   assinar<T>(evento: string, fn: (dados: T) => Promise<void>) {
     ouvintes.set(evento, [...(ouvintes.get(evento) ?? []), fn]);
   },
   async publicar<T>(evento: string, dados: T) {
-    for (const fn of ouvintes.get(evento) ?? []) await fn(dados);
+    for (const fn of ouvintes.get(evento) ?? []) await fn(dados); // na hora, um por vez
   },
 };
 
@@ -225,14 +228,14 @@ export const PAGAMENTO_APROVADO = "pagamentos.aprovado";
 export type PagamentoAprovado = { pedidoId: string; valorEmCentavos: number };
 
 // modulos/pagamentos/interno/aprovar.ts: grava e avisa, sem saber quem vai ouvir
-export async function aprovar(p: PagamentoAprovado) {
-  await pagamentos.marcarAprovado(p.pedidoId); // schema "pagamentos"
-  await barramento.publicar(PAGAMENTO_APROVADO, p);
+export async function aprovar(pedidoId: string, valorEmCentavos: number) {
+  await pagamentos.marcarAprovado(pedidoId); // schema "pagamentos"
+  await barramento.publicar<PagamentoAprovado>(PAGAMENTO_APROVADO, { pedidoId, valorEmCentavos });
 }
 
-// modulos/pedidos/interno/ouvintes.ts: reage sem importar nada interno de pagamentos
+// modulos/pedidos/interno/ouvintes.ts: só usa a API pública de pagamentos
 barramento.assinar<PagamentoAprovado>(PAGAMENTO_APROVADO, (e) => marcarComoPago(e.pedidoId));`,
-  "src/compartilhado/barramento.ts e os módulos",
+  "src/modulos/pedidos, src/compartilhado e src/modulos/pagamentos",
 )}
 
 <h4>Como garantir as fronteiras</h4>
@@ -268,7 +271,7 @@ module.exports = {
 <h4>Passo a passo para adotar</h4>
 ${passos([
   "Mapeie as áreas do negócio. Onde a mesma palavra muda de sentido (\"produto\" no catálogo e em entregas), provavelmente há uma fronteira.",
-  "Crie uma pasta por módulo, com <code>index.ts</code> e <code>interno/</code>, e mova o código para dentro sem mudar comportamento.",
+  "Crie uma pasta por módulo, com <code>index.ts</code> e <code>interno/</code>, e dê um dono a cada uma (um time ou uma pessoa). Mova o código para dentro sem mudar comportamento.",
   "Ligue a checagem no CI. Num sistema que já existe, salve as violações atuais como linha de base (dependency-cruiser e Packwerk têm esse recurso) e barre só as novas.",
   "Pague as violações antigas aos poucos: imports de internos viram chamadas à API pública ou eventos.",
   "Separe os dados: um schema por módulo, sem joins nem chaves estrangeiras entre eles.",
@@ -278,7 +281,8 @@ ${passos([
 <p>Se um módulo ganhar um motivo real para deploy próprio (escala muito diferente, um time que precisa de autonomia, outra
 tecnologia), metade do trabalho já está feita. O schema vai para um banco próprio, o código vira um serviço, o
 <code>index.ts</code> vira um cliente HTTP com a mesma assinatura e os eventos daquele módulo passam por uma fila de verdade.
-O capítulo 30 mostra como fazer isso aos poucos, sem parar o sistema.</p>
+Por isso vale, desde já, a API pública devolver <code>Promise</code> e dados simples (não entidades internas): a assinatura
+sobrevive à troca. O capítulo 30 mostra como fazer isso aos poucos, sem parar o sistema.</p>
 
 ${fig(extrair(), "Extrair um módulo bem isolado é trocar a implementação da API pública. Quem chama não muda o código, mas passa a lidar com latência e falhas de rede.")}
 
@@ -302,20 +306,25 @@ módulos. Módulo é uma fatia do negócio, com as camadas dentro.</li>
 fronteira.</li>
 <li><b>Join escondido</b>: a API está certinha, mas um relatório faz <code>select</code> juntando tabelas de dois módulos.
 Na hora de extrair, é ele que quebra.</li>
+<li><b>Transação que abraça vários módulos</b>: como o banco é um só, dá para gravar o pedido e baixar o estoque na mesma
+transação. Funciona, mas cola os dois módulos: no dia de extrair um deles, ela vira uma saga (capítulo 23). Prefira cada
+módulo confirmar a própria transação e avisar os outros por evento.</li>
 <li><b>Ciclos entre módulos</b>: pedidos chama pagamentos, que chama pedidos. Quebre com um evento ou invertendo a
 dependência (um módulo define a interface que precisa e o outro implementa, como as portas do capítulo 6).</li>
+<li><b>Pasta compartilhada que vira depósito</b>: <code>compartilhado/</code> deve ter só infraestrutura (barramento, log) e
+tipos básicos (<code>Dinheiro</code>). Regra de negócio ali vira um módulo escondido do qual todos dependem.</li>
 <li><b>Rede dentro do monólito</b>: módulos conversando por HTTP com o próprio servidor. É o custo dos microsserviços sem os
 benefícios.</li>
 </ul>
 
 ${pratica(
   "No mundo real",
-  "<p>O Shopify mantém sua aplicação principal como um grande monólito Ruby on Rails. Em vez de quebrá-lo em microsserviços, o time de engenharia contou no blog (<i>Deconstructing the Monolith</i>, 2019) que reorganizou o código em componentes por área do negócio, cada um com uma interface pública, e passou a checar as fronteiras de forma automática. A ferramenta mais conhecida desse esforço é o Packwerk, que o Shopify publicou como código aberto.</p>",
+  "<p>O Shopify é o caso mais citado. Seu sistema principal é um dos maiores monólitos Ruby on Rails conhecidos. No blog de engenharia (<i>Deconstructing the Monolith</i>, 2019), o time contou que, em vez de partir para microsserviços, trocou a organização pelas pastas do Rails (<code>models/</code>, <code>controllers/</code>) por componentes de áreas do negócio, cada um com uma interface pública. Depois, publicou como código aberto o Packwerk, que transforma essas fronteiras em checagem automática. Repare na ordem: primeiro desenhar as fronteiras, depois pôr a máquina para vigiar.</p>",
 )}
 
 ${alerta(
   "Evento em memória não é fila",
-  "<p>Se o processo cair entre gravar o pagamento e avisar os ouvintes, o evento some. Para reações que não podem se perder (cobrança, estoque), grave o evento numa tabela na mesma transação e entregue depois (o padrão <i>outbox</i>), ou use uma fila de verdade. Veja os capítulos 20 e 23.</p>",
+  "<p>No barramento acima, os ouvintes rodam na hora, um depois do outro, dentro da chamada de quem publicou: um ouvinte lento atrasa o pagamento, e um erro nele volta para Pagamentos. E se o processo cair entre gravar o pagamento e avisar os ouvintes, o evento some. Para reações que não podem se perder (cobrança, estoque), grave o evento numa tabela na mesma transação e entregue depois (o padrão <i>outbox</i>), ou use uma fila de verdade. Veja os capítulos 20 e 23.</p>",
 )}
 
 ${dica(

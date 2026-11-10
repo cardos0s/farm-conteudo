@@ -104,8 +104,8 @@ ${resumo(
 <p>Num sistema comum, um saque de R$ 120 vira um <code>UPDATE contas SET saldo = 380</code>: o número antigo some e ninguém
 sabe mais como se chegou ali. O <b>Event Sourcing</b> (em tradução livre, "o estado vem dos eventos") inverte isso: o que vai
 para o banco é o fato "foram sacados R$ 120", e o saldo é uma conta feita a partir dos fatos. A ideia é antiga: a contabilidade
-sempre trabalhou com lançamentos que não se apagam, e os bancos de dados usam um log parecido por dentro (o WAL do Postgres,
-por exemplo). Como padrão de aplicação, foi descrito por Martin Fowler num artigo de 2005 e popularizado por Greg Young, junto
+sempre trabalhou com lançamentos que não se apagam, e os bancos de dados usam um log parecido por dentro (o WAL, <i>write-ahead
+log</i>, do Postgres, por exemplo). Como padrão de aplicação, foi descrito por Martin Fowler num artigo de 2005 e popularizado por Greg Young, junto
 com o CQRS (capítulo 21), por volta de 2010.</p>
 
 ${fig(contaEmEventos(), "Quatro eventos da conta 42, aplicados em ordem, dão o saldo de R$ 460. A tabela comum chega ao mesmo número, mas esquece o caminho.")}
@@ -116,8 +116,9 @@ ${fig(contaEmEventos(), "Quatro eventos da conta 42, aplicados em ordem, dão o 
 Depois de gravado, nunca muda. Leva os dados do fato e metadados: quando, quem, versão do formato.</li>
 <li><b>Stream</b> (fluxo): a sequência de eventos de uma mesma coisa, como a conta 42. Cada evento tem uma posição no stream
 (1, 2, 3...), que é a sua <b>versão</b>.</li>
-<li><b>Event store</b>: o banco onde ficam os streams. Só tem duas operações principais: <b>anexar</b> eventos no fim de um
-stream e <b>ler</b> um stream em ordem. Não existe UPDATE nem DELETE de evento.</li>
+<li><b>Event store</b>: o banco onde ficam os streams. Operações principais: <b>anexar</b> eventos no fim de um stream,
+<b>ler</b> um stream em ordem e <b>assinar</b> os eventos novos (é assim que as projeções se alimentam). Não existe UPDATE nem
+DELETE de evento.</li>
 <li><b>Agregado</b>: o objeto que protege as regras de uma coisa do negócio (termo do DDD, o <i>Domain-Driven Design</i>). Ao
 receber um comando ("sacar R$ 120"), ele relê os seus eventos para saber o estado, valida a regra e <b>gera eventos novos</b>.
 Ele não grava o estado: grava os eventos.</li>
@@ -144,11 +145,10 @@ ${quando(
   ],
 )}
 
-${medidor({ complexidade: 4, escala: 4, operacao: 4, aprendizado: 4, time: "qualquer tamanho, se alguém já domina o padrão; comece por um módulo" })}
+${medidor({ complexidade: 4, escala: 4, operacao: 4, aprendizado: 4, time: "qualquer, se alguém já domina o padrão" })}
 
 <h3>Como usar na prática</h3>
 ${pastas(`
-src/contas/
 ├── dominio/
 │   ├── eventos.ts           # tipos dos eventos (contrato para sempre)
 │   ├── conta.ts             # agregado: decide e aplica eventos
@@ -156,41 +156,38 @@ src/contas/
 ├── comandos/sacar.ts        # carrega, decide, anexa
 ├── projecoes/extrato.ts     # evento -> linhas da tabela de extrato
 └── infra/event-store-pg.ts  # tabela só de inserção + versão
-`)}
+`, "estrutura de pastas: src/contas/")}
 
 ${codigo(
   `
-// dominio/eventos.ts: fatos no passado; depois de gravados, não mudam
-export type EventoDaConta =
+export type EventoDaConta =   // fatos no passado; gravados, não mudam
   | { tipo: "ContaAberta"; titular: string }
-  | { tipo: "ValorDepositado"; valor: number }  // valores em centavos
-  | { tipo: "ValorSacado"; valor: number };
+  | { tipo: "ValorDepositado"; valor: number }   // valores em centavos
+  | { tipo: "ValorSacado"; valor: number };`,
+  "src/contas/dominio/eventos.ts",
+)}
 
-// dominio/conta.ts: o agregado
+${codigo(
+  `
 export class Conta {
   saldo = 0;
   aberta = false;
   versao = 0;                    // posição do último evento lido do banco
   novos: EventoDaConta[] = [];   // gerados agora, ainda não gravados
-
   static reconstruir(historico: EventoDaConta[]): Conta {
     const conta = new Conta();
     historico.forEach((e) => conta.aplicar(e));
     conta.versao = historico.length;
     return conta;
   }
-
-  // DECIDE: valida e gera um evento (depositar e abrir seguem o mesmo molde)
-  sacar(valor: number) {
+  sacar(valor: number) {              // DECIDE: valida e gera um evento
     if (!this.aberta || valor <= 0) throw new Error("Saque inválido");
     if (valor > this.saldo) throw new Error("Saldo insuficiente");
     const e: EventoDaConta = { tipo: "ValorSacado", valor };
     this.aplicar(e);
     this.novos.push(e);
   }
-
-  // APLICA: só muda o estado; nunca valida, nunca falha
-  private aplicar(e: EventoDaConta) {
+  private aplicar(e: EventoDaConta) {  // APLICA: só muda o estado
     switch (e.tipo) {
       case "ContaAberta": this.aberta = true; break;
       case "ValorDepositado": this.saldo += e.valor; break;
@@ -198,11 +195,12 @@ export class Conta {
     }
   }
 }`,
-  "src/contas/dominio",
+  "src/contas/dominio/conta.ts: o agregado",
 )}
 
-<p>Repare na divisão: <code>sacar()</code> <b>decide</b> (valida e gera o evento) e <code>aplicar()</code> só <b>muda o estado</b>.
-O motivo: <code>aplicar()</code> também roda ao reler eventos antigos, e um fato que já aconteceu não pode ser recusado.</p>
+<p>Repare na divisão: <code>sacar()</code> <b>decide</b> (valida e gera o evento) e <code>aplicar()</code> só <b>muda o estado</b>,
+sem validar e sem falhar. O motivo: <code>aplicar()</code> também roda ao reler eventos antigos, e um fato que já aconteceu não
+pode ser recusado. Depositar e abrir a conta seguem o mesmo molde de <code>sacar()</code>.</p>
 
 ${codigo(
   `
@@ -226,16 +224,16 @@ export async function sacar(store: EventStore, contaId: string, valor: number) {
 <p>No Postgres, o event store pode ser uma tabela <code>eventos (stream_id, versao, tipo, dados jsonb, criado_em)</code> com chave
 primária em <code>(stream_id, versao)</code>. Se dois saques simultâneos leram a versão 4 e tentam gravar a versão 5, o segundo
 leva erro de chave duplicada, relê a conta (agora com saldo menor) e decide de novo: é o <b>controle de concorrência
-otimista</b>. A projeção do extrato é só uma função que faz um <code>insert</code> por evento, com chave única em (conta, versão)
-para não duplicar linha se o mesmo evento chegar duas vezes. Também há ferramentas prontas, como o EventStoreDB (hoje KurrentDB),
-o Axon (Java) e o Marten (.NET).</p>
+otimista</b>. A projeção do extrato é só uma função que faz um <code>insert</code> por evento. Também há ferramentas prontas,
+como o EventStoreDB (hoje KurrentDB), o Axon (Java) e o Marten (.NET).</p>
 
 <h4>Snapshots: um atalho para streams longos</h4>
 <p>Uma conta com anos de movimento pode ter milhares de eventos, e reler todos a cada saque fica lento. O <b>snapshot</b> (foto)
 resolve: de tempos em tempos (a cada 500 eventos, por exemplo), o sistema salva o estado calculado e a versão em que a foto foi
 tirada. Para reconstruir, carrega a foto mais recente e aplica só os eventos que vieram depois. O snapshot é um cache: pode ser
-apagado e refeito, porque a verdade continua nos eventos. Meça antes de criar: streams com poucas centenas de eventos costumam
-carregar rápido.</p>
+apagado e refeito, porque a verdade continua nos eventos (se o formato do estado mudar, descarte as fotos antigas). Meça antes
+de criar: streams com poucas centenas de eventos costumam carregar rápido. E cuide do tamanho do agregado: um stream por conta
+é normal; um stream para a loja inteira vira gargalo, porque toda gravação disputa a mesma versão.</p>
 
 <h4>Auditoria e viagem no tempo</h4>
 <p>Como nada é apagado, o event store já é um registro de auditoria: o que aconteceu, quando, a pedido de quem e em que ordem.
@@ -258,8 +256,9 @@ ${codigo(
   `
 // dominio/upcasters.ts: o banco guarda v1 e v2 misturados, para sempre;
 // ao ler, tudo vira a versão atual antes de chegar ao agregado
+type Canal = "pix" | "ted" | "boleto" | "desconhecido";
 type DepositoV1 = { tipo: "ValorDepositado"; v: 1; valor: number };
-type DepositoV2 = { tipo: "ValorDepositado"; v: 2; valor: number; canal: "pix" | "ted" | "boleto" | "desconhecido" };
+type DepositoV2 = { tipo: "ValorDepositado"; v: 2; valor: number; canal: Canal };
 
 export function upcastDeposito(e: DepositoV1 | DepositoV2): DepositoV2 {
   if (e.v === 1) return { ...e, v: 2, canal: "desconhecido" }; // a v1 não sabia o canal
@@ -276,13 +275,14 @@ situações. Num event store imutável, apagar é justamente o que não se faz. 
 tabela comum, que pode ser apagada.</li>
 <li><b>Criptografia por titular</b> (<i>crypto-shredding</i>): cada cliente tem a sua própria chave, guardada num cofre de
 chaves, e os campos pessoais vão cifrados dentro dos eventos. Para "esquecer" o cliente, você apaga a chave. Os eventos
-continuam lá, inclusive nos backups, mas aqueles campos ficam ilegíveis para sempre.</li>
+continuam lá, inclusive nos backups, mas aqueles campos ficam ilegíveis para sempre (desde que a chave não sobreviva em
+nenhuma cópia do cofre).</li>
 <li><b>Projeções e cópias também contam</b>: depois, limpe ou reconstrua as projeções, os caches e o que foi para outros sistemas.</li>
 </ul>
 
 ${alerta(
   "Combine com o jurídico antes",
-  "<p>A eliminação tem exceções (dados que a lei obriga a guardar por um tempo, como registros financeiros), e o crypto-shredding é uma técnica, não um carimbo de conformidade. Decida com o encarregado de dados (o DPO) o que pode ser apagado e como provar que foi.</p>",
+  "<p>A eliminação tem exceções (dados que a lei obriga a guardar, como registros financeiros), e o crypto-shredding é uma técnica, não um carimbo de conformidade. Decida com o encarregado de dados (o DPO) o que pode ser apagado e como provar que foi.</p>",
 )}
 
 <h4>Passo a passo para adotar</h4>
@@ -319,6 +319,8 @@ só a eventos novos.</li>
 frequente merece uma projeção.</li>
 <li><b>Projeção que conta duas vezes</b>: a entrega de eventos costuma ser "pelo menos uma vez". Guarde a última versão
 processada ou use chave única.</li>
+<li><b>Esquecer o atraso das projeções</b>: o cliente saca e o extrato, que ainda não processou o evento, não mostra o saque.
+Devolva o resultado na resposta do comando ou espere a projeção chegar à versão gravada antes de mostrar a tela.</li>
 </ul>
 
 ${pratica(
@@ -333,7 +335,7 @@ ${dica(
 
 ${alerta(
   "Kafka não é event store (na maioria dos casos)",
-  "<p>O Kafka é ótimo para distribuir eventos entre serviços, mas não foi feito para ler com eficiência só os eventos da conta 42, nem para recusar uma gravação quando a versão esperada não bate. O desenho comum: a verdade fica num event store, e os eventos são publicados no Kafka para quem quiser ouvir.</p>",
+  "<p>O Kafka é ótimo para distribuir eventos entre serviços, mas não foi feito para ler com eficiência só os eventos da conta 42, nem para recusar uma gravação quando a versão esperada não bate. O desenho comum: a verdade fica num event store, e um processo que assina esse event store publica os eventos no Kafka para quem quiser ouvir. Assim, se o Kafka estiver fora do ar, nada se perde: a publicação continua de onde parou.</p>",
 )}
 
 ${combina([

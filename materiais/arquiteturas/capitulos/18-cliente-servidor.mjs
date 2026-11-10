@@ -77,55 +77,54 @@ function nCamadas() {
 function comESemEstado() {
   semear("cliente-servidor-3");
   let s = "";
-  s += linha([[380, 10], [380, 360]], { tracejado: true, cor: cor.cinza, espessura: 1.2 });
+  s += linha([[380, 10], [380, 342]], { tracejado: true, cor: cor.cinza, espessura: 1.2 });
 
   // com estado
   s += txt(185, 20, "com estado", { tam: 19, cor: cor.vermelho });
   s += txt(185, 44, "sessão na memória do servidor", { tam: 15, cor: cor.cinza });
-  s += pessoa(185, 78, {});
-  s += txt(212, 90, "Ana", { tam: 15, ancora: "start" });
-  s += seta(185, 122, 185, 144, { espessura: 1.8 });
-  s += bloco(110, 146, 150, 44, "balanceador", { tam: 16, preench: claro.cinza });
-  s += servidor(60, 232, 64, 72, "servidor A");
-  s += servidor(246, 232, 64, 72, "servidor B");
-  s += seta(150, 193, 98, 228, { cor: cor.verde, espessura: 1.8, rotulo: "1º pedido", dx: -50, dy: -4 });
-  s += seta(220, 193, 272, 228, { cor: cor.vermelho, espessura: 1.8, rotulo: "2º pedido", dx: 50, dy: -4 });
-  s += etiqueta(92, 344, "sessão da Ana", { preench: claro.amarelo });
-  s += xis(344, 268, 18);
-  s += txt(278, 344, "\"quem é você?\"", { tam: 15, cor: cor.vermelho });
+  s += pessoa(185, 70, {});
+  s += txt(212, 82, "Ana", { tam: 15, ancora: "start" });
+  s += seta(185, 112, 185, 132, { espessura: 1.8 });
+  s += bloco(110, 134, 150, 44, "balanceador", { tam: 16, preench: claro.cinza });
+  s += servidor(60, 218, 64, 72, "servidor A");
+  s += servidor(246, 218, 64, 72, "servidor B");
+  s += seta(150, 181, 98, 214, { cor: cor.verde, espessura: 1.8, rotulo: "1º pedido", dx: -50, dy: -4 });
+  s += seta(220, 181, 272, 214, { cor: cor.vermelho, espessura: 1.8, rotulo: "2º pedido", dx: 50, dy: -4 });
+  s += etiqueta(92, 328, "sessão da Ana", { preench: claro.amarelo });
+  s += xis(344, 254, 18);
+  s += txt(278, 328, "\"quem é você?\"", { tam: 15, cor: cor.vermelho });
 
   // sem estado
   s += txt(575, 20, "sem estado", { tam: 19, cor: cor.verde });
   s += txt(575, 44, "sessão no token ou no Redis", { tam: 15, cor: cor.cinza });
-  s += pessoa(575, 78, {});
-  s += etiqueta(636, 94, "token", { preench: claro.verde, tam: 15 });
-  s += seta(575, 122, 575, 144, { espessura: 1.8 });
-  s += bloco(500, 146, 150, 44, "balanceador", { tam: 16, preench: claro.cinza });
-  s += servidor(420, 232, 64, 72, "servidor A");
-  s += servidor(666, 232, 64, 72, "servidor B");
-  s += seta(540, 193, 460, 228, { cor: cor.verde, espessura: 1.8, rotulo: "1º pedido", dx: -52, dy: -4 });
-  s += seta(610, 193, 690, 228, { cor: cor.verde, espessura: 1.8, rotulo: "2º pedido", dx: 52, dy: -4 });
-  s += bloco(532, 245, 86, 44, "Redis", { tam: 16, preench: claro.vermelho });
-  s += seta(488, 267, 528, 267, { duplo: true, tracejado: true, cor: cor.cinza, espessura: 1.4, ponta: 9 });
-  s += seta(662, 267, 622, 267, { duplo: true, tracejado: true, cor: cor.cinza, espessura: 1.4, ponta: 9 });
-  s += check(452, 346, 18);
-  s += check(698, 346, 18);
-  s += txt(575, 346, "qualquer um atende", { tam: 15, cor: cor.verde });
-  return quadro(760, 366, s);
+  s += pessoa(575, 70, {});
+  s += etiqueta(636, 86, "token", { preench: claro.verde, tam: 15 });
+  s += seta(575, 112, 575, 132, { espessura: 1.8 });
+  s += bloco(500, 134, 150, 44, "balanceador", { tam: 16, preench: claro.cinza });
+  s += servidor(420, 218, 64, 72, "servidor A");
+  s += servidor(666, 218, 64, 72, "servidor B");
+  s += seta(540, 181, 460, 214, { cor: cor.verde, espessura: 1.8, rotulo: "1º pedido", dx: -52, dy: -4 });
+  s += seta(610, 181, 690, 214, { cor: cor.verde, espessura: 1.8, rotulo: "2º pedido", dx: 52, dy: -4 });
+  s += bloco(532, 231, 86, 44, "Redis", { tam: 16, preench: claro.vermelho });
+  s += seta(488, 253, 528, 253, { duplo: true, tracejado: true, cor: cor.cinza, espessura: 1.4, ponta: 9 });
+  s += seta(662, 253, 622, 253, { duplo: true, tracejado: true, cor: cor.cinza, espessura: 1.4, ponta: 9 });
+  s += check(452, 330, 18);
+  s += check(698, 330, 18);
+  s += txt(575, 330, "qualquer um atende", { tam: 15, cor: cor.verde });
+  return quadro(760, 348, s);
 }
 
 export default `
 ${resumo(
-  "Um lado <b>pede</b> (o cliente) e o outro <b>atende</b> (o servidor). As <b>camadas físicas</b> (tiers) dizem em quantas máquinas esse atendimento se divide: tela, regras, dados e, quando o volume cresce, cache, filas e CDN no caminho.",
+  "Um lado <b>pede</b> (o cliente) e o outro <b>atende</b> (o servidor). As <b>camadas físicas</b> (tiers) dizem em quantas partes separadas (processos ou máquinas) esse trabalho se divide: tela, regras, dados e, quando o volume cresce, cache, filas e CDN no caminho.",
   "Num restaurante, você não entra na cozinha: faz o pedido ao garçom, que traz o prato. Com a casa cheia, entram mais garçons, e qualquer um atende sua mesa, porque o pedido está anotado na comanda, não na cabeça de um garçom específico.",
 )}
 
-<p>Cliente-servidor é o modelo mais comum da computação: o navegador pedindo uma página, o app do banco consultando o
-saldo, o jogo online sincronizando a partida. Antes dele, um mainframe fazia tudo e os terminais só mostravam texto. Com
-os PCs ligados em rede, nos anos 1980 e 1990, o trabalho passou a ser dividido: o computador da pessoa cuidava da tela e
-um servidor cuidava dos dados. A web popularizou o desenho de 3 camadas que quase todo app usa hoje.</p>
-
-<p>Atenção ao nome: no capítulo 4 as camadas eram <b>lógicas</b> (layers, a organização do código). Aqui elas são
+<p>Cliente-servidor é o modelo mais comum dos sistemas em rede: o navegador pedindo uma página, o app do banco
+consultando o saldo, o jogo online sincronizando a partida. Antes dele, um mainframe fazia tudo e os terminais só
+mostravam texto. Com os PCs ligados em rede, nos anos 1980 e 1990, o trabalho passou a ser dividido: o computador da
+pessoa cuidava da tela e um servidor cuidava dos dados. A web popularizou o desenho de 3 camadas que quase todo app usa
+hoje. Atenção ao nome: no capítulo 4 as camadas eram <b>lógicas</b> (layers, a organização do código); aqui elas são
 <b>físicas</b> (tiers): processos ou máquinas diferentes, com a rede no meio.</p>
 
 ${fig(duasETres(), "Em 2 camadas, tela e regras vivem no cliente, que fala direto com o banco. Em 3 camadas, uma API no meio guarda as regras e a senha do banco.", "grande")}
@@ -133,14 +132,45 @@ ${fig(duasETres(), "Em 2 camadas, tela e regras vivem no cliente, que fala diret
 <h3>Como funciona</h3>
 <ul>
 <li><b>Cliente</b>: quem toma a iniciativa. Abre a conexão, faz o pedido e mostra o resultado. Pode ser um navegador,
-um app de celular, outro servidor ou um script.</li>
+um app de celular, um script ou outro servidor (a própria API é cliente do banco).</li>
 <li><b>Servidor</b>: fica ligado esperando pedidos e atende muitos clientes ao mesmo tempo. Guarda o que precisa ser
 central: os dados, as regras que importam e os segredos.</li>
 <li><b>Protocolo</b>: o combinado de como pedir e responder (HTTP, gRPC, WebSocket). O cliente conhece o contrato, não
-o que o servidor tem por dentro.</li>
+o que o servidor tem por dentro. No HTTP comum, só o cliente inicia a conversa; para o servidor avisar algo na hora
+(nova mensagem no chat, pedido saiu para entrega), o cliente mantém uma conexão aberta, como um WebSocket.</li>
 <li><b>Sem memória entre pedidos</b>: o HTTP é <b>sem estado</b>. O servidor não "lembra" do pedido anterior, a menos
 que o cliente mande algo que diga quem ele é (um cookie ou um token).</li>
 </ul>
+
+<h4>2, 3 ou N camadas físicas</h4>
+<ul>
+<li><b>2 camadas (cliente + banco)</b>: o app instalado conecta direto no banco. Era o padrão dos sistemas desktop dos
+anos 1990 (Delphi, Visual Basic), com as regras no cliente ou em <i>stored procedures</i> (procedimentos guardados no
+banco). É simples, mas cada PC guarda a senha do banco e abre conexões direto nele, e toda mudança de regra pede
+atualizar o app em todas as máquinas.</li>
+<li><b>3 camadas (apresentação, aplicação, dados)</b>: entra um servidor de aplicação no meio, normalmente uma API. O
+cliente só fala com ela; só ela fala com o banco. É o padrão de quase todo app web e mobile.</li>
+<li><b>N camadas</b>: as 3 camadas mais peças especializadas, cada uma resolvendo um gargalo: <b>CDN</b> (servidores
+espalhados pelo mundo que entregam imagens, JS e CSS perto do usuário), <b>balanceador de carga</b> (distribui os pedidos
+entre cópias da API), <b>cache</b> (memória rápida para leituras repetidas, como o Redis), <b>fila e workers</b> (trabalho
+lento fora da requisição, como gerar PDF ou mandar e-mail), <b>réplicas de leitura</b> do banco e <b>busca</b>
+(como o Elasticsearch).</li>
+</ul>
+
+${fig(nCamadas(), "N camadas: arquivos estáticos saem da CDN; os pedidos à API passam pelo balanceador, que escolhe uma das cópias. Elas leem do cache e do banco e jogam o trabalho lento numa fila.")}
+
+<h4>Servidores sem estado atrás do balanceador</h4>
+<p>Para aguentar mais gente, você pode comprar um servidor maior (escala vertical, que tem teto) ou colocar <b>mais
+cópias</b> da API atrás de um balanceador (escala horizontal). A segunda só funciona se as cópias forem <b>sem
+estado</b> (stateless): nenhuma guarda nada do usuário na própria memória ou no próprio disco entre um pedido e outro.
+O que precisa durar vai para fora: a sessão num token ou num Redis, os arquivos num armazenamento de objetos (como o S3),
+os dados no banco. O ganho: qualquer cópia atende qualquer pedido, dá para somar ou tirar máquinas a qualquer hora
+(autoscaling), o deploy troca uma cópia de cada vez e, se uma cair, o balanceador para de mandar pedidos para ela.</p>
+${fig(comESemEstado(), "Com estado, o segundo pedido cai num servidor que não conhece a sessão. Sem estado, a identidade viaja no token (ou fica num Redis compartilhado) e qualquer servidor atende.")}
+
+<p>Existe um atalho, a <i>sticky session</i> (o balanceador manda o mesmo usuário sempre para o mesmo servidor). Ela
+salva às pressas um app que guarda sessão em memória, mas se aquele servidor cair ou sair num deploy, a sessão vai junto.
+Use como ponte, não como destino.</p>
 
 <h4>Cliente magro x cliente gordo</h4>
 <p>A pergunta é: quanto trabalho fica no aparelho da pessoa?</p>
@@ -157,37 +187,7 @@ ${tabela(
 coisa não muda: <b>mesmo com cliente gordo, quem decide é o servidor</b>. O cliente valida para responder rápido; o
 servidor valida de novo, porque o cliente pode ser alterado por quem o usa.</p>
 
-<h4>2, 3 ou N camadas físicas</h4>
-<ul>
-<li><b>2 camadas (cliente + banco)</b>: o app instalado conecta direto no banco. Era o padrão dos sistemas desktop dos
-anos 1990 (Delphi, Visual Basic), com as regras no cliente ou em <i>stored procedures</i> (procedimentos guardados no
-banco). É simples, mas cada PC guarda a senha do banco e abre conexões direto nele, e toda mudança de regra pede
-atualizar o app em todas as máquinas.</li>
-<li><b>3 camadas (apresentação, aplicação, dados)</b>: entra um servidor de aplicação no meio, normalmente uma API. O
-cliente só fala com ela; só ela fala com o banco. É o padrão de quase todo app web e mobile.</li>
-<li><b>N camadas</b>: as 3 camadas mais peças especializadas, cada uma resolvendo um gargalo. <b>CDN</b> (servidores
-espalhados pelo mundo que entregam imagens, JS e CSS perto do usuário), <b>balanceador de carga</b> (distribui os pedidos
-entre cópias da API), <b>cache</b> (memória rápida para leituras repetidas, como o Redis), <b>fila e workers</b> (trabalho
-lento fora da requisição, como gerar PDF ou mandar e-mail) e <b>busca</b> (como o Elasticsearch).</li>
-</ul>
-
-${fig(nCamadas(), "N camadas: arquivos estáticos saem da CDN; os pedidos à API passam pelo balanceador, que escolhe uma das cópias. Elas leem do cache e do banco e jogam o trabalho lento numa fila.")}
-
-<h4>Servidores sem estado atrás do balanceador</h4>
-<p>Para aguentar mais gente, você pode comprar um servidor maior (escala vertical, que tem teto) ou colocar <b>mais
-cópias</b> da API atrás de um balanceador (escala horizontal). A segunda só funciona se as cópias forem <b>sem
-estado</b> (stateless): nenhuma guarda nada do usuário na própria memória ou no próprio disco entre um pedido e outro.
-O que precisa durar vai para fora: a sessão num token ou num Redis, os arquivos num armazenamento de objetos (como o S3),
-os dados no banco. O ganho: qualquer cópia atende qualquer pedido, dá para somar ou tirar máquinas a qualquer hora
-(autoscaling), o deploy troca uma cópia de cada vez e, se uma cair, o balanceador para de mandar pedidos para ela.</p>
-<p>Existe um atalho, a <i>sticky session</i> (o balanceador manda o mesmo usuário sempre para o mesmo servidor). Ela
-salva às pressas um app que guarda sessão em memória, mas se aquele servidor cair ou sair num deploy, a sessão vai junto.
-Use como ponte, não como destino.</p>
-
-${fig(comESemEstado(), "Com estado, o segundo pedido cai num servidor que não conhece a sessão. Sem estado, a identidade viaja no token (ou fica num Redis compartilhado) e qualquer servidor atende.")}
-
 <h4>Tier não é layer</h4>
-<p>Em português as duas viram "camada", mas são coisas diferentes:</p>
 ${tabela(
   ["", "Layer: camada lógica (capítulo 4)", "Tier: camada física (este capítulo)"],
   [
@@ -195,14 +195,14 @@ ${tabela(
     ["<b>Como conversa</b>", "Chamada de função: rápida, sem rede no meio", "Chamada de rede: leva milissegundos e pode falhar, demorar ou se repetir"],
   ],
 )}
-<p>O normal é ter várias layers dentro de um único tier: a API do exemplo abaixo é um tier só, com três layers dentro.</p>
+<p>Em português as duas viram "camada", mas não são a mesma coisa. O normal é ter várias layers dentro de um único tier: a API do exemplo abaixo é um tier só, com três layers dentro.</p>
 
 ${quando(
   [
-    "Vários usuários veem e mudam os mesmos dados (loja, banco, rede social): o servidor guarda a verdade.",
-    "Regras e segredos precisam ficar fora do alcance do usuário: preço, saldo, permissões.",
-    "Quase todo app web ou mobile: 3 camadas é o ponto de partida padrão.",
-    "N camadas quando um gargalo medido aparece: páginas lentas, banco sobrecarregado, tarefas longas travando pedidos.",
+    "Vários usuários veem e mudam os mesmos dados, e regras e segredos (preço, saldo, permissões) precisam ficar longe do usuário.",
+    "<b>3 camadas</b>: quase todo app web ou mobile. É o ponto de partida padrão.",
+    "<b>2 camadas</b>: só ferramenta interna, com poucos usuários, numa rede confiável e com acesso ao banco limitado (um relatório com usuário só de leitura).",
+    "<b>N camadas</b>: quando um gargalo medido aparece (páginas lentas, banco sobrecarregado, tarefas longas travando pedidos).",
   ],
   [
     "2 camadas em app público: cliente com acesso direto ao banco expõe a senha e as regras.",
@@ -212,8 +212,7 @@ ${quando(
   ],
 )}
 
-<p>O medidor vale para o caso mais comum: 3 camadas com servidores sem estado.</p>
-${medidor({ complexidade: 2, escala: 4, operacao: 2, aprendizado: 1, time: "qualquer tamanho, do dev solo a times grandes" })}
+${medidor({ complexidade: 2, escala: 4, operacao: 2, aprendizado: 1, time: "qualquer tamanho (notas para 3 camadas sem estado)" })}
 
 <h3>Como usar na prática</h3>
 <p>Exemplo: uma loja com site em React, API em Node e banco Postgres, com a API pronta para rodar em várias cópias.</p>
@@ -235,7 +234,7 @@ ${codigo(
   `
 // web/src/api.ts: o cliente pede e mostra; regras e dados ficam no servidor
 type Pedido = { id: string; total: number; status: string };
-const API = "https://api.example.com";
+const API = "/api"; // mesmo domínio do site: o Nginx repassa para a API (sem CORS)
 
 export async function listarPedidos(token: string): Promise<Pedido[]> {
   const resp = await fetch(\`\${API}/pedidos\`, {
@@ -265,8 +264,13 @@ app.post("/login", async (req, res) => {
   if (!usuario) { res.status(401).json({ erro: "E-mail ou senha inválidos" }); return; }
   const token = jwt.sign({ sub: usuario.id }, SEGREDO, { expiresIn: "15m" });
   res.json({ token }); // a comanda fica com o cliente, não com o servidor
-});
+});`,
+  "api/src/main.ts (login)",
+)}
 
+${codigo(
+  `
+// cada pedido traz o token; qualquer cópia da API confere sozinha
 app.get("/pedidos", async (req, res) => {
   const usuarioId = idDoToken(req.headers.authorization);
   if (!usuarioId) { res.status(401).json({ erro: "Token inválido ou expirado" }); return; }
@@ -283,7 +287,7 @@ function idDoToken(header = ""): string | null {
 
 app.get("/saude", (_req, res) => { res.send("ok"); }); // o balanceador consulta esta rota
 app.listen(3000);`,
-  "api/src/main.ts",
+  "api/src/main.ts (rotas protegidas)",
 )}
 
 <p>A outra forma de manter a API sem estado é guardar a sessão num cache compartilhado. No login, o servidor grava a

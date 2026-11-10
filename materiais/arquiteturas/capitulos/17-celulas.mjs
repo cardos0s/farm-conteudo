@@ -75,28 +75,28 @@ function raioDeImpacto() {
   let s = "";
   // esquerda: um sistema só
   s += txt(190, 16, "um sistema só", { tam: 18 });
-  s += ret(30, 46, 320, 190, { preench: claro.vermelho, gap: 9, espessura: 2.2 });
-  for (let l = 0; l < 3; l++) for (let c = 0; c < 4; c++) s += pessoa(80 + c * 74, 64 + l * 58, { preench: claro.vermelho, cor: cor.vermelho });
+  s += ret(30, 46, 320, 170, { preench: claro.vermelho, gap: 9, espessura: 2.2 });
+  for (let l = 0; l < 3; l++) for (let c = 0; c < 4; c++) s += pessoa(80 + c * 74, 64 + l * 52, { preench: claro.vermelho, cor: cor.vermelho });
   s += evento(344, 32, 32, cor.vermelho);
-  s += txt(190, 260, "um deploy com bug derruba", { tam: 16, cor: cor.vermelho });
-  s += txt(190, 282, "100% dos clientes", { tam: 18, cor: cor.vermelho });
+  s += txt(190, 240, "um deploy com bug derruba", { tam: 16, cor: cor.vermelho });
+  s += txt(190, 262, "100% dos clientes", { tam: 18, cor: cor.vermelho });
   // direita: quatro células
   s += txt(570, 16, "o mesmo sistema em 4 células", { tam: 18 });
   const caixas = [
     [400, 46, true],
     [580, 46, false],
-    [400, 146, false],
-    [580, 146, false],
+    [400, 136, false],
+    [580, 136, false],
   ];
   for (const [x, y, doente] of caixas) {
-    s += ret(x, y, 160, 90, { preench: doente ? claro.vermelho : claro.verde, gap: 9, espessura: 2.2, cor: doente ? cor.vermelho : cor.verde });
-    for (let c = 0; c < 3; c++) s += pessoa(x + 34 + c * 46, y + 22, { preench: doente ? claro.vermelho : claro.verde, cor: doente ? cor.vermelho : cor.tinta });
+    s += ret(x, y, 160, 80, { preench: doente ? claro.vermelho : claro.verde, gap: 9, espessura: 2.2, cor: doente ? cor.vermelho : cor.verde });
+    for (let c = 0; c < 3; c++) s += pessoa(x + 34 + c * 46, y + 20, { preench: doente ? claro.vermelho : claro.verde, cor: doente ? cor.vermelho : cor.tinta });
   }
   s += evento(554, 32, 32, cor.vermelho);
-  s += txt(570, 260, "o mesmo bug atinge 1 célula:", { tam: 16, cor: cor.vermelho });
-  s += txt(570, 282, "cerca de 25% dos clientes", { tam: 18, cor: cor.vermelho });
-  s += txt(380, 318, "com N células iguais, uma falha atinge mais ou menos 1/N dos clientes", { tam: 16, cor: cor.tinta });
-  return quadro(760, 332, s);
+  s += txt(570, 240, "o mesmo bug atinge 1 célula:", { tam: 16, cor: cor.vermelho });
+  s += txt(570, 262, "cerca de 25% dos clientes", { tam: 18, cor: cor.vermelho });
+  s += txt(380, 294, "com N células iguais, uma falha atinge mais ou menos 1/N dos clientes", { tam: 16, cor: cor.tinta });
+  return quadro(760, 306, s);
 }
 
 function moverCliente() {
@@ -130,10 +130,10 @@ function moverCliente() {
   s += passo(246, 226, "2", cor.laranja);
   s += txt(264, 226, "bloqueia escrita, copia o resto", { tam: 15, ancora: "start", cor: cor.laranja });
   // limpeza
-  s += passo(46, 260, "4", cor.cinza);
-  s += txt(64, 260, "depois de um tempo, apaga a cópia antiga da origem", { tam: 15, ancora: "start", cor: cor.cinza });
-  s += txt(380, 290, "a loja D fica só alguns segundos sem poder gravar", { tam: 16, cor: cor.vermelho });
-  return quadro(760, 304, s);
+  s += passo(46, 254, "4", cor.cinza);
+  s += txt(64, 254, "depois de um tempo, apaga a cópia antiga da origem", { tam: 15, ancora: "start", cor: cor.cinza });
+  s += txt(380, 282, "a loja D fica só alguns segundos sem poder gravar", { tam: 16, cor: cor.vermelho });
+  return quadro(760, 294, s);
 }
 
 export default `
@@ -142,9 +142,9 @@ ${resumo(
   "Um condomínio com vários prédios iguais, cada um com sua caixa d'água e seu quadro de luz. Se a bomba de um prédio queima, só aquele prédio fica sem água. A portaria não resolve nada: só diz a cada visitante em qual prédio o morador mora.",
 )}
 
-<p>A ideia vem dos navios: o casco é dividido em compartimentos estanques (<i>bulkheads</i>, ou anteparas), e um furo
-alaga só um compartimento. A AWS conta que seus times usam células há mais de uma década e publicou um guia sobre o tema
-no Well-Architected Framework; o Slack descreveu em 2023 a sua migração. Repare que o assunto aqui é como o sistema é
+<p>A inspiração é o padrão <i>bulkhead</i> (antepara), que vem dos navios: o casco é dividido em compartimentos estanques,
+e um furo alaga só um compartimento. A AWS diz que seus times usam células há mais de uma década e publicou em 2023 um
+guia sobre o tema no Well-Architected Framework; no mesmo ano, o Slack contou como migrou. Repare que o assunto aqui é como o sistema é
 <b>dividido e implantado</b>, não como o código é organizado: dentro de cada célula pode rodar um monólito (capítulo 11)
 ou um conjunto de microsserviços (capítulo 14).</p>
 
@@ -157,8 +157,9 @@ Não chama as outras células e roda o mesmo código que elas.</li>
 <li><b>Chave de partição</b>: o critério que decide quem mora onde. Num SaaS, quase sempre é o <i>tenant</i> (o cliente
 que assina o produto: empresa, loja, conta). Tudo o que ele faz precisa caber na célula dele.</li>
 <li><b>Roteador de células</b>: a única peça compartilhada no caminho das requisições. Lê a chave (subdomínio, cabeçalho
-ou token), consulta o mapa <code>tenant → célula</code> e repassa. Sem regra de negócio: quanto mais fino, menor a chance
-de ele mesmo derrubar todo mundo.</li>
+ou token), consulta o mapa <code>tenant → célula</code> e repassa. Pode ser um proxy próprio, um API gateway ou até o DNS
+(cada cliente com um subdomínio que aponta para a sua célula). Sem regra de negócio: quanto mais fino, menor a chance de
+ele mesmo derrubar todo mundo.</li>
 <li><b>Plano de controle</b> (<i>control plane</i>): cria células, escolhe a célula de cada cliente novo, move clientes e
 atualiza o mapa. Se ele cair, as células seguem atendendo; só não dá para criar nem mover nada.</li>
 <li><b>Tamanho máximo</b>: cada célula tem um limite (clientes, requisições por segundo, gigabytes) testado com carga.
@@ -170,12 +171,11 @@ Chegou perto? Você não aumenta a célula: cria outra.</li>
 a consulta pesada de um cliente (o "vizinho barulhento") ou um banco que trava atingem todo mundo. Em células, a falha fica
 presa em uma célula. E o deploy vira ondas: a versão nova vai para uma célula, o time observa os alarmes e só depois segue.</p>
 
-${fig(raioDeImpacto(), "A falha é a mesma; o que muda é quantos clientes ela alcança.")}
+${fig(raioDeImpacto(), "A falha é a mesma; muda quantos clientes ela alcança (no deploy, desde que ele vá uma célula por vez).")}
 
 <h4>Crescer é adicionar células</h4>
 <p>Num sistema único, crescer é caçar o próximo gargalo. Em células, é repetir algo conhecido: criar mais uma célula igual
-às que você já testou no limite. Para isso, a infraestrutura precisa ser código (Terraform, CloudFormation, Pulumi): uma
-célula nova é mais uma instância do mesmo módulo.</p>
+às que você já testou no limite. Por isso a infraestrutura precisa ser código (Terraform, CloudFormation, Pulumi).</p>
 
 ${quando(
   [
@@ -214,14 +214,14 @@ export class TenantDesconhecido extends Error {}
 
 export class MapaDeCelulas {
   private cache = new Map<string, { celula: Celula; validoAte: number }>();
-  constructor(private tabela: Tabela, private ttlMs = 30000) {}
+  constructor(private tabela: Tabela, private ttlMs = 10000) {}
 
   async celulaDo(tenantId: string): Promise<Celula> {
     const guardado = this.cache.get(tenantId);
     if (guardado && guardado.validoAte > Date.now()) return guardado.celula;
     let celula: Celula | null;
     try { celula = await this.tabela.buscar(tenantId); }
-    catch (erro) { if (guardado) return guardado.celula; throw erro; } // tabela fora? usa o que sabia
+    catch (erro) { if (guardado) return guardado.celula; throw erro; } // tabela fora? usa o cache
     if (!celula) throw new TenantDesconhecido(tenantId);
     this.cache.set(tenantId, { celula, validoAte: Date.now() + this.ttlMs });
     return celula;
@@ -247,7 +247,8 @@ app.use(createProxyMiddleware({
   router: async (req) => (await mapa.celulaDo(tenantDe(req.headers.host))).endereco,
 }));
 const falhou: express.ErrorRequestHandler = (erro, _req, res, _next) => {
-  res.status(erro instanceof TenantDesconhecido ? 404 : 503).json({ erro: "loja indisponível" });
+  if (erro instanceof TenantDesconhecido) res.status(404).json({ erro: "loja não existe" });
+  else res.status(503).json({ erro: "célula indisponível, tente de novo" });
 };
 app.use(falhou);
 app.listen(8080);`,
@@ -255,9 +256,9 @@ app.listen(8080);`,
 )}
 
 <h4>Colocar e mover clientes</h4>
-<p>O plano de controle põe cada cliente novo na célula com mais folga (e cria uma célula nova quando todas estão perto do
-limite). De vez em quando, um cliente precisa mudar de casa: a célula encheu, ele cresceu demais ou precisa dos dados em
-outro país. Mover é a operação mais delicada da arquitetura, porque os dados são copiados com o cliente usando o sistema.</p>
+<p>O plano de controle põe cada cliente novo na célula com mais folga. Às vezes um cliente precisa mudar de casa: a célula
+encheu, ele cresceu demais ou precisa dos dados em outro país. Mover é a operação mais delicada da arquitetura, porque os
+dados são copiados com o cliente usando o sistema.</p>
 
 ${fig(moverCliente(), "Copiar com a loja no ar, bloquear a escrita por pouco tempo, trocar o mapa e só depois limpar a origem.")}
 
@@ -265,12 +266,13 @@ ${codigo(
   `
 // plano-de-controle/mover-cliente.ts: roda fora do caminho das requisições
 export async function moverCliente(tenantId: string, origem: CelulaAdmin, destino: CelulaAdmin) {
-  await destino.copiarDados(origem, tenantId);    // 1. cópia com a loja no ar
-  await origem.bloquearEscrita(tenantId);         // 2. a origem recusa escrita (503)...
-  await destino.copiarMudancas(origem, tenantId); //    ...e o destino pega o que mudou
-  await mapa.atribuir(tenantId, destino.id);      // 3. o mapa aponta para o destino
-  await esperar(TTL_DO_CACHE_MS);                 //    caches antigos dos roteadores vencem
-  await agendarLimpeza(origem, tenantId);         // 4. apaga a cópia antiga depois
+  await destino.copiarDados(origem, tenantId);       // 1. cópia com a loja no ar
+  await origem.bloquearEscrita(tenantId);            // 2. a origem recusa escrita (503)...
+  await destino.copiarMudancas(origem, tenantId);    //    ...e o destino pega o que mudou
+  await destino.conferir(origem, tenantId);          //    contagens batem? senão, desfaz e aborta
+  await tabelaDoMapa.atribuir(tenantId, destino.id); // 3. o mapa aponta para o destino
+  await esperar(TTL_DO_CACHE_MS);                    //    o cache dos roteadores vence (10 s)
+  await agendarLimpeza(origem, tenantId);            // 4. apaga a cópia antiga depois
 }`,
   "plataforma/plano-de-controle/mover-cliente.ts",
 )}
@@ -306,6 +308,9 @@ risco para 100% dos clientes.</li>
 células; na hora da falha, é um sistema só.</li>
 <li><b>Chave de partição errada</b>: dividir por usuário quando o trabalho acontece por empresa faz uma única tela juntar
 dados de várias células.</li>
+<li><b>Mapa calculado com divisão</b>: <code>hash(tenant) % N</code> parece elegante, mas ao criar a célula N+1 quase
+todos os clientes mudam de casa (e os dados teriam de ir junto). Guarde o mapa numa tabela: cliente só muda de célula quando
+o plano de controle decide.</li>
 <li><b>Célula sem limite</b>: deixar a célula 1 crescer "porque ainda aguenta" recria o sistema gigante que você queria evitar.</li>
 <li><b>Migração só em emergência</b>: a ferramenta de mover clientes falha justo no dia em que é necessária. Use-a com frequência.</li>
 </ul>
@@ -315,12 +320,12 @@ ${pratica(
   `<p><b>AWS.</b> No guia <i>Reducing the Scope of Impact with Cell-Based Architecture</i>, do Well-Architected Framework, a
 AWS diz que seus times usam células há mais de uma década para construir serviços mais resilientes. O guia pede um roteador
 o mais simples possível, sem regra de negócio, que siga atendendo as outras células quando uma delas cai.</p>
-<p><b>Slack.</b> Em 30 de junho de 2021, o link de rede que ligava uma zona de disponibilidade (AZ) da AWS às outras passou
-a falhar de forma intermitente. O problema era numa zona só, mas usuários viram erros: partes do sistema discordavam sobre
-quais servidores estavam saudáveis (a <i>gray failure</i>, ou falha cinzenta). No post <i>Slack's Migration to a Cellular
+<p><b>Slack.</b> Em 30 de junho de 2021, uma falha de rede numa das zonas de disponibilidade (AZs) da AWS usadas pelo Slack
+causou erros para os usuários. O problema era numa zona só, mas partes do sistema discordavam sobre quais servidores estavam
+saudáveis (a <i>gray failure</i>, ou falha cinzenta). No post <i>Slack's Migration to a Cellular
 Architecture</i> (2023), o time conta a resposta: cada AZ virou uma célula. Cada serviço roda em todas as zonas, mas só fala
-com serviços da própria zona; se uma zona adoece, o tráfego é drenado para as outras (a meta é tirar o máximo possível em até
-5 minutos). Migrar os serviços mais críticos levou cerca de um ano e meio.</p>`,
+com serviços da própria zona; se uma zona adoece, o tráfego é drenado para as outras (a meta é tirar o máximo possível de tráfego
+de uma zona em até 5 minutos). Migrar os serviços mais críticos voltados ao usuário levou cerca de um ano e meio.</p>`,
 )}
 
 ${dica(

@@ -45,29 +45,29 @@ function diagrama() {
 function orquestracao() {
   semear("sagas-2");
   let s = "";
-  const passoY = 72;
-  const cys = COLS.map((_, i) => 40 + i * passoY);
+  const passoY = 60;
+  const cys = COLS.map((_, i) => 44 + i * passoY);
   s += bloco(20, 12, 210, cys[3] + 28 - 12, "", { preench: claro.amarelo });
-  s += txt(125, 70, "orquestrador", { tam: 19 });
-  s += txt(125, 104, "sabe a ordem", { tam: 15, cor: cor.cinza });
-  s += txt(125, 124, "dos passos e", { tam: 15, cor: cor.cinza });
-  s += txt(125, 144, "guarda o estado", { tam: 15, cor: cor.cinza });
-  s += banco(85, 188, 80, 60, "estado", { preench: claro.violeta, tam: 15 });
+  s += txt(125, 64, "orquestrador", { tam: 19 });
+  s += txt(125, 96, "sabe a ordem", { tam: 15, cor: cor.cinza });
+  s += txt(125, 116, "dos passos e", { tam: 15, cor: cor.cinza });
+  s += txt(125, 136, "guarda o estado", { tam: 15, cor: cor.cinza });
+  s += banco(85, 166, 80, 60, "estado", { preench: claro.violeta, tam: 15 });
   const cmds = ["criar pedido", "cobrar", "reservar itens", "agendar entrega"];
   cys.forEach((cy, i) => {
-    s += bloco(520, cy - 27, 220, 54, SERVICOS[i], { preench: claro.azul });
+    s += bloco(520, cy - 24, 220, 48, SERVICOS[i], { preench: claro.azul });
     s += seta(234, cy - 7, 516, cy - 7, { cor: cor.azul, espessura: 2, ponta: 11 });
     s += seta(516, cy + 9, 236, cy + 9, { cor: cor.cinza, espessura: 1.4, tracejado: true, ponta: 9 });
     s += passo(296, cy - 25, String(i + 1), cor.azul);
     s += txt(314, cy - 24, cmds[i], { tam: 15, cor: cor.azul, ancora: "start" });
   });
-  const ly = cys[3] + 62;
+  const ly = cys[3] + 52;
   s += linha([[20, ly], [62, ly]], { cor: cor.azul, espessura: 2 });
   s += txt(70, ly, "comando: \"faça isto\"", { tam: 15, ancora: "start" });
   s += linha([[290, ly], [332, ly]], { cor: cor.cinza, espessura: 1.4, tracejado: true });
   s += txt(340, ly, "resposta: ok ou falhou", { tam: 15, ancora: "start" });
-  s += txt(15, ly + 34, "se o passo 4 falha, ele manda as compensações: liberar (3), estornar (2), cancelar (1)", { tam: 15, cor: cor.vermelho, ancora: "start" });
-  return quadro(760, ly + 52, s);
+  s += txt(15, ly + 30, "se o passo 4 falha, ele manda as compensações: liberar (3), estornar (2), cancelar (1)", { tam: 15, cor: cor.vermelho, ancora: "start" });
+  return quadro(760, ly + 48, s);
 }
 
 /** Coreografia: cada serviço publica um evento e o próximo reage; a falha também é um evento. */
@@ -175,8 +175,9 @@ T2 cobra, T3 reserva os itens, T4 agenda a entrega.</li>
 itens. Se um passo falha, a saga roda as compensações dos que já deram certo, do último para o primeiro.</li>
 <li><b>Compensar não é rollback</b>: o estorno é uma operação nova, que aparece no extrato do cliente. O pedido não some:
 fica <code>CANCELADO</code>, com histórico.</li>
-<li><b>Passos sem volta vão para o fim</b>: e-mail enviado não se "desenvia". Depois do ponto em que nada mais pode falhar
-por regra de negócio, a saga só tenta de novo até dar certo.</li>
+<li><b>A ordem importa</b>: primeiro os passos que têm compensação; depois o <b>passo pivô</b> (o ponto sem volta: se ele
+confirma, a saga vai até o fim); por último, os passos que não falham por regra de negócio (confirmar o pedido, mandar o
+e-mail), que a saga só repete até dar certo.</li>
 </ul>
 <p>O preço é a <b>consistência eventual</b>: por alguns segundos (às vezes minutos), os dados dos serviços não batem entre
 si. Costuma-se dizer que a saga tem o A, o C e o D do ACID, mas não o I: sem <b>isolamento</b>, outras operações podem ver
@@ -243,38 +244,55 @@ ${codigo(
 export interface Passo<C> {
   nome: string;
   executar(ctx: C): Promise<void>;
-  compensar?(ctx: C): Promise<void>; // passo sem volta não tem
+  compensar?(ctx: C): Promise<void>; // o pivô (sem volta) não tem
 }
 
-// o pedidoId vai em toda chamada como chave de idempotência
-export const fazerPedido: Passo<Ctx>[] = [
-  { nome: "criar", executar: (c) => pedidos.criarPendente(c), compensar: (c) => pedidos.cancelar(c.pedidoId) },
-  { nome: "cobrar", executar: (c) => pagamentos.cobrar(c.pedidoId, c.total), compensar: (c) => pagamentos.estornar(c.pedidoId) },
-  { nome: "reservar", executar: (c) => estoque.reservar(c.pedidoId, c.itens), compensar: (c) => estoque.liberar(c.pedidoId) },
-  { nome: "agendar", executar: (c) => entrega.agendar(c.pedidoId) },
-];
+type Ctx = { pedidoId: string; total: number; itens: Item[] };
 
-// orquestrador.ts: roda em ordem; se um passo falha, compensa os anteriores ao contrário
-export async function rodarSaga<C>(sagaId: string, passos: Passo<C>[], ctx: C) {
-  const feitos: Passo<C>[] = [];
+// o pedidoId vai em toda chamada: é a chave de idempotência
+export const fazerPedido: Passo<Ctx>[] = [
+  { nome: "criar", executar: (c) => pedidos.criarPendente(c),
+    compensar: (c) => pedidos.cancelar(c.pedidoId) },
+  { nome: "cobrar", executar: (c) => pagamentos.cobrar(c.pedidoId, c.total),
+    compensar: (c) => pagamentos.estornar(c.pedidoId) },
+  { nome: "reservar", executar: (c) => estoque.reservar(c.pedidoId, c.itens),
+    compensar: (c) => estoque.liberar(c.pedidoId) },
+  { nome: "agendar", executar: (c) => entrega.agendar(c.pedidoId) }, // pivô
+];`,
+  "sagas/fazer-pedido/passos.ts",
+)}
+
+${codigo(
+  `
+// orquestrador.ts: roda em ordem; se um passo falha, compensa ao contrário
+export async function rodarSaga<C>(id: string, passos: Passo<C>[], ctx: C) {
+  const aDesfazer: Passo<C>[] = [];
   for (const passo of passos) {
+    aDesfazer.push(passo); // antes: num timeout, o passo pode ter acontecido
     try {
-      await comRetentativas(() => passo.executar(ctx)); // só re-tenta erro temporário
-      feitos.push(passo);
-      await logDaSaga.salvar(sagaId, passo.nome, "feito");
+      await comRetentativas(() => passo.executar(ctx)); // só erro temporário
+      await logDaSaga.salvar(id, passo.nome, "feito");
     } catch {
-      for (const feito of feitos.reverse()) {
-        const desfazer = feito.compensar; // se esgotar as tentativas, o erro sobe e vira alerta
+      // se uma compensação esgotar as tentativas, o erro sobe e vira alerta
+      for (const p of aDesfazer.reverse()) {
+        const desfazer = p.compensar; // idempotente: nada a desfazer = não faz nada
         if (desfazer) await comRetentativas(() => desfazer(ctx));
-        await logDaSaga.salvar(sagaId, feito.nome, "compensado");
+        await logDaSaga.salvar(id, p.nome, "compensado");
       }
       return "cancelada";
     }
   }
   return "concluida";
-}`,
-  "sagas/fazer-pedido/passos.ts e orquestrador.ts",
+}
+
+// serviço de Pedidos: a confirmação final é local; se falhar, só tenta de novo
+const fim = await rodarSaga(ctx.pedidoId, fazerPedido, ctx);
+if (fim === "concluida") await pedidos.confirmar(ctx.pedidoId);`,
+  "sagas/fazer-pedido/orquestrador.ts",
 )}
+<p>Repare num detalhe: a compensação entra na lista <b>antes</b> de o passo rodar. Se a cobrança der timeout, o cartão
+pode ter sido cobrado mesmo assim, então o estorno roda também. Se não houve cobrança, ele não faz nada. Por isso toda
+compensação precisa ser idempotente e aceitar "não havia nada para desfazer".</p>
 
 <h4>Outbox e idempotência: as duas travas de segurança</h4>
 <p>Duas coisas quebram sagas na vida real. A primeira é a <b>escrita dupla</b> (<i>dual write</i>): o serviço grava no
@@ -290,13 +308,16 @@ ${codigo(
   `
 // Pagamentos: muda o dado e grava o evento na MESMA transação
 await db.transaction(async (tx) => {
-  await tx.query("update pagamentos set status = 'APROVADO' where pedido_id = $1", [pedidoId]);
-  await tx.query("insert into outbox (id, tipo, dados) values ($1, $2, $3)",
+  await tx.query(
+    "update pagamentos set status = 'APROVADO' where pedido_id = $1", [pedidoId]);
+  await tx.query(
+    "insert into outbox (id, tipo, dados) values ($1, $2, $3)",
     [randomUUID(), "PagamentoAprovado", { pedidoId }]);
 });
 
 // publicador, a cada segundo: envia o que não saiu (se cair no meio, reenvia depois)
-const { rows } = await db.query("select * from outbox where enviado_em is null order by criado_em");
+const { rows } = await db.query(
+  "select * from outbox where enviado_em is null order by criado_em");
 for (const ev of rows) {
   await broker.publicar(ev.tipo, ev.dados, { id: ev.id });
   await db.query("update outbox set enviado_em = now() where id = $1", [ev.id]);
@@ -304,7 +325,8 @@ for (const ev of rows) {
 
 // Estoque: consumidor idempotente (a mesma mensagem pode chegar duas vezes)
 await db.transaction(async (tx) => {
-  const r = await tx.query("insert into processadas (id) values ($1) on conflict do nothing", [msg.id]);
+  const r = await tx.query(
+    "insert into processadas (id) values ($1) on conflict do nothing", [msg.id]);
   if (r.rowCount === 0) return; // já processada: ignora
   await reservarItens(tx, msg.dados.pedidoId);
 });`,
@@ -313,7 +335,7 @@ await db.transaction(async (tx) => {
 
 <h4>Ferramentas que fazem o trabalho pesado</h4>
 <p>O orquestrador acima é didático: se o processo cair no passo 3, alguém precisa ler o log e continuar dali. Motores de
-workflow fazem isso por você: guardam o estado de cada execução, re-tentam, têm timers que sobrevivem a reinícios e um
+workflow fazem isso por você: guardam o estado de cada execução, tentam de novo, têm timers que sobrevivem a reinícios e um
 painel para ver em que passo está cada saga.</p>
 ${tabela(
   ["Ferramenta", "Como você descreve o fluxo", "Bom para"],
@@ -323,16 +345,14 @@ ${tabela(
     ["<b>AWS Step Functions</b>", "Máquina de estados em JSON (Amazon States Language), com editor visual e <code>Retry</code>/<code>Catch</code> em cada estado", "Quem já está na AWS e orquestra funções Lambda (capítulo 15)"],
   ],
 )}
-<p>No Temporal, por exemplo, a saga vira uma função comum com <code>try/catch</code>: cada passo que dá certo empilha a
-sua compensação, e o <code>catch</code> roda a pilha. Se o processo cair no meio, outro retoma do ponto em que parou.</p>
 
 <h4>Passo a passo para adotar</h4>
 ${passos([
-  "Desenhe a saga antes do código: os passos, o serviço dono de cada um e a compensação de cada um. Passo sem volta vai para o fim.",
+  "Desenhe a saga antes do código: os passos, o serviço dono de cada um e a compensação de cada um. O passo sem volta (pivô) vem depois dos que têm compensação.",
   "Dê nome aos estados intermediários (<code>PENDENTE</code>, <code>CANCELADO</code>) e mostre-os na tela: \"estamos confirmando seu pagamento\".",
   "Escolha o estilo: coreografia para 2 ou 3 passos simples; orquestração quando há mais passos, decisões no meio ou prazos.",
   "Torne passos e compensações idempotentes e publique mensagens pela outbox (ou por CDC, <i>change data capture</i>, que lê as mudanças no log do banco, com ferramentas como o Debezium).",
-  "Separe erro temporário (rede, timeout: re-tente com espera crescente) de erro de negócio (cartão recusado: compense). Monitore sagas paradas e passe um <i>correlation id</i> em todas as mensagens para segui-las nos logs.",
+  "Separe erro temporário (rede, timeout: tente de novo com espera crescente) de erro de negócio (cartão recusado: compense). Monitore sagas paradas e passe um <i>correlation id</i> em todas as mensagens para segui-las nos logs.",
 ])}
 
 <h3>Vantagens e custos</h3>
@@ -353,8 +373,11 @@ cancelado. Compensação precisa de retentativa, idempotência e, no fim, alerta
 (<i>dead letter queue</i>) para alguém resolver.</li>
 <li><b>Confiar que a mensagem chega uma vez só</b>: ela pode chegar duas vezes (cliente cobrado em dobro) ou nunca sair
 (escrita dupla sem outbox). Idempotência e outbox não são opcionais.</li>
-<li><b>Tratar timeout como falha</b>: o pagamento pode ter passado e só a resposta se perdeu. Consulte o status ou re-tente
-com a mesma chave antes de compensar.</li>
+<li><b>Tratar timeout como falha</b>: o pagamento pode ter passado e só a resposta se perdeu. Consulte o status ou tente de
+novo com a mesma chave antes de compensar.</li>
+<li><b>Esquecer que não há isolamento</b>: enquanto a saga roda, outra operação pode ler ou mudar o mesmo pedido (o
+cliente pede para cancelar no meio da cobrança). Use o estado intermediário como <b>trava semântica</b>: com o pedido em
+<code>PENDENTE</code>, as outras operações esperam ou recusam.</li>
 <li><b>Compensação que apaga</b>: <code>delete from pedidos</code> em vez de marcar <code>CANCELADO</code>. Some o
 histórico, e uma mensagem atrasada pode "ressuscitar" o pedido.</li>
 <li><b>Coreografia que virou novelo</b>: muitos serviços reagindo aos eventos uns dos outros, ciclos, e ninguém sabe dizer

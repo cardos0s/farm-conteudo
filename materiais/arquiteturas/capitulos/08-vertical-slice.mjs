@@ -75,7 +75,7 @@ function fluxoDasFatias() {
   s += seta(330, 76, 200, 124, { cor: cor.azul, espessura: 2 });
   s += txt(248, 86, "POST /pedidos", { tam: 15, cor: cor.azul, ancora: "end" });
   s += seta(430, 76, 560, 124, { cor: cor.azul, espessura: 2 });
-  s += txt(512, 86, "GET /pedidos", { tam: 15, cor: cor.azul, ancora: "start" });
+  s += txt(512, 86, "GET /clientes/:id/pedidos", { tam: 15, cor: cor.azul, ancora: "start" });
 
   // mediator (opcional)
   s += bloco(20, 126, 720, 44, "mediator: entrega cada mensagem ao seu handler (opcional)", {
@@ -187,7 +187,9 @@ handler certo. É opcional; uma função por rota já é uma fatia.</li>
 <li><b>Comando ou consulta</b>: toda fatia é uma das duas. Comandos mudam o estado (criar, cancelar, pagar); consultas só
 leem (listar, detalhar). É o CQRS (capítulo 21) em versão leve: mesmo banco, mas código de escrita e de leitura separados.</li>
 <li><b>Cada fatia escolhe sua técnica</b>: a de escrita pode usar entidades e ORM; a de leitura pode fazer um SQL direto
-que já devolve o formato da tela. Não existe camada obrigatória que todo mundo precisa atravessar.</li>
+que já devolve o formato da tela. Não existe camada obrigatória que todo mundo precisa atravessar. O caminho comum é a
+fatia nascer como um <i>transaction script</i> (os passos em sequência numa função só) e ganhar entidades e objetos de
+domínio quando a regra cresce.</li>
 <li><b>Pouco acoplamento entre fatias, muito dentro delas</b>: o código de uma fatia pode ser bem amarrado entre si, mas
 uma fatia não importa outra.</li>
 <li><b>Duplicação aceitável</b>: se duas fatias têm código parecido, tudo bem. Só extraia para um lugar comum quando a
@@ -255,11 +257,11 @@ export async function criarPedido({ clienteId, itens }: z.infer<typeof Entrada>)
   const total = itens.reduce((soma, i) => soma + preco.get(i.produtoId)! * i.quantidade, 0);
   const { rows: [pedido] } = await db.query(
     "insert into pedidos (cliente_id, total_centavos) values ($1, $2) returning id",
-    [clienteId, total]); // itens vão para pedido_itens na mesma transação (omitido)
+    [clienteId, total]); // na versão real: transação + insert em pedido_itens (omitido)
   return { id: pedido.id, totalCentavos: total };
 }
 
-// 3. rota: só traduz HTTP (o middleware de erro transforma ZodError em 400)
+// 3. rota: só traduz HTTP (no Express 5, o ZodError vai ao middleware de erro, que responde 400)
 export const rota = Router().post("/pedidos", async (req, res) => {
   res.status(201).json(await criarPedido(Entrada.parse(req.body)));
 });`,
@@ -335,7 +337,8 @@ ${fig(regraEspalhada(), "A taxa de entrega copiada em três fatias: quando muda,
 Regra que vale para o negócio inteiro mora no domínio, perto dos dados.</li>
 <li><b>Pasta compartilhada que vira lixão</b>: tudo que se repete duas vezes vai para <code>compartilhado/</code>, e você
 volta a ter uma camada de serviços gigante, agora sem nome. Extraia só o que já se provou comum.</li>
-<li><b>Fatia chamando fatia</b>: o handler de "fechar pedido" importa o de "reservar estoque". É acoplamento escondido:
+<li><b>Fatia chamando fatia</b>: o handler de "fechar pedido" chama o de "reservar estoque", direto ou por um
+<code>mediator.send()</code>. É acoplamento escondido:
 mudar um quebra o outro. Extraia a regra comum ou publique um evento (capítulo 20).</li>
 <li><b>Fatia gorda</b>: um <code>PedidosHandler</code> com doze métodos é um service de camadas com outro nome. Uma fatia,
 um caso de uso.</li>
@@ -348,12 +351,12 @@ ${pratica(
 
 ${dica(
   "Fatias, Clean ou hexagonal?",
-  "<p>Bogard propôs as fatias como alternativa aos anéis da Clean e da Onion (capítulo 7), mas elas se combinam bem: fatias por fora e um domínio rico no centro, que várias fatias usam. Numa fatia que fala com um serviço externo instável (pagamento, por exemplo), nada impede de usar uma porta e um adaptador, como na hexagonal (capítulo 6). A diferença é que a interface aparece onde ajuda, e não em toda fatia por obrigação.</p>",
+  "<p>Não precisa escolher um lado. As fatias se combinam bem com os anéis da Clean e da Onion (capítulo 7): fatias por fora e um domínio rico no centro, que várias fatias usam. Numa fatia que fala com um serviço externo instável (pagamento, por exemplo), nada impede de usar uma porta e um adaptador, como na hexagonal (capítulo 6). A diferença é que a interface aparece onde ajuda, e não em toda fatia por obrigação.</p>",
 )}
 
 ${alerta(
-  "Pasta por entidade ainda não é fatia",
-  "<p>Uma pasta <code>pedidos/</code> com <code>pedidos.controller.ts</code>, <code>pedidos.service.ts</code> e <code>pedidos.repository.ts</code> (o padrão de muitos projetos NestJS, por exemplo) agrupa por <b>entidade</b>, mas continua em camadas por dentro: o service atende todos os casos de uso de pedido. Na fatia, a divisão é por <b>caso de uso</b>. E fatia também não é microsserviço: todas rodam no mesmo processo e, em geral, usam o mesmo banco.</p>",
+  "O que fatia não é",
+  "<p>Uma pasta <code>pedidos/</code> com <code>pedidos.controller.ts</code>, <code>pedidos.service.ts</code> e <code>pedidos.repository.ts</code> (o padrão de muitos projetos NestJS, por exemplo) agrupa por <b>entidade</b>, mas continua em camadas por dentro: o service atende todos os casos de uso de pedido. Na fatia, a divisão é por <b>caso de uso</b>. Fatia também não é microsserviço: todas rodam no mesmo processo e, em geral, usam o mesmo banco. E não confunda com a <i>fatia vertical</i> do planejamento ágil (quebrar o trabalho em entregas que vão da tela ao banco): a ideia é parecida, mas lá se fala de planejar entregas; aqui, de organizar o código.</p>",
 )}
 
 ${combina([

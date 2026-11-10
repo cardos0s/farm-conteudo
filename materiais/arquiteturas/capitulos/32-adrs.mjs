@@ -32,25 +32,25 @@ function cicloDeVida() {
   s += seta(115, 100, 115, 143, { espessura: 2, rotulo: "não aprovado", ancora: "start", dx: 12, dy: 0 });
   s += seta(380, 100, 380, 143, { espessura: 2, rotulo: "deixou de valer", ancora: "start", dx: 12, dy: 0 });
   // a pasta no repositório
-  s += linha([[20, 222], [740, 222]], { cor: cor.cinza, espessura: 1, tracejado: true });
-  s += txt(20, 246, "docs/adr/ no repositório: numerados, nunca apagados", { tam: 16, cor: cor.azul, ancora: "start" });
+  s += linha([[20, 210], [740, 210]], { cor: cor.cinza, espessura: 1, tracejado: true });
+  s += txt(20, 234, "docs/adr/ no repositório: numerados, nunca apagados", { tam: 16, cor: cor.azul, ancora: "start" });
   const cartao = (x, num, titulo, status, corChip, tracejado = false) =>
-    ret(x, 296, 124, 128, { preench: "#ffffff", hachura: "solid", espessura: 1.8, tracejado }) +
-    txt(x + 62, 314, num, { tam: 15, cor: cor.cinza }) +
-    txt(x + 62, 348, titulo, { tam: 15 }) +
-    ret(x + 10, 374, 104, 42, { preench: corChip, hachura: "solid", espessura: 1.3 }) +
-    txt(x + 62, 395, status, { tam: 15 });
+    ret(x, 280, 124, 128, { preench: "#ffffff", hachura: "solid", espessura: 1.8, tracejado }) +
+    txt(x + 62, 298, num, { tam: 15, cor: cor.cinza }) +
+    txt(x + 62, 332, titulo, { tam: 15 }) +
+    ret(x + 10, 358, 104, 42, { preench: corChip, hachura: "solid", espessura: 1.3 }) +
+    txt(x + 62, 379, status, { tam: 15 });
   s += cartao(20, "ADR-0001", "registrar\ndecisões", "aceito", claro.verde);
   s += cartao(158, "ADR-0002", "TypeScript\nno backend", "aceito", claro.verde);
   s += cartao(296, "ADR-0003", "monólito\nmodular", "aceito", claro.verde);
   s += cartao(434, "ADR-0004", "filas no\nRedis", "substituído\npor 0010", claro.violeta, true);
-  s += txt(590, 360, "...", { tam: 22, cor: cor.cinza });
+  s += txt(590, 344, "...", { tam: 22, cor: cor.cinza });
   s += cartao(622, "ADR-0010", "filas no\nRabbitMQ", "aceito", claro.verde);
   // o novo aponta para o antigo
-  s += curva([[684, 292], [590, 262], [500, 292]], { cor: cor.violeta, espessura: 2 });
-  s += ponta(500, 292, Math.atan2(292 - 270, 500 - 540), cor.violeta);
-  s += txt(590, 250, "substitui", { tam: 15, cor: cor.violeta });
-  return quadro(760, 440, s);
+  s += curva([[684, 276], [590, 246], [500, 276]], { cor: cor.violeta, espessura: 2 });
+  s += ponta(500, 276, Math.atan2(276 - 254, 500 - 540), cor.violeta);
+  s += txt(590, 236, "substitui", { tam: 15, cor: cor.violeta });
+  return quadro(760, 422, s);
 }
 
 /** Funções de aptidão: disparadas no pipeline e contínuas em produção. */
@@ -70,7 +70,7 @@ function aptidao() {
   s += seta(78, 126, 132, 126, { espessura: 2 });
   s += seta(247, 126, 272, 126, { espessura: 2 });
   s += seta(387, 126, 412, 126, { espessura: 2 });
-  s += seta(527, 126, 604, 126, { espessura: 2, rotulo: "deploy", dy: -15 });
+  s += seta(527, 126, 604, 126, { espessura: 2, rotulo: "deploy", dy: -15, dx: 10 });
   // produção
   s += servidor(608, 82, 70, 88, "produção");
   // falha barra o PR
@@ -195,16 +195,20 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test } from "vitest";
 
-// o núcleo não pode depender de nada disto (capítulo 6)
-const PROIBIDOS = ['from "express"', 'from "pg"', 'from "@prisma/client"', "/adaptadores/"];
+// o núcleo não pode importar nada disto (capítulo 6)
+const PROIBIDOS = ["express", "pg", "@prisma/client"];
 
 test("o núcleo dos módulos não depende de infraestrutura", () => {
   const violacoes: string[] = [];
   for (const modulo of ["catalogo", "pedidos", "pagamentos", "entregas"]) {
     const pasta = join("src", modulo, "nucleo");
     for (const arq of readdirSync(pasta, { recursive: true, encoding: "utf8" })) {
-      const texto = arq.endsWith(".ts") ? readFileSync(join(pasta, arq), "utf8") : "";
-      for (const p of PROIBIDOS) if (texto.includes(p)) violacoes.push(\`\${modulo}/nucleo/\${arq}: \${p}\`);
+      if (!arq.endsWith(".ts")) continue;
+      const codigo = readFileSync(join(pasta, arq), "utf8");
+      for (const [, origem] of codigo.matchAll(/from ["']([^"']+)["']/g)) {
+        if (PROIBIDOS.includes(origem) || origem.includes("/adaptadores/"))
+          violacoes.push(\`\${modulo}/nucleo/\${arq}: \${origem}\`);
+      }
     }
   }
   expect(violacoes).toEqual([]); // se falhar, a lista mostra o arquivo e o import
@@ -225,8 +229,7 @@ export const options = {
 
 export default function () {
   http.get(__ENV.BASE_URL + "/api/produtos?busca=tenis");
-}
-// se um threshold estourar, o k6 termina com erro e o pipeline para`;
+}`;
 
 export default `
 ${resumo(
@@ -263,8 +266,6 @@ hora de preencher o parágrafo de consequências.</li>
 <p>Muitos times somam data, quem decidiu e <b>alternativas consideradas</b> (o template MADR, por exemplo, já traz isso).
 Vale a pena: metade do valor de um ADR está em saber o que <b>não</b> foi escolhido, e por quê.</p>
 
-${codigo(MODELO, "docs/adr/template.md", { realce: false })}
-
 <h3>Um exemplo preenchido</h3>
 <p>Uma loja online com dois times precisa decidir como dividir o sistema. O ADR abaixo é o resultado (caso ilustrativo):</p>
 
@@ -272,6 +273,9 @@ ${codigo(EXEMPLO, "docs/adr/0003-monolito-modular.md", { realce: false })}
 
 <p>Repare: o contexto fala de <b>time e prazo</b>, não só de tecnologia (capítulo 2); as consequências têm mais <b>e</b>
 menos; e a última linha diz <b>quando rever</b>. É isso que faz do ADR uma decisão consciente, e não uma regra eterna.</p>
+
+<h4>Modelo em branco para copiar</h4>
+${codigo(MODELO, "docs/adr/template.md", { realce: false })}
 
 <h3>Onde guardar e ciclo de vida</h3>
 <p>Guarde os ADRs <b>no repositório</b>, em <code>docs/adr</code>, em Markdown. Assim eles passam por pull request (PR), têm
@@ -292,12 +296,13 @@ loja/
 `)}
 
 <p>O ciclo de vida é o do desenho do começo do capítulo. O ADR nasce <b>proposto</b> num PR, e a discussão acontece nos
-comentários. Aprovado, vira <b>aceito</b> e o texto não muda mais. Se o time desiste, ele fica como <b>rejeitado</b> (assim a
+comentários. Aprovado, vira <b>aceito</b> e a decisão não é mais reescrita: dali em diante, só o status e os links mudam. Se o time desiste, ele fica como <b>rejeitado</b> (assim a
 mesma proposta não volta daqui a seis meses sem nada novo). Quando uma decisão nova troca a antiga, escreva um ADR novo e
 marque os dois: "substituído por ADR-0010" e "substitui ADR-0004". Nunca reescreva a história. <b>Obsoleto</b>
-(<i>deprecated</i>) é a decisão que deixou de valer sem outra no lugar.</p>
+(<i>deprecated</i>) é a decisão que deixou de valer sem outra no lugar (por exemplo, a parte do sistema que ela cobria foi
+desligada).</p>
 
-<p>Nem toda decisão merece um ADR. Uma régua prática:</p>
+<p>Nem toda decisão merece um ADR. Use a régua a seguir para separar as que merecem.</p>
 ${quando(
   [
     "É cara de desfazer: estilo de arquitetura, banco, linguagem, forma de comunicação entre serviços.",
@@ -332,7 +337,7 @@ ${fig(aptidao(), "As funções disparadas barram o PR antes do deploy; as contí
 
 <h4>Exemplo 1: dependências proibidas</h4>
 <p>A regra do capítulo 6 vira um teste comum, que roda junto com os outros. Se alguém quebrar a regra, a falha mostra o
-arquivo e o import (por exemplo, <code>pedidos/nucleo/pedido.ts: from "pg"</code>):</p>
+arquivo e o import (por exemplo, <code>pedidos/nucleo/pedido.ts: pg</code>):</p>
 
 ${codigo(TESTE, "testes/arquitetura.test.ts")}
 
@@ -343,7 +348,8 @@ de carga, o limite vira um <i>threshold</i>, e o comando falha se ele for ultrap
 
 ${codigo(CARGA, "testes/carga/busca.js")}
 
-<p>Em projetos maiores, troque o teste caseiro por ferramentas prontas. Alguns exemplos:</p>
+<p>O teste caseiro é simples de propósito: não enxerga <code>require()</code> nem <code>import()</code> dinâmico. Em projetos
+maiores, use ferramentas que analisam o código de verdade, como as da tabela a seguir.</p>
 ${tabela(
   ["O que proteger", "Função de aptidão", "Ferramentas (exemplos)"],
   [
@@ -358,7 +364,8 @@ ${tabela(
 <h3>Modelo C4: o sistema em quatro níveis de zoom</h3>
 <p>O ADR explica o porquê; o diagrama explica o quê. Só que diagramas de arquitetura costumam misturar servidor, classe,
 fila e pessoa no mesmo desenho, sem legenda. O <b>modelo C4</b>, de Simon Brown, resolve isso como um app de mapas: você
-começa no país e dá zoom até a rua.</p>
+começa no país e dá zoom até a rua. O nome vem dos quatro níveis: <i>Context</i>, <i>Containers</i>, <i>Components</i> e
+<i>Code</i>.</p>
 <ol>
 <li><b>Contexto</b>: o sistema como uma caixa só, quem usa e com que sistemas externos ele conversa. Para todo mundo.</li>
 <li><b>Contêineres</b>: as partes que rodam ou guardam dados separadamente: app web, app mobile, API, banco. Para devs e
@@ -399,13 +406,13 @@ ${tabela(
 <li><b>ADR escrito para justificar</b>: decide primeiro e escreve depois, sem alternativas reais. Escreva enquanto decide.</li>
 <li><b>Editar ADR aceito</b>: escrever a decisão nova por cima da antiga apaga a história. Crie um ADR que substitui.</li>
 <li><b>Função de aptidão que não barra</b>: o teste de carga falha e o deploy segue mesmo assim. Se não para o pipeline nem
-gera alerta, não protege nada.</li>
+gera alerta, não protege nada. E se for lenta ou falhar ao acaso, o time aprende a ignorar.</li>
 <li><b>Diagrama que mistura níveis</b>: classe, servidor e time no mesmo desenho. Um nível do C4 por diagrama, com legenda.</li>
 </ul>
 
 ${pratica(
   "No mundo real",
-  "<p>Imagine a loja do ADR-0003, um ano depois. Uma dev nova propõe quebrar tudo em microsserviços. Em vez de semanas de debate, o time abre o ADR e confere o \"rever se\": são 11 devs e nenhum módulo precisa de escala separada, então a decisão fica. Meses depois, pagamentos passa a exigir deploy isolado e regras próprias para dados de cartão: agora o gatilho disparou. O time escreve o ADR-0014, \"Extrair pagamentos para um serviço\", que cita o 0003, explica o que mudou e cria uma função de aptidão nova: nenhum outro módulo lê as tabelas de pagamentos. O 0003 continua valendo para o resto do sistema.</p>",
+  "<p>Imagine a loja do ADR-0003, um ano depois. Uma dev nova propõe quebrar tudo em microsserviços. Em vez de semanas de debate, o time abre o ADR e confere o \"rever se\": são 11 devs e nenhum módulo precisa de escala separada, então a decisão fica. Meses depois, pagamentos passa a exigir deploy isolado e regras próprias para dados de cartão: agora o gatilho disparou. O time escreve o ADR-0014, \"Extrair pagamentos para um serviço\", que cita o 0003, explica o que mudou e cria uma função de aptidão nova: nenhum outro módulo lê as tabelas de pagamentos. O 0003 não é substituído, porque continua valendo para o resto do sistema: ele só ganha um link para o 0014.</p>",
 )}
 
 ${dica(
@@ -423,7 +430,7 @@ ${combina([
 ])}
 
 ${lembre([
-  "ADR é uma ou duas páginas com contexto, decisão e consequências, em <code>docs/adr</code>, junto do código. ADR aceito não se edita: um ADR novo o substitui.",
+  "ADR é uma ou duas páginas com contexto, decisão e consequências, em <code>docs/adr</code>, junto do código. ADR aceito não se reescreve: um ADR novo o substitui.",
   "Funções de aptidão transformam regras de arquitetura em testes que barram o PR (dependências, tempo de resposta) ou em alertas de produção.",
   "O C4 desenha o sistema em quatro níveis de zoom; a revisão de arquitetura é um checklist de perguntas respondidas no PR do ADR, não um comitê.",
 ])}

@@ -74,9 +74,9 @@ function cicloDeVida() {
       s += txt(x + 75, 124, legenda[0], { tam: 15, cor: cor.cinza });
       if (legenda[1]) s += txt(x + 75, 144, legenda[1], { tam: 15, cor: cor.cinza });
     }
-    if (i < 3) s += seta(x + 153, 71, x + 207, 71, { espessura: 2, cor: i === 2 ? cor.verde : cor.tinta });
+    if (i < 3) s += seta(x + 153, 71, x + 187, 71, { espessura: 2, cor: i === 2 ? cor.verde : cor.tinta });
   });
-  s += txt(571, 54, "sim", { tam: 15, cor: cor.verde });
+  s += txt(570, 54, "sim", { tam: 15, cor: cor.verde });
   // ramo de recusa
   s += seta(475, 104, 475, 140, { cor: cor.vermelho, espessura: 2 });
   s += txt(458, 122, "não", { tam: 15, cor: cor.vermelho, ancora: "end" });
@@ -89,22 +89,22 @@ function cicloDeVida() {
   // linha 2: uso
   s += passo(33, 248, "5", cor.verde);
   s += txt(56, 248, "usar: no checkout, o núcleo pede cotação a todos os plugins de frete", { tam: 16, ancora: "start" });
-  s += bloco(20, 304, 150, 62, "checkout\n(núcleo)", { preench: claro.amarelo, tam: 16 });
-  s += seta(172, 335, 226, 335, { espessura: 2 });
-  s += bloco(228, 304, 150, 62, "registro", { preench: claro.cinza, tam: 16 });
+  s += bloco(20, 313, 150, 62, "checkout\n(núcleo)", { preench: claro.amarelo, tam: 16 });
+  s += seta(172, 344, 226, 344, { espessura: 2 });
+  s += bloco(228, 313, 150, 62, "registro", { preench: claro.cinza, tam: 16 });
   const plugins = [
-    [272, "motoboy", "R$ 18,90", true],
-    [326, "retirada na loja", "R$ 0,00", true],
-    [380, "transportadora", "não respondeu", false],
+    [292, "motoboy", "R$ 18,90", true],
+    [344, "retirada na loja", "R$ 0,00", true],
+    [396, "transportadora", "não respondeu", false],
   ];
   for (const [y, nome, res, ok] of plugins) {
     s += bloco(450, y - 21, 150, 42, nome, { preench: claro.verde, tam: 15 });
-    s += seta(380, 335, 447, y, { espessura: 1.8 });
+    s += seta(380, 344, 447, y, { espessura: 1.8 });
     s += ok ? check(620, y, 16) : xis(620, y, 15);
     s += txt(636, y, res, { tam: 15, ancora: "start", cor: ok ? cor.tinta : cor.vermelho });
   }
-  s += txt(380, 432, "o cliente vê duas opções; a transportadora fora do ar não trava a compra", { tam: 15, cor: cor.cinza });
-  return quadro(760, 450, s);
+  s += txt(380, 446, "o cliente vê duas opções; a transportadora fora do ar não trava a compra", { tam: 15, cor: cor.cinza });
+  return quadro(760, 464, s);
 }
 
 /** Níveis de isolamento: quanto menos confiança no autor do plugin, mais isolamento. */
@@ -112,16 +112,17 @@ function isolamento() {
   semear("microkernel-3");
   let s = "";
   const cols = [
-    [130, "mesmo processo", "mesma memória", "simples e rápido", "um bug derruba tudo", "webpack, ESLint, WordPress"],
-    [380, "processo separado", "2 processos", "o núcleo sobrevive", "chamadas viram mensagens", "VS Code (Extension Host)"],
-    [630, "sandbox + permissões", "permissões: rede, config", "acesso só ao permitido", "mais trabalho para montar", "extensões de navegador"],
+    [130, "mesmo processo", "mesma memória", "simples e rápido", "um bug derruba tudo", "webpack, ESLint, WordPress", "plugins do seu time"],
+    [380, "processo separado", "2 processos", "o núcleo sobrevive", "chamadas viram mensagens", "VS Code (Extension Host)", "plugins de parceiros"],
+    [630, "sandbox + permissões", "permissões: rede, config", "acesso só ao permitido", "mais trabalho para montar", "extensões de navegador", "de qualquer pessoa"],
   ];
-  for (const [cx, titulo, tag, ganho, custo, exemplo] of cols) {
+  for (const [cx, titulo, tag, ganho, custo, exemplo, autor] of cols) {
     s += txt(cx, 24, titulo, { tam: 17 });
     s += etiqueta(cx, 176, tag, { tam: 14, preench: "#ffffff" });
-    s += txt(cx, 210, ganho, { tam: 15, cor: cor.verde });
-    s += txt(cx, 232, custo, { tam: 15, cor: cor.vermelho });
-    s += txt(cx, 262, exemplo, { tam: 15, cor: cor.cinza });
+    s += txt(cx, 208, ganho, { tam: 15, cor: cor.verde });
+    s += txt(cx, 230, custo, { tam: 15, cor: cor.vermelho });
+    s += txt(cx, 256, "ex.: " + exemplo, { tam: 15, cor: cor.cinza });
+    s += txt(cx, 284, autor, { tam: 16, cor: cor.azul });
   }
   // coluna 1: núcleo e plugin dentro do mesmo processo
   s += ret(28, 50, 204, 104, { tracejado: true, cor: cor.cinza, espessura: 1.4 });
@@ -138,9 +139,9 @@ function isolamento() {
   s += bloco(638, 66, 84, 72, "plugin", { preench: claro.verde, tam: 15 });
   s += seta(600, 102, 635, 102, { duplo: true, espessura: 2, ponta: 9 });
 
-  s += seta(70, 304, 700, 304, { cor: cor.cinza, espessura: 2 });
-  s += txt(380, 288, "mais isolamento: mais segurança, mais custo e mais latência", { tam: 15, cor: cor.cinza });
-  return quadro(760, 322, s);
+  s += seta(70, 330, 700, 330, { cor: cor.cinza, espessura: 2 });
+  s += txt(380, 314, "menos confiança no autor: mais isolamento (e mais custo e latência)", { tam: 15, cor: cor.cinza });
+  return quadro(760, 346, s);
 }
 
 export default `
@@ -153,16 +154,16 @@ ${resumo(
 do próprio núcleo. Um <i>microkernel</i>, como o do MINIX ou o do QNX, guarda no núcleo só o essencial (agendar processos,
 gerenciar memória, trocar mensagens) e roda o resto como processos à parte. Em aplicações, a ideia é a mesma: um núcleo
 mínimo e funcionalidades plugáveis. Por isso o estilo também é chamado de <b>arquitetura de plugins</b> (<i>plug-in
-architecture</i>); Mark Richards o descreve com esse nome em <i>Software Architecture Patterns</i> e em <i>Fundamentals of
-Software Architecture</i> (com Neal Ford). Você usa isso todo dia: no editor de código, no navegador, no linter.</p>
+architecture</i>), como aparece nos livros de Mark Richards (<i>Software Architecture Patterns</i> e, com Neal Ford,
+<i>Fundamentals of Software Architecture</i>). Você usa isso todo dia: no editor de código, no navegador, no linter.</p>
 
 ${fig(nucleoEPlugins(), "O núcleo faz o básico e abre encaixes. Cada plugin segue o contrato de um encaixe. Plugin novo é só mais uma peça registrada.", "grande")}
 
 <h3>Como funciona</h3>
 <ul>
-<li><b>Núcleo</b> (<i>core system</i>): o mínimo para o produto funcionar. Numa loja: carrinho, checkout, pedidos. Num
-editor: abrir, editar e salvar arquivos. Ele também cuida do ciclo de vida dos plugins e oferece serviços comuns (log,
-configuração, eventos). Não tem regra de nenhum cliente específico.</li>
+<li><b>Núcleo</b> (<i>core system</i>): o mínimo para o produto funcionar (numa loja: carrinho, checkout, pedidos; num
+editor: abrir, editar e salvar). Também cuida do ciclo de vida dos plugins e oferece serviços comuns (log, configuração,
+eventos). Não tem regra de nenhum cliente específico.</li>
 <li><b>Ponto de extensão</b> (<i>extension point</i>): um lugar onde o núcleo aceita ajuda de fora, descrito por um
 <b>contrato</b> (uma interface). "Quem sabe cotar frete?", "quem sabe exportar relatório?". O plugin só faz o que o
 contrato permite.</li>
@@ -170,8 +171,8 @@ contrato permite.</li>
 nunca das classes internas do núcleo. O ideal é que um plugin não conheça os outros.</li>
 <li><b>Manifesto</b>: a ficha do plugin. Nome, versão, versão do contrato que ele segue, permissões de que precisa,
 quando deve ser ativado. Com ela, o núcleo decide se aceita o plugin antes de executar uma linha dele.</li>
-<li><b>Registro</b> (<i>registry</i>): a lista de plugins carregados e dos pontos que cada um atende. Pode ser um mapa em
-memória, um arquivo de configuração ou uma tabela no banco com o que cada cliente ativou.</li>
+<li><b>Registro</b> (<i>registry</i>): a lista de plugins carregados e dos pontos que cada um atende: um mapa em memória,
+um arquivo de configuração ou uma tabela com o que cada cliente ativou.</li>
 <li><b>Carregamento</b>: <i>estático</i> (os plugins vão no mesmo build e a configuração liga ou desliga cada um) ou
 <i>dinâmico</i> (descobertos com o sistema rodando: <code>import()</code>, uma pasta de plugins, pacotes npm, uma loja
 de extensões).</li>
@@ -238,31 +239,57 @@ ${codigo(
 // nucleo/contratos.ts — a única parte do núcleo que os plugins enxergam
 export const VERSAO_API = 2;
 
-export interface PedidoParaFrete {
-  pais: string;          // "BR", "AR"...
-  cidade: string;
-  pesoGramas: number;
-  valorCentavos: number;
-}
-
-export interface Cotacao {
-  servico: string;       // "Motoboy (hoje)", "Retirada na loja"
-  precoCentavos: number;
-  prazoDias: number;
-}
+export interface PedidoParaFrete { cidade: string; pesoGramas: number; valorCentavos: number }
+export interface Cotacao { servico: string; precoCentavos: number; prazoDias: number }
 
 export interface PluginDeFrete {
   nome: string;
-  versaoApi: number;     // versão do contrato para a qual o plugin foi feito
-  cotar(pedido: PedidoParaFrete): Promise<Cotacao | null>; // null = "não atendo"
-}`,
-  "src/nucleo/contratos.ts",
+  versaoApi: number; // versão do contrato para a qual o plugin foi feito
+  cotar(pedido: PedidoParaFrete): Promise<Cotacao | null>; // null = "não atendo este pedido"
+}
+
+// plugins/motoboy/index.ts — um plugin: conhece o contrato e mais nada do núcleo
+import type { PluginDeFrete } from "../../nucleo/contratos.js";
+
+const motoboy: PluginDeFrete = {
+  nome: "motoboy",
+  versaoApi: 2,
+  async cotar(pedido) {
+    if (pedido.cidade !== "Campinas" || pedido.pesoGramas > 5000) return null;
+    return { servico: "Motoboy (hoje)", precoCentavos: 1890, prazoDias: 0 };
+  },
+};
+export default motoboy;`,
+  "src/nucleo/contratos.ts e src/plugins/motoboy/index.ts",
 )}
 
 ${codigo(
   `
+// main.ts — carrega sob demanda só os plugins que esta loja ativou
+const DISPONIVEIS: Record<string, () => Promise<{ default: PluginDeFrete }>> = {
+  "motoboy": () => import("./plugins/motoboy/index.js"),
+  "retirada-na-loja": () => import("./plugins/retirada-na-loja/index.js"),
+  "transportadora": () => import("./plugins/transportadora/index.js"),
+};
+
+const registro = new RegistroDeFrete();
+for (const nome of configDaLoja.pluginsDeFrete) {  // ex.: ["motoboy", "retirada-na-loja"]
+  const carregar = DISPONIVEIS[nome];
+  if (carregar) registro.registrar((await carregar()).default);
+}
+const opcoes = await registro.cotarTodos(pedido);   // o checkout nem sabe quais plugins existem`,
+  "src/main.ts",
+)}
+
+<p>Repare na lista fechada <code>DISPONIVEIS</code>: o carregamento é dinâmico (só o que a loja usa vai para a memória), mas
+a configuração só escolhe nomes; nenhum caminho de arquivo vem de fora. (O Babel e o formato antigo de configuração do
+ESLint também acham o pacote pelo nome: <code>"react"</code> vira <code>eslint-plugin-react</code>.) Por dentro, o registro
+recusa versões incompatíveis e não deixa um plugin lento ou quebrado travar o checkout:</p>
+
+${codigo(
+  `
 // nucleo/registro.ts — guarda os plugins e protege o núcleo deles
-import { VERSAO_API, type Cotacao, type PedidoParaFrete, type PluginDeFrete } from "./contratos";
+import { VERSAO_API, type Cotacao, type PedidoParaFrete, type PluginDeFrete } from "./contratos.js";
 
 const comTempoLimite = <T>(p: Promise<T>, ms: number) =>
   Promise.race([p, new Promise<never>((_, falha) => setTimeout(() => falha(new Error("tempo esgotado")), ms))]);
@@ -272,7 +299,7 @@ export class RegistroDeFrete {
 
   registrar(plugin: PluginDeFrete) {
     if (plugin.versaoApi !== VERSAO_API) {
-      console.warn(\`"\${plugin.nome}" ignorado: feito para a API v\${plugin.versaoApi}, núcleo na v\${VERSAO_API}\`);
+      console.warn(\`"\${plugin.nome}" recusado: feito para a API v\${plugin.versaoApi}\`);
       return; // recusa com aviso, em vez de quebrar no meio de uma compra
     }
     this.plugins.set(plugin.nome, plugin);
@@ -280,10 +307,9 @@ export class RegistroDeFrete {
 
   async cotarTodos(pedido: PedidoParaFrete): Promise<Cotacao[]> {
     const lista = [...this.plugins.values()];
+    // o .then() pega até erro síncrono do plugin; o allSettled espera todos
     const resultados = await Promise.allSettled(
-      // o .then() transforma erro síncrono do plugin em promessa rejeitada
-      lista.map((p) => comTempoLimite(Promise.resolve().then(() => p.cotar(pedido)), 2000)),
-    );
+      lista.map((p) => comTempoLimite(Promise.resolve().then(() => p.cotar(pedido)), 2000)));
     return resultados.flatMap((r, i) => {
       if (r.status === "rejected") console.error(\`plugin "\${lista[i].nome}" falhou:\`, r.reason);
       return r.status === "fulfilled" && r.value ? [r.value] : []; // quem falhou fica de fora
@@ -293,40 +319,6 @@ export class RegistroDeFrete {
   "src/nucleo/registro.ts",
 )}
 
-${codigo(
-  `
-// plugins/motoboy/index.ts — um plugin: conhece o contrato e mais nada do núcleo
-import type { PluginDeFrete } from "../../nucleo/contratos";
-
-const motoboy: PluginDeFrete = {
-  nome: "motoboy",
-  versaoApi: 2,
-  async cotar(pedido) {
-    if (pedido.cidade !== "Campinas" || pedido.pesoGramas > 5000) return null; // não atendo
-    return { servico: "Motoboy (hoje)", precoCentavos: 1890, prazoDias: 0 };
-  },
-};
-export default motoboy;
-
-// main.ts — carrega sob demanda só os plugins que esta loja ativou
-const DISPONIVEIS: Record<string, () => Promise<{ default: PluginDeFrete }>> = {
-  "motoboy": () => import("./plugins/motoboy/index.js"),
-  "retirada-na-loja": () => import("./plugins/retirada-na-loja/index.js"),
-  "transportadora": () => import("./plugins/transportadora/index.js"),
-};
-
-const registro = new RegistroDeFrete();
-for (const nome of configDaLoja.pluginsDeFrete) {   // ex.: ["motoboy", "retirada-na-loja"]
-  const carregar = DISPONIVEIS[nome];
-  if (carregar) registro.registrar((await carregar()).default);
-}
-const opcoes = await registro.cotarTodos(pedido);    // o checkout nem sabe quais plugins existem`,
-  "src/plugins/motoboy e src/main.ts",
-)}
-
-<p>Repare na lista fechada <code>DISPONIVEIS</code>: o carregamento é dinâmico (só o que a loja usa vai para a memória), mas
-nenhum caminho de arquivo vem de fora. Ferramentas como o ESLint e o Babel vão além e acham plugins por convenção de nome
-nos pacotes instalados (<code>eslint-plugin-*</code>, <code>babel-plugin-*</code>).</p>
 
 <h4>Versionar o contrato</h4>
 <p>Depois que existem plugins, o contrato vira uma <b>API pública</b>: renomear um campo quebra o plugin de alguém. Regras
@@ -349,25 +341,20 @@ Quanto menos você confia em quem escreveu, mais isolamento precisa:</p>
 
 ${fig(isolamento(), "Três níveis de isolamento. Comece pelo mais simples que dá conta do nível de confiança nos autores dos plugins.")}
 
-<ul>
-<li><b>Plugins do seu time</b>: o mesmo processo basta, com as proteções do código acima: tempo limite, falha isolada, log
-com o nome do plugin e, se quiser ir além, desligamento automático de quem falha demais.</li>
-<li><b>Plugins de parceiros</b>: processo separado ou <i>worker</i>, conversando por mensagens. Um travamento não derruba
-o núcleo.</li>
-<li><b>Plugins de qualquer pessoa</b> (uma loja aberta de extensões): sandbox, <b>permissões declaradas</b> no manifesto
-("ler a aba atual", "acessar a rede"), revisão antes de publicar e um jeito de desligar um plugin à distância. Lojas de
-extensões de navegadores e de editores já tiveram extensões maliciosas publicadas: trate plugin de terceiros como
-qualquer dependência de terceiros.</li>
-</ul>
+<p>Em qualquer nível, valem as proteções do código acima: tempo limite, falha isolada, log com o nome do plugin e, se quiser
+ir além, desligamento automático de quem falha demais. Processo separado ou <i>worker</i> evita que um travamento derrube o
+núcleo, mas não impede um plugin de ler o que não deve. Para código de qualquer pessoa (uma loja aberta de extensões),
+some <b>permissões declaradas</b> no manifesto ("ler a aba atual", "acessar a rede"), revisão antes de publicar e um jeito
+de desligar um plugin à distância. Lojas de extensões de navegadores e de editores já tiveram extensões maliciosas
+publicadas: trate plugin de terceiros como qualquer dependência de terceiros.</p>
 
 <h4>Passo a passo para adotar</h4>
 ${passos([
   "Liste o que varia de verdade: três transportadoras, dois formatos de relatório, regras de imposto por país. Se só existe uma variação, ainda não é hora.",
   "Desenhe o contrato a partir do que o núcleo precisa (entrada e saída), com tipos do núcleo e o mínimo de métodos.",
   "Transforme o código que já existe no primeiro plugin (o frete atual vira o plugin <code>transportadora</code>). Se o contrato não serve nem para ele, não vai servir para os outros.",
-  "Escreva o registro: registrar, validar a versão, listar por ponto de extensão, desligar.",
+  "Escreva o registro: registrar, validar a versão, listar por ponto de extensão, desligar. Desde o começo, proteja o núcleo: tempo limite, falha isolada, log com o nome do plugin.",
   "Decida como cada cliente ativa os plugins (configuração, tabela no banco, <i>feature flag</i>) e como eles são carregados.",
-  "Proteja o núcleo: tempo limite, falha isolada, logs com o nome do plugin.",
   "Versione e documente o contrato, com changelog e um kit de testes que todo plugin roda.",
 ])}
 
@@ -391,9 +378,7 @@ ser plugin vazou para o núcleo, e o núcleo deixa de ser estável.</li>
 quiser"). Qualquer mudança interna quebra plugins, e qualquer plugin pode fazer qualquer coisa. Exponha só o necessário.</li>
 <li><b>Plugins que dependem uns dos outros</b>: o plugin A importa o plugin B e a ordem de carregamento passa a importar.
 Se precisam conversar, que seja pelo núcleo (eventos) ou com a dependência declarada no manifesto.</li>
-<li><b>Mudar o contrato sem versionar</b>: um campo renomeado e todos os plugins quebram em produção ao mesmo tempo.</li>
 <li><b>Confiar no plugin</b>: chamar a API da transportadora sem tempo limite. Ela fica lenta e o checkout inteiro espera.</li>
-<li><b>Sistema de plugins para uma implementação só</b>: registro, manifesto e versionamento para algo que nunca variou.</li>
 </ul>
 
 ${pratica(

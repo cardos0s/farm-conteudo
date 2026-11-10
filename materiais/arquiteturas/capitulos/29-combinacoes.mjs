@@ -56,23 +56,23 @@ function receitaEcommerce() {
   s += txt(405, 138, "modelo de leitura", { tam: 15, cor: cor.cinza });
   s += navegador(600, 46, 130, 82, "vitrine");
   s += seta(596, 87, 484, 87, { espessura: 2, rotulo: "consulta" });
-  s += linha([[20, 168], [740, 168]], { tracejado: true, cor: cor.cinza, espessura: 1.2 });
+  s += linha([[20, 160], [740, 160]], { tracejado: true, cor: cor.cinza, espessura: 1.2 });
   // embaixo: saga no checkout
-  s += txt(20, 194, "checkout com saga", { tam: 16, cor: cor.laranja, ancora: "start" });
-  for (const [x, nome] of [[30, "Pedidos"], [315, "Estoque"], [600, "Pagamento"]]) {
-    s += bloco(x, 226, 130, 62, nome, { preench: claro.azul });
-    s += banco(x + 42, 302, 46, 44, "", { preench: claro.cinza });
+  s += txt(20, 184, "checkout com saga", { tam: 16, cor: cor.laranja, ancora: "start" });
+  for (const [x, nome] of [[20, "Pedidos"], [300, "Estoque"], [620, "Pagamento"]]) {
+    s += bloco(x, 212, 120, 62, nome, { preench: claro.azul });
+    s += banco(x + 37, 288, 46, 44, "", { preench: claro.cinza });
   }
-  s += seta(162, 250, 313, 250, { espessura: 2, cor: cor.laranja, rotulo: "1 PedidoCriado", corRotulo: cor.laranja });
-  s += seta(447, 250, 598, 250, { espessura: 2, cor: cor.laranja, rotulo: "2 EstoqueReservado", corRotulo: cor.laranja });
+  s += seta(142, 236, 298, 236, { espessura: 2, cor: cor.laranja, rotulo: "1 PedidoCriado", corRotulo: cor.laranja });
+  s += seta(422, 236, 618, 236, { espessura: 2, cor: cor.laranja, rotulo: "2 EstoqueReservado", corRotulo: cor.laranja });
   // compensação
-  s += seta(598, 274, 449, 274, { tracejado: true, cor: cor.vermelho, espessura: 1.9 });
-  s += txt(522, 302, "recusado:\nlibera a reserva", { tam: 15, cor: cor.vermelho });
+  s += seta(618, 260, 424, 260, { tracejado: true, cor: cor.vermelho, espessura: 1.9 });
+  s += txt(520, 288, "PagamentoRecusado:\nlibera a reserva", { tam: 15, cor: cor.vermelho });
   // sucesso volta para o pedido
-  s += linha([[712, 290], [712, 378], [50, 378]], { cor: cor.verde, espessura: 2 });
-  s += seta(50, 378, 50, 292, { cor: cor.verde, espessura: 2 });
-  s += txt(380, 398, "3 PagamentoAprovado: o pedido é confirmado", { tam: 15, cor: cor.verde });
-  return quadro(760, 414, s);
+  s += linha([[726, 276], [726, 362], [38, 362]], { cor: cor.verde, espessura: 2 });
+  s += seta(38, 362, 38, 278, { cor: cor.verde, espessura: 2 });
+  s += txt(380, 382, "3 PagamentoAprovado: o pedido é confirmado", { tam: 15, cor: cor.verde });
+  return quadro(760, 398, s);
 }
 
 /** Receita 5: dispositivos → log → filtros; reprocessamento no estilo Kappa. */
@@ -123,26 +123,27 @@ function receitaMobile() {
   s += bloco(48, 54, 124, 52, "View (tela)", { preench: claro.amarelo, tam: 16 });
   s += bloco(48, 146, 124, 52, "ViewModel", { preench: claro.verde, tam: 16 });
   s += bloco(48, 238, 124, 52, "Repositório", { preench: claro.cinza, tam: 16 });
-  s += seta(80, 144, 80, 108, { cor: cor.verde, espessura: 1.9 });
-  s += txt(74, 126, "estado", { tam: 15, cor: cor.verde, ancora: "end" });
-  s += seta(140, 108, 140, 144, { espessura: 1.9 });
-  s += txt(146, 126, "ação", { tam: 15, ancora: "start" });
+  s += seta(62, 144, 62, 108, { cor: cor.verde, espessura: 1.9 });
+  s += txt(73, 118, "estado", { tam: 15, cor: cor.verde, ancora: "start" });
+  s += seta(158, 108, 158, 144, { espessura: 1.9 });
+  s += txt(150, 136, "ação", { tam: 15, ancora: "end" });
   s += seta(110, 200, 110, 236, { espessura: 1.9 });
   s += txt(110, 334, "app (MVVM)", { tam: 16 });
-  // nuvem serverless
-  s += ret(286, 20, 460, 292, { espessura: 1.8, tracejado: true, cor: cor.ciano });
-  s += txt(516, 42, "serverless: funções que escalam sozinhas", { tam: 16, cor: cor.ciano });
+  // só o BFF fica no serverless; os serviços podem ser de qualquer tipo
+  s += ret(290, 20, 220, 292, { espessura: 1.8, tracejado: true, cor: cor.ciano });
+  s += txt(400, 42, "função serverless", { tam: 16, cor: cor.ciano });
   s += seta(174, 264, 318, 264, { espessura: 2.2 });
   s += txt(232, 226, "1 chamada\npor tela", { tam: 15 });
   s += bloco(320, 222, 150, 76, "BFF", { preench: claro.laranja, tam: 20 });
+  s += txt(660, 42, "serviços", { tam: 16, cor: cor.azul });
   const servicos = [
     [74, "Pedidos"],
     [152, "Catálogo"],
     [230, "Perfil"],
   ];
   for (const [y, nome] of servicos) {
-    s += bloco(570, y, 150, 50, nome, { preench: claro.azul, tam: 16 });
-    s += seta(472, 258, 568, y + 25, { espessura: 1.7, cor: cor.cinza });
+    s += bloco(585, y, 150, 50, nome, { preench: claro.azul, tam: 16 });
+    s += seta(472, 258, 583, y + 25, { espessura: 1.7, cor: cor.cinza });
   }
   s += txt(395, 120, "junta as respostas,\ncorta campos e\nformata para a tela", { tam: 15, cor: cor.cinza });
   s += seta(395, 160, 395, 218, { espessura: 1.4, cor: cor.cinza, tracejado: true });
@@ -174,9 +175,9 @@ function receitaCelulas() {
   s += seta(340, 96, 378, 146, { espessura: 2.4 });
   s += seta(400, 96, 620, 146, { espessura: 1.7, cor: cor.cinza });
   s += xis(475, 172, 18);
-  s += check(140, 364) + txt(160, 364, "clientes da A: ok", { tam: 15, cor: cor.verde, ancora: "start" });
-  s += txt(380, 364, "só os clientes da B sentem", { tam: 15, cor: cor.vermelho });
-  s += check(570, 364) + txt(590, 364, "clientes da C: ok", { tam: 15, cor: cor.verde, ancora: "start" });
+  s += check(68, 364) + txt(145, 364, "clientes da A: ok", { tam: 15, cor: cor.verde });
+  s += txt(380, 364, "clientes da B: fora do ar", { tam: 15, cor: cor.vermelho });
+  s += check(558, 364) + txt(635, 364, "clientes da C: ok", { tam: 15, cor: cor.verde });
   return quadro(760, 384, s);
 }
 
@@ -201,7 +202,7 @@ function escada() {
     s += txt(nx + 85, ny + 88, dores[i], { tam: 15, cor: cor.cinza });
   }
   s += ret(395, 250, 350, 86, { tracejado: true, espessura: 1.6, cor: cor.laranja });
-  s += txt(570, 272, "receitas de domínio: entram em qualquer degrau", { tam: 15, cor: cor.laranja });
+  s += txt(570, 272, "receitas de domínio (qualquer degrau)", { tam: 15, cor: cor.laranja });
   s += etiqueta(455, 310, "4. fintech", { tam: 15, preench: claro.laranja });
   s += etiqueta(572, 310, "5. streaming", { tam: 15, preench: claro.laranja });
   s += etiqueta(690, 310, "6. mobile", { tam: 15, preench: claro.laranja });
@@ -234,7 +235,7 @@ ${tabela(
     ["<b>4. Fintech</b>", "hexagonal", "monólito modular ou serviços", "event sourcing e sagas"],
     ["<b>5. IoT e streaming</b>", "pipes and filters", "consumidores de stream", "eventos num log, Kappa"],
     ["<b>6. App mobile</b>", "MVVM no app", "BFF em serverless", "HTTP do app ao BFF; eventos nas tarefas de fundo"],
-    ["<b>7. SaaS enorme</b>", "hexagonal em cada serviço", "microsserviços em células", "eventos dentro da célula; roteamento por cliente"],
+    ["<b>7. SaaS enorme</b>", "camadas ou hexagonal em cada serviço", "microsserviços em células", "eventos dentro da célula; roteamento por cliente"],
   ],
   "compacta",
 )}
@@ -244,15 +245,15 @@ ${tabela(
 muita dúvida sobre o que o cliente quer de verdade.</p>
 <p><b>Por que combina.</b> No começo, o que importa é a velocidade de aprender: lançar, medir, mudar. Um monólito tem um
 repositório, um deploy e um banco; uma transação resolve a consistência e não existe rede entre as partes para falhar. As
-camadas são o formato que quase todo framework já traz (Rails, Django, Laravel, NestJS, Spring), então quem chega
-entende o projeto no primeiro dia. É a ideia do "Monolith First", de Martin Fowler (2015): comece pelo monólito e só
+camadas são o formato mais conhecido, e frameworks como Rails, Django, Laravel, NestJS e Spring já empurram nessa direção
+(entrada, regra, acesso a dados), então quem chega entende o projeto no primeiro dia. É a ideia do "Monolith First", de Martin Fowler (2015): comece pelo monólito e só
 divida quando souber onde ficam as fronteiras.</p>
 
 ${tabela(
   ["Peça", "Papel na receita"],
   [
     ["Monólito", "Um deploy, um banco, nenhuma chamada de rede entre as partes. Uma transação garante a consistência."],
-    ["Camadas", "Rotas → serviços → repositórios. Todo dev reconhece o formato, e o framework já vem assim."],
+    ["Camadas", "Rotas → serviços → repositórios. Todo dev reconhece o formato, e o framework já sugere algo parecido."],
     ["Pastas por funcionalidade", "<code>pedidos/</code> e <code>clientes/</code>, cada uma com as suas camadas dentro. Deixa o caminho pronto para a receita 2."],
   ],
 )}
@@ -324,14 +325,11 @@ ${codigo(
 // compartilhado/barramento.ts: adaptador em memória (amanhã pode ser SQS, RabbitMQ ou Kafka)
 type Evento = { tipo: string };
 type Ouvinte = (evento: Evento) => Promise<void>;
-
 export class BarramentoEmMemoria {
   private ouvintes = new Map<string, Ouvinte[]>();
-
   assinar<E extends Evento>(tipo: E["tipo"], ouvinte: (evento: E) => Promise<void>) {
     this.ouvintes.set(tipo, [...(this.ouvintes.get(tipo) ?? []), ouvinte as Ouvinte]);
   }
-
   async publicar(evento: Evento) {
     for (const ouvinte of this.ouvintes.get(evento.tipo) ?? []) await ouvinte(evento);
   }
@@ -349,8 +347,9 @@ barramento.assinar<FaturaPaga>("FaturaPaga", (e) => liberarPlano.executar(e.cont
 <ul>
 <li><b>Fronteira furada</b>: um módulo importa um arquivo interno do outro "só dessa vez". Automatize a checagem
 (dependency-cruiser ou regras de lint no TypeScript; Packwerk no Ruby).</li>
-<li><b>Evento perdido</b>: num barramento em memória, se o processo cair entre gravar no banco e publicar, o evento some.
-Quando isso importar, use o padrão <i>outbox</i>: grave o evento numa tabela, na mesma transação, e publique depois.</li>
+<li><b>Evento perdido ou erro que volta</b>: num barramento em memória, se o processo cair entre gravar no banco e
+publicar, o evento some; e, como os ouvintes rodam dentro da chamada, um erro num deles volta para quem publicou. Quando
+isso importar, use o padrão <i>outbox</i> (capítulo 20): grave o evento numa tabela, na mesma transação, e entregue depois.</li>
 <li><b>Evento para tudo</b>: se cada ação dispara cinco reações em cadeia, ninguém entende mais o fluxo. Quando você
 precisa da resposta agora ("esta conta pode criar mais um usuário?"), chame a API do módulo.</li>
 </ul>
@@ -364,13 +363,14 @@ ${pratica(
 <p><b>Ingredientes:</b> microsserviços (capítulo 14) + eventos (capítulo 20) + sagas (capítulo 23) + CQRS no catálogo
 (capítulo 21). <b>Para quem:</b> loja com muitos times, picos fortes (Black Friday) e partes com cargas bem diferentes: a
 vitrine recebe muito mais buscas do que o checkout recebe pedidos.</p>
+${fig(receitaEcommerce(), "Em cima, CQRS: o catálogo grava e avisa por evento; a busca guarda um modelo só para leitura. Embaixo, uma saga coreografada: se o pagamento for recusado, o estoque libera a reserva e o pedido é cancelado.")}
+
 <p><b>Por que combina.</b> Os microsserviços dão a cada time o seu deploy e deixam escalar só o que está quente. Só que,
 com um banco por serviço, some a transação única, e é aí que entram as outras peças. Os <b>eventos</b> evitam cadeias de
 chamadas síncronas: se o serviço de e-mail cair, o pedido não cai junto. A <b>saga</b> faz o papel da transação no
 checkout, com um passo de desfazer para cada passo. E o <b>CQRS no catálogo</b> separa a escrita (cadastro, preço,
-estoque) da leitura (busca e vitrine), que ganha um modelo próprio, otimizado e escalado à parte.</p>
+descrição) da leitura (busca e vitrine), que ganha um modelo próprio, otimizado e escalado à parte.</p>
 
-${fig(receitaEcommerce(), "Em cima, CQRS: o catálogo grava no modelo de escrita e avisa por evento; a busca mantém um modelo só para leitura. Embaixo, uma saga coreografada: cada serviço reage ao evento anterior e, se o pagamento for recusado, o estoque desfaz a reserva. Cada serviço tem o seu banco.")}
 
 <p><b>Como as peças se encaixam.</b> Por dentro, cada serviço segue camadas ou hexagonal: consumidores de eventos são
 adaptadores de entrada, e o publicador é uma porta de saída. O barramento (Kafka, RabbitMQ, SNS com SQS) é o único ponto
@@ -402,21 +402,28 @@ que não é preciso ter microsserviços para precisar de saga: o parceiro extern
 ${tabela(
   ["#", "Evento gravado (nunca muda)", "Valor", "Saldo calculado"],
   [
-    ["1", "<code>ContaAberta</code>", "", "R$ 0"],
-    ["2", "<code>DepositoRecebido</code>", "+ R$ 500", "R$ 500"],
-    ["3", "<code>TransferenciaDebitada</code> <i>(saga: primeiro passo)</i>", "− R$ 200", "R$ 300"],
-    ["4", "<code>TransferenciaEstornada</code> <i>(saga: compensação, o banco de destino recusou)</i>", "+ R$ 200", "R$ 500"],
-    ["5", "<code>CompraNoDebito</code>", "− R$ 80", "R$ 420"],
+    ["1", "<code>ContaAberta</code>", "", "R$&nbsp;0"],
+    ["2", "<code>DepositoRecebido</code>", "+&nbsp;R$&nbsp;500", "R$&nbsp;500"],
+    ["3", "<code>TransferenciaDebitada</code> <i>(saga: primeiro passo)</i>", "−&nbsp;R$&nbsp;200", "R$&nbsp;300"],
+    ["4", "<code>TransferenciaEstornada</code> <i>(saga: compensação, o banco de destino recusou)</i>", "+&nbsp;R$&nbsp;200", "R$&nbsp;500"],
+    ["5", "<code>CompraNoDebito</code>", "−&nbsp;R$&nbsp;80", "R$&nbsp;420"],
   ],
 )}
 
 <p>Repare na linha 4: a compensação da saga não apaga a linha 3, ela é um fato novo. O histórico conta a verdade
 inteira, inclusive o que deu errado.</p>
+<p><b>Como as peças se encaixam.</b> O <i>event store</i> (o banco de eventos) fica atrás de uma porta de saída, como
+<code>RepositorioDeContas</code>: ela carrega a conta somando os eventos e grava os novos. Cada parceiro (Pix, bandeira,
+birô) é outro adaptador de saída. A saga é um caso de uso que reage a eventos: ouve <code>TransferenciaDebitada</code>,
+chama a porta do parceiro e grava a resposta como um evento novo. Extrato e relatórios são projeções alimentadas pelos
+mesmos eventos (o lado de leitura do CQRS, capítulo 21).</p>
 <p><b>Riscos.</b> Event sourcing é a peça mais cara desta lista. Evento gravado não muda, então mudar o formato exige
 versionamento; contas com muitos eventos pedem <i>snapshots</i> (fotos do estado) para não somar tudo a cada leitura; e
 perguntas como "quais clientes têm saldo acima de R$ 10 mil?" pedem projeções separadas. Se o que você precisa é só
 auditoria, um livro-razão (<i>ledger</i>) de partidas dobradas, em tabelas que só recebem inserções, já resolve boa
-parte com bem menos esforço.</p>
+parte com bem menos esforço. E, com ou sem event sourcing, toda operação com dinheiro precisa ser <b>idempotente</b>: o
+cliente que toca duas vezes em "pagar", ou a mensagem que chega repetida, não pode gerar duas cobranças. O jeito comum
+é uma chave de idempotência por operação, guardada e conferida antes de executar.</p>
 
 <h3>Receita 5: IoT e streaming</h3>
 <p><b>Ingredientes:</b> eventos (capítulo 20) + pipes and filters (capítulo 10) + Kappa (capítulo 26). <b>Para
@@ -425,28 +432,34 @@ de delivery, os eventos de reprodução de um streaming de vídeo.</p>
 <p><b>Por que combina.</b> Aqui o dado já nasce como evento: cada leitura é um fato com horário. Um <b>log durável</b>
 (Kafka, Kinesis, Pulsar) recebe tudo, absorve os picos e guarda o histórico por um tempo. O processamento é uma sequência
 de etapas independentes (validar, enriquecer, agregar), que é exatamente <b>pipes and filters</b>: cada filtro pode ler
-de um tópico e escrever em outro, e escala sozinho. E a <b>Kappa</b>, proposta por Jay Kreps em 2014, usa um caminho só,
+de um tópico e escrever em outro, e escala de forma independente. E a <b>Kappa</b>, proposta por Jay Kreps em 2014, usa um caminho só,
 o de streaming: em vez de manter um sistema em lote em paralelo (como na Lambda), você reprocessa rodando o mesmo código
 de novo sobre o log.</p>
 
 ${fig(receitaStreaming(), "Cada leitura entra no log e passa por filtros independentes. Para corrigir um cálculo, a versão nova do mesmo pipeline lê o log desde o começo, numa tabela nova, e a leitura troca quando ela alcança o presente.")}
 
+<p><b>Como as peças se encaixam.</b> Cada filtro é um consumidor que lê de um tópico e escreve no próximo: o log faz o
+papel do cano (<i>pipe</i>). Particione os tópicos pelo id do dispositivo; assim as leituras de um mesmo sensor chegam em
+ordem e o trabalho se espalha por várias cópias do filtro. Painel, alerta e tabela final são só mais consumidores do
+último tópico.</p>
 <p><b>Riscos.</b></p>
 <ul>
 <li><b>Dado atrasado e repetido</b>: o sensor fica sem sinal e manda tudo de uma vez, horas depois. Agrupe pela hora do
 evento (não pela hora de chegada), aceite atrasos até um limite e descarte repetidos por um id.</li>
 <li><b>Reprocessar tem limite</b>: só dá para refazer o que ainda está no log. A retenção (dias, meses, para sempre) é
 decisão de negócio e de custo.</li>
-<li><b>Filtros com estado</b> (somas por janela, contagens) precisam de pontos de salvamento (<i>checkpoints</i>) para
-não perder a conta quando reiniciam. Frameworks como Kafka Streams e Flink já cuidam disso; não reinvente.</li>
+<li><b>Filtros com estado</b> (somas por janela, contagens) precisam guardar esse estado de forma segura para não
+perder a conta quando reiniciam. Frameworks como Flink (com <i>checkpoints</i>) e Kafka Streams já cuidam disso; não
+reinvente.</li>
 </ul>
 
 <h3>Receita 6: app mobile</h3>
-<p><b>Ingredientes:</b> MVVM no app (capítulo 5) + BFF + serverless (capítulo 15). <b>Para quem:</b> app iOS e Android com
+<p><b>Ingredientes:</b> MVVM no app (capítulo 5) + BFF (capítulo 14) + serverless (capítulo 15). <b>Para quem:</b> app iOS e Android com
 time de back-end pequeno e uso em picos (o horário do almoço num app de delivery, uma notificação para todos os
 usuários).</p>
 <p><b>Por que combina.</b> O <b>MVVM</b> separa a tela (View) do estado e da lógica de apresentação (ViewModel), que dá
-para testar sem emulador; é o caminho mais comum no Android (com o ViewModel do Jetpack) e no SwiftUI. O <b>BFF</b>
+para testar sem emulador; é o formato do guia oficial de arquitetura do Android (com o ViewModel do Jetpack) e muito
+usado com SwiftUI. O <b>BFF</b>
 (<i>Backend for Frontend</i>, back-end para o front-end) é uma API feita sob medida para as telas do app: junta dados de
 vários serviços numa chamada só e devolve só os campos que a tela usa, o que pesa muito em rede móvel. E rodar o BFF e
 as tarefas de fundo (redimensionar foto, mandar push) em <b>serverless</b> tira do time pequeno o trabalho de cuidar de
@@ -472,6 +485,10 @@ export async function telaInicial(usuarioId: string) {
   "bff/tela-inicial.ts",
 )}
 
+<p><b>Como as peças se encaixam.</b> O repositório do app só conversa com o BFF, nunca direto com os serviços. O BFF é
+dono do formato das telas; os serviços são donos das regras. Costuma existir um BFF por tipo de cliente (app, site), e o
+app iOS e o Android podem dividir o mesmo quando as telas são parecidas. As tarefas de fundo são outras funções,
+disparadas por fila, upload ou horário.</p>
 <p><b>Riscos.</b></p>
 <ul>
 <li><b>Cold start</b>: a primeira chamada a uma função "fria" demora mais, e na tela inicial isso aparece. Meça antes de
@@ -518,13 +535,23 @@ ${passos([
   "Some uma peça por vez, quando a dor aparecer, e registre o porquê num ADR (capítulo 32).",
 ])}
 
+${dica(
+  "Outras combinações que você vai encontrar",
+  `<ul>
+<li><b>Vertical slice + CQRS leve</b> (capítulos 8 e 21): cada funcionalidade é um comando ou uma consulta com o seu próprio handler, sem dois bancos.</li>
+<li><b>Microkernel + hexagonal</b> (capítulos 9 e 6): o contrato do plugin é uma porta, e cada plugin é um adaptador.</li>
+<li><b>Serverless + eventos</b> (capítulos 15 e 20): funções disparadas por fila, upload ou horário, o uso em que o serverless mais brilha.</li>
+<li><b>Monólito modular + poucos serviços</b> (capítulos 12 e 14): o grosso fica no monólito e só sai o que tem necessidade própria, como uma busca ou um processamento de vídeo pesado.</li>
+</ul>`,
+)}
+
 <h3>Erros comuns: combinações que brigam</h3>
 ${tabela(
   ["Combinação", "Por que dá errado", "Faça em vez disso"],
   [
     ["Microsserviços + um banco compartilhado", "Mudar uma tabela quebra vários serviços; o deploy independente deixa de existir.", "Um banco (ou schema) por serviço, ou volte para o monólito modular."],
     ["Event sourcing + CRUD sem regra", "Projeções, versões de eventos e replays sem ganho nenhum.", "Tabelas normais + log de auditoria."],
-    ["Saga dentro de um monólito com um banco só", "Você reimplementa à mão o que uma transação faz de graça.", "Use a transação do banco."],
+    ["Saga dentro de um monólito com um banco só (e sem sistema externo no meio)", "Você reimplementa à mão o que uma transação faz de graça.", "Use a transação do banco."],
     ["Serverless + processo longo ou conexão sempre aberta", "Limite de tempo por execução (15 minutos no AWS Lambda) e conexões demais com o banco.", "Um contêiner ou servidor só para essa parte."],
     ["Micro-frontends com um time só", "Vários builds, deploys e versões de dependências para as mesmas pessoas.", "Um front-end modular, num repositório."],
     ["CQRS no sistema inteiro", "Dois modelos para manter em telas que só leem o que acabaram de gravar.", "CQRS só onde leitura e escrita divergem, como no catálogo."],

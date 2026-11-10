@@ -45,8 +45,8 @@ function fluxo() {
   s += txt(85, 22, "frameworks", { tam: 16, cor: cor.azul });
   s += txt(295, 22, "adaptadores", { tam: 16, cor: cor.verde });
   s += txt(590, 22, "casos de uso", { tam: 16, cor: cor.vermelho });
-  s += linha([[175, 40], [175, 350]], { tracejado: true, cor: cor.cinza, espessura: 1.4 });
-  s += linha([[420, 40], [420, 350]], { tracejado: true, cor: cor.cinza, espessura: 1.4 });
+  s += linha([[175, 40], [175, 338]], { tracejado: true, cor: cor.cinza, espessura: 1.4 });
+  s += linha([[420, 40], [420, 338]], { tracejado: true, cor: cor.cinza, espessura: 1.4 });
   // interface = caixa branca tracejada
   const interfaceBox = (x, y, w, h, nome) =>
     ret(x, y, w, h, { preench: "#ffffff", hachura: "solid", tracejado: true, espessura: 2 }) + txt(x + w / 2, y + h / 2, nome, { tam: 16 });
@@ -58,77 +58,76 @@ function fluxo() {
   // meio: o caso de uso
   s += bloco(450, 172, 280, 56, "CriarPedido (interactor)", { preench: claro.vermelho, tam: 16 });
   // linha de baixo: a resposta sai
-  s += navegador(20, 262, 130, 76, "JSON");
-  s += bloco(200, 272, 190, 56, "Presenter", { preench: claro.verde });
-  s += txt(590, 256, "(interface)", { tam: 15, cor: cor.cinza });
-  s += interfaceBox(450, 272, 280, 56, "CriarPedidoOutputPort");
+  s += navegador(20, 252, 130, 76, "JSON");
+  s += bloco(200, 262, 190, 56, "Presenter", { preench: claro.verde });
+  s += txt(590, 246, "(interface)", { tam: 15, cor: cor.cinza });
+  s += interfaceBox(450, 262, 280, 56, "CriarPedidoOutputPort");
   // dependências: todas para a direita (para dentro)
   s += seta(152, 100, 198, 100, { espessura: 2 });
   s += seta(392, 100, 448, 100, { espessura: 2 });
   s += seta(520, 170, 520, 131, { espessura: 2, tracejado: true });
-  s += seta(660, 230, 660, 270, { espessura: 2 });
-  s += seta(152, 300, 198, 300, { espessura: 2 });
-  s += seta(392, 300, 448, 300, { espessura: 2, tracejado: true });
+  s += seta(660, 230, 660, 260, { espessura: 2 });
+  s += seta(152, 290, 198, 290, { espessura: 2 });
+  s += seta(392, 290, 448, 290, { espessura: 2, tracejado: true });
   // ordem da requisição
   s += passo(175, 74, "1");
   s += passo(420, 74, "2");
-  s += passo(420, 326, "3");
-  s += passo(175, 326, "4");
+  s += passo(420, 316, "3");
+  s += passo(175, 316, "4");
   // legenda
-  s += seta(20, 385, 70, 385, { espessura: 2 });
-  s += txt(80, 386, "chama / usa", { tam: 15, ancora: "start" });
-  s += seta(220, 385, 270, 385, { espessura: 2, tracejado: true });
-  s += txt(280, 386, "implementa", { tam: 15, ancora: "start" });
-  s += passo(420, 385, "1");
-  s += txt(440, 386, "ordem da requisição (vai e volta)", { tam: 15, ancora: "start" });
-  s += txt(380, 424, "toda seta que cruza uma fronteira aponta para dentro", { tam: 16, cor: cor.vermelho });
-  return quadro(760, 440, s);
+  s += seta(20, 370, 70, 370, { espessura: 2 });
+  s += txt(80, 371, "chama / usa", { tam: 15, ancora: "start" });
+  s += seta(220, 370, 270, 370, { espessura: 2, tracejado: true });
+  s += txt(280, 371, "implementa", { tam: 15, ancora: "start" });
+  s += passo(420, 370, "1");
+  s += txt(440, 371, "ordem da requisição (vai e volta)", { tam: 15, ancora: "start" });
+  s += txt(380, 404, "toda seta que cruza uma fronteira aponta para dentro", { tam: 16, cor: cor.vermelho });
+  return quadro(760, 418, s);
 }
 
 /** Camadas x Clean/Onion: a seta entre negócio e dados vira de lado. */
 function inversao() {
   semear("clean-onion-3");
   let s = "";
-  s += linha([[380, 10], [380, 320]], { tracejado: true, cor: cor.cinza, espessura: 1.3 });
+  s += linha([[380, 10], [380, 290]], { tracejado: true, cor: cor.cinza, espessura: 1.3 });
   // esquerda: camadas tradicionais
   s += txt(180, 18, "Camadas (capítulo 4)", { tam: 17 });
-  s += bloco(70, 38, 220, 42, "Apresentação", { preench: claro.azul });
-  s += bloco(70, 104, 220, 72, "Negócio", { preench: claro.amarelo, topo: true });
-  s += txt(180, 155, "chama o PedidoDAO", { tam: 15, cor: cor.cinza, halo: 5 });
-  s += bloco(70, 208, 220, 42, "PedidoDAO", { preench: claro.violeta, tam: 16 });
-  s += banco(135, 268, 90, 48, "Postgres", { preench: claro.violeta, tam: 15 });
-  s += seta(180, 82, 180, 102, { espessura: 2 });
-  s += seta(180, 178, 180, 206, { espessura: 2.4, cor: cor.vermelho });
-  s += txt(240, 192, "depende", { tam: 15, cor: cor.vermelho });
-  s += seta(180, 252, 180, 266, { espessura: 1.8, ponta: 9 });
-  s += txt(180, 342, "o negócio depende do banco", { tam: 16, cor: cor.vermelho });
+  s += bloco(70, 36, 220, 38, "Apresentação", { preench: claro.azul });
+  s += bloco(70, 94, 220, 68, "Negócio", { preench: claro.amarelo, topo: true });
+  s += txt(180, 142, "chama o PedidoDAO", { tam: 15, cor: cor.cinza, halo: 5 });
+  s += bloco(70, 190, 220, 38, "PedidoDAO", { preench: claro.violeta, tam: 16 });
+  s += banco(135, 244, 90, 44, "Postgres", { preench: claro.violeta, tam: 15 });
+  s += seta(180, 76, 180, 92, { espessura: 2 });
+  s += seta(180, 164, 180, 188, { espessura: 2.4, cor: cor.vermelho });
+  s += txt(240, 176, "depende", { tam: 15, cor: cor.vermelho });
+  s += seta(180, 230, 180, 242, { espessura: 1.8, ponta: 9 });
+  s += txt(180, 310, "o negócio depende do banco", { tam: 16, cor: cor.vermelho });
   // direita: Clean e Onion
   s += txt(580, 18, "Clean e Onion", { tam: 17 });
-  s += bloco(470, 38, 220, 42, "Apresentação", { preench: claro.azul });
-  s += bloco(470, 104, 220, 72, "Negócio", { preench: claro.amarelo, topo: true });
-  s += ret(492, 139, 176, 28, { preench: "#ffffff", hachura: "solid", tracejado: true, espessura: 1.6 });
-  s += txt(580, 153, "RepositorioDePedidos", { tam: 15 });
-  s += bloco(470, 208, 220, 42, "RepositorioPostgres", { preench: claro.violeta, tam: 16 });
-  s += banco(535, 268, 90, 48, "Postgres", { preench: claro.violeta, tam: 15 });
-  s += seta(580, 82, 580, 102, { espessura: 2 });
-  s += seta(580, 206, 580, 170, { espessura: 2.4, cor: cor.verde, tracejado: true });
-  s += txt(650, 192, "implementa", { tam: 15, cor: cor.verde });
-  s += seta(580, 252, 580, 266, { espessura: 1.8, ponta: 9 });
-  s += txt(580, 342, "o código do banco depende do negócio", { tam: 16, cor: cor.verde });
-  return quadro(760, 358, s);
+  s += bloco(470, 36, 220, 38, "Apresentação", { preench: claro.azul });
+  s += bloco(470, 94, 220, 68, "Negócio", { preench: claro.amarelo, topo: true });
+  s += ret(492, 126, 176, 28, { preench: "#ffffff", hachura: "solid", tracejado: true, espessura: 1.6 });
+  s += txt(580, 140, "RepositorioDePedidos", { tam: 15 });
+  s += bloco(470, 190, 220, 38, "RepositorioPostgres", { preench: claro.violeta, tam: 16 });
+  s += banco(535, 244, 90, 44, "Postgres", { preench: claro.violeta, tam: 15 });
+  s += seta(580, 76, 580, 92, { espessura: 2 });
+  s += seta(580, 188, 580, 157, { espessura: 2.4, cor: cor.verde, tracejado: true });
+  s += txt(650, 174, "implementa", { tam: 15, cor: cor.verde });
+  s += seta(580, 230, 580, 242, { espessura: 1.8, ponta: 9 });
+  s += txt(580, 310, "o código do banco depende do negócio", { tam: 16, cor: cor.verde });
+  return quadro(760, 326, s);
 }
 
 export default `
 ${resumo(
   "O sistema é desenhado em <b>anéis</b>: no centro ficam as regras de negócio; na borda, banco, web e frameworks. Uma regra manda em tudo: o código só pode depender de quem está <b>mais para dentro</b>.",
-  "Num restaurante, a receita da casa fica no centro. O chef segue a receita; garçom e app de delivery levam pedidos e trazem pratos; fogão e geladeira são equipamentos. Dá para trocar o fogão ou o app de entrega sem mexer na receita, e a receita nunca diz \"use o fogão da marca X\".",
+  "Num restaurante, a receita fica no centro. Garçom e app de delivery levam pedidos e trazem pratos; o fogão é só equipamento. Dá para trocar o fogão ou o app sem mexer na receita, e a receita nunca diz \"use o fogão da marca X\".",
 )}
 
-<p>A <b>Onion Architecture</b> (arquitetura cebola) foi descrita por Jeffrey Palermo em 2008, no blog dele. A <b>Clean
-Architecture</b> (arquitetura limpa) é de Robert C. Martin, o "Uncle Bob": apareceu num post de 2012 e virou livro em 2017.
-No post, o próprio Martin diz que a Clean tenta juntar numa ideia só várias arquiteturas parecidas, entre elas a hexagonal
-(capítulo 6) e a Onion. Por isso as duas estão juntas aqui: são variações do mesmo princípio, com nomes diferentes para
-os anéis.</p>
+<p>A <b>Onion Architecture</b> (arquitetura cebola) foi descrita por Jeffrey Palermo em 2008. A <b>Clean Architecture</b>
+(arquitetura limpa) é de Robert C. Martin, o "Uncle Bob": apareceu num post de 2012 e virou livro em 2017. No post, o
+próprio Martin diz que a Clean tenta juntar numa ideia só várias arquiteturas parecidas, entre elas a hexagonal
+(capítulo 6) e a Onion. Por isso estão juntas aqui: é o mesmo princípio, com nomes diferentes para os anéis.</p>
 
 ${fig(aneis(), "Os quatro anéis da Clean Architecture. Quanto mais para dentro, mais perto do negócio e mais estável; quanto mais para fora, mais técnico e mais sujeito a troca.")}
 
@@ -177,19 +176,19 @@ a API não mexe na regra.</p>
 <li><b>Casca externa</b>: interface do usuário, infraestrutura (banco, e-mail, filas) e testes. Equivale aos dois anéis
 de fora da Clean.</li>
 </ul>
-<p>As regras de Palermo são as mesmas, ditas de outro jeito: a aplicação é construída em volta de um modelo de domínio
-independente; anéis internos definem interfaces e anéis externos as implementam; o acoplamento aponta para o centro; e o
-núcleo compila e roda sem a infraestrutura.</p>
+<p>As regras de Palermo são as mesmas da Clean: anéis internos definem interfaces e os externos as implementam; o
+acoplamento aponta para o centro (um anel pode usar qualquer anel mais interno, não só o vizinho); e o núcleo compila e
+roda sem a infraestrutura.</p>
 
 ${fig(inversao(), "A diferença essencial para as camadas tradicionais: a seta entre o negócio e os dados muda de sentido. Quem define a interface é o negócio; o código do banco se adapta a ela.")}
 
 ${tabela(
-  ["", "Desenho", "Onde fica o banco", "O que ela destaca"],
+  ["", "Onde fica o banco", "O que ela destaca"],
   [
-    ["<b>Camadas</b> (cap. 4)", "pilha de camadas", "embaixo; o negócio depende dele", "separar por papel técnico"],
-    ["<b>Hexagonal</b> (cap. 6)", "núcleo com portas e adaptadores", "fora, atrás de uma porta", "entradas e saídas; não divide o núcleo"],
-    ["<b>Onion</b>", "anéis em volta do domínio", "na casca externa", "o modelo de domínio no centro"],
-    ["<b>Clean</b>", "quatro anéis e o fluxo controller, caso de uso, presenter", "na borda, atrás de gateways", "casos de uso explícitos e DTOs nas fronteiras"],
+    ["<b>Camadas</b> (cap. 4)", "embaixo; o negócio depende dele", "separar por papel técnico, numa pilha"],
+    ["<b>Hexagonal</b> (cap. 6)", "fora, atrás de uma porta", "entradas e saídas; não divide o núcleo"],
+    ["<b>Onion</b>", "na casca externa", "o modelo de domínio no centro, em anéis"],
+    ["<b>Clean</b>", "na borda, atrás de gateways", "casos de uso explícitos, presenter e DTOs nas fronteiras"],
   ],
 )}
 
@@ -243,10 +242,8 @@ ${codigo(
 import { Pedido } from "../../dominio/pedido";
 
 // DTOs: dados simples que cruzam a fronteira
-export interface CriarPedidoEntrada {
-  clienteId: string;
-  itens: { produtoId: string; qtd: number }[];
-}
+export type ItemDoPedido = { produtoId: string; qtd: number };
+export interface CriarPedidoEntrada { clienteId: string; itens: ItemDoPedido[] }
 export interface CriarPedidoSaida { pedidoId: string; totalEmCentavos: number }
 
 // input port: o que o caso de uso oferece (o controller chama)
@@ -272,18 +269,15 @@ import { CatalogoDePrecos, CriarPedidoEntrada, CriarPedidoInputPort,
 // import { Pool } from "pg";                               // proibido: o pg mora na borda
 
 export class CriarPedido implements CriarPedidoInputPort {
-  constructor(
-    private pedidos: RepositorioDePedidos,
-    private catalogo: CatalogoDePrecos,
-    private saida: CriarPedidoOutputPort,
-  ) {}
+  constructor(private pedidos: RepositorioDePedidos, private catalogo: CatalogoDePrecos,
+              private saida: CriarPedidoOutputPort) {}
 
   async executar({ clienteId, itens }: CriarPedidoEntrada): Promise<void> {
     if (itens.length === 0) return this.saida.pedidoRecusado("Pedido sem itens");
     const pedido = Pedido.novo(clienteId);
     for (const item of itens) {
       const preco = await this.catalogo.precoEmCentavos(item.produtoId);
-      if (preco === null) return this.saida.pedidoRecusado(\`Produto \${item.produtoId} não existe\`);
+      if (preco === null) return this.saida.pedidoRecusado("Produto não encontrado");
       pedido.adicionar(item.produtoId, item.qtd, preco); // a regra do item mora na entidade
     }
     await this.pedidos.salvar(pedido);
@@ -299,7 +293,8 @@ se o resultado vai virar JSON, HTML ou mensagem de WhatsApp. Agora a borda:</p>
 ${codigo(
   `
 // presenter: transforma a saída do caso de uso em resposta HTTP
-const reais = (c: number) => (c / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const reais = (centavos: number) =>
+  (centavos / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
 export class CriarPedidoPresenterHttp implements CriarPedidoOutputPort {
   resposta: { status: number; corpo: unknown } = { status: 500, corpo: null };
@@ -321,7 +316,8 @@ export class CriarPedidoController {
 
 // main.ts: o único lugar que conhece todos os anéis; o Express fica na borda
 const pedidos = new PedidosPg(pool), catalogo = new CatalogoPg(pool);
-const controller = new CriarPedidoController((saida) => new CriarPedido(pedidos, catalogo, saida));
+const novoCaso = (saida: CriarPedidoOutputPort) => new CriarPedido(pedidos, catalogo, saida);
+const controller = new CriarPedidoController(novoCaso);
 app.post("/pedidos", async (req, res) => {
   const { status, corpo } = await controller.receber(req.body); // valide o body antes (ex.: zod)
   res.status(status).json(corpo);
@@ -331,11 +327,11 @@ app.post("/pedidos", async (req, res) => {
 
 <h4>Passo a passo para adotar</h4>
 ${passos([
-  "Comece pelo centro: escreva as entidades com as regras que valem em qualquer canal (<code>pedido.adicionar()</code> recusa quantidade zero), sem framework e sem decorator de ORM.",
+  "Comece pelo centro: entidades com as regras que valem em qualquer canal (<code>pedido.adicionar()</code> recusa quantidade zero), sem framework nem ORM.",
   "Para cada ação do usuário, crie um caso de uso com DTO de entrada, DTO de saída e as interfaces do que ele precisa de fora (gateways), com nomes do negócio.",
   "Escreva os adaptadores: o controller traduz a requisição em DTO, o presenter traduz o resultado em resposta e o gateway implementa o repositório com ORM ou SQL.",
   "Deixe frameworks e drivers na borda e ligue tudo no <code>main.ts</code> (o <i>composition root</i>) ou num container de injeção de dependência.",
-  "Teste o interactor com dublês: um repositório em memória e um presenter falso que só guarda o que recebeu. Roda em milissegundos.",
+  "Teste o interactor com dublês: um repositório em memória e um presenter falso que só guarda o que recebeu.",
   "Automatize a regra: <code>dominio/</code> e <code>aplicacao/</code> não podem importar <code>adaptadores/</code>, <code>infra/</code> nem bibliotecas como <code>express</code> e <code>pg</code> (dependency-cruiser ou regras de lint resolvem).",
 ])}
 
@@ -351,36 +347,39 @@ ${tabela(
 )}
 
 <h3>Quando é exagero</h3>
-<p>A crítica mais comum à Clean é a cerimônia: camadas e mapeamentos demais para pouca regra. Ela é justa em parte:</p>
-${tabela(
-  ["A crítica", "O que há de verdade", "O que fazer"],
-  [
-    ["\"Camada demais para pouca coisa\"", "Num CRUD, cada anel só repassa dados.", "Anéis só nos módulos com regra; o resto pode ser CRUD direto (capítulo 8)."],
-    ["\"Passo o dia mapeando objeto\"", "Entidade, DTO, tabela e JSON: quatro formatos do mesmo dado.", "Mapeie só onde os formatos diferem. Consultas podem ler direto do banco (CQRS, capítulo 21)."],
-    ["\"Interface com uma implementação só\"", "Input ports quase nunca ganham uma segunda.", "Interface onde há troca ou dublê de teste (gateways); o controller pode chamar o caso de uso direto."],
-    ["\"Ninguém troca de banco\"", "Trocar de banco é mesmo raro.", "O ganho real é testar a regra sem infraestrutura e atualizar o framework sem medo."],
-  ],
-)}
+<p>A crítica mais comum à Clean é a cerimônia: camadas e mapeamentos demais para pouca regra. Ela é justa em parte,
+e cada queixa tem resposta:</p>
+<ul>
+<li><b>"Camada demais para pouca coisa."</b> Num CRUD, cada anel só repassa dados. Use anéis só onde há regra; o resto
+pode ser CRUD direto (fatias verticais, capítulo 8).</li>
+<li><b>"Passo o dia mapeando objeto."</b> Entidade, DTO, tabela e JSON são quatro formatos do mesmo dado. Mapeie só onde
+os formatos diferem; telas de leitura podem consultar o banco direto (CQRS, capítulo 21).</li>
+<li><b>"Interface com uma implementação só."</b> Input ports quase nunca ganham uma segunda: o controller pode chamar o
+caso de uso direto. Guarde as interfaces para os gateways, onde há troca e dublê de teste.</li>
+<li><b>"Ninguém troca de banco."</b> É verdade, é raro. O ganho real é testar a regra sem infraestrutura e atualizar o
+framework sem medo.</li>
+</ul>
 
 <h3>Erros comuns</h3>
 <ul>
 <li><b>Entidade com cara de tabela</b>: decorators do ORM (<code>@Entity()</code>, <code>@Column()</code>) na classe de
-domínio fazem o centro depender de um framework. Deixe o modelo de persistência no adaptador e converta na borda (ou
-registre o atalho num ADR, capítulo 32).</li>
+domínio prendem o centro a um framework. Deixe o modelo de persistência no adaptador (ou registre o atalho num ADR,
+capítulo 32).</li>
 <li><b>Entidade atravessando a fronteira</b>: devolver o objeto <code>Pedido</code> direto no JSON expõe campos internos
 e amarra o contrato da API ao modelo. Use o DTO de saída.</li>
-<li><b>Caso de uso que só repassa</b>: <code>ListarProdutos</code> chama <code>repositorio.listar()</code> e devolve o
-resultado. Sem regra, não precisa de anel.</li>
+<li><b>Transação no lugar errado</b>: abrir <code>BEGIN</code> com o cliente do <code>pg</code> dentro do caso de uso traz
+o banco para o centro. Se o caso de uso grava várias coisas juntas, declare uma porta (ex.: <code>UnidadeDeTrabalho</code>)
+e deixe o adaptador abrir e fechar a transação.</li>
 <li><b>Template pronto</b>: copiar um repositório "clean" com oito projetos e quarenta pastas para um sistema de três
 telas. Comece com poucos anéis e acrescente quando doer.</li>
 <li><b>Pastas que não contam o que o sistema faz</b>: só <code>dominio/</code>, <code>aplicacao/</code> e
-<code>infra/</code> no topo. O próprio Martin defende que a estrutura "grite" o domínio (ele chama isso de <i>Screaming
-Architecture</i>): <code>pedidos/</code> e <code>pagamentos/</code> no topo, os anéis dentro de cada um.</li>
+<code>infra/</code> no topo. Martin defende que a estrutura "grite" o domínio (<i>Screaming Architecture</i>):
+<code>pedidos/</code> e <code>pagamentos/</code> no topo, os anéis dentro de cada um.</li>
 </ul>
 
 ${pratica(
   "No mundo real",
-  "<p>Imagine uma fintech de empréstimo pessoal. A regra de crédito (juros, limite, número de parcelas) é o coração do negócio e muda com frequência. Ela mora em entidades e casos de uso, testados em milissegundos. O mesmo caso de uso <code>SimularEmprestimo</code> atende o app, o site e o atendimento por WhatsApp, cada canal com seu presenter. Quando a empresa troca o fornecedor de consulta de score, muda um gateway e nada no centro. Já o painel interno onde o time cadastra agências e feriados é só formulário e tabela: foi feito como CRUD direto, sem anéis. Mesma empresa, duas decisões, e as duas certas.</p>",
+  "<p>Imagine uma fintech de empréstimo pessoal. A regra de crédito (juros, limite, parcelas) é o coração do negócio e muda com frequência: ela mora em entidades e casos de uso, testados em milissegundos. O mesmo <code>SimularEmprestimo</code> atende app, site e WhatsApp, cada canal com seu presenter. Trocar o fornecedor de consulta de score muda um gateway e nada no centro. Já o painel interno onde o time cadastra agências e feriados é só formulário e tabela, e foi feito como CRUD direto, sem anéis. Mesma empresa, duas decisões, as duas certas.</p>",
 )}
 
 ${dica(
