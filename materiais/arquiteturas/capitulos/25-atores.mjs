@@ -101,10 +101,9 @@ ${resumo(
   "Um escritório em que cada pessoa tem uma bandeja de entrada. Ninguém mexe na gaveta do colega: deixa um bilhete na bandeja dele. Cada um lê um bilhete por vez. Se alguém passa mal, o chefe põe outra pessoa no lugar.",
 )}
 
-<p>O modelo de atores foi proposto por Carl Hewitt em 1973, como modelo teórico de computação concorrente. Ficou famoso na
-prática com o Erlang, criado na Ericsson para centrais telefônicas, que atendem muitas ligações ao mesmo tempo e não podem
-parar. Ao contrário dos capítulos da parte II, que organizam o código, este trata de como as partes do sistema <b>rodam ao
-mesmo tempo</b> e conversam, numa máquina ou em várias.</p>
+<p>O modelo de atores foi proposto por Carl Hewitt em 1973, como modelo teórico de computação concorrente. Ficou famoso
+com o Erlang, criado na Ericsson para centrais telefônicas, que atendem muitas ligações simultâneas e não podem parar.
+Aqui o assunto é como as partes do sistema <b>rodam ao mesmo tempo</b> e conversam, numa máquina ou em várias.</p>
 
 ${fig(anatomia(), "Um ator por dentro: as mensagens entram na caixa, são tratadas uma por vez e podem mudar o estado, gerar novas mensagens ou criar atores.", "grande")}
 
@@ -136,7 +135,7 @@ disputa nem chega a acontecer.</p>
 ficam numa <b>árvore de supervisão</b>. Supervisores não fazem trabalho de negócio: só vigiam os filhos e sobem outro no lugar
 de quem cai, com uma estratégia:</p>
 <ul>
-<li><b>one_for_one</b>: reinicia só quem caiu (o padrão para filhos independentes, como uma conexão por usuário);</li>
+<li><b>one_for_one</b>: reinicia só quem caiu (filhos independentes, como uma conexão por usuário);</li>
 <li><b>one_for_all</b>: reinicia todos os irmãos, para filhos que só funcionam juntos;</li>
 <li><b>rest_for_one</b>: reinicia quem caiu e os que foram iniciados depois dele.</li>
 </ul>
@@ -145,10 +144,9 @@ os filhos e a si mesmo, e a falha sobe para o supervisor de cima.</p>
 
 ${fig(supervisao(), "Árvore de supervisão de um chat: a conexão da Bia caiu, o supervisor dela sobe outra e o resto do sistema nem fica sabendo.")}
 
-<p>Daí vem a filosofia <b>"let it crash"</b> (deixe cair): em vez de encher o código de <code>try/catch</code> para todo erro
-imaginável, você escreve o caminho normal e deixa o processo morrer quando algo inesperado acontece. O supervisor recria o
-ator a partir de um estado conhecido. Isso só funciona porque os atores são isolados (um não corrompe a memória do outro) e
-baratos de recriar.</p>
+<p>Daí vem a filosofia <b>"let it crash"</b> (deixe cair): em vez de <code>try/catch</code> para cada erro imaginável, você
+escreve o caminho normal e deixa o processo morrer no inesperado. O supervisor o recria a partir de um estado conhecido.
+Funciona porque atores são isolados e baratos de recriar.</p>
 
 ${alerta(
   "Reiniciar é voltar ao começo",
@@ -157,16 +155,15 @@ ${alerta(
 
 <h4>Transparência de localização</h4>
 <p>Você manda mensagem para um <b>endereço</b> (o PID no Erlang, o <code>ActorRef</code> no Akka, a chave do <i>grain</i> no
-Orleans), e não para um objeto na memória. O ator pode estar na mesma máquina ou em outro servidor, e o código de quem
-manda é o mesmo. O Cluster Sharding do Akka e o Orleans usam isso para espalhar os atores pelo cluster pela chave da
-entidade (o id da conta, por exemplo). Só não confunda mesmo código com mesma falha: pela rede, a mensagem pode atrasar ou
-sumir.</p>
+Orleans), e não para um objeto na memória. O ator pode estar nesta máquina ou em outra: o código de quem manda é o mesmo.
+O Akka (Cluster Sharding) e o Orleans usam isso para espalhar atores pelo cluster. Mas pela rede a mensagem pode atrasar
+ou sumir.</p>
 
 <h4>Onde o modelo existe pronto</h4>
 ${tabela(
   ["Plataforma", "O que tem de especial"],
   [
-    ["<b>Erlang/OTP</b> (BEAM)", "Processos levíssimos (milhões numa máquina), supervisores e distribuição nativa. O RabbitMQ é feito nele."],
+    ["<b>Erlang/OTP</b> (BEAM)", "Processos levíssimos (milhões numa máquina), supervisores e distribuição nativa."],
     ["<b>Elixir</b> (BEAM)", "Criada pelo brasileiro José Valim: OTP com sintaxe moderna. Base do framework Phoenix."],
     ["<b>Akka</b> (JVM)", "Atores tipados, cluster, sharding e persistência. Em 2022 trocou a licença aberta pela BSL; o fork aberto é o Apache Pekko."],
     ["<b>Orleans</b> (.NET)", "Atores virtuais (<i>grains</i>): você nunca cria nem destrói um; o runtime ativa sob demanda, em algum servidor, e desativa quando fica parado. Nasceu na Microsoft Research."],
@@ -177,7 +174,7 @@ ${tabela(
 
 ${quando(
   [
-    "Muitas entidades com estado vivo e muita concorrência: conversas de chat, partidas de jogo, dispositivos IoT.",
+    "Muitas entidades vivas e concorrentes: conversas de chat, partidas de jogo, IoT.",
     "Conexões longas (WebSocket, telefonia, MQTT): uma conexão, um ator.",
     "Sistemas que não podem parar e precisam se recuperar sozinhos (telecom, mensageria).",
     "Estado quente em memória, com resposta rápida, sem ir ao banco a cada evento.",
@@ -186,7 +183,7 @@ ${quando(
     "CRUD sem estado entre requisições: servidor web + banco resolve.",
     "Processamento de dados em lote: veja os capítulos 10 e 26.",
     "Transação forte entre muitas entidades: com atores, vira saga (capítulo 23).",
-    "Relatórios e buscas que cruzam muitas entidades: ator não se consulta como tabela (capítulo 21).",
+    "Relatórios sobre muitas entidades: ator não se consulta como tabela (capítulo 21).",
   ],
 )}
 
@@ -199,9 +196,8 @@ conferência. A caixa de mensagens põe tudo em fila.</p>
 
 ${codigo(
   `
-// Um ator mínimo: estado privado + caixa de mensagens + uma mensagem por vez
 export abstract class Ator<M> {
-  private caixa: M[] = [];
+  private caixa: M[] = []; // caixa de mensagens (o estado fica na subclasse)
   private ocupado = false;
   protected abstract receber(msg: M): Promise<void>;
 
@@ -226,8 +222,7 @@ ${codigo(
   `
 import { Ator } from "../atores/ator";
 
-type Msg =
-  | { tipo: "depositar"; valor: number }
+type Msg = { tipo: "depositar"; valor: number }
   | { tipo: "sacar"; valor: number; responder: (ok: boolean) => void };
 
 export class Carteira extends Ator<Msg> {
@@ -245,12 +240,11 @@ export class Carteira extends Ator<Msg> {
   }
 }
 
-// uso: dois saques ao mesmo tempo, sem lock
 const carteira = new Carteira(async () => {}); // aqui entraria o extrato no banco
 carteira.enviar({ tipo: "depositar", valor: 100 });
 const sacar = (valor: number) =>
   new Promise<boolean>((responder) => carteira.enviar({ tipo: "sacar", valor, responder }));
-console.log(await Promise.all([sacar(80), sacar(80)])); // [ true, false ]`,
+console.log(await Promise.all([sacar(80), sacar(80)])); // [ true, false ], sem lock`,
   "src/carteira/carteira.ts",
 )}
 

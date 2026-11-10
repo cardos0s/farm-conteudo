@@ -26,7 +26,7 @@ function fluxo() {
   s += bloco(580, 198, 140, 56, "projeção", { preench: claro.laranja, tam: 17 });
   s += seta(650, 256, 650, 298, { cor: cor.verde, espessura: 2 });
   s += passo(560, 277, "4", cor.verde) + txt(578, 277, "atualiza", { tam: 15, cor: cor.verde, ancora: "start" });
-  s += txt(335, 222, "entre gravar (2) e atualizar (4) há um atraso:\na leitura pode ficar um instante para trás", { tam: 15, cor: cor.vermelho });
+  s += txt(362, 222, "entre gravar (2) e atualizar (4) há um atraso:\na leitura pode ficar um instante para trás", { tam: 15, cor: cor.vermelho });
   // leitura
   s += banco(590, 300, 120, 96, "banco de\nleitura", { preench: claro.verde, tam: 15 });
   s += bloco(220, 306, 230, 84, "", { preench: claro.verde, hachura: "solid" });
@@ -248,19 +248,14 @@ export class ListarMeusPedidosHandler {
   "src/pedidos/consultas/listar-meus-pedidos.ts",
 )}
 
-${alerta(
-  "Gravar e publicar: o problema da escrita dupla",
-  "<p>Se o código salvasse o pedido e depois publicasse o evento na fila, uma queda entre as duas coisas deixaria a tabela de leitura desatualizada para sempre. Por isso o exemplo usa <code>salvarComEvento</code>: o evento vai para uma tabela <b>outbox</b> na mesma transação do pedido, e um processo separado lê essa tabela e publica na fila. É o padrão <i>transactional outbox</i>. Ele pode publicar o mesmo evento duas vezes, e é por isso que a projeção precisa ser idempotente. Ferramentas de CDC (<i>change data capture</i>, captura de mudanças), como o Debezium, fazem esse papel lendo o log do banco.</p>",
-)}
-
 <h4>Passo a passo para adotar</h4>
 ${passos([
-  "Comece no nível 1: separe classes de comando e de consulta, no mesmo banco. Comando não devolve dados de tela; consulta não muda nada.",
+  "Comece no nível 1: classes separadas para comandos e para consultas, no mesmo banco.",
   "Nas consultas, pule as entidades: leia direto com SQL e devolva objetos no formato da tela.",
   "Ache a tela que dói (lenta, cheia de joins, ou que precisa de busca textual). Só para ela, crie uma tabela de leitura (nível 2) ou um banco próprio (nível 3).",
-  "Defina os eventos que alimentam essa leitura, com nomes no passado, e publique com garantia (outbox).",
+  "Defina os eventos que alimentam essa leitura e publique com garantia (outbox).",
   "Escreva projeções idempotentes e tenha um script para reconstruir a tabela de leitura do zero, reprocessando os eventos ou relendo o lado de escrita.",
-  "Combine com quem desenha o produto como cada tela lida com o atraso, e monitore o atraso das projeções (o <i>lag</i>) com alerta.",
+  "Combine com o time de produto como cada tela lida com o atraso e monitore o <i>lag</i> das projeções.",
 ])}
 
 <h3>Vantagens e custos</h3>
@@ -278,7 +273,6 @@ ${tabela(
 <ul>
 <li><b>CQRS no sistema inteiro</b>: aplicar nos cadastros simples também. Use só nas partes em que leitura e escrita
 realmente divergem; o resto pode ser CRUD.</li>
-<li><b>Achar que CQRS exige dois bancos, fila e event sourcing</b>: o nível 1 já é CQRS e resolve boa parte dos casos.</li>
 <li><b>Ignorar o atraso</b>: a tela lê logo depois do comando, não acha o dado e o usuário repete a ação. Planeje a tela
 para o atraso e torne o comando idempotente.</li>
 <li><b>Projeção frágil</b>: soma o total de novo quando o mesmo evento chega duas vezes (a maioria das filas entrega
@@ -290,12 +284,17 @@ atrasada, e aprova o que não devia. Validação de comando usa os dados do lado
 
 ${pratica(
   "No mundo real (um exemplo)",
-  "<p>Imagine um app de delivery. O lado de escrita cuida do pedido: o restaurante está aberto, o endereço está no raio de entrega, o pagamento foi autorizado. Tudo num banco relacional, com transações. A leitura é outra história: o cliente abre \"acompanhar pedido\" várias vezes por minuto, o restaurante vê a sua fila, e a busca filtra por prato, preço e tempo de entrega. Cada uma dessas telas vira um modelo de leitura alimentado pelos mesmos eventos (<code>PedidoCriado</code>, <code>PedidoAceito</code>, <code>SaiuParaEntrega</code>): o acompanhamento num cache como o Redis, a busca num índice como o Elasticsearch. Na hora do almoço, a leitura cresce muito mais que a escrita, e dá para escalar só ela. O preço: alguém precisa cuidar das projeções, monitorar o atraso e saber reconstruir um índice do zero.</p>",
+  "<p>Imagine um app de delivery. O lado de escrita cuida do pedido (restaurante aberto, endereço no raio de entrega, pagamento autorizado) num banco relacional, com transações. Do lado de leitura, o cliente abre \"acompanhar pedido\" várias vezes por minuto, o restaurante vê a sua fila e a busca filtra por prato, preço e tempo de entrega. Cada tela vira um modelo de leitura alimentado pelos mesmos eventos (<code>PedidoCriado</code>, <code>PedidoAceito</code>, <code>SaiuParaEntrega</code>): o acompanhamento num cache como o Redis, a busca num índice como o Elasticsearch. No almoço, a leitura cresce muito mais que a escrita, e dá para escalar só ela. O preço: cuidar das projeções, monitorar o atraso e saber reconstruir um índice do zero.</p>",
+)}
+
+${alerta(
+  "Gravar e publicar: o problema da escrita dupla",
+  "<p>Salvar o pedido e <b>depois</b> publicar o evento na fila é arriscado: se o processo cair entre as duas coisas, a tabela de leitura fica errada para sempre. Por isso o exemplo usa <code>salvarComEvento</code>: o evento vai para uma tabela <b>outbox</b> na mesma transação do pedido, e um processo separado lê essa tabela e publica na fila (padrão <i>transactional outbox</i>). Ferramentas de CDC (<i>change data capture</i>, captura de mudanças), como o Debezium, fazem esse papel lendo o log do banco. Em qualquer caso, o mesmo evento pode sair duas vezes: por isso a projeção é idempotente.</p>",
 )}
 
 ${dica(
   "Réplica de leitura não é CQRS",
-  "<p>Uma réplica de leitura (<i>read replica</i>) copia o mesmo banco, com as mesmas tabelas, para dividir a carga. Ela resolve <b>volume</b>, não <b>formato</b>. O CQRS muda o formato: o modelo de leitura é desenhado para a tela. Muitas vezes a réplica basta e você nem precisa de CQRS. As duas combinam (consultas do nível 1 lendo da réplica), e repare que a réplica também atrasa um pouco: a consistência eventual já aparece aqui.</p>",
+  "<p>Uma réplica de leitura (<i>read replica</i>) copia o mesmo banco, com as mesmas tabelas: resolve <b>volume</b>, não <b>formato</b>. O CQRS muda o formato, com um modelo de leitura desenhado para a tela. Muitas vezes a réplica basta. As duas também combinam (consultas do nível 1 lendo da réplica), e a réplica atrasa um pouco: é consistência eventual do mesmo jeito.</p>",
 )}
 
 ${combina([

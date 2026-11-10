@@ -2,7 +2,7 @@
 // de migração incremental (strangler fig, branch by abstraction, execução em paralelo, lançamento escuro,
 // canário e flags), o roteiro para extrair um módulo, a separação do banco, a camada anticorrupção e as métricas.
 
-import { alerta, codigo, combina, dica, fig, lembre, passos, pratica, resumo, tabela } from "../componentes.mjs";
+import { alerta, codigo, combina, fig, lembre, passos, pratica, resumo, tabela } from "../componentes.mjs";
 import { banco, bloco, claro, cor, linha, navegador, pessoa, quadro, semear, seta, txt, xis } from "../desenho.mjs";
 
 /* ------------------------------------------------------------------ diagramas */
@@ -17,31 +17,31 @@ function estrangulamento() {
     { titulo: "3. legado desligado", legado: [], novo: ["/catalogo", "/pedidos", "/pagamento"], nota: "tudo no sistema novo" },
   ];
   // separadores entre os momentos
-  for (const x of [253, 507]) s += linha([[x, 14], [x, 362]], { cor: cor.cinza, tracejado: true, espessura: 1.2 });
+  for (const x of [253, 507]) s += linha([[x, 14], [x, 304]], { cor: cor.cinza, tracejado: true, espessura: 1.2 });
   etapas.forEach((e, i) => {
     const px = i * 254 + 4;
     const cx = px + 123;
-    s += txt(cx, 24, e.titulo, { tam: 17 });
-    s += navegador(cx - 48, 40, 96, 54, "usuários");
-    s += seta(cx, 98, cx, 124, { espessura: 2 });
-    s += bloco(cx - 70, 128, 140, 42, "proxy", { preench: claro.amarelo, tam: 17 });
+    s += txt(cx, 22, e.titulo, { tam: 17 });
+    s += navegador(cx - 48, 36, 96, 48, "usuários");
+    s += seta(cx, 88, cx, 108, { espessura: 2 });
+    s += bloco(cx - 70, 112, 140, 38, "proxy", { preench: claro.amarelo, tam: 17 });
     // legado (esquerda) e novo (direita)
-    const lx = px + 12, nx = px + 129, by = 226, bw = 106, bh = 106;
+    const lx = px + 12, nx = px + 129, by = 190, bw = 106, bh = 98;
     const legadoVivo = e.legado.length > 0, novoVivo = e.novo.length > 0;
     s += bloco(lx, by, bw, bh, "", { preench: legadoVivo ? claro.laranja : undefined, tracejado: !legadoVivo, cor: legadoVivo ? cor.tinta : cor.cinza });
     s += bloco(nx, by, bw, bh, "", { preench: novoVivo ? claro.verde : undefined, tracejado: !novoVivo, cor: novoVivo ? cor.tinta : cor.cinza });
-    s += txt(lx + bw / 2, by + 20, "legado", { tam: 16, cor: legadoVivo ? cor.tinta : cor.cinza });
-    s += txt(nx + bw / 2, by + 20, "novo", { tam: 16, cor: novoVivo ? cor.tinta : cor.cinza });
-    e.legado.forEach((r, k) => (s += txt(lx + bw / 2, by + 46 + k * 21, r, { tam: 15 })));
-    e.novo.forEach((r, k) => (s += txt(nx + bw / 2, by + 46 + k * 21, r, { tam: 15 })));
-    if (!novoVivo) s += txt(nx + bw / 2, by + 62, "em\nconstrução", { tam: 15, cor: cor.cinza });
-    if (!legadoVivo) s += xis(lx + bw / 2, by + 52, 26) + txt(lx + bw / 2, by + 84, "desligado", { tam: 15, cor: cor.cinza });
+    s += txt(lx + bw / 2, by + 18, "legado", { tam: 16, cor: legadoVivo ? cor.tinta : cor.cinza });
+    s += txt(nx + bw / 2, by + 18, "novo", { tam: 16, cor: novoVivo ? cor.tinta : cor.cinza });
+    e.legado.forEach((r, k) => (s += txt(lx + bw / 2, by + 42 + k * 20, r, { tam: 15 })));
+    e.novo.forEach((r, k) => (s += txt(nx + bw / 2, by + 42 + k * 20, r, { tam: 15 })));
+    if (!novoVivo) s += txt(nx + bw / 2, by + 56, "em\nconstrução", { tam: 15, cor: cor.cinza });
+    if (!legadoVivo) s += xis(lx + bw / 2, by + 46, 26) + txt(lx + bw / 2, by + 78, "desligado", { tam: 15, cor: cor.cinza });
     // tráfego: seta grossa para quem atende
-    if (legadoVivo) s += seta(cx - 30, 172, lx + bw / 2, by - 4, { espessura: novoVivo ? 2 : 2.8, cor: cor.laranja });
-    if (novoVivo) s += seta(cx + 30, 172, nx + bw / 2, by - 4, { espessura: legadoVivo ? 2 : 2.8, cor: cor.verde });
-    s += txt(cx, 360, e.nota, { tam: 15, cor: cor.azul });
+    if (legadoVivo) s += seta(cx - 30, 152, lx + bw / 2, by - 4, { espessura: novoVivo ? 2 : 2.8, cor: cor.laranja });
+    if (novoVivo) s += seta(cx + 30, 152, nx + bw / 2, by - 4, { espessura: legadoVivo ? 2 : 2.8, cor: cor.verde });
+    s += txt(cx, 304, e.nota, { tam: 15, cor: cor.azul });
   });
-  return quadro(760, 376, s);
+  return quadro(760, 320, s);
 }
 
 /** Diagrama 2: execução em paralelo. O cliente recebe a resposta do legado; o novo só é comparado. */
@@ -69,8 +69,7 @@ function emParalelo() {
   s += txt(580, 284, "resultado novo", { tam: 15, cor: cor.verde });
   s += seta(576, 173, 512, 173, { espessura: 1.8, cor: cor.vermelho });
   s += txt(420, 173, "cada diferença\nvira um caso\npara investigar", { tam: 15, cor: cor.vermelho });
-  s += txt(380, 328, "o novo é testado com tráfego real, mas nenhum cliente vê o resultado dele", { tam: 15, cor: cor.cinza });
-  return quadro(760, 344, s);
+  return quadro(760, 304, s);
 }
 
 /** Diagrama 3: banco compartilhado (antes) e dono único com cópia sincronizada (durante). */
@@ -129,15 +128,15 @@ load balancer (nginx, Envoy, Kong ou o gateway do provedor de nuvem). Os cliente
 onde vai cada rota. Vale também para filas (um roteador repassa cada tipo de mensagem) e para telas (as páginas
 reescritas vêm do app novo, capítulo 16).</p>
 
-${fig(estrangulamento(), "O mesmo sistema em três momentos. O usuário fala sempre com o proxy; o que muda é para onde ele manda cada rota.", "grande")}
-
 ${passos([
   "<b>Proxy na frente, sem mudar nada.</b> Todo o tráfego ainda vai para o legado. Meça erros e latência: essa é a sua linha de base.",
   "<b>Escolha a primeira fatia</b>: pequena, com poucas dependências e baixo risco (catálogo antes de pagamento). Ela serve para aprender o caminho, não para ganhar a guerra.",
-  "<b>Construa a fatia no sistema novo</b> e coloque em produção ainda sem tráfego (lançamento escuro, mais adiante).",
+  "<b>Construa a fatia no sistema novo</b> e coloque em produção sem que nenhum usuário veja o resultado (lançamento escuro, mais adiante).",
   "<b>Desvie aos poucos</b>: 1% dos usuários, depois 10%, 50% e 100%. Voltar atrás é mudar uma linha no proxy.",
   "<b>Apague a fatia do legado e repita.</b> Quando não sobrar rota, o legado é desligado. Sem apagar, você mantém dois sistemas para sempre.",
 ])}
+
+${fig(estrangulamento(), "O mesmo sistema em três momentos. O usuário fala sempre com o proxy; o que muda é para onde ele manda cada rota.", "grande")}
 
 <h4>O proxy em código</h4>
 ${codigo(
@@ -228,8 +227,6 @@ isso dentro do código; o mesmo vale no proxy, para serviços inteiros. Existem 
 Scientist, que o GitHub abriu como código aberto: ela roda o código antigo e o novo, devolve sempre o resultado do antigo e
 publica as diferenças.</p>
 
-${fig(emParalelo(), "O roteador manda a requisição ao legado e uma cópia ao novo. Só a resposta do legado volta ao cliente; as duas são comparadas e cada diferença vira um caso para investigar.")}
-
 <ul>
 <li><b>Efeitos colaterais</b>: o novo não pode cobrar o cartão, mandar e-mail nem gravar no banco de verdade. Rode-o só com
 leitura ou com adaptadores de saída falsos (capítulo 6).</li>
@@ -238,6 +235,9 @@ vira só alarme falso.</li>
 <li><b>Custo e prazo</b>: é processamento em dobro. Compare uma amostra das requisições e combine antes o critério de saída
 (por exemplo, duas semanas sem nenhuma diferença sem explicação).</li>
 </ul>
+
+${fig(emParalelo(), "Só a resposta do legado volta ao cliente. O novo recebe uma cópia, e o comparador registra cada diferença.")}
+
 
 <h3>Lançamento escuro, canário e feature flags</h3>
 <p>Essas três técnicas separam duas coisas que costumam vir grudadas: <b>colocar o código em produção</b> (deploy) e
@@ -281,7 +281,7 @@ serviço novo e o legado continuarem escrevendo nas mesmas tabelas, nenhum dos d
 e você ganhou um monólito distribuído (capítulo 31). A regra que guia tudo é o <b>dono único</b>: cada tabela tem um, e só
 um, sistema que escreve nela.</p>
 
-${fig(donoUnico(), "À esquerda, dois sistemas escrevendo na mesma tabela. À direita, o serviço de clientes é o único dono: o legado escreve pela API dele e lê uma cópia sincronizada.")}
+${fig(donoUnico(), "Antes, dois sistemas gravam na mesma tabela. Durante, só o serviço de clientes grava; o legado usa a API e lê uma cópia.")}
 
 <ul>
 <li><b>Mapeie</b> quem lê e quem escreve cada tabela (logs do banco e busca no código). As surpresas aparecem aqui: o
@@ -292,17 +292,15 @@ mantida em dia por eventos ou por <b>CDC</b> (<i>change data capture</i>, captur
 Debezium lê o log de alterações do banco e publica cada mudança).
 Uma <b>visão</b> (<i>view</i>) com o nome e as colunas da tabela antiga faz o código legado ler a cópia sem perceber.</li>
 <li><b>Joins</b> entre donos diferentes viram composição na API ou um modelo só de leitura (capítulo 21).</li>
+<li><b>Mudanças de esquema</b> no caminho (renomear coluna, trocar formato) seguem a técnica <b>expandir e contrair</b>:
+cria o novo ao lado do antigo, migra dados e leituras e só então apaga o antigo. Cada passo continua compatível com a
+versão do código que ainda está no ar.</li>
 <li><b>Corte</b>: quando ninguém mais lê a cópia, apague a sincronização e a tabela velha.</li>
 </ul>
 
 ${alerta(
   "Cuidado com a escrita dupla",
   "<p>Parece simples: o código grava no banco antigo e no novo, um depois do outro. Mas, se a segunda escrita falhar (rede, timeout, deploy no meio), os bancos divergem e ninguém fica sabendo. Prefira CDC ou o padrão outbox (capítulo 20): grava num lugar só e a mudança é propagada de forma confiável.</p>",
-)}
-
-${dica(
-  "Mudar o esquema sem parar: expandir e contrair",
-  "<p>Mesmo sem trocar de sistema, renomear uma coluna ou mudar um formato pode derrubar a versão do código que ainda está no ar. A saída é fazer em três etapas, cada uma num deploy: <b>expandir</b> (cria a coluna nova sem tirar a antiga, o código grava nas duas na mesma transação e um script copia o histórico), <b>migrar</b> as leituras para a nova e <b>contrair</b> (apaga a antiga quando ninguém mais usa). Em cada etapa, a versão anterior do código continua funcionando, então dá para voltar atrás.</p>",
 )}
 
 <h3>Camada anticorrupção</h3>
@@ -323,14 +321,12 @@ ${tabela(
     ["Taxa de erro, novo x legado", "Se o novo está pior que o antigo", "Erro do novo acima do legado na mesma rota"],
     ["Latência p95 e p99", "O tempo que 95% (ou 99%) das requisições não ultrapassam: a experiência dos mais lentos", "p99 subindo a cada etapa: cada salto na rede soma"],
     ["Divergências na execução em paralelo", "Se o novo calcula igual", "Diferenças sem explicação que não param de aparecer"],
-    ["% do tráfego no novo", "O progresso de verdade", "Parado no mesmo número há semanas"],
-    ["Rotas e tabelas ainda no legado", "Quanto falta", "A lista não diminui, ou cresce"],
+    ["% do tráfego no novo e o que ainda falta (rotas, tabelas)", "O progresso de verdade", "Parado há semanas, ou a lista do que falta não diminui"],
   ],
 )}
 
 <h4>Checklist antes de mandar mais tráfego para o novo</h4>
 <ul>
-<li>A linha de base do legado está medida: erros, latência e volume por rota.</li>
 <li>Voltar atrás leva minutos e já foi testado de verdade, não só no papel.</li>
 <li>Os dados dos dois lados batem, e um script confere contagens e totais todo dia.</li>
 <li>O critério para avançar está combinado (por exemplo, uma semana com erro e p99 iguais aos do legado).</li>
@@ -345,7 +341,6 @@ volta fácil. Reescrever de uma vez só é razoável quando o sistema é pequeno
 congelado durante a obra.</li>
 <li><b>Migração que nunca termina</b>: as fatias fáceis migram, as difíceis ficam, e o legado vive para sempre com parte do
 tráfego. Agora são dois sistemas para manter. Planeje o fim e apague código a cada etapa.</li>
-<li><b>Mover o código e deixar o banco compartilhado</b>: o serviço novo continua preso ao esquema do legado.</li>
 <li><b>Trocar tecnologia e comportamento ao mesmo tempo</b>: se o novo também "aproveita para corrigir" regras, a execução em
 paralelo mostra diferença em tudo e ninguém sabe o que é bug. Primeiro igual, depois melhor.</li>
 <li><b>Começar pelo coração</b>: a primeira fatia deve ensinar o caminho (deploy, observabilidade, reversão) com pouco risco.

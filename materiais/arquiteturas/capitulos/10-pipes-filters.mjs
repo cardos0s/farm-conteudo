@@ -112,8 +112,8 @@ ${fig(diagrama(), "Os dados entram pela fonte, atravessam filtros independentes 
 <h3>Como funciona</h3>
 <ul>
 <li><b>Filtro</b>: lê da entrada, transforma e escreve na saída. Pode converter (texto em objeto), enriquecer (calcular o
-frete), descartar (só vendas válidas), dividir ou agrupar. Apesar do nome, "filtrar" aqui é transformar de qualquer jeito,
-não só remover.</li>
+frete), descartar (só vendas válidas), agrupar, ou dividir e juntar canos (<i>fan-out</i> e <i>fan-in</i>, como o
+<code>tee</code> do Unix). Apesar do nome, "filtrar" aqui é transformar de qualquer jeito, não só remover.</li>
 <li><b>Cano (pipe)</b>: leva a saída de um filtro até a entrada do próximo. Pode ser um array em memória, um stream, o pipe
 do sistema operacional, um arquivo ou uma fila (RabbitMQ, SQS, Kafka). Em memória é rápido; com uma fila, cada filtro
 pode rodar em outra máquina.</li>
@@ -130,7 +130,7 @@ ${codigo(
   `
 grep " 500 " acesso.log |  # só as linhas com erro 500
   cut -d' ' -f1 |          # fica só com o IP (1ª coluna)
-  sort | uniq -c |         # conta quantas vezes cada IP aparece
+  sort | uniq -c |         # junta IPs iguais e conta cada um
   sort -rn |               # maior contagem primeiro
   head -5                  # os 5 primeiros`,
   "terminal",
@@ -143,16 +143,15 @@ grep " 500 " acesso.log |  # só as linhas com erro 500
 ${tabela(
   ["Onde", "Filtros", "O que passa nos canos"],
   [
-    ["Compilador (TypeScript)", "scanner → parser → checker → emitter", "tokens, árvore de sintaxe"],
+    ["Compilador (TypeScript)", "scanner → parser → binder → checker → emitter", "tokens, árvore de sintaxe"],
     ["ETL e dados", "extrair → limpar → transformar → carregar", "arquivos, tabelas, filas"],
     ["Vídeo (FFmpeg)", "decodificar → redimensionar → comprimir", "quadros (frames)"],
-    ["Express, Koa", "middlewares: <code>json()</code> → autenticação → rota", "o mesmo <code>req</code>/<code>res</code>"],
+    ["Express, Koa", "middlewares: <code>json()</code> → autenticação → rota", "o mesmo <code>req</code>/<code>res</code> (no Koa, <code>ctx</code>)"],
     ["Streams do Node", "<code>Readable</code> → <code>Transform</code> → <code>Writable</code>", "pedaços (chunks)"],
   ],
 )}
 
 <h4>Lote ou streaming</h4>
-<p>Há dois ritmos possíveis para os dados andarem pelos canos.</p>
 
 ${fig(loteStreaming(), "Mesmos filtros, dois ritmos. No lote, cada etapa espera a anterior acabar. No streaming, os itens fluem um a um e todas as etapas trabalham ao mesmo tempo.")}
 
@@ -179,15 +178,17 @@ escreve até o próximo ler.</li>
 <li>No Node, <code>writable.write()</code> devolve <code>false</code> quando o buffer interno passa do limite
 (<code>highWaterMark</code>), e quem escreve deve esperar o evento <code>"drain"</code>. O <code>stream.pipeline</code>
 faz isso por você.</li>
-<li>Com filas entre processos, fila que só cresce avisa que o filtro seguinte está lento.</li>
+<li>Com filas entre processos, não há freio automático: a fila absorve a diferença. Fila que só cresce pede mais
+cópias do filtro seguinte.</li>
 </ul>
 
 <h4>Paralelismo e escala por filtro</h4>
-<p>Em streaming, o pipeline já é paralelo: enquanto o terceiro filtro trabalha no item 1, o segundo trabalha no item 2 e
-o primeiro, no item 3. Mas a vazão total nunca passa a do filtro mais lento, o gargalo. A saída é escalar só ele, com
-várias cópias pegando itens da mesma fila. É fácil quando o filtro é <b>sem estado</b> (redimensionar uma imagem depende só
-da imagem). Se ele guarda estado (somar por loja), divida os dados por chave, para que as vendas da loja X caiam sempre na
-mesma cópia; isso também preserva a ordem dentro de cada chave.</p>
+<p>Em streaming, as etapas se sobrepõem: enquanto o terceiro filtro trabalha no item 1, o segundo já está no item 2.
+Em processos separados (pipe do Unix, workers com filas), isso é paralelismo real; num único processo Node, as etapas
+se revezam na mesma thread. A vazão total nunca supera a do filtro mais lento, o gargalo, e a saída é escalar só ele,
+com várias cópias lendo da mesma fila. É fácil se o filtro é <b>sem estado</b> (redimensionar uma imagem) e a ordem não
+importa, porque várias cópias embaralham a ordem. Se ele guarda estado (somar por loja), divida os dados por chave: as
+vendas da loja X caem sempre na mesma cópia, e a ordem dentro de cada chave se mantém.</p>
 
 ${quando(
   [
@@ -232,7 +233,8 @@ export const lerCsv: Filtro<string, Venda[]> = (texto) =>
   });
 
 export const validar: Filtro<Venda[], Venda[]> = (vendas) =>
-  vendas.filter((v) => v.loja !== "" && Number.isFinite(v.valor) && v.valor > 0);`,
+  vendas.filter((v) => v.loja !== "" && Number.isFinite(v.valor) && v.valor > 0
+    && ["BRL", "USD"].includes(v.moeda));`,
   "src/importacao/tipos.ts e filtros/",
 )}
 
@@ -257,7 +259,8 @@ export function relatorioDeVendas(csv: string, cotacaoDolar: number) {
   "src/importacao/filtros/ e pipeline.ts",
 )}
 
-<p>Cada filtro se testa com uma linha (<code>expect(validar([vendaNegativa])).toEqual([])</code>), sem arquivo nem banco.
+<p>Cada filtro se testa com uma linha, sem arquivo nem banco:
+<code>expect(validar([{ loja: "A", valor: -5, moeda: "BRL" }])).toEqual([])</code>.
 Uma nova regra de limpeza é uma função nova e um item a mais no array <code>limpeza</code>. Mas essa versão carrega tudo
 na memória. Para um log de gigabytes, a ideia vira streams; o Node aceita funções geradoras assíncronas
 (<code>async function*</code>) como filtros dentro do <code>pipeline</code>:</p>
@@ -295,16 +298,16 @@ await pipeline(
   "src/logs/erros.ts",
 )}
 
-<p>O <code>pipeline</code> respeita o backpressure de cada cano e, se uma etapa falhar, fecha as outras e rejeita a promise.
-O antigo <code>.pipe()</code> também respeita backpressure, mas não repassa erros: um stream que quebra no meio pode deixar
-os outros abertos.</p>
+<p>Cada gerador só puxa o próximo pedaço quando termina o anterior, e o <code>pipeline</code> respeita o backpressure
+de cada cano; se uma etapa falha, ele fecha as outras e rejeita a promise. O <code>.pipe()</code> também respeita
+backpressure, mas não repassa erros e pode deixar streams abertos.</p>
 
 <h4>Passo a passo para adotar</h4>
 ${passos([
   "Escreva o fluxo como frase de verbos: \"ler → validar → converter → somar\". Muitos \"se... senão...\" indicam que não é pipeline.",
   "Defina o contrato de cada cano e escreva cada filtro como função pura que faz uma coisa só.",
   "Monte a ordem num único lugar (<code>pipeline.ts</code>, o script, a configuração).",
-  "Pouco dado e tarefa periódica: lote com arrays. Arquivo grande ou dado contínuo: <code>stream.pipeline</code>.",
+  "Pouco dado: lote com arrays. Arquivo grande: <code>stream.pipeline</code>. Etapas que escalam separadas: filas entre workers.",
   "Decida o destino dos itens ruins e meça a vazão de cada filtro: o mais lento é o que você escala.",
 ])}
 
@@ -312,7 +315,7 @@ ${passos([
 ${tabela(
   ["Você ganha", "Você paga"],
   [
-    ["Filtros pequenos e testáveis sozinhos", "Serializar o dado a cada etapa tem custo"],
+    ["Filtros pequenos e testáveis sozinhos", "Cada salto entre processos serializa o dado e soma latência"],
     ["Mudar etapas mexendo só na montagem", "Fluxos com decisões e voltas ficam forçados"],
     ["Reuso do mesmo filtro em vários pipelines", "Estado compartilhado quebra o modelo"],
     ["Dados enormes com pouca memória (streaming)", "Erro no meio do fluxo exige decisão por etapa"],
@@ -326,6 +329,8 @@ ${tabela(
 <li><b>Estado compartilhado escondido</b>: filtros usando a mesma variável global, cache ou tabela. Quebra no paralelo.</li>
 <li><b>Ignorar o backpressure</b>: ler um arquivo enorme com <code>readFile</code>, ou chamar <code>write()</code> sem olhar
 o retorno. A memória explode em produção, nunca no teste com dez linhas.</li>
+<li><b>Filtro que não aguenta repetição</b>: com filas, a mesma mensagem pode chegar duas vezes (entrega "pelo menos
+uma vez"). Processar a mesma mensagem de novo não pode gravar dois registros nem somar em dobro: o filtro precisa ser idempotente.</li>
 <li><b>Granularidade errada</b>: <code>processarTudo</code> não é pipeline; vinte filtros triviais atrás de filas pagam latência a cada salto.</li>
 </ul>
 
@@ -336,12 +341,12 @@ ${pratica(
 
 ${dica(
   "Middleware do Express é pipeline, com duas diferenças",
-  "<p>Cada <code>app.use()</code> encaixa um filtro: <code>express.json()</code> transforma o corpo em objeto, a autenticação coloca <code>req.usuario</code> e a rota responde. Só que todos mexem no <b>mesmo</b> <code>req</code>/<code>res</code> (estado compartilhado), e qualquer um pode encerrar a corrida sem chamar <code>next()</code>. Por isso a ordem importa: autenticação registrada depois da rota não protege nada.</p>",
+  "<p>Cada <code>app.use()</code> encaixa um filtro: <code>express.json()</code> transforma o corpo em objeto, a autenticação coloca <code>req.usuario</code> e a rota responde. Só que todos mexem no <b>mesmo</b> <code>req</code>/<code>res</code> (estado compartilhado), e qualquer um pode encerrar a corrida sem chamar <code>next()</code>. Por isso a ordem importa: autenticação registrada depois da rota não protege nada. E, como cada middleware chama o próximo, o desenho fica mais perto do padrão <i>Chain of Responsibility</i> (cadeia de responsabilidade) do que de filtros puros.</p>",
 )}
 
 ${combina([
   [26, "Arquiteturas de dados", "ETL e streaming em grande escala"],
-  [20, "Orientada a eventos", "filas como canos entre filtros em processos separados"],
+  [20, "Orientada a eventos", "filas como canos; lá, porém, quem publica não sabe quem consome"],
   [15, "Serverless", "cada filtro uma função disparada pela etapa anterior"],
   [6, "Hexagonal", "o pipeline no núcleo; fonte e destino como adaptadores"],
 ])}
