@@ -236,8 +236,7 @@ R.seguraAte(fimFala("v1-09") + 0.9);
 M.indicadoresFim = R.agora;
 
 // a frase já está na tela: sem legenda
-R.encerramento("Atenda e venda sem trocar de tela.", 4.9);
-R.fala("v1-10", { em: M.indicadoresFim + 0.5, legenda: false });
+R.encerramento("Atenda e venda sem trocar de tela.", { fala: "v1-10" });
 
 const roteiro = R.pronto();
 const S = R.saida;
@@ -499,6 +498,6 @@ export const edicaoF1: EdicaoFluida = {
   icone: "conversa",
   trilha: { arquivo: "selloop/sons/trilha.wav", volume: 0.2, volumeFala: 0.07 },
 };
-export const DURACAO_F1 = Math.max(roteiro.duracao, fimFala("v1-10") + 1.5);
+export const DURACAO_F1 = roteiro.duracao;
 
 export const SelloopReelAtendimentoFluido: React.FC = () => <Fluido edicao={edicaoF1} filmes={g} locucao={loc} />;

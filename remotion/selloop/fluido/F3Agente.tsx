@@ -59,7 +59,8 @@ const NOITE = {
 };
 R.cena("noite", NOITE.toca + NOITE.duracaoAudio + 0.55, { entrada: 0 });
 R.fala("v3-01", { em: ANTES_NOITE });
-R.fala("fabio-01", { em: NOITE.toca, legenda: false });
+// o áudio do cliente toca com legenda (muita gente assiste sem som)
+R.fala("fabio-01", { em: NOITE.toca });
 
 // 2 · na plataforma: a Lia está atendendo, entende o áudio (transcrição) e responde em áudio
 const [cAbrir] = cA("abrir");
@@ -100,7 +101,7 @@ const RESPOSTA = {
   ],
 };
 R.cena("resposta", RESPOSTA.resposta + 0.95);
-R.fala("lia-01", { em: M.liaFim + RESPOSTA.toca, legenda: false });
+R.fala("lia-01", { em: M.liaFim + RESPOSTA.toca });
 M.respostaFim = R.agora;
 
 // 4 · 24 horas nos três canais: cada conversa abre na palavra do seu canal
@@ -184,8 +185,7 @@ R.seguraAte(Math.max(M.voz + 1.8, fimFala("v3-08") + 0.9));
 M.treinoFim = R.agora;
 
 // a frase já está na tela: sem legenda
-R.encerramento("Atendimento inteligente, 24 horas por dia.", 4.9);
-R.fala("v3-09", { em: M.treinoFim + 0.5, legenda: false });
+R.encerramento("Atendimento inteligente, 24 horas por dia.", { fala: "v3-09" });
 
 const roteiro = R.pronto();
 const inicioDe = (i: number) => roteiro.partes[i].inicio;
@@ -244,9 +244,10 @@ const camada = (de: number, ate: number, el: React.FC<PropsCamada>, o: { atras?:
   const i = M.lia;
   const fim = M.liaFim;
   const ela = dito("v3-02", "Ela") - 0.1;
-  sobre.push(titulo("Quem responde é a *Lia*", inicioDe(i) + 0.15, ela), titulo("Entende o áudio e *responde em áudio*", ela + 0.05, fim));
+  // o título e o caminho entram depois que o relógio da cena da noite saiu do alto do quadro
+  sobre.push(titulo("Quem responde é a *Lia*", inicioDe(i) + 0.4, ela), titulo("Entende o áudio e *responde em áudio*", ela + 0.05, fim));
   caminhos.push({
-    de: inicioDe(i) + 0.15,
+    de: inicioDe(i) + 0.4,
     ate: fim - 0.05,
     passos: [
       { rotulo: "Fábio Martins", em: SA(cAbrir.t) },
@@ -263,22 +264,23 @@ const camada = (de: number, ate: number, el: React.FC<PropsCamada>, o: { atras?:
 // 3 · no celular
 sobre.push(titulo("A *resposta em áudio* da Lia", M.liaFim + 0.2, M.respostaFim - 0.1));
 
-// 4 · canais: a resposta da Lia em cada canal, com a logo dele; a lista, à esquerda, fica à vista
+// 4 · canais: a resposta da Lia em cada canal, com a logo dele. As respostas se empilham de cima para
+// baixo sem apagar a janela: cada conversa da lista ainda está à vista quando o cursor clica nela
 {
   const i = M.canais;
   const fim = M.canaisFim;
   sobre.push(titulo("Atende *24 horas por dia*", inicioDe(i) + 0.15, fim));
   sobre.push(camada(dito("v3-03", "24") - 0.3, dito("v3-03", "WhatsApp") - 0.25, (q) => <Relogio24 {...q} x={540} y={935} />, { escurece: true }));
   const LINHAS: { canal: Canal; nome: string; recorte: string; cy: number; rot: number }[] = [
-    { canal: "whatsapp", nome: "WhatsApp", recorte: "resposta-whatsapp", cy: 735, rot: -1.5 },
-    { canal: "instagram", nome: "Instagram", recorte: "resposta-instagram", cy: 950, rot: 1.5 },
-    { canal: "messenger", nome: "Messenger", recorte: "resposta-messenger", cy: 1165, rot: -1.5 },
+    { canal: "whatsapp", nome: "WhatsApp", recorte: "resposta-whatsapp", cy: 715, rot: -1.2 },
+    { canal: "instagram", nome: "Instagram", recorte: "resposta-instagram", cy: 868, rot: 1.2 },
+    { canal: "messenger", nome: "Messenger", recorte: "resposta-messenger", cy: 1021, rot: -1.2 },
   ];
   caminhos.push({ de: dito("v3-03", "WhatsApp") - 0.6, ate: fim - 0.05, passos: LINHAS.map((l, k) => ({ rotulo: l.nome, em: SB(cCanais[k].t) })) });
   LINHAS.forEach((l, k) => {
     const de = SB(cCanais[k].t) + 0.45;
-    sobre.push(salto(i, l.recorte, { de, ate: fim, w: 750, cx: 660, cy: l.cy, raio: 16, rot: l.rot, faiscas: false, escurece: false }));
-    sobre.push(camada(de - 0.25, fim, (q) => <LogoCanal {...q} canal={l.canal} x={300} y={l.cy - 52} tamanho={104} />));
+    sobre.push(salto(i, l.recorte, { de, ate: fim, w: 880, cx: 590, cy: l.cy, raio: 16, rot: l.rot, faiscas: false, escurece: false }));
+    sobre.push(camada(de - 0.25, fim, (q) => <LogoCanal {...q} canal={l.canal} x={120} y={l.cy - 52} tamanho={104} />));
   });
 }
 
@@ -377,7 +379,7 @@ export const edicaoF3: EdicaoFluida = {
   icone: "robo",
   trilha: { arquivo: "selloop/sons/trilha.wav", volume: 0.18, volumeFala: 0.06 },
 };
-export const DURACAO_F3 = Math.max(roteiro.duracao, fimFala("v3-09") + 1.5);
+export const DURACAO_F3 = roteiro.duracao;
 
 const cenas = {
   noite: () => <CenaNoiteReel {...NOITE} />,

@@ -230,10 +230,19 @@ export function criarRoteiro(o: { filmes: Record<string, Gravacao>; locucao: Fal
       agora = q(agora + dur);
       return agora;
     },
-    encerramento(frase: string, dur: number, op: { entrada?: number } = {}) {
+    /**
+     * O encerramento: a frase na tela e a fala final (sem legenda, porque a frase já está escrita).
+     * Dura o bastante para a fala terminar e sobrar um respiro (`depois`), e nunca menos que `minimo`:
+     * o vídeo acaba junto com ele, com o cartão na tela até o último quadro.
+     */
+    encerramento(frase: string, op: { fala?: string; antes?: number; depois?: number; minimo?: number; entrada?: number } = {}) {
       fechar();
-      partes.push({ tipo: "encerramento", frase, inicio: agora, fim: q(agora + dur), entrada: op.entrada ?? T });
-      agora = q(agora + dur);
+      const antes = op.antes ?? 0.5;
+      const dur = Math.max(op.minimo ?? 4.9, op.fala ? antes + durFala(op.fala) + (op.depois ?? 1.5) : 0);
+      const inicio = agora;
+      partes.push({ tipo: "encerramento", frase, inicio, fim: q(inicio + dur), entrada: op.entrada ?? T });
+      agora = q(inicio + dur);
+      if (op.fala) R.fala(op.fala, { em: inicio + antes, legenda: false });
       return agora;
     },
     /** A fala entra em `em` (padrão: agora). Não pode começar antes de a anterior terminar. */
