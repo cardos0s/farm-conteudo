@@ -1,0 +1,50 @@
+{
+  "origem": "Exemplo didático escrito à mão para a aula funcionar sem internet. Não é uma resposta real do modelo. Para gravar respostas reais: python avaliar.py --caso <caso> --execucoes 3 --gravar",
+  "modelo": "exemplo-didatico",
+  "veredito": {
+    "results": [
+      {
+        "check_id": "C02",
+        "evidence": [
+          {
+            "source": "resumo",
+            "quote": "Marina envia a proposta por e-mail"
+          },
+          {
+            "source": "conversa",
+            "quote": "Falo com ela e te dou um retorno até sexta-feira"
+          },
+          {
+            "source": "conversa",
+            "quote": "Que tal terça que vem, às 10h?"
+          }
+        ],
+        "reasoning": "A conversa tem três ações: proposta por e-mail, retorno sobre o desconto até sexta e demonstração na terça às 10h. O resumo traz só a primeira; pelo critério, faltar uma já reprova.",
+        "passed": false
+      },
+      {
+        "check_id": "C03",
+        "evidence": [
+          {
+            "source": "conversa",
+            "quote": "O plano para até cinco lojas sai por R$ 890 por mês"
+          },
+          {
+            "source": "resumo",
+            "quote": "O plano para até cinco lojas custa R$ 890 por mês"
+          },
+          {
+            "source": "conversa",
+            "quote": "vocês têm três padarias e controlam o estoque em planilha"
+          },
+          {
+            "source": "resumo",
+            "quote": "Roberto tem três padarias e controla o estoque em planilha"
+          }
+        ],
+        "reasoning": "O único valor citado (R$ 890 por mês) e o contexto do cliente estão na conversa.",
+        "passed": true
+      }
+    ]
+  }
+}

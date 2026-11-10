@@ -1,0 +1,27 @@
+{
+  "id": "nome_do_seu_projeto",
+  "versao": 1,
+  "congelado_em": "AAAA-MM-DD",
+  "requisitos": [
+    "R1. Escreva aqui cada requisito do PRD, em uma frase."
+  ],
+  "checks": [
+    {
+      "id": "C01",
+      "requisito": "R1",
+      "description": "Frase curta que cabe num relatório",
+      "weight": 1,
+      "verified_by": "codigo",
+      "regra": "resumo_nao_vazio"
+    },
+    {
+      "id": "C02",
+      "requisito": "R1",
+      "description": "Frase curta que cabe num relatório",
+      "weight": 2,
+      "verified_by": "juiz",
+      "pass_condition": "Condição de SIM ou NÃO. Diga o que reprova: 'se faltar um único X, o check falha'.",
+      "evidence_required": ["conversa", "resumo"]
+    }
+  ]
+}

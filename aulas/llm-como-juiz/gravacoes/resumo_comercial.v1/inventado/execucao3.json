@@ -1,0 +1,46 @@
+{
+  "origem": "Exemplo didático escrito à mão para a aula funcionar sem internet. Não é uma resposta real do modelo. Para gravar respostas reais: python avaliar.py --caso <caso> --execucoes 3 --gravar",
+  "modelo": "exemplo-didatico",
+  "veredito": {
+    "results": [
+      {
+        "check_id": "C02",
+        "evidence": [
+          {
+            "source": "resumo",
+            "quote": "Roberto envia o contrato assinado até sexta-feira"
+          },
+          {
+            "source": "conversa",
+            "quote": "Falo com ela e te dou um retorno até sexta-feira"
+          },
+          {
+            "source": "conversa",
+            "quote": "Ainda hoje eu te mando a proposta por e-mail"
+          }
+        ],
+        "reasoning": "Só a demonstração de terça corresponde a algo combinado; as demais ações do resumo foram inventadas ou estão faltando.",
+        "passed": false
+      },
+      {
+        "check_id": "C03",
+        "evidence": [
+          {
+            "source": "conversa",
+            "quote": "No plano anual eu consigo 10% de desconto"
+          },
+          {
+            "source": "resumo",
+            "quote": "ofereceu 15% de desconto no plano anual"
+          },
+          {
+            "source": "resumo",
+            "quote": "Roberto fechou o contrato na própria ligação"
+          }
+        ],
+        "reasoning": "O resumo afirma 15% de desconto e contrato fechado, mas na conversa o desconto foi de 10% e não houve fechamento.",
+        "passed": false
+      }
+    ]
+  }
+}

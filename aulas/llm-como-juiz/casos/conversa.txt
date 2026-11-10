@@ -1,0 +1,18 @@
+Marina (vendas): Bom dia, Roberto! Obrigada por separar esse tempo.
+Roberto (cliente): Bom dia. Pode falar, tenho uns vinte minutos.
+Marina (vendas): Pelo que entendi no seu e-mail, vocês têm três padarias e controlam o estoque em planilha.
+Roberto (cliente): Isso. E todo mês sobra farinha numa loja e falta na outra.
+Marina (vendas): O nosso sistema mostra o estoque das três lojas num painel só e avisa quando um item está acabando.
+Roberto (cliente): E quanto custa?
+Marina (vendas): O plano para até cinco lojas sai por R$ 890 por mês.
+Roberto (cliente): Está acima do que eu tinha pensado. Tem algum desconto?
+Marina (vendas): No plano anual eu consigo 10% de desconto. Acima disso, preciso falar com a minha gerente.
+Roberto (cliente): Então fala com ela, porque eu queria chegar perto de 15%.
+Marina (vendas): Combinado. Falo com ela e te dou um retorno até sexta-feira.
+Roberto (cliente): Outra coisa: a minha sócia, a Cláudia, precisa ver o sistema antes de a gente decidir.
+Marina (vendas): Posso fazer uma demonstração para vocês dois. Que tal terça que vem, às 10h?
+Roberto (cliente): Terça às 10h funciona.
+Marina (vendas): Ótimo. Ainda hoje eu te mando a proposta por e-mail com os valores que conversamos.
+Roberto (cliente): Manda, sim. E coloca o prazo de implantação, por favor.
+Marina (vendas): A implantação leva em média duas semanas. Vou deixar isso escrito na proposta.
+Roberto (cliente): Perfeito. Até terça, então.

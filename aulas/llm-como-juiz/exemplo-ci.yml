@@ -1,0 +1,43 @@
+# Exemplo de pipeline de CI (GitHub Actions). Para usar, copie para .github/workflows/avaliar-agente.yml
+# e crie o segredo ANTHROPIC_API_KEY em Settings → Secrets and variables → Actions.
+#
+# Duas camadas:
+#   1. pytest: confere o próprio harness (gates, evidências, pontuação). Não chama a API, é grátis e rápido.
+#   2. avaliar.py --gerar: o agente resume a conversa e o juiz avalia 3 vezes. Se a média ficar abaixo
+#      de 0.9, o job falha e o pull request mostra um X vermelho.
+name: Avaliar agente de resumos
+
+on:
+  pull_request:
+    paths:
+      - "aulas/llm-como-juiz/prompts/**"
+      - "aulas/llm-como-juiz/*.py"
+      - "aulas/llm-como-juiz/baseline/**"
+
+jobs:
+  avaliar:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: aulas/llm-como-juiz
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Testes do harness (sem API)
+        run: pytest
+
+      - name: Agente resume, juiz avalia 3 vezes
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python avaliar.py --gerar --execucoes 3 --minimo 0.9
+
+      - name: Guardar o relatório
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-avaliacao
+          path: aulas/llm-como-juiz/relatorios/

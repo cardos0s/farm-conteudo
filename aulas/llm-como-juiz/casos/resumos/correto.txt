@@ -1,0 +1,8 @@
+Roberto tem três padarias, controla o estoque em planilha e todo mês sobra farinha numa loja e falta na outra. Marina apresentou o sistema, que mostra o estoque das três lojas num painel só.
+
+Valores: o plano para até cinco lojas custa R$ 890 por mês. No plano anual, Marina consegue 10% de desconto; Roberto quer chegar perto de 15%.
+
+Próximas ações:
+1. Marina envia ainda hoje a proposta por e-mail, com o prazo de implantação (em média duas semanas).
+2. Marina fala com a gerente sobre um desconto maior e dá um retorno até sexta-feira.
+3. Demonstração na terça às 10h para Roberto e a sócia, Cláudia.

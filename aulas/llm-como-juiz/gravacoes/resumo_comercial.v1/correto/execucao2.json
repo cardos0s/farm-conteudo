@@ -1,0 +1,70 @@
+{
+  "origem": "Exemplo didático escrito à mão para a aula funcionar sem internet. Não é uma resposta real do modelo. Para gravar respostas reais: python avaliar.py --caso <caso> --execucoes 3 --gravar",
+  "modelo": "exemplo-didatico",
+  "veredito": {
+    "results": [
+      {
+        "check_id": "C02",
+        "evidence": [
+          {
+            "source": "conversa",
+            "quote": "Ainda hoje eu te mando a proposta por e-mail com os valores que conversamos"
+          },
+          {
+            "source": "resumo",
+            "quote": "Marina envia ainda hoje a proposta por e-mail"
+          },
+          {
+            "source": "conversa",
+            "quote": "Falo com ela e te dou um retorno até sexta-feira"
+          },
+          {
+            "source": "resumo",
+            "quote": "dá um retorno até sexta-feira"
+          },
+          {
+            "source": "conversa",
+            "quote": "Que tal terça que vem, às 10h?"
+          },
+          {
+            "source": "resumo",
+            "quote": "Demonstração na terça às 10h para Roberto e a sócia, Cláudia"
+          }
+        ],
+        "reasoning": "O resumo lista as três ações da conversa: envio da proposta, retorno da gerente até sexta e a demonstração de terça.",
+        "passed": true
+      },
+      {
+        "check_id": "C03",
+        "evidence": [
+          {
+            "source": "conversa",
+            "quote": "O plano para até cinco lojas sai por R$ 890 por mês"
+          },
+          {
+            "source": "resumo",
+            "quote": "o plano para até cinco lojas custa R$ 890 por mês"
+          },
+          {
+            "source": "conversa",
+            "quote": "No plano anual eu consigo 10% de desconto"
+          },
+          {
+            "source": "resumo",
+            "quote": "No plano anual, Marina consegue 10% de desconto"
+          },
+          {
+            "source": "conversa",
+            "quote": "A implantação leva em média duas semanas"
+          },
+          {
+            "source": "resumo",
+            "quote": "com o prazo de implantação (em média duas semanas)"
+          }
+        ],
+        "reasoning": "Todos os números do resumo (R$ 890, 10%, duas semanas) estão na conversa; nenhum compromisso extra foi criado.",
+        "passed": true
+      }
+    ]
+  }
+}

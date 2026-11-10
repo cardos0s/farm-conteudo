@@ -134,6 +134,13 @@ npm run render:aula
 
 Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/complexidade/`. O passo a passo completo (baixar do Drive, converter o HDR do iPhone, transcrever, cortar, renderizar) está em `scripts/aulas/README.md`; os componentes da lousa ficam em `remotion/lousa/`.
 
+### Aula 2: LLM as a Judge (roteiro e material)
+
+`aulas/llm-como-juiz/` tem a aula de 60 minutos sobre como avaliar agentes de IA com evidências e métricas:
+o roteiro minuto a minuto, explicado desde o zero (`ROTEIRO.md`), e o material dos alunos em Python
+(agente, juiz, validação de evidências, pontuação, três casos de teste, gravações para rodar sem internet,
+testes e desafio). Veja `aulas/llm-como-juiz/README.md`.
+
 ## Estrutura
 
 ```
@@ -142,6 +149,7 @@ remotion/           templates de vídeo: cenas, elemento de cada marca, fontes
 remotion/lousa/     lousa no estilo Excalidraw (formas à mão, texto manuscrito, canvas infinito)
 remotion/aulas/     aulas da comunidade (cenas, cortes e EDL de cada aula)
 scripts/aulas/      pipeline das aulas: Drive, HDR→SDR, transcrição, cortes, voz, rosto
+aulas/              roteiros e material dos alunos de cada aula (código Python das aulas práticas)
 src/coleta/         RSS e APIs de dados
 src/agentes/        editor, redator, revisor e editor da newsletter (Claude)
 src/video/          render do Reel

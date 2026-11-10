@@ -1,0 +1,4 @@
+Roberto tem três padarias e controla o estoque em planilha. Marina apresentou o sistema, que mostra o estoque das lojas num painel só. O plano para até cinco lojas custa R$ 890 por mês.
+
+Próximas ações:
+1. Marina envia a proposta por e-mail.

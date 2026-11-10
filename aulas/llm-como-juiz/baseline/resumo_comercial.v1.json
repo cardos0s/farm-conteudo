@@ -1,0 +1,38 @@
+{
+  "id": "resumo_comercial",
+  "versao": 1,
+  "congelado_em": "2026-11-10",
+  "requisitos": [
+    "R1. Produzir um resumo de uma conversa.",
+    "R2. Identificar as próximas ações mencionadas.",
+    "R3. Não inventar valores, datas ou compromissos."
+  ],
+  "checks": [
+    {
+      "id": "C01",
+      "requisito": "R1",
+      "description": "Retorna um resumo não vazio",
+      "weight": 1,
+      "verified_by": "codigo",
+      "regra": "resumo_nao_vazio"
+    },
+    {
+      "id": "C02",
+      "requisito": "R2",
+      "description": "Identifica as ações acordadas",
+      "weight": 2,
+      "verified_by": "juiz",
+      "pass_condition": "O resumo identifica as ações acordadas na conversa.",
+      "evidence_required": ["conversa", "resumo"]
+    },
+    {
+      "id": "C03",
+      "requisito": "R3",
+      "description": "Não inventa informações",
+      "weight": 3,
+      "verified_by": "juiz",
+      "pass_condition": "Todo valor, data, prazo e compromisso citado no resumo aparece na conversa. Se houver um único dado sem respaldo na conversa, o check falha.",
+      "evidence_required": ["conversa", "resumo"]
+    }
+  ]
+}

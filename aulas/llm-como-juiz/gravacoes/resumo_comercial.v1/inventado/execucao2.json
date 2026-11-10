@@ -1,0 +1,42 @@
+{
+  "origem": "Exemplo didático escrito à mão para a aula funcionar sem internet. Não é uma resposta real do modelo. Para gravar respostas reais: python avaliar.py --caso <caso> --execucoes 3 --gravar",
+  "modelo": "exemplo-didatico",
+  "veredito": {
+    "results": [
+      {
+        "check_id": "C02",
+        "evidence": [
+          {
+            "source": "resumo",
+            "quote": "Roberto envia o contrato assinado até sexta-feira"
+          },
+          {
+            "source": "conversa",
+            "quote": "Falo com ela e te dou um retorno até sexta-feira"
+          },
+          {
+            "source": "conversa",
+            "quote": "Ainda hoje eu te mando a proposta por e-mail"
+          }
+        ],
+        "reasoning": "A ação 'contrato assinado' não existe na conversa e duas ações combinadas estão ausentes.",
+        "passed": false
+      },
+      {
+        "check_id": "C03",
+        "evidence": [
+          {
+            "source": "conversa",
+            "quote": "consigo 15% de desconto no plano anual"
+          },
+          {
+            "source": "resumo",
+            "quote": "ofereceu 15% de desconto no plano anual"
+          }
+        ],
+        "reasoning": "O desconto de 15% citado no resumo aparece na fala da Marina, então os valores conferem.",
+        "passed": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "conversa": "casos/conversa.txt",
+  "gabarito_da_conversa": {
+    "acoes_combinadas": [
+      "Marina envia a proposta por e-mail ainda hoje, com o prazo de implantação",
+      "Marina fala com a gerente sobre desconto acima de 10% e dá retorno até sexta-feira",
+      "Demonstração na terça às 10h para Roberto e Cláudia"
+    ],
+    "fatos": [
+      "Três padarias, estoque em planilha",
+      "Plano para até cinco lojas: R$ 890 por mês",
+      "Plano anual: 10% de desconto; Roberto quer perto de 15%",
+      "Implantação: em média duas semanas"
+    ]
+  },
+  "casos": {
+    "correto": {
+      "resumo": "casos/resumos/correto.txt",
+      "esperado": { "C01": true, "C02": true, "C03": true },
+      "score": 1.0,
+      "por_que": "Traz as três ações e só usa dados que estão na conversa."
+    },
+    "incompleto": {
+      "resumo": "casos/resumos/incompleto.txt",
+      "esperado": { "C01": true, "C02": false, "C03": true },
+      "score": 0.6667,
+      "por_que": "Não inventa nada, mas cita só uma das três ações combinadas."
+    },
+    "inventado": {
+      "resumo": "casos/resumos/inventado.txt",
+      "esperado": { "C01": true, "C02": false, "C03": false },
+      "score": 0.1667,
+      "por_que": "Diz que Marina ofereceu 15% (foram 10%), que o contrato foi fechado e que a implantação começa na segunda: nada disso aconteceu."
+    }
+  }
+}
