@@ -41,7 +41,8 @@ const PALAVRAS =
 
 /** Realce simples de sintaxe (TS/JS e parecidos): comentários, textos, palavras-chave e números. */
 function realcar(codigo) {
-  const re = /(\/\/[^\n]*|#[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_]\w*)|([\s\S])/g;
+  // comentários (// , /* */ e "# " de shell/yaml); textos e regex literais (/.../ depois de ( , = : [ ! & | ? { } ; ou início)
+  const re = /(\/\/[^\n]*|(?<=^|\s)#(?=[\s#!]|$)[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'|`(?:\\.|[^`\\])*`|(?<=(?:^|[(,=:\[!&|?{};])\s*)\/(?![/*])(?:\\.|\[(?:\\.|[^\]\\\n])*\]|[^/\\\n\[])+\/[dgimsuy]*)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_]\w*)|([\s\S])/gm;
   let s = "";
   for (const m of codigo.matchAll(re)) {
     if (m[1]) s += `<span class="c">${esc(m[1])}</span>`;
