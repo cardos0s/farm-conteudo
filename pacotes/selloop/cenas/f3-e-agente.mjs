@@ -1,6 +1,6 @@
-// Reel 3 (tomada contínua) · cena E: a configuração da Lia, em Configurações → Atendimento → Agente
-// Hub. O cursor abre a Lia e passa por Conhecimento, Habilidades e Perfil (o tom e a voz da resposta
-// em áudio). A cena começa já no Agente Hub: a aba Canais, que vem antes dele no menu, não abre na demo.
+// Reel 3 (tomada contínua) · cena E: o caminho até a configuração da Lia e o que se ajusta nela.
+// Do atendimento: a engrenagem (Configurações) → Atendimento → a aba Agente Hub → Lia → Conhecimento →
+// Habilidades → Perfil (o tom e, descendo a página, a voz da resposta em áudio).
 import { blocoDe, cenaDemo, NOITE } from "./comum.mjs";
 
 export default cenaDemo({
@@ -8,11 +8,27 @@ export default cenaDemo({
   usuario: "patricia",
   agora: NOITE,
   cenario: "noite",
-  caminho: "/configuracoes/agente-hub",
   gravar: async (g, page) => {
     const menu = (nome) => page.getByRole("button", { name: nome, exact: true });
+    const aparecer = (loc) => loc.waitFor({ state: "visible", timeout: 60000 });
     await g.esperar(400);
+
+    // ── o caminho: a engrenagem, Atendimento no menu das configurações e a aba Agente Hub ──
+    g.marca("configuracoes");
+    await g.clicar(page.locator('a[href="/configuracoes"]').first(), { depois: 300 });
+    const noMenu = page.locator('a[href="/configuracoes/canais"]').first();
+    await aparecer(noMenu);
+    await g.esperar(250);
+    g.marca("atendimento");
+    await g.clicar(noMenu, { depois: 300 });
+    const aba = page.getByText("Agente Hub", { exact: true }).first();
+    await aparecer(aba);
+    await g.esperar(250);
+    g.marca("agente-hub");
+    await g.clicar(aba, { depois: 300 });
     const lia = page.getByText("Lia", { exact: true }).first();
+    await aparecer(lia);
+    await g.esperar(250);
     g.marca("abrir");
     await g.clicar(lia, { depois: 600 });
 

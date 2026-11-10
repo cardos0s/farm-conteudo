@@ -587,8 +587,8 @@ function rotas(s) {
     })],
     ["GET", /^carteira\/[^/]+\/ai-agents$/, () => ({ data: [agenteApi(s)], contratados: 1, emUso: [D.lia.id] })],
     ["GET", /^carteira\/[^/]+\/channels$/, () => lista(Object.values(D.canais).map((c) => ({
-      id: c.id, workspaceId: D.WS, type: c.tipo, name: c.nome, externalId: `demo-${c.tipo}`, status: "active", ownerUserId: D.usuarios.patricia.id, config: {},
-      connectionHealth: "healthy", connectionHealthDetail: null, connectionCheckedAt: s.t(5), createdAt: s.t(90000), updatedAt: s.t(5), deletedAt: null,
+      id: c.id, workspaceId: D.WS, type: c.tipo, name: c.nome, externalId: c.tipo === "facebook" ? "novarotadistribuidora" : `demo-${c.tipo}`, status: "active", ownerUserId: D.usuarios.patricia.id, config: {},
+      connectionHealth: "stable", connectionHealthDetail: null, connectionCheckedAt: s.t(5), createdAt: s.t(90000), updatedAt: s.t(5), deletedAt: null,
       identifier: c.identificador, whatsappConfigured: c.tipo === "whatsapp", emailConfigured: false, ligacaoEstado: null,
     })))],
     ["GET", /^carteira\/[^/]+\/products$/, (_m, q) => {

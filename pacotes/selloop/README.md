@@ -144,8 +144,8 @@ Em cada Reel:
 - **Reel 3**: a conversa da Lia (`f3-a-conversa`) aparece em duas tomadas: o áudio e a resposta em
   áudio; depois o orçamento, a visita na Agenda, a oportunidade em Vendas e a volta para a
   transferência, navegando pela barra lateral. As duas cenas de celular são as de `reel/NoiteReel.tsx`.
-  A configuração da Lia (`f3-e-agente`) começa já no Agente Hub: a aba Canais das Configurações, que
-  vem antes dele no menu, não abre na demo.
+  A configuração da Lia (`f3-e-agente`) mostra o caminho até ela: a engrenagem das Configurações,
+  Atendimento e a aba Agente Hub.
 
 Renderizar e masterizar, como nos outros:
 ```bash

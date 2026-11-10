@@ -160,25 +160,31 @@ M.resumo = Math.max(SA(mA("fim") - 0.1), dito("v3-07", "resumo") - 0.25);
 R.seguraAte(Math.max(M.resumo + 1.6, fimFala("v3-07") + 0.75));
 M.acoesFim = R.agora;
 
-// 6 · a configuração da Lia: conhecimento, habilidades, tom e voz
+// 6 · a configuração da Lia: o caminho até ela (Configurações › Atendimento › Agente Hub) e, nela, o
+// conhecimento, as habilidades, o tom e a voz
+const [cConfig] = cliquesApos(E, mE("configuracoes"));
+const [cMenu] = cliquesApos(E, mE("atendimento"));
+const [cAba] = cliquesApos(E, mE("agente-hub"));
 const [cLia] = cliquesApos(E, mE("abrir"));
 const [cConhecimento] = cliquesApos(E, mE("conhecimento"));
 const [cHabilidades] = cliquesApos(E, mE("habilidades"));
 const [cPerfil] = cliquesApos(E, mE("tom"));
-R.abrir(CE, cLia.t - 0.3);
+R.abrir(CE, cConfig.t - 0.35);
 M.treino = R.parte;
-R.anda(cLia.t + 0.1);
-// o clique na Lia cai em "treina"
-R.fala("v3-08", { em: SE(cLia.t) - palavra("v3-08", "treina") - 0.05 });
+// sem narração, o caminho: a engrenagem, Atendimento e a aba Agente Hub
+R.anda(cAba.t + 0.1);
+// "Você treina a Lia": a fala começa no clique da aba, e o clique na Lia cai no nome dela
+R.fala("v3-08", { em: SE(cAba.t) - 0.05 });
+R.clica(cLia, dito("v3-08", "Lia") + 0.05);
 // "com o que a sua empresa sabe": a base de conhecimento
-R.clica(cConhecimento, dito("v3-08", "com") + 0.05);
+R.clica(cConhecimento, dito("v3-08", "sua") + 0.05);
 R.anda(mE("habilidades") - 0.02);
 M.conhecimento = R.agora;
 // "escolhe as habilidades"; "o tom": o perfil; "e a voz": a página desce até a resposta em áudio
-R.clica(cHabilidades, dito("v3-08", "habilidades") - 0.1);
-R.clica(cPerfil, dito("v3-08", "tom") - 0.3);
+R.clica(cHabilidades, dito("v3-08", "habilidades") + 0.25);
+R.clica(cPerfil, dito("v3-08", "tom") - 0.05);
 R.anda(mE("voz") - 0.02);
-R.chega(viagemApos(E, mE("voz")), dito("v3-08", "voz") + 0.4);
+R.chega(viagemApos(E, mE("voz")), dito("v3-08", "voz") + 0.35);
 M.voz = R.agora - 0.2;
 R.anda(mE("fim"));
 R.seguraAte(Math.max(M.voz + 1.8, fimFala("v3-08") + 0.9));
@@ -225,9 +231,11 @@ alvos[M.acoes] = [
   { t: SA(cConversa.t) + 0.15, ...CONVERSA, cy: 560 },
 ];
 alvos[M.treino] = [
-  // o Agente Hub, com a Lia
-  { t: 0, cx: 760, cy: 400, zoom: 1.0 },
-  // dentro da Lia: o menu à esquerda e o conteúdo
+  // a engrenagem das configurações, no alto à direita
+  { t: 0, cx: 1025, cy: 400, zoom: 0.87 },
+  // as configurações: o menu à esquerda e as abas, até o Agente Hub
+  { t: SE(cConfig.t) + 0.15, cx: 620, cy: 400, zoom: 0.87 },
+  // dentro da Lia: o menu dela e o conteúdo
   { t: SE(cLia.t) + 0.15, cx: 880, cy: 470, zoom: 0.95 },
 ];
 
@@ -328,18 +336,28 @@ sobre.push(titulo("A *resposta em áudio* da Lia", M.liaFim + 0.2, M.respostaFim
   const fim = M.treinoFim;
   const escolhe = dito("v3-08", "escolhe") - 0.1;
   sobre.push(titulo("Você *treina* a Lia", inicioDe(i) + 0.15, escolhe), titulo("Habilidades, tom e *voz*", escolhe + 0.05, fim));
+  // primeiro o caminho até a Lia; depois, o que se ajusta nela
   caminhos.push({
     de: inicioDe(i) + 0.15,
+    ate: SE(cConhecimento.t) - 0.15,
+    passos: [
+      { rotulo: "Configurações", em: SE(cConfig.t) },
+      { rotulo: "Atendimento", em: SE(cMenu.t) },
+      { rotulo: "Agente Hub", em: SE(cAba.t) },
+      { rotulo: "Lia", em: SE(cLia.t) },
+    ],
+  });
+  caminhos.push({
+    de: SE(cConhecimento.t) - 0.1,
     ate: fim - 0.05,
     passos: [
-      { rotulo: "Lia", em: SE(cLia.t) },
       { rotulo: "Conhecimento", em: SE(cConhecimento.t) },
       { rotulo: "Habilidades", em: SE(cHabilidades.t) },
       { rotulo: "Perfil", em: SE(cPerfil.t) },
     ],
   });
   // os documentos e o site da base de conhecimento
-  sobre.push(salto(i, "conhecimento", { de: M.conhecimento - 0.3, ate: dito("v3-08", "habilidades") - 0.55, parte: { x: 0, y: 0, w: 0.6, h: 1 }, w: 880, raio: 14, rot: -1.5 }));
+  sobre.push(salto(i, "conhecimento", { de: M.conhecimento - 0.3, ate: dito("v3-08", "habilidades") - 0.25, parte: { x: 0, y: 0, w: 0.6, h: 1 }, w: 880, raio: 14, rot: -1.5 }));
   // as habilidades, com os nomes que têm na plataforma: em nuvem no alto da janela, acima do menu
   const HABILIDADES = [
     ["Agendar Reunião", "agenda", 300, 622],
@@ -363,7 +381,9 @@ const ENDERECOS: [number, string][] = [
   [SA(cAgenda.t) + 0.1, "/agenda"],
   [SA(cVendas.t) + 0.1, "/pipeline"],
   [SA(cAtendimento.t) + 0.1, "/atendimento"],
-  [inicioDe(M.treino), "/configuracoes/agente-hub"],
+  [SE(cConfig.t) + 0.1, "/configuracoes"],
+  [SE(cMenu.t) + 0.1, "/configuracoes/canais"],
+  [SE(cAba.t) + 0.1, "/configuracoes/agente-hub"],
 ];
 const endereco = (o: number) => `app.selloop.com.br${[...ENDERECOS].reverse().find(([t]) => o >= t)?.[1] ?? ENDERECOS[0][1]}`;
 
