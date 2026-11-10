@@ -61,7 +61,8 @@ export function corpoHtml(caps, { paginas = {}, marcas = false, sumario = true, 
     }
     html += `<section class="capitulo">${cabecalho(c, marcas)}${c.html}</section>`;
   }
-  if (sumario) html += `<div class="fim"><div class="grande">agora é com você!</div><p><b>${AUTORA}</b> · ${PERFIL}</p></div>`;
+  if (sumario)
+    html += `<div class="fim"><div class="grande">agora é com você!</div><p class="frase">Comece simples, escolha pelo contexto, registre o porquê e evolua aos poucos.</p><p><b>${AUTORA}</b> · ${PERFIL}</p></div>`;
   return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>${titulo}</title><style>${css(fonte)}</style></head><body>${html}</body></html>`;
 }
 

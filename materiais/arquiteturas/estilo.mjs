@@ -121,13 +121,15 @@ ol.passos li::before { content: counter(p); position: absolute; left: 0; top: 1p
 .parte ol li span { font-family: "Excali"; color: var(--acento); display: inline-block; width: 22pt; }
 
 /* sumário */
-.sumario h2 { font-size: 26pt; margin: 0 0 10pt; }
-.sumario .sp-parte { font-family: "Excali"; color: var(--acento); font-size: 13pt; margin: 9pt 0 2pt; }
+.sumario h2 { font-size: 24pt; margin: 0 0 6pt; }
+.sumario .sp-parte { font-family: "Excali"; color: var(--acento); font-size: 12pt; margin: 6pt 0 1pt; }
 .sumario ol { list-style: none; padding: 0; margin: 0; }
-.sumario li { display: flex; align-items: baseline; gap: 8pt; padding: 2.6pt 0; border-bottom: 0.5pt solid var(--linha); font-size: 9.6pt; margin: 0; }
+.sumario li { display: flex; align-items: baseline; gap: 8pt; padding: 1pt 0; border-bottom: 0.5pt solid var(--linha); font-size: 9.2pt; line-height: 1.3; margin: 0; }
 .sumario .sn { font-family: "Excali"; color: var(--acento); width: 20pt; }
 .sumario .st { flex: 1; }
 .sumario .spg { color: var(--cinza); font-variant-numeric: tabular-nums; }
-.fim { margin-top: 24pt; text-align: center; color: var(--suave); }
-.fim .grande { font-family: "Excali"; font-size: 20pt; color: var(--acento); }
+.fim { break-before: page; height: 250mm; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--suave); }
+.fim .grande { font-family: "Excali"; font-size: 34pt; color: var(--acento); margin-bottom: 6mm; }
+.fim .frase { font-size: 12pt; max-width: 120mm; line-height: 1.5; margin: 0 0 12mm; }
+.fim figure { width: 120mm; margin: 0 0 12mm; }
 `;
