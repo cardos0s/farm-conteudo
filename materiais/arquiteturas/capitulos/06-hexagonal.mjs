@@ -170,7 +170,7 @@ JSON no objeto de dados que o caso de uso recebe (o <b>DTO</b>, do inglês <i>da
 ${tabela(
   ["O quê", "Onde", "Exemplo"],
   [
-    ["Validar o <b>formato</b>", "adaptador de entrada", "o campo veio? é número? (zod, por exemplo); se não, 400"],
+    ["Validar o <b>formato</b>", "adaptador de entrada", "o campo veio? é número? (com a biblioteca zod, por exemplo); se não, 400"],
     ["Validar a <b>regra</b>", "núcleo (entidade ou caso de uso)", "pedido sem itens, produto inexistente, limite de crédito"],
     ["Converter formatos (DTOs)", "adaptador de entrada", "JSON ou mensagem vira <code>CriarPedidoComando</code>; o resultado vira JSON 201"],
     ["Traduzir erros", "adaptador de entrada", "<code>ErroDeNegocio</code> vira 422 na API e fila de erros no consumidor"],
@@ -223,7 +223,7 @@ src/
 │       │   ├── http/pedidos-rotas.ts        # Express/Fastify
 │       │   └── fila/pedidos-consumidor.ts   # mensagens do marketplace
 │       └── saida/
-│           ├── postgres/repositorio.ts      # implementa a porta com SQL
+│           ├── postgres/                    # repositório e catálogo, com SQL
 │           └── memoria/repositorio.ts       # dublê para os testes
 └── main.ts                                  # liga tudo (composition root)
 `)}
@@ -326,10 +326,7 @@ export class RepositorioPostgres implements RepositorioDePedidos {
     }
   }
 
-  async buscar(id: string): Promise<Pedido | null> {
-    /* select com join em itens; as linhas viram entidade com Pedido.reconstituir() */
-    return null;
-  }
+  async buscar(id: string) { /* select com join; linhas viram entidade */ return null; }
 }
 
 // main.ts: o único lugar que conhece todas as peças
@@ -343,8 +340,7 @@ consumirMarketplace(fila, criarPedido);                   // um núcleo, duas en
 ${passos([
   "Liste os casos de uso do módulo (verbos do negócio: criar, cancelar, aprovar...). Cada um vira uma classe ou função no núcleo.",
   "Para cada coisa de fora que o caso de uso precisa (banco, e-mail, pagamento), crie uma interface no núcleo, com nomes do negócio (<code>RepositorioDePedidos</code>, não <code>PostgresClient</code>).",
-  "Escreva os adaptadores de saída implementando essas interfaces, e um adaptador em memória para os testes.",
-  "Escreva os adaptadores de entrada (rotas, consumidores de fila) só traduzindo formato: validam a entrada, chamam o caso de uso e formatam a resposta.",
+  "Escreva os adaptadores: os de saída implementam essas interfaces (mais um em memória para os testes); os de entrada (rotas, consumidores de fila) só traduzem formato.",
   "Junte tudo num único ponto (<code>main.ts</code>, o <i>composition root</i>) ou com um container de injeção de dependência.",
   "Proteja a regra com uma checagem automática: o núcleo não pode importar pastas de adaptadores (dá para usar ferramentas como dependency-cruiser ou regras de lint).",
 ])}
@@ -354,11 +350,10 @@ ${passos([
 <ul>
 <li><b>Núcleo, com dublês nas portas de saída</b> (muitos testes, milissegundos cada). Um dublê (<i>test double</i>) é
 uma peça falsa no lugar da real. Prefira um <b>fake</b> (uma implementação simples em memória) a um <b>mock</b> que
-confere cada chamada: teste o resultado ("o pedido foi salvo com total de R$ 50"), não o roteiro ("chamou
-<code>salvar</code> uma vez").</li>
+confere cada chamada: teste o resultado, não o roteiro ("chamou <code>salvar</code> uma vez").</li>
 <li><b>Adaptadores de saída, com a tecnologia real</b> (poucos testes, segundos cada). O repositório Postgres é testado
-contra um Postgres de verdade, num container (com Testcontainers ou docker compose). É aqui que aparecem o SQL errado,
-a coluna esquecida e a transação que não volta atrás.</li>
+contra um Postgres de verdade, num container (com Testcontainers ou docker compose). É aqui que aparecem o SQL errado
+e a transação que não volta atrás.</li>
 <li><b>Contrato da porta</b>: a mesma bateria de testes roda contra o fake e contra o adaptador real. Se os dois
 passam, o fake não mente para os testes do núcleo.</li>
 <li><b>Adaptadores de entrada e ponta a ponta</b>: chame a rota (com supertest, por exemplo) ligada ao núcleo e aos
@@ -419,8 +414,8 @@ segunda implementação ou a necessidade de um dublê, é uma refatoração pequ
 <li><b>Portas de saída: quase sempre sim.</b> Banco, e-mail, pagamento e outros serviços na rede são justamente o que
 você quer isolar do núcleo e trocar por um dublê no teste.</li>
 <li><b>Portas de entrada: quase sempre não.</b> A própria classe <code>CriarPedido</code> já é a porta, e a rota a chama
-direto, como no código acima. Uma interface só se paga se houver mais de uma implementação ou se você quiser embrulhar
-o caso de uso com log, métricas ou transação (um <i>decorator</i>, ou "embrulho").</li>
+direto. A interface só se paga com mais de uma implementação ou para embrulhar o caso de uso com log, métricas ou
+transação (o padrão <i>decorator</i>).</li>
 <li><b>Dentro do núcleo: não.</b> Entidades, cálculos e funções puras (formatar data, calcular frete) não precisam de
 interface: o teste usa a peça real, que já é rápida.</li>
 <li><b>Relógio e gerador de IDs: vale pensar.</b> Parecem bobos, mas uma porta <code>Relogio</code> deixa testar "o
@@ -468,7 +463,7 @@ ${combina([
 
 ${lembre([
   "O núcleo define interfaces (portas); a tecnologia se encaixa por adaptadores. Na entrada, o adaptador chama a porta; na saída, ele a implementa.",
-  "Dependências sempre para dentro: os adaptadores traduzem formatos (validação de formato, DTOs, SQL, transação) e só o núcleo decide regra.",
+  "Dependências sempre para dentro: os adaptadores traduzem (formato, DTOs, SQL, transação) e só o núcleo decide as regras de negócio.",
   "Vale a pena quando a regra de negócio é rica e muda muito; num CRUD simples, é cerimônia.",
 ])}
 `;

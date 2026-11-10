@@ -408,7 +408,7 @@ ${tabela(
   ],
 )}
 
-<p>Repare na linha 4: a compensação da saga não apaga a linha 3: ela é um fato novo. O histórico conta a verdade
+<p>Repare na linha 4: a compensação da saga não apaga a linha 3. Ela é um fato novo. O histórico conta a verdade
 inteira, inclusive o que deu errado.</p>
 <p><b>Como as peças se encaixam.</b> O <i>event store</i> (o banco de eventos) fica atrás de uma porta de saída, como
 <code>RepositorioDeContas</code>: ela carrega a conta somando os eventos e grava os novos. Cada parceiro (Pix, bandeira,
