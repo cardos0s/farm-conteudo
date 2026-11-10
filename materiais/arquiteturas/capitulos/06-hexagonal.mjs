@@ -440,10 +440,7 @@ Status é assunto da rota; o núcleo lança erros de negócio e o adaptador os t
 <li><b>Atalho pela borda</b>: a rota usa o <code>RepositorioPostgres</code> direto e pula o caso de uso. Numa listagem
 simples pode ser uma escolha consciente (registre num ADR, capítulo 32); numa rota que grava, é regra fugindo do núcleo.</li>
 <li><b>Porta gigante</b>: uma interface <code>BancoDeDados</code> com quarenta métodos, usada por todo mundo. Desenhe as
-portas pelo que cada caso de uso precisa (<code>RepositorioDePedidos</code>, <code>CatalogoDePrecos</code>), não pelo
-que o banco oferece.</li>
-<li><b>Mock de tudo</b>: testes que conferem cada chamada quebram a cada refatoração e deixam bugs passar. Use fakes e
-confira o resultado.</li>
+portas pelo que os casos de uso precisam, não pelo que o banco oferece.</li>
 <li><b>Núcleo anêmico</b>: entidades viram só "sacos de dados" e toda a regra vai para serviços gigantes. Coloque o
 comportamento perto dos dados (<code>pedido.cancelar()</code>).</li>
 </ul>
