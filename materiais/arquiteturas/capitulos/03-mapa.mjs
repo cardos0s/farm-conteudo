@@ -257,7 +257,7 @@ ${dica(
 )}
 
 <h3>Todas as arquiteturas do livro</h3>
-<p>O índice do mapa, para consultar quando um nome aparecer numa conversa.</p>
+<p>O índice do mapa, para consultar quando um nome aparecer numa conversa. Estilos sem capítulo próprio (baseada em serviços, broker, primário-réplica, blackboard, REST, reativa, edge e multi-tenant) estão no apêndice, no fim do livro.</p>
 
 <h4>O código por dentro (parte II)</h4>
 ${tabela(
