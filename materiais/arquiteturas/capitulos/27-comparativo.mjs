@@ -11,8 +11,8 @@ function mapa() {
   semear("comparativo-1");
   let s = "";
   // zona boa (desenhada antes, para ficar atrás das etiquetas)
-  s += elipse(278, 192, 230, 120, { preench: claro.verde, cor: cor.verde, tracejado: true, gap: 8 });
-  s += txt(278, 120, "muita escala por pouco custo", { tam: 16, cor: cor.verde });
+  s += elipse(266, 192, 240, 120, { preench: claro.verde, cor: cor.verde, tracejado: true, gap: 8 });
+  s += txt(266, 120, "muita escala por pouco custo", { tam: 16, cor: cor.verde });
   // eixos
   s += seta(100, 380, 735, 380, { espessura: 2 });
   s += seta(100, 380, 100, 40, { espessura: 2 });
@@ -31,12 +31,12 @@ function mapa() {
   const fora = (x, y, nome) => etiqueta(x, y, nome, { tam: 15, preench: claro.azul });
   const dados = (x, y, nome) => etiqueta(x, y, nome, { tam: 15, preench: claro.violeta });
   s += fora(165, 285, "Monólito");
-  s += fora(270, 172, "Monólito modular");
+  s += fora(234, 172, "Monólito modular");
   s += fora(300, 212, "Serverless");
   s += dados(420, 212, "CQRS");
   s += fora(470, 172, "Micro-frontends");
   s += dados(545, 212, "Event Sourcing");
-  s += dados(440, 85, "Eventos");
+  s += dados(482, 85, "Eventos");
   s += fora(585, 55, "Células");
   s += dados(575, 116, "Space-based");
   s += fora(686, 86, "Microsserviços");
@@ -71,7 +71,7 @@ const L = (nome, cap, c, e, o, a, t, time, deploy, cons, brilha) => [`<b>${nome}
 const parte2 = [
   L("Camadas", 4, 1, 2, 1, 1, 3, "1 dev a 1 time", "não muda", "não muda", "CRUD e sistemas simples"),
   L("MVC, MVP e MVVM", 5, 1, 3, 1, 2, 3, "qualquer", "não muda", "não muda", "telas com estado e interação"),
-  L("Hexagonal", 6, 3, 4, 1, 3, 5, "3 ou mais devs", "não muda", "não muda", "regra rica, várias entradas"),
+  L("Hexagonal", 6, 3, 4, 1, 3, 5, "qualquer (brilha com 3+)", "não muda", "não muda", "regra rica, várias entradas"),
   L("Clean e Onion", 7, 4, 4, 1, 4, 5, "3 ou mais devs", "não muda", "não muda", "regra rica, vida longa, time grande"),
   L("Vertical Slice", 8, 2, 4, 1, 2, 4, "qualquer", "não muda", "não muda", "muitas features independentes"),
   L("Microkernel", 9, 3, 2, 2, 3, 4, "núcleo + terceiros", "plugins: sim", "não muda", "produto extensível (VS Code)"),
@@ -80,7 +80,7 @@ const parte2 = [
 
 const parte3 = [
   L("Monólito", 11, 1, 3, 1, 1, 4, "1 dev a poucos times", "não", "forte", "começo, produto mudando rápido"),
-  L("Monólito modular", 12, 2, 4, 2, 3, 4, "1 a vários times", "não", "forte", "vários times, um deploy só"),
+  L("Monólito modular", 12, 2, 4, 1, 3, 4, "1 a vários times", "não", "forte", "vários times, um deploy só"),
   L("SOA", 13, 4, 3, 4, 4, 2, "empresa grande", "parcial", "mista", "integrar legados e parceiros"),
   L("Microsserviços", 14, 5, 5, 5, 4, 3, "vários times", "sim", "eventual", "muitos times autônomos"),
   L("Serverless", 15, 2, 4, 2, 3, 3, "pequeno, sem infra", "sim, por função", "a do banco usado", "carga em picos, tarefas por evento"),
@@ -92,7 +92,7 @@ const parte4 = [
   L("Cliente-servidor", 18, 2, 4, 2, 1, 4, "qualquer", "cliente e servidor", "forte (no servidor)", "quase todo app e site"),
   L("Peer-to-peer", 19, 4, 5, 3, 4, 2, "com gente de redes", "cada par no seu tempo", "eventual", "arquivos, chamadas diretas"),
   L("Orientada a eventos", 20, 3, 5, 4, 4, 3, "vários times", "sim", "eventual", "uma ação, muitas reações"),
-  L("CQRS", 21, 3, 4, 3, 3, 4, "qualquer (nível 1)", "leitura e escrita", "eventual no nível 3", "leitura e escrita muito diferentes"),
+  L("CQRS", 21, 3, 4, 3, 3, 4, "qualquer (nível 1)", "leitura à parte (nível 3)", "eventual no nível 3", "leitura e escrita muito diferentes"),
   L("Event Sourcing", 22, 4, 4, 4, 4, 4, "com alguém experiente", "não muda", "projeções eventuais", "histórico e auditoria"),
   L("Sagas", 23, 4, 4, 3, 4, 2, "já opera serviços", "sim", "eventual + compensação", "operação em vários serviços"),
   L("Space-based", 24, 5, 5, 4, 4, 2, "experiente", "parcial", "eventual com o banco", "picos extremos (ingressos)"),
@@ -100,7 +100,7 @@ const parte4 = [
   L("Lambda", 26, 4, 5, 5, 4, 2, "time de dados", "não muda", "eventual (o lote corrige)", "tempo real + reprocesso em lote"),
   L("Kappa", 26, 4, 5, 4, 4, 3, "time de dados", "não muda", "eventual", "tudo como fluxo de eventos"),
   L("Lakehouse", 26, 3, 5, 3, 3, 3, "time de dados", "não muda", "transações por tabela", "BI e ciência de dados juntos"),
-  L("Data Mesh", 26, 5, 5, 4, 4, 3, "muitos domínios", "sim, por domínio", "por domínio", "muitos domínios gerando dados"),
+  L("Data Mesh", 26, 5, 5, 4, 4, 3, "muitos domínios", "sim, por domínio", "eventual entre domínios", "muitos domínios gerando dados"),
 ];
 
 export default `
@@ -119,7 +119,8 @@ código, entrevista e reunião de arquitetura.</p>
 <h3>Como ler a grande tabela</h3>
 <ul>
 <li><b>Co, Es, Op e Ap</b> (começar, escala, operar e aprender): as notas de 1 a 5 do medidor de cada capítulo; o capítulo 3
-explica cada uma. <b>Te</b> (testar): quão fácil é cobrir a regra e o fluxo principal com testes automáticos rápidos.</li>
+explica cada uma. <b>Te</b> (testar): quão fácil é cobrir a regra e o fluxo principal com testes automáticos rápidos. Essa nota não está nos
+medidores; ela foi dada aqui, pelo que cada capítulo mostra sobre testes.</li>
 <li><b>Deploy separado</b>: se uma parte do sistema vai para produção sem levar as outras junto.</li>
 <li><b>Consistência</b>: <b>forte</b> quando todo mundo enxerga o dado novo logo depois de gravado; <b>eventual</b> quando as
 partes podem ficar alguns instantes desencontradas e se acertam depois.</li>
@@ -141,8 +142,8 @@ ${tabela(CAB, parte3, "compacta")}
 <h4>Parte IV: comunicação e dados</h4>
 ${tabela(CAB, parte4, "compacta")}
 
-<p>As notas valem para um time típico, que ainda não rodou aquela arquitetura em produção: com experiência prévia, Op e Ap
-caem bastante. As linhas do capítulo 26 aparecem separadas porque Lambda, Kappa, Lakehouse e Data Mesh resolvem problemas
+<p>As notas valem para um time típico, que ainda não rodou aquela arquitetura em produção: com experiência prévia, Op
+cai um pouco e Ap cai bastante. As linhas do capítulo 26 aparecem separadas porque Lambda, Kappa, Lakehouse e Data Mesh resolvem problemas
 diferentes; nelas, escala quer dizer volume de dados. O medidor daquele capítulo (4, 5, 4 e 4) vale para o caso típico, um
 lakehouse com um pouco de streaming; aqui cada peça aparece sozinha.</p>
 
@@ -154,19 +155,19 @@ ${fig(mapa(), "Cada etiqueta fica na altura da nota de escala e, na horizontal, 
 
 <ol>
 <li><b>Escala se compra com operação.</b> Nenhuma nota 5 em escala vem com operar abaixo de 3, e a maioria vem com 4 ou 5:
-microsserviços, células, space-based, eventos, Lambda. Nas partes III e IV, as linhas com escala 4 e operar 2 (monólito
-modular, serverless e cliente-servidor) são o melhor negócio para a maioria dos sistemas. No serverless, parte da operação foi para o provedor e volta na forma de fatura
+microsserviços, células, space-based, eventos, Lambda. Nas partes III e IV, as linhas com escala 4 e operar 1 ou 2
+(monólito modular, serverless e cliente-servidor) são o melhor negócio para a maioria dos sistemas. No serverless, parte da operação foi para o provedor e volta na forma de fatura
 e de limites da plataforma (capítulo 15).</li>
 <li><b>A parte II quase não mexe na conta de operar.</b> Camadas, MVC, hexagonal, clean e vertical slice têm operar 1: não colocam
 nada novo no ar. O preço delas está em começar e aprender, pago em código e convenção. As escolhas das partes III e IV são
 pagas todo mês, em infraestrutura e plantão.</li>
 <li><b>Deploy separado e consistência forte quase nunca andam juntos.</b> Consistência forte aparece onde há um banco só
-(monólito, monólito modular, cliente-servidor). Quando cada parte ganha o seu banco, a consistência entre elas vira eventual
+(monólito, monólito modular, cliente-servidor) ou dentro de uma fronteira pequena (uma célula, um ator). Quando cada parte ganha o seu banco, a consistência entre elas vira eventual
 e entram as sagas (capítulo 23). A figura abaixo mostra essa troca.</li>
 <li><b>Testar fica mais difícil com a rede no meio.</b> As notas mais altas estão na parte II (hexagonal, clean, pipes and
 filters). As mais baixas (2) estão em SOA, peer-to-peer, sagas e space-based, onde o resultado depende de mensagens, tempo e
 falhas parciais, e na Lambda, que tem a mesma lógica escrita duas vezes (lote e tempo real). Cada serviço continua fácil de testar sozinho; o difícil é o conjunto.</li>
-<li><b>Toda linha da parte III fala de times.</b> A Lei de Conway (Melvin Conway, 1968) diz que o sistema tende a copiar a
+<li><b>Na parte III, quem decide é o tamanho do time.</b> A Lei de Conway (Melvin Conway, 1968) diz que o sistema tende a copiar a
 estrutura de comunicação de quem o constrói. Microsserviços, micro-frontends e células só se pagam com vários times: com um
 time só, você compra a divisão e não usa.</li>
 </ol>
@@ -191,7 +192,7 @@ ${tabela(
   "compacta",
 )}
 <p><b>Regra de bolso:</b> comece em camadas. Quando a regra crescer e os testes começarem a pedir banco, inverta a dependência
-do banco: isso já é a hexagonal. Dê nome aos anéis (Clean) quando muita gente precisar seguir a mesma convenção.</p>
+do banco (uma porta no núcleo, um adaptador por fora): é o primeiro passo da hexagonal. Dê nome aos anéis (Clean) quando muita gente precisar seguir a mesma convenção.</p>
 
 <h4>2. Monólito modular x microsserviços</h4>
 <p>É a dúvida mais cara do livro, porque a resposta errada custa caro para desfazer. As duas dividem o sistema por assunto do
@@ -205,13 +206,14 @@ ${tabela(
     ["<b>Dados</b>", "um banco; cada módulo é dono das suas tabelas", "um banco por serviço"],
     ["<b>Gravar em várias partes</b>", "transação comum do banco", "saga com compensação (cap. 23)"],
     ["<b>Escala</b>", "o sistema inteiro junto, em várias cópias iguais", "cada serviço na medida dele"],
-    ["<b>Começar / Escala / Operar</b>", "2 / 4 / 2", "5 / 5 / 5"],
+    ["<b>Começar / Escala / Operar</b>", "2 / 4 / 1", "5 / 5 / 5"],
     ["<b>Escolha quando</b>", "de um a alguns times; fronteiras ainda mudando", "muitos times travados na fila de deploy; partes com carga ou falhas que precisam ficar isoladas"],
   ],
   "compacta",
 )}
 <p><b>Regra de bolso:</b> um microsserviço é um módulo que ganhou um motivo concreto para sair (deploy, escala ou isolamento
-de falha próprios). Sem motivo, ele fica módulo. É a lógica do <i>Monolith First</i>, de Martin Fowler (2015).</p>
+de falha próprios). Sem motivo, ele fica módulo. É a lógica do <i>Monolith First</i>, de Martin Fowler (2015). E sair pela metade (serviços que dividem o mesmo banco ou
+precisam subir juntos) dá o pior dos dois lados: o monólito distribuído (capítulo 31).</p>
 
 <h4>3. SOA x microsserviços</h4>
 <p>As duas usam serviços, por isso se confundem. A diferença está no objetivo: a SOA nasceu para <b>integrar e reusar</b>
@@ -269,7 +271,8 @@ ${tabela(
 <p><b>Regra de bolso:</b> use coreografia quando o fluxo cabe numa frase ("pedido pago avisa estoque e e-mail"). Quando
 aparecerem decisões, prazos e compensações, passe para a orquestração. As topologias broker e mediador do capítulo 20 são
 essa mesma escolha: no broker, cada consumidor reage e publica o próximo evento (coreografia); no mediador, um componente
-central decide a ordem dos passos (orquestração).</p>
+central decide a ordem dos passos (orquestração). Muitos sistemas usam as duas: coreografia entre domínios e orquestração
+dentro de um fluxo crítico, como o checkout.</p>
 
 <h3>Erros ao comparar arquiteturas</h3>
 <ul>
@@ -296,12 +299,13 @@ ${pratica(
   `<p>Imagine um app de delivery de uma cidade média: oito devs em dois times, picos de pedidos no almoço e no jantar,
   pagamento com cartão. As colunas que pesam são Operar, Consistência e Time.</p>
   <ul>
-  <li><b>Sistema por fora</b>: microsserviços pedem vários times e têm operar 5, então saem. O monólito modular (operar 2,
+  <li><b>Sistema por fora</b>: microsserviços pedem vários times e têm operar 5, então saem. O monólito modular (operar 1,
   escala 4) cobre os dois times, e funções serverless cuidam do que tem pico isolado, como gerar recibos.</li>
   <li><b>Código por dentro</b>: hexagonal nos módulos de pedidos e pagamentos, onde a regra é rica (Testar 5); camadas no
   cadastro de restaurantes, que é quase só ler e gravar.</li>
   <li><b>Comunicação e dados</b>: cliente-servidor entre o app e a API; eventos internos para "pedido pago" avisar a cozinha e
-  o entregador. Como tudo está num banco só, o pagamento e o pedido mudam na mesma transação, sem saga.</li>
+  o entregador. Como tudo está num banco só, o status do pedido e o registro do pagamento mudam na mesma transação, sem saga.
+  A chamada à operadora do cartão fica fora dela e precisa ser idempotente (capítulo 23).</li>
   </ul>`,
 )}
 
@@ -316,7 +320,7 @@ ${combina([
 
 ${lembre([
   "Compare dentro da mesma família: código por dentro, sistema por fora e comunicação e dados respondem perguntas diferentes.",
-  "Escala alta quase sempre vem com operação cara; para a maioria dos sistemas, o melhor negócio por fora está nas linhas com escala 4 e operar 2 (monólito modular, serverless).",
+  "Escala alta quase sempre vem com operação cara; para a maioria dos sistemas, o melhor negócio por fora está nas linhas com escala 4 e operar 1 ou 2 (monólito modular, serverless).",
   "Deploy separado e consistência forte raramente andam juntos: escolher um é aceitar o preço do outro.",
 ])}
 `;

@@ -315,8 +315,8 @@ ${passos([
 ${tabela(
   ["Você ganha", "Você paga"],
   [
-    ["Filtros pequenos e testáveis sozinhos", "Cada salto entre processos serializa o dado e soma latência"],
-    ["Mudar e reaproveitar etapas mexendo só na montagem", "Decisões, voltas e estado compartilhado ficam forçados"],
+    ["Filtros pequenos e testáveis sozinhos", "Cada salto entre processos serializa e atrasa"],
+    ["Mudar e reusar etapas só na montagem", "Decisões, voltas e estado compartilhado ficam forçados"],
     ["Dados enormes com pouca memória (streaming)", "Erro no meio do fluxo exige decisão por etapa"],
     ["Paralelismo e escala só da etapa lenta", "O bug aparece no filtro 5, mas nasceu no 2"],
   ],

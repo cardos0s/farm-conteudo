@@ -145,7 +145,7 @@ os filhos e a si mesmo, e a falha sobe para o supervisor de cima.</p>
 ${fig(supervisao(), "Árvore de supervisão de um chat: a conexão da Bia caiu, o supervisor dela sobe outra e o resto do sistema nem fica sabendo.")}
 
 <p>Daí vem a filosofia <b>"let it crash"</b> (deixe cair): em vez de <code>try/catch</code> para cada erro imaginável, você
-escreve o caminho normal e deixa o processo morrer no inesperado. O supervisor o recria a partir de um estado conhecido.
+escreve o caminho normal e deixa o processo morrer diante do inesperado. O supervisor o recria a partir de um estado conhecido.
 Funciona porque atores são isolados e baratos de recriar.</p>
 
 ${alerta(
