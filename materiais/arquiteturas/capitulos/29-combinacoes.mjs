@@ -48,31 +48,31 @@ function receitaEcommerce() {
   semear("combinacoes-2");
   let s = "";
   // em cima: CQRS no catálogo
-  s += txt(20, 22, "catálogo com CQRS", { tam: 16, cor: cor.violeta, ancora: "start" });
-  s += bloco(30, 56, 150, 62, "Catálogo", { preench: claro.violeta });
-  s += txt(105, 138, "modelo de escrita", { tam: 15, cor: cor.cinza });
-  s += seta(184, 87, 326, 87, { espessura: 2, cor: cor.laranja, rotulo: "ProdutoAlterado", corRotulo: cor.laranja });
-  s += bloco(330, 56, 150, 62, "Busca", { preench: claro.verde });
-  s += txt(405, 138, "modelo de leitura", { tam: 15, cor: cor.cinza });
-  s += navegador(600, 46, 130, 82, "vitrine");
-  s += seta(596, 87, 484, 87, { espessura: 2, rotulo: "consulta" });
-  s += linha([[20, 160], [740, 160]], { tracejado: true, cor: cor.cinza, espessura: 1.2 });
+  s += txt(20, 20, "catálogo com CQRS", { tam: 16, cor: cor.violeta, ancora: "start" });
+  s += bloco(30, 50, 150, 62, "Catálogo", { preench: claro.violeta });
+  s += txt(105, 132, "modelo de escrita", { tam: 15, cor: cor.cinza });
+  s += seta(184, 81, 326, 81, { espessura: 2, cor: cor.laranja, rotulo: "ProdutoAlterado", corRotulo: cor.laranja });
+  s += bloco(330, 50, 150, 62, "Busca", { preench: claro.verde });
+  s += txt(405, 132, "modelo de leitura", { tam: 15, cor: cor.cinza });
+  s += navegador(600, 40, 130, 82, "vitrine");
+  s += seta(596, 81, 484, 81, { espessura: 2, rotulo: "consulta" });
+  s += linha([[20, 150], [740, 150]], { tracejado: true, cor: cor.cinza, espessura: 1.2 });
   // embaixo: saga no checkout
-  s += txt(20, 184, "checkout com saga", { tam: 16, cor: cor.laranja, ancora: "start" });
+  s += txt(20, 172, "checkout com saga", { tam: 16, cor: cor.laranja, ancora: "start" });
   for (const [x, nome] of [[20, "Pedidos"], [300, "Estoque"], [620, "Pagamento"]]) {
-    s += bloco(x, 212, 120, 62, nome, { preench: claro.azul });
-    s += banco(x + 37, 288, 46, 44, "", { preench: claro.cinza });
+    s += bloco(x, 196, 120, 62, nome, { preench: claro.azul });
+    s += banco(x + 37, 272, 46, 44, "", { preench: claro.cinza });
   }
-  s += seta(142, 236, 298, 236, { espessura: 2, cor: cor.laranja, rotulo: "1 PedidoCriado", corRotulo: cor.laranja });
-  s += seta(422, 236, 618, 236, { espessura: 2, cor: cor.laranja, rotulo: "2 EstoqueReservado", corRotulo: cor.laranja });
+  s += seta(142, 220, 298, 220, { espessura: 2, cor: cor.laranja, rotulo: "1 PedidoCriado", corRotulo: cor.laranja });
+  s += seta(422, 220, 618, 220, { espessura: 2, cor: cor.laranja, rotulo: "2 EstoqueReservado", corRotulo: cor.laranja });
   // compensação
-  s += seta(618, 260, 424, 260, { tracejado: true, cor: cor.vermelho, espessura: 1.9 });
-  s += txt(520, 288, "PagamentoRecusado:\nlibera a reserva", { tam: 15, cor: cor.vermelho });
+  s += seta(618, 244, 424, 244, { tracejado: true, cor: cor.vermelho, espessura: 1.9 });
+  s += txt(520, 272, "PagamentoRecusado:\nlibera a reserva", { tam: 15, cor: cor.vermelho });
   // sucesso volta para o pedido
-  s += linha([[726, 276], [726, 362], [38, 362]], { cor: cor.verde, espessura: 2 });
-  s += seta(38, 362, 38, 278, { cor: cor.verde, espessura: 2 });
-  s += txt(380, 382, "3 PagamentoAprovado: o pedido é confirmado", { tam: 15, cor: cor.verde });
-  return quadro(760, 398, s);
+  s += linha([[726, 260], [726, 346], [38, 346]], { cor: cor.verde, espessura: 2 });
+  s += seta(38, 346, 38, 262, { cor: cor.verde, espessura: 2 });
+  s += txt(380, 366, "3 PagamentoAprovado: o pedido é confirmado", { tam: 15, cor: cor.verde });
+  return quadro(760, 380, s);
 }
 
 /** Receita 5: dispositivos → log → filtros; reprocessamento no estilo Kappa. */
@@ -102,15 +102,14 @@ function receitaStreaming() {
   s += seta(482, 103, 546, 103, { espessura: 2 });
   s += seta(602, 103, 640, 103, { espessura: 2 });
   s += banco(642, 68, 96, 74, "tabela\natual", { preench: claro.verde, tam: 15 });
-  // reprocessar (Kappa)
-  s += linha([[190, 124], [190, 262]], { cor: cor.violeta, espessura: 2, tracejado: true });
-  s += seta(190, 262, 298, 262, { cor: cor.violeta, espessura: 2, tracejado: true });
-  s += txt(202, 206, "lê desde\no começo", { tam: 15, cor: cor.violeta, ancora: "start" });
-  s += bloco(300, 230, 280, 64, "mesmo pipeline, versão nova", { preench: claro.violeta, tam: 16 });
-  s += seta(582, 262, 640, 262, { cor: cor.violeta, espessura: 2 });
-  s += banco(642, 226, 96, 74, "tabela\nnova", { preench: claro.violeta, tam: 15 });
-  s += txt(380, 334, "quando a versão nova alcança o presente, a leitura troca de tabela", { tam: 16, cor: cor.violeta });
-  return quadro(760, 354, s);
+  // reprocessar (Kappa); a troca de tabela está na legenda
+  s += linha([[190, 124], [190, 232]], { cor: cor.violeta, espessura: 2, tracejado: true });
+  s += seta(190, 232, 298, 232, { cor: cor.violeta, espessura: 2, tracejado: true });
+  s += txt(202, 178, "lê desde\no começo", { tam: 15, cor: cor.violeta, ancora: "start" });
+  s += bloco(300, 200, 280, 64, "mesmo pipeline, versão nova", { preench: claro.violeta, tam: 16 });
+  s += seta(582, 232, 640, 232, { cor: cor.violeta, espessura: 2 });
+  s += banco(642, 196, 96, 74, "tabela\nnova", { preench: claro.violeta, tam: 15 });
+  return quadro(760, 290, s);
 }
 
 /** Receita 6: app com MVVM → BFF em função serverless → serviços. */
@@ -118,36 +117,37 @@ function receitaMobile() {
   semear("combinacoes-4");
   let s = "";
   // celular com MVVM
-  s += ret(30, 20, 160, 292, { preench: "#ffffff", hachura: "solid", espessura: 2.4 });
+  s += ret(30, 20, 160, 254, { preench: "#ffffff", hachura: "solid", espessura: 2.4 });
   s += linha([[88, 34], [132, 34]], { espessura: 2.6 });
-  s += bloco(48, 54, 124, 52, "View (tela)", { preench: claro.amarelo, tam: 16 });
-  s += bloco(48, 146, 124, 52, "ViewModel", { preench: claro.verde, tam: 16 });
-  s += bloco(48, 238, 124, 52, "Repositório", { preench: claro.cinza, tam: 16 });
-  s += seta(62, 144, 62, 108, { cor: cor.verde, espessura: 1.9 });
-  s += txt(73, 118, "estado", { tam: 15, cor: cor.verde, ancora: "start" });
-  s += seta(158, 108, 158, 144, { espessura: 1.9 });
-  s += txt(150, 136, "ação", { tam: 15, ancora: "end" });
-  s += seta(110, 200, 110, 236, { espessura: 1.9 });
-  s += txt(110, 334, "app (MVVM)", { tam: 16 });
+  s += bloco(48, 50, 124, 46, "View (tela)", { preench: claro.amarelo, tam: 16 });
+  s += bloco(48, 132, 124, 46, "ViewModel", { preench: claro.verde, tam: 16 });
+  s += bloco(48, 214, 124, 46, "Repositório", { preench: claro.cinza, tam: 16 });
+  s += seta(62, 130, 62, 98, { cor: cor.verde, espessura: 1.9 });
+  s += txt(73, 107, "estado", { tam: 15, cor: cor.verde, ancora: "start" });
+  s += seta(158, 98, 158, 130, { espessura: 1.9 });
+  s += txt(150, 123, "ação", { tam: 15, ancora: "end" });
+  s += seta(110, 180, 110, 212, { espessura: 1.9 });
+  s += txt(110, 294, "app (MVVM)", { tam: 16 });
   // só o BFF fica no serverless; os serviços podem ser de qualquer tipo
-  s += ret(290, 20, 220, 292, { espessura: 1.8, tracejado: true, cor: cor.ciano });
+  s += ret(290, 20, 220, 254, { espessura: 1.8, tracejado: true, cor: cor.ciano });
   s += txt(400, 42, "função serverless", { tam: 16, cor: cor.ciano });
-  s += seta(174, 264, 318, 264, { espessura: 2.2 });
-  s += txt(232, 226, "1 chamada\npor tela", { tam: 15 });
-  s += bloco(320, 222, 150, 76, "BFF", { preench: claro.laranja, tam: 20 });
+  s += seta(174, 237, 318, 237, { espessura: 2.2 });
+  s += txt(232, 203, "1 chamada\npor tela", { tam: 15 });
+  s += bloco(320, 190, 150, 70, "BFF", { preench: claro.laranja, tam: 20 });
   s += txt(660, 42, "serviços", { tam: 16, cor: cor.azul });
+  // os mesmos três serviços do código do BFF
   const servicos = [
-    [74, "Pedidos"],
-    [152, "Catálogo"],
-    [230, "Perfil"],
+    [66, "Contas"],
+    [136, "Pedidos"],
+    [206, "Ofertas"],
   ];
   for (const [y, nome] of servicos) {
     s += bloco(585, y, 150, 50, nome, { preench: claro.azul, tam: 16 });
-    s += seta(472, 258, 583, y + 25, { espessura: 1.7, cor: cor.cinza });
+    s += seta(472, 225, 583, y + 25, { espessura: 1.7, cor: cor.cinza });
   }
-  s += txt(395, 120, "junta as respostas,\ncorta campos e\nformata para a tela", { tam: 15, cor: cor.cinza });
-  s += seta(395, 160, 395, 218, { espessura: 1.4, cor: cor.cinza, tracejado: true });
-  return quadro(760, 350, s);
+  s += txt(395, 106, "junta as respostas,\ncorta campos e\nformata para a tela", { tam: 15, cor: cor.cinza });
+  s += seta(395, 142, 395, 186, { espessura: 1.4, cor: cor.cinza, tracejado: true });
+  return quadro(760, 310, s);
 }
 
 /** Receita 7: roteador fino na frente de células independentes. */

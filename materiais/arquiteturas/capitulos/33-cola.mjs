@@ -73,7 +73,7 @@ const CAB = ["Arquitetura", "O que é", "Use quando", "Evite quando"];
 
 export default `
 ${resumo(
-  "Tudo o que o livro ensinou, em formato de consulta: um fluxograma de bolso, cada arquitetura em uma linha, as regras que valem para todas e o vocabulário que aparece em qualquer conversa de arquitetura.",
+  "Tudo o que o livro ensinou, em formato de consulta: um fluxograma de bolso, as regras de ouro, cada arquitetura em uma linha e o vocabulário que aparece em qualquer conversa de arquitetura.",
   "É a cola que o professor deixou levar para a prova: não substitui ter estudado, mas lembra o essencial na hora em que você precisa decidir.",
 )}
 
@@ -86,7 +86,7 @@ ${fig(fluxograma(), "Quatro perguntas, quatro decisões independentes. A caixa v
 
 <h3>As 10 regras de ouro</h3>
 ${passos([
-  "<b>Comece simples.</b> Um monólito bem organizado leva a maioria dos produtos muito longe. É a ideia do <i>Monolith First</i>, de Martin Fowler (2015).",
+  "<b>Comece simples.</b> Um monólito bem organizado leva a maioria dos produtos muito longe. É a ideia do <i>Monolith First</i> (\"primeiro o monólito\"), de Martin Fowler (2015).",
   "<b>Decida pela dor, não pela moda.</b> \"A Netflix usa\" não é requisito. Meça o problema (tempo de resposta, fila de deploy, custo) antes de mudar.",
   "<b>Divida pelo negócio, não pela tecnologia.</b> Fronteiras como catálogo, pedidos e pagamentos duram mais do que \"front\", \"back\" e \"banco\".",
   "<b>Dependências apontam para o que muda menos.</b> As regras de negócio ficam no centro; framework, banco e tela são detalhes plugados por fora.",
@@ -94,12 +94,12 @@ ${passos([
   "<b>Distribuir não conserta bagunça.</b> Código acoplado separado em serviços vira um monólito distribuído, mais lento e mais caro.",
   "<b>O sistema espelha a organização.</b> É a Lei de Conway (Melvin Conway, 1968): desenhe os times e as fronteiras do sistema juntos.",
   "<b>Toda escolha é uma troca.</b> Escreva o que você ganha e o que paga. Se não achou o custo, ainda não entendeu a opção.",
-  "<b>Conte com a falha.</b> Rede cai e mensagem chega repetida: timeout, retentativa, idempotência e um plano para quando a outra ponta não responde.",
+  "<b>Conte com a falha.</b> A rede cai e mensagens chegam repetidas. Tenha tempo limite (<i>timeout</i>), retentativa, idempotência e um plano para quando a outra ponta não responde.",
   "<b>Registre e evolua aos poucos.</b> Cada decisão importante vira um ADR (capítulo 32), e mudanças grandes acontecem por etapas, sem parar o sistema (capítulo 30).",
 ])}
 
 <h3>Cada arquitetura em uma linha</h3>
-<p>Uma linha por capítulo, separadas pelas partes do livro. Não é um cardápio de escolha única: um sistema comum mistura
+<p>Uma linha por capítulo, com uma tabela para cada parte do livro. Não é um cardápio de escolha única: um sistema comum mistura
 linhas das três tabelas, como monólito modular por fora, núcleo hexagonal nos módulos com regra rica, eventos entre os módulos
 e CQRS só na tela de relatórios (capítulo 29).</p>
 
@@ -110,7 +110,7 @@ ${tabela(
     [arq("Camadas", 4), "Pilha de camadas (tela, regra, dados); cada uma só chama a de baixo.", "CRUD, backoffice, time iniciante, primeira versão do produto.", "Regra rica que precisa de teste sem banco; vários times no mesmo código."],
     [arq("MVC, MVP e MVVM", 5), "Separam a tela (View) dos dados e regras (Model), com uma peça no meio.", "Todo app com tela ou API; siga o padrão que o seu framework já usa.", "Esperar que eles organizem o negócio; forçar MVP em React ou SwiftUI."],
     [arq("Hexagonal", 6), "O núcleo de regras declara portas; banco, HTTP e filas entram por adaptadores.", "Regra rica e mutável, várias entradas, teste sem infraestrutura.", "CRUD quase sem regra, protótipo descartável, script de um arquivo."],
-    [arq("Clean e Onion", 7), "Anéis: regras no centro, frameworks na borda, dependência só para dentro.", "Sistema de anos, regras ricas, vários canais, time médio ou grande.", "CRUD, MVP, prazo curto com time sem prática em interfaces."],
+    [arq("Clean e Onion", 7), "Anéis: regras no centro, frameworks na borda, dependência só para dentro.", "Sistema de anos, regras ricas, vários canais, time médio ou grande.", "CRUD, produto ainda em validação, prazo curto com time sem prática em interfaces."],
     [arq("Vertical Slice", 8), "Uma pasta por caso de uso, da requisição ao banco.", "Muitas features que mudam uma de cada vez, com devs em paralelo.", "Regras muito compartilhadas sem lugar definido; time sem padrões combinados."],
     [arq("Microkernel", 9), "Núcleo pequeno e estável; o resto chega como plugins.", "Muitas variações da mesma coisa; ferramentas como IDE, CMS e ERP.", "Ainda não se sabe o que varia; plugins precisam mudar o fluxo principal."],
     [arq("Pipes and Filters", 10), "Linha de montagem: cada filtro faz uma transformação e passa adiante.", "ETL, importação de arquivos, logs, mídia, grandes volumes em streaming.", "Fluxo cheio de decisões e voltas; etapas que mexem no mesmo estado."],
@@ -175,8 +175,8 @@ ${tabela(
     ["<b>Observabilidade</b>", "Logs, métricas e rastreamento (<i>traces</i>) para entender o que o sistema faz, até entre serviços."],
     ["<b>Orquestração</b>", "Um coordenador manda cada parte agir. O oposto é a coreografia: cada parte reage aos eventos."],
     ["<b>Outbox</b>", "Tabela gravada na mesma transação do dado; um processo separado publica os eventos a partir dela."],
-    ["<b>Partida a frio</b>", "<i>Cold start</i>: atraso quando a função precisa subir do zero (estava parada ou a carga subiu)."],
     ["<b>Particionamento</b>", "<i>Sharding</i>: dividir os dados entre máquinas por uma chave, como cliente ou região."],
+    ["<b>Partida a frio</b>", "<i>Cold start</i>: atraso quando a função precisa subir do zero (estava parada ou a carga subiu)."],
     ["<b>Projeção</b>", "Cópia dos dados no formato que uma tela precisa: o modelo de leitura do CQRS e do event sourcing."],
     ["<b>Raio de impacto</b>", "<i>Blast radius</i>: quanto do sistema e dos clientes uma única falha consegue atingir."],
     ["<b>Réplica de leitura</b>", "Cópia do banco que só atende leituras e recebe as escritas do principal, às vezes com atraso."],

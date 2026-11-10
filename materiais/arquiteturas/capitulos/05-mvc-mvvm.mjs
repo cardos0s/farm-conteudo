@@ -180,7 +180,7 @@ desce para a tela e os eventos sobem como comandos.</p>
 <h4>Onde esses padrões ficam num sistema maior</h4>
 <p>Num sistema real é comum ter os dois: MVVM no front e MVC no back. Quando o negócio é rico, o controller
 não guarda regra: ele vira um <b>adaptador de entrada</b> do hexágono (capítulo 6). Na Clean
-Architecture (capítulo 7), controllers e presenters aparecem com esses nomes no anel dos adaptadores de interface.</p>
+Architecture (capítulo 7), controllers e presenters aparecem com esses nomes no anel dos adaptadores.</p>
 
 ${fig(borda(), "MVC, MVP e MVVM moram na borda. As regras ficam no núcleo, que não sabe se quem chamou foi uma tela, uma API ou um teste.")}
 
@@ -293,8 +293,8 @@ export function PedidosTela() {
   "web/src/pedidos/PedidosTela.tsx",
 )}
 
-<p>O React não impõe MVVM: aqui o <i>hook</i> customizado (função do React que começa com <code>use</code> e guarda estado) faz o papel de ViewModel. Repare que ele não sabe como a tela é:
-amanhã ela pode virar uma tabela, ou ir para o React Native, e o hook não muda. Em MVP seria o contrário: a View implementaria uma interface (<code>TelaDePedidos</code>) e o Presenter chamaria
+<p>O React não impõe MVVM: aqui o <i>hook</i> (função do React com estado próprio) faz o papel de ViewModel. Repare que ele não sabe como a tela é:
+amanhã ela pode virar uma tabela ou ir para o React Native, e o hook não muda. Em MVP seria o contrário: a View implementaria uma interface (<code>TelaDePedidos</code>) e o Presenter chamaria
 <code>tela.mostrarPedidos(lista)</code> ou <code>tela.mostrarErro(msg)</code>.</p>
 
 <h4>Passo a passo para adotar</h4>
@@ -348,7 +348,7 @@ ${dica(
 ${combina([
   [4, "Camadas", "MVC é a apresentação"],
   [6, "Hexagonal", "controller como adaptador"],
-  [7, "Clean e Onion", "controllers no anel de adaptadores"],
+  [7, "Clean e Onion", "MVC no anel de adaptadores"],
   [12, "Monólito modular", "um MVC por módulo"],
   [16, "Micro-frontends", "ViewModels em cada pedaço"],
   [18, "Cliente-servidor", "MVVM no front, MVC no back"],

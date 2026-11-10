@@ -47,22 +47,22 @@ function diagrama() {
 function trocaAdaptador() {
   semear("hexagonal-troca");
   let s = "";
-  s += bloco(250, 24, 260, 64, "CriarPedido (núcleo)", { preench: claro.amarelo });
-  s += bloco(270, 124, 220, 52, "RepositorioDePedidos", { preench: claro.verde, tam: 16 });
-  s += txt(506, 150, "porta (interface)", { tam: 15, cor: cor.verde, ancora: "start" });
-  s += seta(380, 90, 380, 122, { espessura: 2 });
+  s += bloco(250, 18, 260, 58, "CriarPedido (núcleo)", { preench: claro.amarelo });
+  s += bloco(270, 110, 220, 50, "RepositorioDePedidos", { preench: claro.verde, tam: 16 });
+  s += txt(506, 135, "porta (interface)", { tam: 15, cor: cor.verde, ancora: "start" });
+  s += seta(380, 78, 380, 108, { espessura: 2 });
   const adapt = [
     [50, "Postgres", claro.violeta, "produção", 310],
     [300, "Em memória", claro.cinza, "testes", 380],
     [550, "DynamoDB", claro.violeta, "amanhã", 450],
   ];
   for (const [x, nome, c, rot, alvo] of adapt) {
-    s += bloco(x, 250, 160, 56, nome, { preench: c, tam: 16 });
-    s += txt(x + 80, 326, rot, { tam: 15, cor: cor.cinza });
-    s += seta(x + 80, 248, alvo, 179, { tracejado: true, cor: cor.cinza, espessura: 1.6 });
+    s += bloco(x, 222, 160, 54, nome, { preench: c, tam: 16 });
+    s += txt(x + 80, 294, rot, { tam: 15, cor: cor.cinza });
+    s += seta(x + 80, 220, alvo, 163, { tracejado: true, cor: cor.cinza, espessura: 1.6 });
   }
-  s += txt(380, 360, "trocar o banco = escrever outro adaptador; o núcleo não muda", { tam: 15, cor: cor.vermelho });
-  return quadro(760, 376, s);
+  s += txt(380, 326, "trocar o banco = escrever outro adaptador; o núcleo não muda", { tam: 15, cor: cor.vermelho });
+  return quadro(760, 342, s);
 }
 
 /** O caminho de um POST /pedidos: entra por uma porta, sai por outra; cada borda traduz. */
@@ -94,12 +94,12 @@ function fluxo() {
   s += porta(290, "porta de\nentrada");
   s += porta(480, "porta de\nsaída");
   // o que cada parte faz
-  const nota = (x, n, t, c) => passo(x, 282, n, c) + txt(x, 326, t, { tam: 15, cor: cor.cinza });
+  const nota = (x, n, t, c) => passo(x, 276, n, c) + txt(x, 316, t, { tam: 15, cor: cor.cinza });
   s += nota(199, "1", "valida o formato\nmonta o comando\nformata a resposta", cor.azul);
   s += nota(385, "2", "aplica as regras\nnão vê JSON\nnem SQL", cor.vermelho);
   s += nota(572, "3", "converte Pedido\nem linhas\nfaz SQL e transação", cor.violeta);
-  s += txt(380, 392, "cada borda traduz; só o núcleo decide", { tam: 16, cor: cor.vermelho });
-  return quadro(760, 410, s);
+  s += txt(380, 370, "cada borda traduz; só o núcleo decide", { tam: 16, cor: cor.vermelho });
+  return quadro(760, 386, s);
 }
 
 export default `
@@ -348,9 +348,6 @@ ${passos([
   "Junte tudo num único ponto (<code>main.ts</code>, o <i>composition root</i>) ou com um container de injeção de dependência.",
   "Proteja a regra com uma checagem automática: o núcleo não pode importar pastas de adaptadores (dá para usar ferramentas como dependency-cruiser ou regras de lint).",
 ])}
-
-<p>Vindo de um projeto em camadas (capítulo 4)? Não precisa reescrever. Escolha um service, traga para dentro do núcleo
-a interface do repository que ele usa e faça o repository implementá-la. Repita, um fluxo por vez.</p>
 
 <h3>Como testar</h3>
 <p>A testabilidade é o maior ganho da hexagonal, mas só aparece se cada tipo de teste mirar uma parte do hexágono:</p>
