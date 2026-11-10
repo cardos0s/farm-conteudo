@@ -83,7 +83,7 @@ const ConteudoTela: React.FC<{
 };
 
 /** Aparece e some por inteiro (blocos de cena própria e o encerramento). */
-const Dissolve: React.FC<{ dur: number; entra: number; sai: number; children: React.ReactNode }> = ({ dur, entra, sai, children }) => {
+export const Dissolve: React.FC<{ dur: number; entra: number; sai: number; children: React.ReactNode }> = ({ dur, entra, sai, children }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps;
@@ -93,13 +93,13 @@ const Dissolve: React.FC<{ dur: number; entra: number; sai: number; children: Re
 };
 
 /** Uma camada no seu trecho, com o tempo contado desde que entrou. */
-const Camada: React.FC<{ dur: number; el: React.FC<PropsCamada> }> = ({ dur, el: El }) => {
+export const Camada: React.FC<{ dur: number; el: React.FC<PropsCamada> }> = ({ dur, el: El }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   return <El t={frame / fps} dur={dur} />;
 };
 
-const ganhoDaFala = (l: FalaLocucao & { nivel?: number }) => (l.nivel === undefined ? 1 : prender(Math.pow(10, (-17.5 - l.nivel) / 20), 0.75, 1.35));
+export const ganhoDaFala = (l: FalaLocucao & { nivel?: number }) => (l.nivel === undefined ? 1 : prender(Math.pow(10, (-17.5 - l.nivel) / 20), 0.75, 1.35));
 
 export const Reel: React.FC<{
   edicao: EdicaoReel;

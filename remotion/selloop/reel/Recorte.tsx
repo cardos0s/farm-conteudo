@@ -94,14 +94,15 @@ export const Recorte: React.FC<{
         <div
           style={{
             position: "absolute",
-            left: cx - w / 2 - borda,
-            top: cy - h / 2 - borda,
+            left: 0,
+            top: 0,
             width: w + borda * 2,
             height: h + borda * 2,
             borderRadius: raio * k + borda + 4 * (1 - k),
             background: "#ffffff",
             opacity: 1 - sai,
-            transform: `rotate(${giro}deg) rotateX(${(1 - k) * 16}deg) rotateY(${Math.sin(idade * 0.9) * 2.2 * k}deg)`,
+            // a posição vai na transformação: o balanço lento não anda em degraus de 1 px
+            transform: `translate(${cx - w / 2 - borda}px, ${cy - h / 2 - borda}px) rotate(${giro}deg) rotateX(${(1 - k) * 16}deg) rotateY(${Math.sin(idade * 0.9) * 2.2 * k}deg)`,
             boxShadow: `0 ${24 + 46 * k}px ${50 + 70 * k}px rgba(0, 4, 45, ${0.3 + 0.3 * k}), 0 0 ${60 * k}px rgba(0, 173, 255, ${0.25 * k})`,
           }}
         >

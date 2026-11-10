@@ -37,7 +37,7 @@ próprio navegador (`demo/servidor.mjs`), então nada chega ao backend da Selloo
    scripts/telas/masterizar.sh saida/selloop/v1-atendimento.mp4 saida/selloop/selloop-01-ambiente-de-atendimento.mp4
    ```
 
-As gravações (`public/selloop/telas/**/*.mp4`), a trilha e os vídeos finais (`saida/`) ficam fora do git.
+As gravações (`public/selloop/telas/**/*.mp4`), as filmagens (`public/selloop/filme/**/*.mp4`), a trilha e os vídeos finais (`saida/`) ficam fora do git.
 
 ## Versão vertical (Reels e Stories)
 
@@ -90,6 +90,53 @@ Como a edição vertical é montada (`remotion/selloop/reel/`):
 - `Recorte.tsx`, `Efeitos.tsx`, `Texto.tsx`, `Palco.tsx`, `Icones.tsx`: as peças de motion design
   (salto com brilho, selos, logos dos canais, confete, estrelas, contador, título e legenda animados).
 - `NoiteReel.tsx`: as duas cenas de celular do Reel 3 (o áudio do cliente e a resposta da Lia em áudio).
+
+## Reel em tomada contínua (filmagem quadro a quadro)
+
+Piloto: `SelloopReelAtendimentoFluido` (`remotion/selloop/fluido/F1Atendimento.tsx`), o Reel 1 refeito
+para ficar fluido e mostrar o caminho de cada coisa — onde o cursor vai e clica — antes de o resultado
+saltar da tela. O que muda em relação aos Reels acima:
+
+- **A tela é filmada quadro a quadro**, não gravada em tempo real. `scripts/telas/filmar.mjs` para o
+  relógio da página (Playwright `page.clock`) e a linha do tempo das animações CSS, e avança os dois
+  exatamente 1/60 s por quadro antes de cada foto. Toda transição da plataforma sai com um quadro
+  diferente por quadro de vídeo, na cadência certa, em qualquer máquina. O cursor anda um ponto por
+  quadro, e as rolagens (da página ou até um item fora da vista), um pedaço por quadro.
+  ```bash
+  node scripts/telas/filmar.mjs pacotes/selloop/cenas/f1-c-recursos.mjs --saida public/selloop/filme --perfil ~/.cache/telas-perfil
+  ```
+  `--previa` filma em meia resolução para conferir o andamento; `--ensaio` só roda a cena e escreve os
+  eventos. As cenas `cenas/f1-*.mjs` são escritas já no ritmo da edição (o cursor não espera à toa) e
+  usam a mesma interface `g` das outras; os recortes saem do mesmo `recortar.mjs`, com
+  `--saida public/selloop/filme`. O servidor de demonstração recebe o relógio do filme (`motor`), para
+  as mensagens chegarem e ganharem hora no tempo da página.
+- **A tela toca sempre em 1x.** A linha do tempo (`fluido/roteiro.ts`) nunca acelera nem desacelera um
+  movimento: o ritmo vem de encolher as esperas (imagem parada, registrada em `parados` no
+  `eventos.json`) e de segurar um quadro parado até a palavra da locução chegar. O cursor é redesenhado
+  no tempo do vídeo a partir do trajeto filmado (`trajeto` nos eventos), então continua suave mesmo
+  quando a espera no meio da viagem encolhe.
+- **O caminho aparece.** Cada momento mostra os cliques em sequência dentro da janela e, abaixo do
+  título, a trilha deles (`fluido/Caminho.tsx`): "Anexos › Produtos › Enviar", cada passo acendendo
+  no instante do clique.
+
+A cena do protocolo baixa o PDF que a plataforma gera (`public/selloop/filme/f1-d-protocolo/protocolo.pdf`);
+a página que salta do botão "Gerar PDF" é a primeira dele, convertida em imagem:
+```bash
+pdftoppm -png -r 110 -f 1 -l 1 public/selloop/filme/f1-d-protocolo/protocolo.pdf public/selloop/filme/f1-d-protocolo/pagina
+```
+
+Dois defeitos de movimento do formato vertical foram corrigidos junto, no kit comum (`reel/`):
+
+- a câmera (`cameraEm`, em `reel/base.ts`) era a média de 17 amostras dos alvos, então cada movimento
+  dela andava em uns 16 degraus, um a cada 4 ou 5 quadros; agora é a integral exata da janela e muda
+  um pouco a cada quadro;
+- a câmera, o cursor e os elementos que balançam devagar (recortes, selos, logos, o fundo) eram
+  posicionados por `left`/`top`, que o navegador arredonda para pixels inteiros; agora andam por
+  transformação, em frações de pixel.
+
+Os Reels 2 e 3 ainda usam as gravações em tempo real; renderizados de novo, já ganham as duas correções
+de cima. Para ficarem iguais ao piloto, falta filmar as cenas deles com `filmar.mjs` e remontar com o
+`roteiro.ts`.
 
 ## Cenários da demo
 

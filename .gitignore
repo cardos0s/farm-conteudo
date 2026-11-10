@@ -6,6 +6,9 @@ public/aulas/
 
 # Gravações de tela do pack Selloop (os eventos.json ficam no git)
 public/selloop/telas/**/*.mp4
+# Filmagens quadro a quadro (scripts/telas/filmar.mjs): os eventos.json ficam no git
+public/selloop/filme/**/*.mp4
+public/selloop/filme/**/recortes-erro.png
 # Trilha do pack Selloop: gerada por scripts/telas/trilha.py
 public/selloop/sons/trilha.wav
 # Captura de diagnóstico de scripts/telas/recortar.mjs quando uma cena falha

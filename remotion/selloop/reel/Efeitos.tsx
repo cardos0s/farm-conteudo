@@ -41,14 +41,14 @@ export const Confete: React.FC<PropsCamada & { x: number; y: number; n?: number;
             key={i}
             style={{
               position: "absolute",
-              left: px,
-              top: py,
+              left: 0,
+              top: 0,
               width: tam,
               height: tam * (acaso(i, 4) > 0.5 ? 0.45 : 1),
               borderRadius: acaso(i, 5) > 0.6 ? "50%" : 3,
               background: cores[i % cores.length],
               opacity: vida,
-              transform: `rotate(${t * (400 + acaso(i, 6) * 700) * (i % 2 ? 1 : -1)}deg)`,
+              transform: `translate(${px}px, ${py}px) rotate(${t * (400 + acaso(i, 6) * 700) * (i % 2 ? 1 : -1)}deg)`,
             }}
           />
         );
@@ -94,8 +94,9 @@ export const Selo: React.FC<
       style={{
         position: "absolute",
         left: x,
-        top: y + flutua,
-        transform: `translate(-50%, -50%) scale(${(0.5 + 0.5 * s) * (0.92 + 0.08 * some)}) rotate(${giro + (1 - s) * -8}deg)`,
+        top: y,
+        // o balanço vai na transformação: movimento lento sem degraus de 1 px
+        transform: `translate(-50%, -50%) translateY(${flutua}px) scale(${(0.5 + 0.5 * s) * (0.92 + 0.08 * some)}) rotate(${giro + (1 - s) * -8}deg)`,
         opacity: Math.min(prender(s * 1.4), some),
         display: "flex",
         alignItems: "center",
@@ -138,7 +139,7 @@ export const LogoCanal: React.FC<PropsCamada & { canal: Canal; x: number; y: num
   const px = de ? de.x + (x - de.x) * s : x;
   const py = (de ? de.y + (y - de.y) * s : y) + Math.sin((t - atraso) * 1.4 + x) * 7;
   return (
-    <div style={{ position: "absolute", left: px, top: py, transform: `translate(-50%, -50%) scale(${(0.35 + 0.65 * s) * (0.9 + 0.1 * some)})`, opacity: Math.min(k * 1.5, some), display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
+    <div style={{ position: "absolute", left: 0, top: 0, transform: `translate(${px}px, ${py}px) translate(-50%, -50%) scale(${(0.35 + 0.65 * s) * (0.9 + 0.1 * some)})`, opacity: Math.min(k * 1.5, some), display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
       <div style={{ width: tamanho, height: tamanho, borderRadius: "50%", background: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 26px 60px rgba(0,4,45,0.5)" }}>
         <Img src={c.src} style={{ width: tamanho * 0.6, height: tamanho * 0.6, objectFit: "contain" }} />
       </div>

@@ -1,10 +1,14 @@
-// Tipos e consultas sobre uma gravação feita com scripts/telas/gravar.mjs.
+// Tipos e consultas sobre uma gravação feita com scripts/telas/gravar.mjs (tempo real) ou
+// scripts/telas/filmar.mjs (quadro a quadro).
 // Tempos em segundos desde o início do vídeo gravado; posições em px CSS da tela gravada.
 
 export type Caixa = { x: number; y: number; w: number; h: number };
+export type Ponto = { x: number; y: number };
 
 export type Evento =
   | { t: number; tipo: "mouse"; x: number; y: number }
+  /** Só nas filmagens: um movimento inteiro do cursor, de `de` (em t) até `para` (em ate), em arco por `c`. */
+  | { t: number; tipo: "trajeto"; ate: number; de: Ponto; c: Ponto; para: Ponto }
   | { t: number; tipo: "clique"; x: number; y: number; caixa: Caixa | null }
   | { t: number; tipo: "digitar"; texto: string; caixa: Caixa | null }
   | { t: number; tipo: "digitado" }
@@ -21,12 +25,14 @@ export interface Gravacao {
   fps: number;
   duracao: number;
   eventos: Evento[];
+  /** Só nas filmagens: trechos [de, ate] em que a imagem não muda (dá para cortar ou segurar ali). */
+  parados?: [number, number][];
 }
 
-type Ponto = { t: number; x: number; y: number };
-const cacheMouse = new WeakMap<Gravacao, Ponto[]>();
+type Amostra = { t: number; x: number; y: number };
+const cacheMouse = new WeakMap<Gravacao, Amostra[]>();
 
-function trilha(g: Gravacao): Ponto[] {
+function trilha(g: Gravacao): Amostra[] {
   let p = cacheMouse.get(g);
   if (!p) {
     p = g.eventos.filter((e): e is Extract<Evento, { tipo: "mouse" }> => e.tipo === "mouse").map(({ t, x, y }) => ({ t, x, y }));
@@ -53,6 +59,10 @@ export function mouseEm(g: Gravacao, t: number): { x: number; y: number } {
 }
 
 export const cliques = (g: Gravacao) => g.eventos.filter((e): e is Extract<Evento, { tipo: "clique" }> => e.tipo === "clique");
+
+export type Trajeto = Extract<Evento, { tipo: "trajeto" }>;
+/** Os movimentos do cursor de uma filmagem, em ordem. */
+export const trajetos = (g: Gravacao) => g.eventos.filter((e): e is Trajeto => e.tipo === "trajeto");
 
 /** Instante de uma marca nomeada (g.marca("nome") na cena). */
 export function marca(g: Gravacao, nome: string): number {

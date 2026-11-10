@@ -1,0 +1,40 @@
+{
+ "cena": "f1-d-protocolo",
+ "largura": 1600,
+ "altura": 900,
+ "escala": 3,
+ "recortes": {
+  "pedido": {
+   "caixa": {
+    "x": 445,
+    "y": 590,
+    "w": 576,
+    "h": 78
+   }
+  },
+  "protocolo": {
+   "caixa": {
+    "x": 129,
+    "y": 334.5,
+    "w": 594.78,
+    "h": 75.5
+   }
+  },
+  "gerar-pdf": {
+   "caixa": {
+    "x": 1311,
+    "y": 256,
+    "w": 118.7,
+    "h": 44
+   }
+  },
+  "pdf-enviado": {
+   "caixa": {
+    "x": 1363.23,
+    "y": 664,
+    "w": 195.77,
+    "h": 122
+   }
+  }
+ }
+}

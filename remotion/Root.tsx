@@ -13,6 +13,7 @@ import { DURACAO_V1, SelloopAtendimento } from "./selloop/v1/Atendimento";
 import { DURACAO_V2, SelloopCampanhas } from "./selloop/v2/Campanhas";
 import { DURACAO_V3, SelloopAgente } from "./selloop/v3/Agente";
 import { DURACAO_R1, SelloopReelAtendimento } from "./selloop/reel/R1Atendimento";
+import { DURACAO_F1, SelloopReelAtendimentoFluido } from "./selloop/fluido/F1Atendimento";
 import { DURACAO_R2, SelloopReelCampanhas } from "./selloop/reel/R2Campanhas";
 import { DURACAO_R3, SelloopReelAgente } from "./selloop/reel/R3Agente";
 
@@ -91,6 +92,14 @@ export const Root: React.FC = () => (
       height={1920}
       fps={FPS_SELLOOP}
       durationInFrames={Math.round(DURACAO_R3 * FPS_SELLOOP)}
+    />
+    <Composition
+      id="SelloopReelAtendimentoFluido"
+      component={SelloopReelAtendimentoFluido}
+      width={1080}
+      height={1920}
+      fps={FPS_SELLOOP}
+      durationInFrames={Math.round(DURACAO_F1 * FPS_SELLOOP)}
     />
     <Composition id="SelloopAbertura" component={SelloopAbertura} width={1920} height={1080} fps={FPS_SELLOOP} durationInFrames={Math.round(2 * FPS_SELLOOP)} />
     <Composition

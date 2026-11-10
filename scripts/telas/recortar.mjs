@@ -79,8 +79,17 @@ const g = {
     await page.keyboard.type(texto, { delay: 15 });
     await page.waitForTimeout(150);
   },
-  async rolar(dy) {
-    await page.mouse.wheel(0, dy);
+  async rolar(dy, { em = null } = {}) {
+    if (em) {
+      // o painel que rola em volta do elemento (como no filme)
+      await loc(em).evaluate((el, d) => {
+        for (let e = el.parentElement; e; e = e.parentElement) {
+          const o = getComputedStyle(e).overflowY;
+          if ((o === "auto" || o === "scroll") && e.scrollHeight > e.clientHeight + 1) return void (e.scrollTop += d);
+        }
+        document.scrollingElement.scrollTop += d;
+      }, dy);
+    } else await page.mouse.wheel(0, dy);
     await page.waitForTimeout(450);
   },
   // esperas longas (reconexões, downloads) ficam como estão; as de ritmo encolhem

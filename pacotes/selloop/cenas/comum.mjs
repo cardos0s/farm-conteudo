@@ -13,8 +13,9 @@ export function cenaDemo({ nome, usuario = "patricia", agora = MANHA, cenario = 
     nome,
     url: `${APP}${caminho}`,
     demo: null,
-    antes: async (page) => {
-      cena.demo = await instalarDemo(page, { usuario, agora, cenario, avisar: true });
+    // `motor` é o relógio do filme quando a cena é filmada quadro a quadro (scripts/telas/filmar.mjs)
+    antes: async (page, motor = null) => {
+      cena.demo = await instalarDemo(page, { usuario, agora, cenario, avisar: true, motor });
     },
     preparar: async (page) => {
       await page.waitForTimeout(1200);

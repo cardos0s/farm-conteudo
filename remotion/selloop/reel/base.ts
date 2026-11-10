@@ -53,26 +53,33 @@ export function alvoDaCaixa(t: number, c: Caixa, o: { folga?: number; zoomMax?: 
   return { t, cx: c.x + c.w / 2, cy: c.y + c.h / 2, zoom: o.zoom ?? zoomDaCaixa(c, o.folga ?? 40, o.zoomMax ?? 2.2) };
 }
 
-/** Enquadramento no instante t da gravação: média (janela de Hann) dos alvos em volta de t. */
+/**
+ * Enquadramento no instante t: média dos alvos em volta de t, pesada por uma janela de Hann.
+ * A média é a integral exata da janela sobre cada alvo (não uma soma de amostras): a câmera muda um
+ * pouco a cada quadro, sem degraus, e parte e chega com velocidade zero.
+ */
 export function cameraEm(alvos: Alvo[], t: number, o: { janela?: number; avanco?: number } = {}): Enquadre {
   if (!alvos.length) return { cx: 800, cy: 450, zoom: 0.84 };
   const janela = o.janela ?? 1.1;
-  const avanco = o.avanco ?? 0.3;
-  const N = 17;
+  const centro = t + (o.avanco ?? 0.3);
+  /** Peso acumulado da janela de 0 a u (a janela inteira soma 0,5). */
+  const acumulado = (u: number) => 0.5 * u - Math.sin(2 * Math.PI * u) / (4 * Math.PI);
+  /** Onde um instante cai dentro da janela (0 a 1). */
+  const naJanela = (instante: number) => prender((instante - centro) / janela + 0.5);
   let sx = 0;
   let sy = 0;
   let sz = 0;
-  let sp = 0;
-  for (let k = 0; k < N; k++) {
-    const u = k / (N - 1);
-    const peso = 0.5 - 0.5 * Math.cos(2 * Math.PI * (u * 0.9 + 0.05));
-    const a = alvoEm(alvos, t + avanco + (u - 0.5) * janela);
-    sx += a.cx * peso;
-    sy += a.cy * peso;
-    sz += Math.log(a.zoom) * peso;
-    sp += peso;
+  for (let i = 0; i < alvos.length; i++) {
+    // o alvo i vale do instante dele até o do próximo (o primeiro vale desde sempre)
+    const u0 = i === 0 ? 0 : naJanela(alvos[i].t);
+    const u1 = i + 1 < alvos.length ? naJanela(alvos[i + 1].t) : 1;
+    if (u1 <= u0) continue;
+    const peso = (acumulado(u1) - acumulado(u0)) / 0.5;
+    sx += alvos[i].cx * peso;
+    sy += alvos[i].cy * peso;
+    sz += Math.log(alvos[i].zoom) * peso;
   }
-  return { cx: sx / sp, cy: sy / sp, zoom: Math.exp(sz / sp) };
+  return { cx: sx, cy: sy, zoom: Math.exp(sz) };
 }
 
 /**
@@ -83,12 +90,6 @@ export function cameraEm(alvos: Alvo[], t: number, o: { janela?: number; avanco?
 export function cameraNoTrecho(alvos: Alvo[], t: number, velocidade: number): Enquadre {
   const v = prender(velocidade, 0.3, 2);
   return cameraEm(alvos, t, { janela: 1.1 * v, avanco: 0.3 * v });
-}
-
-function alvoEm(alvos: Alvo[], t: number): Alvo {
-  let i = 0;
-  while (i + 1 < alvos.length && alvos[i + 1].t <= t) i++;
-  return alvos[i];
 }
 
 /**

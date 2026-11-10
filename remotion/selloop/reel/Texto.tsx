@@ -56,13 +56,13 @@ function corpoDoTitulo(n: number) {
  * Título do momento. As palavras sobem uma a uma; o trecho entre *asteriscos* ganha a cor da marca e
  * um marca-texto que se pinta atrás dele.
  */
-export const Titulo: React.FC<{ texto: string; de: number; ate: number }> = ({ texto, de, ate }) => {
+export const Titulo: React.FC<{ texto: string; de: number; ate: number; /** Quanto o título sobe (px), para caber algo embaixo dele. */ sobe?: number; corpoMax?: number }> = ({ texto, de, ate, sobe = 0, corpoMax = 999 }) => {
   const { frame, fps, t } = useT();
   if (t < de - 0.02 || t > ate) return null;
   const partes = texto.split("*");
   const palavras: { texto: string; destaque: boolean }[] = [];
   partes.forEach((p, i) => p.split(/\s+/).filter(Boolean).forEach((w) => palavras.push({ texto: w, destaque: i % 2 === 1 })));
-  const corpo = corpoDoTitulo(texto.replace(/\*/g, "").length);
+  const corpo = Math.min(corpoMax, corpoDoTitulo(texto.replace(/\*/g, "").length));
   const saida = interpolate(t, [ate - 0.22, ate], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const z = ZONA.titulo;
   const pintura = prender((t - de - 0.25 - palavras.length * 0.045) / 0.4);
@@ -72,7 +72,7 @@ export const Titulo: React.FC<{ texto: string; de: number; ate: number }> = ({ t
         position: "absolute",
         left: 56,
         width: RW - 112,
-        top: z.y,
+        top: z.y - sobe,
         height: z.h,
         display: "flex",
         alignItems: "flex-end",

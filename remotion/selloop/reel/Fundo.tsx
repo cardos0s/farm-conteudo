@@ -22,8 +22,10 @@ export const FundoReel: React.FC = () => {
           position: "absolute",
           width: 1500,
           height: 1500,
-          left: 240 + Math.sin(t * 0.27) * 110,
-          top: -560 + Math.cos(t * 0.21) * 70,
+          left: 240,
+          top: -560,
+          // por transformação, o movimento lento não anda em degraus de 1 px
+          transform: `translate(${Math.sin(t * 0.27) * 110}px, ${Math.cos(t * 0.21) * 70}px)`,
           borderRadius: "50%",
           background: "radial-gradient(circle, rgba(0,173,255,0.42) 0%, rgba(0,173,255,0) 62%)",
         }}
@@ -33,23 +35,25 @@ export const FundoReel: React.FC = () => {
           position: "absolute",
           width: 1500,
           height: 1500,
-          left: -820 + Math.cos(t * 0.24) * 90,
-          top: 760 + Math.sin(t * 0.19) * 110,
+          left: -820,
+          top: 760,
+          transform: `translate(${Math.cos(t * 0.24) * 90}px, ${Math.sin(t * 0.19) * 110}px)`,
           borderRadius: "50%",
           background: "radial-gradient(circle, rgba(40,73,219,0.6) 0%, rgba(40,73,219,0) 60%)",
         }}
       />
       {/* malha de pontos que desce bem devagar */}
-      <div
-        style={{
-          position: "absolute",
-          inset: -60,
-          backgroundImage: "radial-gradient(rgba(255,255,255,0.13) 1.6px, transparent 1.6px)",
-          backgroundSize: "54px 54px",
-          backgroundPosition: `${(t * 5) % 54}px ${(t * 9) % 54}px`,
-          WebkitMaskImage: "radial-gradient(ellipse 75% 60% at 50% 46%, #000 30%, transparent 100%)",
-        }}
-      />
+      <div style={{ position: "absolute", inset: 0, WebkitMaskImage: "radial-gradient(ellipse 75% 60% at 50% 46%, #000 30%, transparent 100%)" }}>
+        <div
+          style={{
+            position: "absolute",
+            inset: -108,
+            backgroundImage: "radial-gradient(rgba(255,255,255,0.13) 1.6px, transparent 1.6px)",
+            backgroundSize: "54px 54px",
+            transform: `translate(${(t * 5) % 54}px, ${(t * 9) % 54}px)`,
+          }}
+        />
+      </div>
       <svg width={RW} height={RH} viewBox={`0 0 ${RW} ${RH}`} style={{ position: "absolute", inset: 0, opacity: 0.08 }}>
         <path
           d="M540 960 C 760 620, 1220 620, 1220 960 C 1220 1300, 760 1300, 540 960 C 320 620, -140 620, -140 960 C -140 1300, 320 1300, 540 960 Z"

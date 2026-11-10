@@ -1,0 +1,56 @@
+{
+ "cena": "f1-a-caixa",
+ "largura": 1600,
+ "altura": 900,
+ "escala": 3,
+ "recortes": {
+  "conversa-whatsapp": {
+   "caixa": {
+    "x": 97,
+    "y": 475,
+    "w": 318,
+    "h": 115
+   }
+  },
+  "conversa-instagram": {
+   "caixa": {
+    "x": 97,
+    "y": 246,
+    "w": 318,
+    "h": 114
+   }
+  },
+  "conversa-messenger": {
+   "caixa": {
+    "x": 97,
+    "y": 360,
+    "w": 318,
+    "h": 115
+   }
+  },
+  "conversa-comercial": {
+   "caixa": {
+    "x": 97,
+    "y": 590,
+    "w": 318,
+    "h": 115
+   }
+  },
+  "conversa-financeiro": {
+   "caixa": {
+    "x": 97,
+    "y": 705,
+    "w": 318,
+    "h": 115
+   }
+  },
+  "transferida": {
+   "caixa": {
+    "x": 886.14,
+    "y": 344,
+    "w": 231.72,
+    "h": 35.39
+   }
+  }
+ }
+}

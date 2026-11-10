@@ -38,7 +38,7 @@ function permissoes(papel) {
   return p;
 }
 
-export function criarEstado({ usuario = "patricia", agora = new Date(), cenario = "dia" } = {}) {
+export function criarEstado({ usuario = "patricia", agora = new Date(), cenario = "dia", motor = null } = {}) {
   // "noite" (vídeo 3): outras conversas, todas com a Lia atendendo
   const fonte = cenario === "noite" ? D.noite : { conversas: D.conversas, historicos: D.historicos };
   const t = (minAtras) => new Date(agora.getTime() - minAtras * 60000).toISOString();
@@ -107,9 +107,11 @@ export function criarEstado({ usuario = "patricia", agora = new Date(), cenario 
   }
 
   // Relógio da demo: começa em `agora` e anda junto com o relógio real (como o page.clock da página).
+  // Numa filmagem quadro a quadro (scripts/telas/filmar.mjs), quem dá o tempo é o `motor` do filme.
   const inicioReal = Date.now();
-  const agoraSim = () => new Date(agora.getTime() + (Date.now() - inicioReal));
-  return { agora, agoraSim, t, eu, usuario, cenario, papeis, contatos, conversas, mensagens, cobrancas: {}, enviados: {}, extras, ws: null, log: [] };
+  const agoraSim = () => new Date(agora.getTime() + (motor ? motor.decorrido() : Date.now() - inicioReal));
+  const depois = (ms, fn) => (motor ? motor.depois(ms, fn) : void setTimeout(fn, ms));
+  return { agora, agoraSim, depois, t, eu, usuario, cenario, papeis, contatos, conversas, mensagens, cobrancas: {}, enviados: {}, extras, ws: null, log: [] };
 }
 
 const brl = (v) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -544,7 +546,7 @@ function rotas(s) {
           const nome = c.contact.name.split(" ")[0];
           const msg = registrar(s, c, mensagem({ conversaId: c.id, contatoId: c.contact.id, dir: "out", criado: agora, i: (s.mensagens[c.id]?.length ?? 0) + 1,
             texto: `Obrigado pelo contato, ${nome}! 💙\nComo você avalia o nosso atendimento? Leva 5 segundos:\nhttps://app.selloop.com.br/pesquisa/k7Qm${c.protocol.slice(-4)}xNa`, extra: { status: "sent" } }));
-          setTimeout(() => s.ws?.send(JSON.stringify({ kind: "message", conversationId: c.id, data: msg })), 300);
+          s.depois(300, () => s.ws?.send(JSON.stringify({ kind: "message", conversationId: c.id, data: msg })));
         }
       }
       if (corpo.status === "open") {
@@ -555,7 +557,7 @@ function rotas(s) {
         c.assignedTeamId = corpo.assignedTeamId;
         const eq = Object.values(D.equipes).find((e) => e.id === corpo.assignedTeamId);
         const msg = registrar(s, c, mensagem({ conversaId: c.id, contatoId: c.contact.id, dir: "system", criado: agora, i: (s.mensagens[c.id]?.length ?? 0) + 1, texto: `Conversa transferida para ${eq?.nome ?? "outra equipe"}.` }));
-        setTimeout(() => s.ws?.send(JSON.stringify({ kind: "message", conversationId: c.id, data: msg })), 300);
+        s.depois(300, () => s.ws?.send(JSON.stringify({ kind: "message", conversationId: c.id, data: msg })));
       }
       if ("assignedUserId" in corpo) c.assignedUserId = corpo.assignedUserId;
       if (corpo.prioridade) c.prioridade = corpo.prioridade;
@@ -694,7 +696,7 @@ function rotas(s) {
         extra: { status: corpo.scheduledFor ? "scheduled" : "sent", scheduledFor: corpo.scheduledFor ?? null, templateName: corpo.name, templateLanguage: corpo.language ?? "pt_BR", templateParams: corpo.params ?? {},
           templateButtons: modelo?.buttons?.length ? modelo.buttons.map((b) => ({ texto: b.texto })) : null, hiddenService: !!corpo.hiddenService } });
       registrar(s, c, msg);
-      setTimeout(() => s.ws?.send(JSON.stringify({ kind: "message", conversationId: c.id, data: msg })), 200);
+      s.depois(200, () => s.ws?.send(JSON.stringify({ kind: "message", conversationId: c.id, data: msg })));
       return msg;
     }],
     ["POST", /^carteira\/[^/]+\/conversations\/([^/]+)\/messages$/, (m, _q, corpo) => {

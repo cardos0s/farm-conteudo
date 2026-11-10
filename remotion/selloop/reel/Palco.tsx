@@ -15,7 +15,7 @@ const Cadeado: React.FC = () => (
 );
 
 /** Cursor de seta, preto com contorno branco, num tamanho que se enxerga no celular. */
-const Seta: React.FC<{ escala: number }> = ({ escala }) => (
+export const Seta: React.FC<{ escala: number }> = ({ escala }) => (
   <svg width={30} height={30} viewBox="0 0 30 30" style={{ transform: `scale(${escala})`, transformOrigin: "3px 3px", filter: "drop-shadow(0 3px 5px rgba(0,0,0,0.4))", overflow: "visible" }}>
     <path d="M3 3 L3 24.5 L8.6 19.3 L12.3 27.6 L16 26 L12.4 17.9 L19.8 17.9 Z" fill="#101828" stroke="#ffffff" strokeWidth={1.8} strokeLinejoin="round" />
   </svg>
@@ -41,14 +41,14 @@ export const Moldura: React.FC<{ url: string; presenca: number; escuro?: number;
         style={{
           position: "absolute",
           left: p.x,
-          top: p.y + (1 - presenca) * 90,
+          top: p.y,
           width: p.w,
           height: p.h,
           borderRadius: p.raio,
           overflow: "hidden",
           background: "#f7f8fb",
           opacity: Math.min(1, presenca * 1.4),
-          transform: `rotateX(${giroX + (1 - presenca) * 14}deg) rotateY(${giroY}deg) scale(${(0.9 + 0.1 * presenca) * recuo})`,
+          transform: `translateY(${(1 - presenca) * 90}px) rotateX(${giroX + (1 - presenca) * 14}deg) rotateY(${giroY}deg) scale(${(0.9 + 0.1 * presenca) * recuo})`,
           boxShadow: "0 60px 120px rgba(0, 4, 45, 0.6), 0 0 0 1.5px rgba(255,255,255,0.16)",
         }}
       >
@@ -112,6 +112,8 @@ export const TelaNoPalco: React.FC<{
   const { fps } = useVideoConfig();
   const t = inicio + (frame / fps) * velocidade;
   const tela = { w: gravacao.largura, h: gravacao.altura };
+  /** px do vídeo por px CSS da tela gravada. */
+  const K = gravacao.escala;
   const { z, tx, ty } = transformar(cameraNoTrecho(alvos, t, velocidade), tela);
   const m = mouseEm(gravacao, t);
   const cs = cliques(gravacao);
@@ -121,13 +123,15 @@ export const TelaNoPalco: React.FC<{
   const ondas = cs.filter((c) => t >= c.t && t < c.t + durOnda);
   return (
     <div style={{ position: "absolute", inset: 0, opacity: presenca, transform: `translateX(${desliza}px)` }}>
-      <div style={{ position: "absolute", left: tx, top: ty, width: tela.w * z, height: tela.h * z }}>
+      {/* a câmera é uma transformação sobre o vídeo no tamanho original: desliza e aproxima em
+          frações de pixel, sem os degraus de 1 px de uma posição ou de um tamanho arredondados */}
+      <div style={{ position: "absolute", left: 0, top: 0, width: tela.w * K, height: tela.h * K, transformOrigin: "0 0", transform: `translate(${tx}px, ${ty}px) scale(${z / K})` }}>
         <OffthreadVideo
           src={staticFile(video)}
           trimBefore={Math.round(inicio * fps)}
           playbackRate={velocidade}
           muted
-          style={{ position: "absolute", left: 0, top: 0, width: tela.w * z, height: tela.h * z }}
+          style={{ position: "absolute", left: 0, top: 0, width: tela.w * K, height: tela.h * K }}
         />
       </div>
       {ondas.map((c, i) => {
@@ -138,8 +142,9 @@ export const TelaNoPalco: React.FC<{
             key={i}
             style={{
               position: "absolute",
-              left: tx + c.x * z - r,
-              top: ty + c.y * z - r,
+              left: 0,
+              top: 0,
+              transform: `translate(${tx + c.x * z - r}px, ${ty + c.y * z - r}px)`,
               width: r * 2,
               height: r * 2,
               borderRadius: "50%",
@@ -150,7 +155,7 @@ export const TelaNoPalco: React.FC<{
           />
         );
       })}
-      <div style={{ position: "absolute", left: tx + m.x * z - 5, top: ty + m.y * z - 5 }}>
+      <div style={{ position: "absolute", left: 0, top: 0, transform: `translate(${tx + m.x * z - 5}px, ${ty + m.y * z - 5}px)` }}>
         <Seta escala={apertado ? 1.5 : 1.75} />
       </div>
     </div>
