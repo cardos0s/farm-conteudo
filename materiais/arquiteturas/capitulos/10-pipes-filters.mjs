@@ -307,7 +307,7 @@ ${passos([
   "Escreva o fluxo como frase de verbos: \"ler → validar → converter → somar\". Muitos \"se... senão...\" indicam que não é pipeline.",
   "Defina o contrato de cada cano e escreva cada filtro como função pura que faz uma coisa só.",
   "Monte a ordem num único lugar (<code>pipeline.ts</code>, o script, a configuração).",
-  "Pouco dado: lote com arrays. Arquivo grande: <code>stream.pipeline</code>. Etapas que escalam separadas: filas entre workers.",
+  "Pouco dado: arrays. Arquivo grande: <code>stream.pipeline</code>. Etapas em máquinas separadas: filas.",
   "Decida o destino dos itens ruins e meça a vazão de cada filtro: o mais lento é o que você escala.",
 ])}
 
@@ -316,8 +316,7 @@ ${tabela(
   ["Você ganha", "Você paga"],
   [
     ["Filtros pequenos e testáveis sozinhos", "Cada salto entre processos serializa o dado e soma latência"],
-    ["Mudar etapas mexendo só na montagem", "Fluxos com decisões e voltas ficam forçados"],
-    ["Reuso do mesmo filtro em vários pipelines", "Estado compartilhado quebra o modelo"],
+    ["Mudar e reaproveitar etapas mexendo só na montagem", "Decisões, voltas e estado compartilhado ficam forçados"],
     ["Dados enormes com pouca memória (streaming)", "Erro no meio do fluxo exige decisão por etapa"],
     ["Paralelismo e escala só da etapa lenta", "O bug aparece no filtro 5, mas nasceu no 2"],
   ],
