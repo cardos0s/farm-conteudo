@@ -337,7 +337,7 @@ um <code>Usuario</code> que faz tudo. Com regra rica, o Model vira o núcleo do 
 
 ${pratica(
   "No mundo real",
-  "<p>O Shopify roda num dos maiores monólitos Ruby on Rails conhecidos, e Rails é MVC de ponta a ponta. No blog de engenharia, o time contou que organizar o código só pelas pastas do framework (<code>models/</code>, <code>controllers/</code>, <code>views/</code>) deixou de funcionar com tanta gente mexendo no mesmo lugar. A saída foi dividir o código por áreas de negócio (componentes), cada uma com seu próprio MVC por dentro, e criar o <b>Packwerk</b>, ferramenta de código aberto que checa as dependências entre esses componentes. A lição: o MVC organiza a apresentação; para organizar o negócio, você precisa de módulos (capítulo 12).</p>",
+  "<p>A Shopify roda num dos maiores monólitos Ruby on Rails conhecidos, e Rails é MVC de ponta a ponta. No blog de engenharia, o time contou que organizar o código só pelas pastas do framework (<code>models/</code>, <code>controllers/</code>, <code>views/</code>) deixou de funcionar com tanta gente mexendo no mesmo lugar. A saída foi dividir o código por áreas de negócio (componentes), cada uma com seu próprio MVC por dentro, e criar o <b>Packwerk</b>, ferramenta de código aberto que checa as dependências entre esses componentes. A lição: o MVC organiza a apresentação; para organizar o negócio, você precisa de módulos (capítulo 12).</p>",
 )}
 
 ${dica(

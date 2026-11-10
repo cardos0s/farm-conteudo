@@ -41,7 +41,7 @@ function cicloDeVida() {
     ret(x + 10, 358, 104, 42, { preench: corChip, hachura: "solid", espessura: 1.3 }) +
     txt(x + 62, 379, status, { tam: 15 });
   s += cartao(20, "ADR-0001", "registrar\ndecisões", "aceito", claro.verde);
-  s += cartao(158, "ADR-0002", "TypeScript\nno backend", "aceito", claro.verde);
+  s += cartao(158, "ADR-0002", "TypeScript\nno back-end", "aceito", claro.verde);
   s += cartao(296, "ADR-0003", "monólito\nmodular", "aceito", claro.verde);
   s += cartao(434, "ADR-0004", "filas no\nRedis", "substituído\npor 0010", claro.violeta, true);
   s += txt(590, 344, "...", { tam: 22, cor: cor.cinza });
@@ -358,7 +358,7 @@ ${tabela(
     ["Fronteiras entre módulos (capítulo 12)", "um módulo só usa a API pública do outro; nada de ciclos", "eslint-plugin-boundaries, madge, Packwerk (Ruby, da Shopify)"],
     ["Desempenho", "p95 abaixo de 300 ms com 50 usuários", "k6, Gatling, JMeter"],
     ["Segurança", "nenhuma dependência com falha crítica conhecida", "npm audit, Dependabot"],
-    ["Disponibilidade (contínua)", "99,9% no mês (cerca de 43 minutos fora)", "monitoramento com alerta"],
+    ["Disponibilidade (contínua)", "99,9% no mês (cerca de 44 minutos fora)", "monitoramento com alerta"],
   ],
 )}
 

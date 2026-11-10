@@ -247,7 +247,7 @@ Em .NET: NetArchTest.</li>
 <li><b>Pacotes separados</b>: cada módulo vira um pacote (workspace do npm, módulo do Maven, projeto do .NET). No Node, o
 campo <code>exports</code> do <code>package.json</code> deixa visível só o <code>index</code>; em C#, o que é
 <code>internal</code> não aparece para outro projeto.</li>
-<li><b>Packwerk</b>: ferramenta de código aberto do Shopify para Rails. Cada pacote declara num <code>package.yml</code> de
+<li><b>Packwerk</b>: ferramenta de código aberto da Shopify para Rails. Cada pacote declara num <code>package.yml</code> de
 quem depende, e uma análise estática aponta o que fura essas regras.</li>
 </ul>
 
@@ -319,7 +319,7 @@ benefícios.</li>
 
 ${pratica(
   "No mundo real",
-  "<p>O Shopify é o caso mais citado. Seu sistema principal é um dos maiores monólitos Ruby on Rails conhecidos. No blog de engenharia (<i>Deconstructing the Monolith</i>, 2019), o time contou que, em vez de partir para microsserviços, trocou a organização pelas pastas do Rails (<code>models/</code>, <code>controllers/</code>) por componentes de áreas do negócio, cada um com uma interface pública. Depois, publicou como código aberto o Packwerk, que transforma essas fronteiras em checagem automática. Repare na ordem: primeiro desenhar as fronteiras, depois pôr a máquina para vigiar.</p>",
+  "<p>A Shopify é o caso mais citado. Seu sistema principal é um dos maiores monólitos Ruby on Rails conhecidos. No blog de engenharia (<i>Deconstructing the Monolith</i>, 2019), o time contou que, em vez de partir para microsserviços, trocou a organização pelas pastas do Rails (<code>models/</code>, <code>controllers/</code>) por componentes de áreas do negócio, cada um com uma interface pública. Depois, publicou como código aberto o Packwerk, que transforma essas fronteiras em checagem automática. Repare na ordem: primeiro desenhar as fronteiras, depois pôr a máquina para vigiar.</p>",
 )}
 
 ${alerta(

@@ -121,7 +121,7 @@ escolhida para um tráfego que não existe é custo pago adiantado.</p>
 <p>A primeira decisão é física: quantas <b>unidades de deploy</b> (partes que vão para produção separadas) o sistema vai ter.
 Ela vem primeiro porque é a mais cara de desfazer.</p>
 
-${fig(arvoreFora(), "Leia de cima para baixo. As caixas coloridas são o ponto de partida recomendado, com o capítulo que explica cada um. Repare que o monólito modular aparece por dois caminhos.", "grande")}
+${fig(arvoreFora(), "Leia de cima para baixo. As caixas de baixo são o ponto de partida recomendado, com o capítulo que explica cada uma. Repare que o monólito modular aparece por dois caminhos.", "grande")}
 
 <h4>As perguntas, uma a uma</h4>
 <ul>
@@ -164,7 +164,7 @@ frameworks web cuida da entrada HTTP, mas a regra de negócio ainda precisa de u
 dinheiro: frete, juros, aprovação de crédito, cobertura de plano de saúde. Se o sistema é quase só ler e gravar (cadastros,
 painéis administrativos), isolar o núcleo vira cerimônia.</li>
 <li><b>Muitas features que mudam cada uma no seu ritmo?</b> Quando cada mudança atravessa controller, serviço e repositório
-em pastas diferentes, organizar por fatia (uma pasta por caso de uso) reduz o vai e vem. Com poucos casos de uso, camadas
+em pastas diferentes, organizar por fatia (uma pasta por caso de uso) reduz o vaivém. Com poucos casos de uso, camadas
 resolvem com menos regras.</li>
 <li><b>Time grande, que precisa de regras explícitas por anel?</b> Hexagonal e Clean isolam o núcleo do mesmo jeito. A Clean
 dá nome e responsabilidade a cada anel (entidades, casos de uso, adaptadores, frameworks), o que ajuda quando muita gente
@@ -249,7 +249,7 @@ separado.</li>
 monitoramento distribuído. A Shopify fala publicamente desse caminho: um grande monólito Rails dividido em componentes, com a
 ferramenta Packwerk vigiando as fronteiras.</li>
 <li><b>Evite</b>: dividir serviços por camada técnica (um "serviço de banco", um "serviço de validação") ou separar
-serviços que continuam lendo as mesmas tabelas. Os dois criam um monólito distribuído. E, por ser B2B, garanta que todo
+serviços que continuam lendo as mesmas tabelas. Os dois criam um monólito distribuído. E, como várias clínicas usam o mesmo sistema, garanta que todo
 acesso a dados filtre pela empresa cliente (o <i>tenant</i>).</li>
 </ul>
 
@@ -276,8 +276,8 @@ continuar sendo o gargalo mesmo com cache e fila.</li>
 cada centavo do saldo.</p>
 <ul>
 <li><b>Escolha</b>: por fora, monólito modular ou poucos serviços alinhados ao negócio (contas, cartões, pagamentos,
-antifraude). A parte que toca dados de cartão fica isolada, o que reduz o pedaço do sistema que entra no escopo da
-certificação PCI DSS. Por dentro, hexagonal ou Clean nas regras de dinheiro. O razão contábil (<i>ledger</i>, o livro de
+antifraude). A parte que toca dados de cartão fica isolada, o que reduz o pedaço do sistema que entra no escopo do
+PCI DSS, o padrão de segurança para dados de cartão. Por dentro, hexagonal ou Clean nas regras de dinheiro. O razão contábil (<i>ledger</i>, o livro de
 lançamentos) já é uma lista de fatos que não se apagam (erro se corrige com estorno), e Event Sourcing (capítulo 22) cabe bem
 ali. Operações entre serviços viram sagas com compensação.</li>
 <li><b>Por quê</b>: aqui pesam correção e rastreabilidade, mais que velocidade de entrega. O núcleo testável prova as
@@ -314,10 +314,15 @@ ou CDC (<i>change data capture</i>, que lê as mudanças direto do log do banco)
 <li><b>Por quê</b>: previsão de estoque e recomendações pedem ciência de dados sobre os mesmos dados dos painéis, o caso
 do lakehouse; se fossem só painéis, um warehouse gerenciado bastaria. Painéis e previsões costumam aceitar dados de horas
 atrás, e processar em lote é mais simples e barato de operar. Tempo real só onde o negócio perde dinheiro esperando.</li>
-<li><b>Evite</b>: relatórios pesados rodando no banco de produção; Lambda architecture (a mesma conta escrita duas vezes, em
-lote e em tempo real) sem necessidade real; Data Mesh com um único time de dados. O Data Mesh resolve um gargalo de
+<li><b>Evite</b>: relatórios pesados rodando no banco de produção; Lambda architecture (o mesmo cálculo escrito duas vezes, em
+lote e em tempo real) sem uma necessidade clara; Data Mesh com um único time de dados. O Data Mesh resolve um gargalo de
 organização: muitos times de domínio esperando uma equipe central.</li>
 </ul>
+
+${pratica(
+  "Na entrevista",
+  "<p>Se perguntarem \"monólito ou microsserviços?\", não escolha de primeira. Uma boa resposta começa com perguntas: quantos times, qual a carga, o que acontece se uma parte cair. Depois escolha, e diga o que faria você mudar de ideia. É exatamente o que as árvores deste capítulo fazem.</p>",
+)}
 
 <h4>Os seis lado a lado</h4>
 ${tabela(
@@ -333,18 +338,18 @@ ${tabela(
   "compacta",
 )}
 
-${pratica(
-  "Na entrevista",
-  "<p>Se perguntarem \"monólito ou microsserviços?\", não escolha de primeira. Uma boa resposta começa com perguntas: quantos times, qual a carga, o que acontece se uma parte cair. Depois escolha, e diga o que faria você mudar de ideia. É exatamente o que as árvores deste capítulo fazem.</p>",
-)}
-
 <h3>Sinais de que está na hora de mudar</h3>
 <p>A arquitetura certa hoje pode ficar errada daqui a dois anos: o time cresce, a carga muda, o negócio muda. A Lei de
 Conway (Melvin Conway, 1968, vista no capítulo 2) lembra que o sistema tende a copiar a forma como a organização se comunica, então mudanças de
 times costumam pedir mudanças de arquitetura. Em vez de esperar a dor virar crise, combine com o time quais sinais disparam
 uma revisão.</p>
 
-${fig(evolucao(), "Cada passo para a direita tem um gatilho. Sem ele, o passo só adiciona custo. E o caminho tem volta.", "normal")}
+${fig(evolucao(), "Cada degrau tem um gatilho. E o caminho tem volta: serviços que custam mais do que entregam podem voltar a ser módulos.", "normal")}
+
+${pratica(
+  "Regra de bolso",
+  "<p>Mude quando o sinal aparecer <b>de forma repetida</b> e der para medir: tempo de deploy, tempo dos testes, incidentes, custo. Um incidente isolado pede correção; o mesmo incidente todo mês pede arquitetura.</p>",
+)}
 
 ${tabela(
   ["Sinal", "O que costuma indicar", "Para onde olhar"],
@@ -366,18 +371,13 @@ ${alerta(
   "<ul><li>\"A empresa X usa.\" Ela tem outros times, outra carga e outro problema.</li><li>\"O código está feio.\" Isso pede refatoração, não outra arquitetura.</li><li>\"Quero aprender essa tecnologia.\" Aprenda num projeto paralelo, não em produção.</li><li>\"Reescrever do zero vai ser mais rápido.\" Raramente é; prefira migrar aos poucos (capítulo 30).</li></ul>",
 )}
 
-${pratica(
-  "Regra de bolso",
-  "<p>Mude quando o sinal aparecer <b>de forma repetida</b> e der para medir: tempo de deploy, tempo dos testes, incidentes, custo. Um incidente isolado pede correção; o mesmo incidente todo mês pede arquitetura.</p>",
-)}
-
 ${combina([
   [2, "Os critérios que decidem a escolha", "de onde vêm as perguntas"],
   [27, "Comparativo geral", "todas as arquiteturas lado a lado"],
   [29, "Combinações que funcionam", "o passo seguinte à escolha"],
   [30, "Como migrar sem parar o sistema", "quando um sinal aparecer"],
   [31, "Anti-padrões", "o que acontece quando se pula a árvore"],
-  [32, "Registrando decisões: ADRs", "para a escolha não se perder"],
+  [32, "Registrando decisões: ADRs e revisão", "para a escolha não se perder"],
 ])}
 
 ${lembre([

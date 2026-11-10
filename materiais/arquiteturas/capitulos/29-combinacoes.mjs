@@ -355,7 +355,7 @@ precisa da resposta agora ("esta conta pode criar mais um usuário?"), chame a A
 
 ${pratica(
   "No mundo real",
-  "<p>O Shopify mantém o seu sistema principal como um monólito Rails dividido em componentes, e criou e abriu o código do <b>Packwerk</b>, uma ferramenta que aponta quando um componente usa partes privadas de outro. É a receita 2 em grande escala: fronteiras de serviço, deploy de monólito.</p>",
+  "<p>A Shopify mantém o seu sistema principal como um monólito Rails dividido em componentes, e criou e abriu o código do <b>Packwerk</b>, uma ferramenta que aponta quando um componente usa partes privadas de outro. É a receita 2 em grande escala: fronteiras de serviço, deploy de monólito.</p>",
 )}
 
 <h3>Receita 3: e-commerce grande</h3>

@@ -272,17 +272,17 @@ ${tabela(
 )}
 
 <p>As partes II, III e IV não competem entre si: um mesmo sistema tem uma resposta para cada uma. Um app de delivery pode
-ser um monólito modular (parte III), com arquitetura hexagonal dentro de cada módulo (parte II), em que os módulos avisam
-uns aos outros por eventos (parte IV). A parte V mostra como montar essas combinações.</p>
+ser um monólito modular (parte III), hexagonal dentro de cada módulo (parte II), com módulos que se avisam por eventos
+(parte IV). A parte V mostra como combinar.</p>
 
 <h4>A estrutura de cada capítulo</h4>
-<p>Do capítulo 4 ao 26, cada arquitetura aparece sempre na mesma ordem. Assim você vai direto ao que precisa:</p>
+<p>Do capítulo 4 ao 26, toda arquitetura segue a mesma ordem, para você achar rápido o que precisa:</p>
 ${passos([
-  "<b>Em uma frase</b> e <b>pense assim</b>: a ideia central, uma analogia do dia a dia e, quando a origem é conhecida, de onde ela veio.",
+  "<b>Em uma frase</b> e <b>pense assim</b>: a ideia central, uma analogia do dia a dia e, se houver, a origem.",
   "<b>Diagrama</b> e <b>como funciona</b>: as peças e como elas se ligam.",
   "<b>Use quando</b> x <b>evite quando</b>, lado a lado, e o <b>medidor</b> de 1 a 5.",
   "<b>Como usar na prática</b>: estrutura de pastas, código em TypeScript e passo a passo.",
-  "<b>Vantagens e custos</b>, <b>erros comuns</b>, um caso do <b>mundo real</b> e caixas com variações e confusões frequentes.",
+  "<b>Vantagens e custos</b>, <b>erros comuns</b> e as caixas que você já viu aqui: a <b>azul</b> traz o mundo real (casos públicos ou cenários de exemplo) e regras de bolso, a <b>verde</b> traz dicas e variações e a <b>vermelha</b>, armadilhas que custam caro.",
   "<b>Combina com</b> (arquiteturas que andam junto) e <b>para lembrar</b> (os três pontos principais).",
 ])}
 
@@ -294,17 +294,9 @@ medidor da hexagonal (capítulo 6):</p>
 
 ${medidor({ complexidade: 3, escala: 4, operacao: 1, aprendizado: 3, time: "qualquer tamanho; brilha a partir de 3 a 4 devs" })}
 
-<ul>
-<li><b>Complexidade para começar</b>: quanto custa montar o básico. Hexagonal: 3 (interfaces desde o dia 1).</li>
-<li><b>Até onde escala</b>: quanto aguenta crescer em carga, em código e em gente. Hexagonal: 4.</li>
-<li><b>Custo de operar</b>: servidores, deploys, monitoramento, plantão. Hexagonal: 1 (nada a mais no ar).</li>
-<li><b>Curva de aprendizado</b>: quanto estudar até usar bem. Hexagonal: 3 (injeção de dependência).</li>
-</ul>
-
-<h4>As caixas</h4>
-<p>Você já viu as três neste capítulo. A <b>azul</b> traz o mundo real (casos públicos com a fonte, ou um cenário
-apresentado como exemplo), regras de bolso e frases prontas. A <b>verde</b> é a dica: atalhos e variações. A
-<b>vermelha</b> é o alerta: armadilhas que custam caro.</p>
+<p><b>Complexidade</b> é quanto custa montar o básico (3: interfaces desde o dia 1). <b>Escala</b> é quanto aguenta crescer
+em carga, código e gente. <b>Operar</b> soma servidores, deploys e plantão (1: nada a mais no ar). <b>Aprendizado</b> é quanto
+estudar até usar bem (3: injeção de dependência).</p>
 
 <h4>Por onde começar</h4>
 <ul>

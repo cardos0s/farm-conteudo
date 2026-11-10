@@ -192,7 +192,7 @@ ${quando(
     "Vários times (três ou mais) mexem no mesmo produto web e travam uns aos outros no deploy.",
     "O produto é grande e tem áreas bem separadas: catálogo, checkout, conta, painel do vendedor.",
     "Você precisa trocar de framework aos poucos (sair de AngularJS ou jQuery), uma área por vez.",
-    "Os times querem ser donos da tela, não só da API (o backend pode até ser um monólito: micro-frontend não exige microsserviço).",
+    "Os times querem ser donos da tela, não só da API (o back-end pode até ser um monólito: micro-frontend não exige microsserviço).",
   ],
   [
     "Um time só cuida do front: um app bem modularizado resolve, por uma fração do custo.",

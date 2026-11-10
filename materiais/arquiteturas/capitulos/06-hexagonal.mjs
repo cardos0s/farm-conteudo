@@ -151,7 +151,7 @@ ${tabela(
   "compacta",
 )}
 
-<p>As duas portas são escritas pelo núcleo, com nomes do negócio; o que muda é o sentido da chamada. Na entrada,
+<p>As duas portas são definidas pelo núcleo, com nomes do negócio; o que muda é o sentido da chamada. Na entrada,
 chamada e dependência andam juntas: a rota importa e chama o caso de uso. Na saída, elas se separam: na hora de rodar,
 o núcleo chama o Postgres; no código, é o adaptador do Postgres que importa a interface do núcleo. Isso é a
 <b>inversão de dependência</b> (o "D" do SOLID, que o capítulo 7 detalha).</p>
@@ -183,7 +183,7 @@ ${tabela(
 
 <p><b>Validar nos dois lugares não é duplicação.</b> A rota recusa <code>qtd: "abc"</code> porque isso nem chega a ser
 um pedido. O núcleo recusa <code>qtd: 0</code> porque é contra a regra, venha o pedido da API, da fila ou de um script.
-Se a regra morar só na rota, o próximo canal vai esquecer dela.</p>
+Se a regra morar só na rota, o próximo canal vai ficar sem ela.</p>
 <p><b>Transação: o núcleo decide o quê, o adaptador decide como.</b> O normal é uma transação por caso de uso. Se ele
 grava um conjunto que sempre anda junto (o pedido e seus itens, o que o DDD chama de <i>agregado</i>), o
 <code>salvar()</code> do repositório abre e fecha a transação, como no código adiante. Se grava em vários
@@ -237,8 +237,12 @@ export interface RepositorioDePedidos {
 }
 export interface CatalogoDePrecos {
   precoEmCentavos(produtoId: string): Promise<number | null>;
-}
+}`,
+  "src/pedidos/nucleo/portas.ts",
+)}
 
+${codigo(
+  `
 // nucleo/criar-pedido.ts: a porta de entrada é o próprio caso de uso
 export type ItemDoComando = { produtoId: string; qtd: number };
 export type CriarPedidoComando = { clienteId: string; itens: ItemDoComando[] };
@@ -259,7 +263,7 @@ export class CriarPedido {
     return { pedidoId: pedido.id, totalEmCentavos: pedido.totalEmCentavos };
   }
 }`,
-  "src/pedidos/nucleo",
+  "src/pedidos/nucleo/criar-pedido.ts",
 )}
 
 <p>Dois detalhes. O caso de uso devolve dados simples, não a entidade: assim a API não fica amarrada ao modelo interno.
@@ -270,7 +274,7 @@ ${codigo(
 // entrada/http/pedidos-rotas.ts: traduz HTTP para o caso de uso, e o resultado de volta
 const Corpo = z.object({                                  // valida o FORMATO
   clienteId: z.string().min(1),
-  itens: z.array(z.object({ produtoId: z.string(), qtd: z.number() })),
+  itens: z.array(z.object({ produtoId: z.string(), qtd: z.number().int() })),
 });
 
 export function rotasDePedidos(app: Express, criarPedido: CriarPedido) {
@@ -288,11 +292,17 @@ export function rotasDePedidos(app: Express, criarPedido: CriarPedido) {
 }
 
 // entrada/fila/pedidos-consumidor.ts: outra entrada, o mesmo caso de uso
+const Mensagem = z.object({                               // formato do marketplace
+  buyer_id: z.string().min(1),
+  items: z.array(z.object({ sku: z.string(), quantity: z.number().int() })),
+});
+
 export function consumirMarketplace(fila: Fila, criarPedido: CriarPedido) {
   fila.consumir("marketplace.pedidos", async (msg) => {
-    const m = JSON.parse(msg.corpo);                      // formato do marketplace...
-    const itens = m.items.map((i: any) => ({ produtoId: i.sku, qtd: i.quantity }));
-    try { await criarPedido.executar({ clienteId: m.buyer_id, itens }); } // ...vira comando
+    const m = Mensagem.safeParse(JSON.parse(msg.corpo));
+    if (!m.success) return msg.rejeitar("mensagem inválida"); // nova tentativa não conserta
+    const itens = m.data.items.map((i) => ({ produtoId: i.sku, qtd: i.quantity }));
+    try { await criarPedido.executar({ clienteId: m.data.buyer_id, itens }); } // vira comando
     catch (e) { if (e instanceof ErroDeNegocio) msg.rejeitar(e.message); else throw e; }
   }); // erro de regra não melhora com nova tentativa; erro técnico volta para a fila
 }`,
@@ -357,12 +367,12 @@ e a transação que não volta atrás.</li>
 <li><b>Contrato da porta</b>: a mesma bateria de testes roda contra o fake e contra o adaptador real. Se os dois
 passam, o fake não mente para os testes do núcleo.</li>
 <li><b>Adaptadores de entrada e ponta a ponta</b>: chame a rota (com supertest, por exemplo) ligada ao núcleo e aos
-fakes para conferir status e validação sem banco. Testes com tudo real, só poucos, nos caminhos críticos.</li>
+fakes para conferir status e validação sem banco. Testes com tudo real: poucos, só nos caminhos críticos.</li>
 </ul>
 
 ${codigo(
   `
-// dublê da porta de saída: um fake em memória, escrito uma vez e usado em todo teste
+// saida/memoria/repositorio.ts: o dublê da porta, um fake escrito uma vez e usado em todo teste
 class RepositorioEmMemoria implements RepositorioDePedidos {
   private dados = new Map<string, Pedido>();
   async salvar(p: Pedido) { this.dados.set(p.id, p); }
@@ -392,7 +402,7 @@ describe.each([
     expect((await repo.buscar(pedido.id))?.totalEmCentavos).toBe(5000);
   });
 });`,
-  "pedidos.test.ts",
+  "src/pedidos/adaptadores/saida/memoria e pedidos.test.ts",
 )}
 
 <h3>Vantagens e custos</h3>
@@ -401,7 +411,7 @@ ${tabela(
   [
     ["Regras de negócio testáveis em milissegundos, sem infraestrutura", "Mais arquivos e interfaces do que num CRUD direto"],
     ["Trocar banco, fila ou provedor sem mexer no núcleo", "Mapear dados nas bordas (JSON e comando, entidade e tabela), às vezes de forma repetitiva"],
-    ["Várias entradas (API, fila, CLI) usando os mesmos casos de uso", "Time precisa entender injeção de dependência"],
+    ["Várias entradas (API, fila, CLI) usando os mesmos casos de uso", "O time precisa entender injeção de dependência"],
     ["Testes de integração focados: só os adaptadores precisam de banco real", "Manter um fake por porta, que se comporte como o adaptador real"],
     ["Framework vira detalhe: dá para atualizar ou trocar com menos medo", "Risco de \"interface para tudo\" virar burocracia"],
   ],

@@ -175,7 +175,7 @@ paradas: é voltar um pouco para o modelo de servidor fixo.</p>
 <h4>Os três padrões mais comuns</h4>
 <ol>
 <li><b>API + funções + banco gerenciado</b>: o API Gateway recebe <code>POST /pedidos</code> e chama uma função, que grava
-num banco cobrado por uso (como o DynamoDB no modo sob demanda). É o backend de muitos apps e sites.</li>
+num banco cobrado por uso (como o DynamoDB no modo sob demanda). É o back-end de muitos apps e sites.</li>
 <li><b>Pipeline de eventos</b>: o upload de uma foto dispara a função que gera a miniatura; ela publica "foto pronta" numa
 fila; outra função atualiza o catálogo. Cada etapa escala sozinha, e uma falha não derruba as outras (é o pipes and filters
 do capítulo 10 rodando na nuvem).</li>
