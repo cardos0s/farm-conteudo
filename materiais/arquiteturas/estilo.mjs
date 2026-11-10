@@ -26,6 +26,10 @@ table { width: 100%; border-collapse: collapse; margin: 4pt 0 12pt; font-size: 9
 th { text-align: left; font-weight: 650; border-bottom: 1.5pt solid var(--tinta); padding: 3pt 6pt; vertical-align: bottom; }
 td { border-bottom: 0.6pt solid var(--linha); padding: 3.5pt 6pt; vertical-align: top; }
 table.compacta { font-size: 8pt; }
+/* tabelas longas (mais de 8 linhas) podem quebrar entre linhas; o cabeçalho se repete */
+table.longa { break-inside: auto; }
+table.longa tr { break-inside: avoid; }
+table.longa thead { display: table-header-group; }
 table.compacta td, table.compacta th { padding: 2.5pt 4pt; }
 figure { margin: 8pt 0 13pt; break-inside: avoid; text-align: center; }
 figure svg { width: 100%; height: auto; max-height: 92mm; }
@@ -77,7 +81,10 @@ figcaption { font-size: 8.4pt; color: var(--cinza); margin-top: 4pt; }
 /* código e pastas */
 .codigo, .pastas { margin: 6pt 0 12pt; break-inside: avoid; border-radius: 8pt; overflow: hidden; }
 .codigo .ct, .pastas .ct { font-family: "DejaVu Sans Mono", monospace; font-size: 7.6pt; padding: 4pt 11pt; }
-.codigo .ct { background: #2d3339; color: #adb5bd; }
+.codigo .ct { background: #2d3339; color: #adb5bd; break-after: avoid; }
+/* blocos longos (mais de 20 linhas) podem continuar na página seguinte, sem deixar poucas linhas soltas */
+.codigo.longo { break-inside: auto; }
+.codigo.longo pre { orphans: 6; widows: 6; }
 .codigo pre { background: #1f2428; color: #e9ecef; padding: 9pt 12pt; font-size: 8pt; line-height: 1.5; margin: 0; white-space: pre-wrap; }
 .codigo pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
 .codigo .c { color: #8b949e; font-style: italic; }

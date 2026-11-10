@@ -56,7 +56,7 @@ function realcar(codigo) {
 
 /** Bloco de código com título opcional (ex.: "src/pedidos/criar-pedido.ts"). `realce: false` para texto puro. */
 export const codigo = (texto, titulo = "", { realce = true } = {}) =>
-  `<div class="codigo">${titulo ? `<div class="ct">${esc(titulo)}</div>` : ""}<pre><code>${realce ? realcar(texto.replace(/^\n/, "")) : esc(texto.replace(/^\n/, ""))}</code></pre></div>`;
+  `<div class="codigo${texto.trim().split("\n").length > 20 ? " longo" : ""}">${titulo ? `<div class="ct">${esc(titulo)}</div>` : ""}<pre><code>${realce ? realcar(texto.replace(/^\n/, "")) : esc(texto.replace(/^\n/, ""))}</code></pre></div>`;
 
 /** Árvore de pastas (texto com ├── └──). Linhas com "#" ganham comentário cinza. */
 export const pastas = (texto, titulo = "estrutura de pastas") =>
@@ -64,7 +64,7 @@ export const pastas = (texto, titulo = "estrutura de pastas") =>
 
 /** Tabela simples: cabeçalho (array) e linhas (array de arrays). Células aceitam HTML. */
 export const tabela = (cab, linhas, classe = "") =>
-  `<table class="${classe}"><thead><tr>${cab.map((c) => `<th>${c}</th>`).join("")}</tr></thead><tbody>${linhas
+  `<table class="${[classe, linhas.length > 8 ? "longa" : ""].filter(Boolean).join(" ")}"><thead><tr>${cab.map((c) => `<th>${c}</th>`).join("")}</tr></thead><tbody>${linhas
     .map((l) => `<tr>${l.map((c) => `<td>${c}</td>`).join("")}</tr>`)
     .join("")}</tbody></table>`;
 
