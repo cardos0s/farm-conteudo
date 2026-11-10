@@ -47,6 +47,10 @@ export const capitulos = [
   { n: 31, slug: "anti-padroes", parte: "V", titulo: "Anti-padrões" },
   { n: 32, slug: "adrs", parte: "V", titulo: "Registrando decisões: ADRs e revisão" },
   { n: 33, slug: "cola", parte: "V", titulo: "Cola final" },
+  { n: 34, slug: "outros-estilos", parte: "V", titulo: "Outros estilos que você vai encontrar", apendice: true },
 ];
+
+/** Número como aparece no livro: "01".."33", ou "A" para o apêndice. */
+export const rotuloDo = (c) => (c.apendice ? "A" : String(c.n).padStart(2, "0"));
 
 export const arquivoDo = (c) => `capitulos/${String(c.n).padStart(2, "0")}-${c.slug}.mjs`;

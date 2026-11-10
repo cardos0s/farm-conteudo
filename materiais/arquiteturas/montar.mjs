@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { css } from "./estilo.mjs";
-import { arquivoDo, capitulos, partes, titulo } from "./plano.mjs";
+import { arquivoDo, capitulos, partes, rotuloDo, titulo } from "./plano.mjs";
 
 export const aqui = path.dirname(fileURLToPath(import.meta.url));
 export const raiz = path.resolve(aqui, "../..");
@@ -30,11 +30,11 @@ export async function carregar(lista = capitulos) {
 }
 
 const cabecalho = (c, marcas) =>
-  `<h2 class="cap" data-cap="${c.n}">${marcas ? `<span class="marca">QQCAP${c.n}QQ</span>` : ""}<span class="num">capítulo ${dois(c.n)} <span class="pt">· parte ${c.parte}</span></span>${c.titulo}</h2>`;
+  `<h2 class="cap" data-cap="${c.n}">${marcas ? `<span class="marca">QQCAP${c.n}QQ</span>` : ""}<span class="num">${c.apendice ? "apêndice" : `capítulo ${dois(c.n)}`} <span class="pt">· parte ${c.parte}</span></span>${c.titulo}</h2>`;
 
 const aberturaParte = (p, caps) =>
   `<section class="parte"><div class="pn">parte ${p.id}</div><h2>${p.titulo}</h2><p>${p.descricao}</p><ol>${caps
-    .map((c) => `<li><span>${dois(c.n)}</span>${c.titulo}</li>`)
+    .map((c) => `<li><span>${rotuloDo(c)}</span>${c.titulo}</li>`)
     .join("")}</ol></section>`;
 
 /** HTML do miolo. `paginas` = número da página de cada capítulo (para o sumário); `sumario`/`partes` ligam e desligam essas páginas. */
@@ -45,7 +45,7 @@ export function corpoHtml(caps, { paginas = {}, marcas = false, sumario = true, 
     for (const p of partes) {
       const doP = capitulos.filter((c) => c.parte === p.id);
       html += `<div class="sp-parte">parte ${p.id} · ${p.titulo}</div><ol>${doP
-        .map((c) => `<li><span class="sn">${dois(c.n)}</span><span class="st">${c.titulo}</span><span class="spg">${paginas[c.n] ?? "00"}</span></li>`)
+        .map((c) => `<li><span class="sn">${rotuloDo(c)}</span><span class="st">${c.titulo}</span><span class="spg">${paginas[c.n] ?? "00"}</span></li>`)
         .join("")}</ol>`;
     }
     html += `</section>`;

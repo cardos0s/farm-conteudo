@@ -70,7 +70,7 @@ body { margin: 0; }
 <h1>${titulo.replace("Software", "<span>Software</span>")}</h1>
 <div class="sub">${subtitulo}.</div>
 <figure>${desenhoCapa()}</figure>
-<div class="rodape"><div><b>${capitulos.length} capítulos em 5 partes</b><br>camadas, hexagonal, clean, monólito modular,<br>microsserviços, serverless, eventos, CQRS e mais</div><div class="autora"><span>por</span><b>${AUTORA}</b>${PERFIL}</div></div>
+<div class="rodape"><div><b>${capitulos.filter((c) => !c.apendice).length} capítulos em 5 partes + apêndice</b><br>camadas, hexagonal, clean, monólito modular,<br>microsserviços, serverless, eventos, CQRS e mais</div><div class="autora"><span>por</span><b>${AUTORA}</b>${PERFIL}</div></div>
 </div></body></html>`;
 
 const caps = await carregar();
