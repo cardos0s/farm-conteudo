@@ -71,11 +71,11 @@ const L = (nome, cap, c, e, o, a, t, time, deploy, cons, brilha) => [`<b>${nome}
 const parte2 = [
   L("Camadas", 4, 1, 2, 1, 1, 3, "1 dev a 1 time", "não muda", "não muda", "CRUD e sistemas simples"),
   L("MVC, MVP e MVVM", 5, 1, 3, 1, 2, 3, "qualquer", "não muda", "não muda", "telas com estado e interação"),
-  L("Hexagonal", 6, 3, 4, 1, 3, 5, "qualquer (brilha com 3+)", "não muda", "não muda", "regra rica, várias entradas"),
-  L("Clean e Onion", 7, 4, 4, 1, 4, 5, "3 ou mais devs", "não muda", "não muda", "regra rica, vida longa, time grande"),
+  L("Hexagonal", 6, 3, 4, 1, 3, 5, "qualquer", "não muda", "não muda", "regra rica, várias entradas"),
+  L("Clean e Onion", 7, 4, 4, 1, 4, 5, "3 ou mais devs", "não muda", "não muda", "regra rica e vida longa"),
   L("Vertical Slice", 8, 2, 4, 1, 2, 4, "qualquer", "não muda", "não muda", "muitas features independentes"),
-  L("Microkernel", 9, 3, 2, 2, 3, 4, "núcleo + terceiros", "plugins: sim", "não muda", "produto extensível (VS Code)"),
-  L("Pipes and Filters", 10, 2, 4, 2, 2, 5, "qualquer", "etapas com fila: sim", "não muda", "dados em etapas (ETL, mídia)"),
+  L("Microkernel", 9, 3, 2, 2, 3, 4, "núcleo + terceiros", "plugins: sim", "não muda", "produto com plugins"),
+  L("Pipes and Filters", 10, 2, 4, 2, 2, 5, "qualquer", "com filas, sim", "não muda", "ETL, mídia, compiladores"),
 ];
 
 const parte3 = [
@@ -109,12 +109,11 @@ ${resumo(
   "Na loja, a etiqueta da geladeira mostra litros, consumo e preço lado a lado. A maior não serve para todo mundo: numa quitinete, ela nem passa pela porta. A tabela deste capítulo é essa etiqueta; quem decide é o seu contexto.",
 )}
 
-<p>Os capítulos 4 a 26 apresentaram cada arquitetura sozinha, com o seu medidor. Aqui todas entram na mesma tabela, com as
-quatro notas do medidor e mais três critérios que aparecem em quase toda conversa de arquitetura: testabilidade, deploy
-separado e consistência de dados. A tabela vem em três partes, uma por família (capítulo 3), porque só faz sentido comparar
+<p>Os capítulos 4 a 26 mostraram cada arquitetura sozinha, com o seu medidor. Aqui todas entram na mesma tabela, com as
+quatro notas do medidor e mais três critérios: testabilidade, deploy separado e consistência de dados. A tabela vem em três partes, uma por família (capítulo 3), porque só faz sentido comparar
 dentro da mesma família: "hexagonal ou microsserviços?" não é uma escolha, já que uma organiza o código por dentro e a outra
-divide o sistema por fora. Depois vêm o padrão por trás dos números e as cinco comparações que mais aparecem em revisão de
-código, entrevista e reunião de arquitetura.</p>
+divide o sistema por fora. Depois vêm os padrões por trás dos números e as cinco
+comparações que mais aparecem em entrevistas e reuniões.</p>
 
 <h3>Como ler a grande tabela</h3>
 <ul>
@@ -127,11 +126,6 @@ partes podem ficar alguns instantes desencontradas e se acertam depois.</li>
 <li><b>Não muda</b>: a arquitetura não mexe naquele critério, e vale o que o sistema por fora tiver. É o caso de quase toda a
 parte II: organizar o código em hexágono não muda quantos deploys você tem.</li>
 </ul>
-
-${alerta(
-  "Número alto nem sempre é bom",
-  "<p>Em <b>Es</b> e <b>Te</b>, quanto maior, melhor. Em <b>Co</b>, <b>Op</b> e <b>Ap</b>, quanto maior, mais caro. Muitos 5 não fazem uma campeã: fazem a que mais aguenta e também a que mais cobra.</p>",
-)}
 
 <h4>Parte II: o código por dentro</h4>
 ${tabela(CAB, parte2, "compacta")}
@@ -146,6 +140,11 @@ ${tabela(CAB, parte4, "compacta")}
 cai um pouco e Ap cai bastante. As linhas do capítulo 26 aparecem separadas porque Lambda, Kappa, Lakehouse e Data Mesh resolvem problemas
 diferentes; nelas, escala quer dizer volume de dados. O medidor daquele capítulo (4, 5, 4 e 4) vale para o caso típico, um
 lakehouse com um pouco de streaming; aqui cada peça aparece sozinha.</p>
+
+${alerta(
+  "Número alto nem sempre é bom",
+  "<p>Em <b>Es</b> e <b>Te</b>, quanto maior, melhor. Em <b>Co</b>, <b>Op</b> e <b>Ap</b>, quanto maior, mais caro. Muitos 5 não fazem uma campeã: fazem a que mais aguenta e também a que mais cobra.</p>",
+)}
 
 <h3>O que a tabela mostra</h3>
 <p>Olhando as linhas juntas, aparecem cinco padrões. Eles valem mais do que qualquer nota isolada, porque explicam o porquê
@@ -269,15 +268,14 @@ ${tabela(
   "compacta",
 )}
 <p><b>Regra de bolso:</b> use coreografia quando o fluxo cabe numa frase ("pedido pago avisa estoque e e-mail"). Quando
-aparecerem decisões, prazos e compensações, passe para a orquestração. As topologias broker e mediador do capítulo 20 são
-essa mesma escolha: no broker, cada consumidor reage e publica o próximo evento (coreografia); no mediador, um componente
-central decide a ordem dos passos (orquestração). Muitos sistemas usam as duas: coreografia entre domínios e orquestração
-dentro de um fluxo crítico, como o checkout.</p>
+aparecerem decisões, prazos e compensações, passe para a orquestração. Muitos sistemas usam as duas: coreografia entre
+domínios e orquestração num fluxo crítico, como o checkout. Nas topologias do capítulo 20, o broker é a coreografia e o
+mediador, a orquestração.</p>
 
 <h3>Erros ao comparar arquiteturas</h3>
 <ul>
 <li><b>Somar as notas como placar.</b> "A hexagonal fez 16 pontos e as camadas, 8." A soma mistura colunas em que número alto é bom
-com colunas em que número alto é caro, e as colunas pesam diferente em cada contexto: numa startup, Começar pesa mais que Escala; num sistema de pagamentos, Consistência pesa mais que quase tudo.</li>
+com colunas em que ele é caro, e cada contexto pesa as colunas de um jeito: numa startup, Começar pesa mais que Escala; em pagamentos, Consistência pesa mais que quase tudo.</li>
 <li><b>Escolher pela coluna de escala.</b> Escala que você não vai usar é custo sem retorno (capítulo 2). Leia sempre Escala
 junto com Operar e Time.</li>
 <li><b>Comparar a versão ideal de uma com a versão real da outra.</b> O "monólito" da comparação costuma ser a bagunça que
@@ -304,17 +302,15 @@ ${pratica(
   <li><b>Código por dentro</b>: hexagonal nos módulos de pedidos e pagamentos, onde a regra é rica (Testar 5); camadas no
   cadastro de restaurantes, que é quase só ler e gravar.</li>
   <li><b>Comunicação e dados</b>: cliente-servidor entre o app e a API; eventos internos para "pedido pago" avisar a cozinha e
-  o entregador. Como tudo está num banco só, o status do pedido e o registro do pagamento mudam na mesma transação, sem saga.
-  A chamada à operadora do cartão fica fora dela e precisa ser idempotente (capítulo 23).</li>
+  o entregador. Com um banco só, pedido e pagamento mudam na mesma transação, sem saga (a cobrança na operadora do cartão
+  fica fora dela e precisa ser idempotente).</li>
   </ul>`,
 )}
 
 ${combina([
   [28, "Árvore de decisão", "transforma a tabela em perguntas de sim ou não"],
-  [3, "O mapa das arquiteturas", "as três famílias e como ler o medidor"],
   [2, "Os critérios que decidem a escolha", "o que cada coluna mede"],
   [29, "Combinações que funcionam", "uma linha de cada família, juntas"],
-  [30, "Como migrar sem parar o sistema", "quando a escolha de hoje deixa de servir"],
   [32, "ADRs", "para registrar quais colunas decidiram"],
 ])}
 
