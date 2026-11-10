@@ -297,7 +297,6 @@ ${alerta(
   "<p>Salvar o pedido e <b>depois</b> publicar o evento na fila é arriscado: se o processo cair entre as duas coisas, o evento se perde e a tabela de leitura fica errada sem ninguém perceber. Por isso o exemplo usa <code>salvarComEvento</code>: o evento vai para uma tabela <b>outbox</b> na mesma transação do pedido, e um processo separado lê essa tabela e publica na fila (padrão <i>transactional outbox</i>). Ferramentas de CDC (<i>change data capture</i>, captura de mudanças), como o Debezium, fazem esse papel lendo o log do banco. Em qualquer caso, o mesmo evento pode sair duas vezes: por isso a projeção é idempotente.</p>",
 )}
 
-
 ${combina([
   [22, "Event Sourcing", "a escrita guarda eventos; as projeções são a leitura"],
   [20, "Orientada a eventos", "os eventos alimentam as projeções"],
