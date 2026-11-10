@@ -1,0 +1,94 @@
+{
+  "modelo": "eleven_v3",
+  "vozes": {
+    "narrador": "GDzHdQOi6jjf8zaXhCYD"
+  },
+  "ajustes": {
+    "narrador": {
+      "stability": 0.45,
+      "similarity_boost": 0.8,
+      "style": 0.3,
+      "speed": 1.03
+    }
+  },
+  "pronuncia": {
+    "Selloop": "Sell Loop"
+  },
+  "falas": [
+    {
+      "id": "v1-01",
+      "voz": "narrador",
+      "texto": "Seu cliente chama no WhatsApp, no Instagram, no Messenger. Na Selloop, tudo chega no mesmo lugar."
+    },
+    {
+      "id": "v1-02",
+      "voz": "narrador",
+      "texto": "E toda a empresa atende no mesmo número de WhatsApp, no Direct do Instagram e no Messenger."
+    },
+    {
+      "id": "v1-03",
+      "voz": "narrador",
+      "texto": "Cada atendente vê só os próprios atendimentos."
+    },
+    {
+      "id": "v1-04",
+      "voz": "narrador",
+      "texto": "E o administrador tem controle total: vê as conversas de todas as equipes e acompanha cada transferência, sem o cliente repetir nada."
+    },
+    {
+      "id": "v1-05",
+      "voz": "narrador",
+      "texto": "Dentro da conversa, está tudo à mão. O catálogo vai com foto e preço."
+    },
+    {
+      "id": "v1-05b",
+      "voz": "narrador",
+      "texto": "O cliente monta o orçamento no próprio WhatsApp."
+    },
+    {
+      "id": "v1-05c",
+      "voz": "narrador",
+      "texto": "Os formulários voltam preenchidos."
+    },
+    {
+      "id": "v1-05d",
+      "voz": "narrador",
+      "texto": "E as enquetes, com o voto na hora."
+    },
+    {
+      "id": "v1-06",
+      "voz": "narrador",
+      "texto": "A cobrança por Pix sai dali mesmo, e você vê quando foi paga."
+    },
+    {
+      "id": "v1-06b",
+      "voz": "narrador",
+      "texto": "A nota fiscal vem direto do sistema de gestão."
+    },
+    {
+      "id": "v1-06c",
+      "voz": "narrador",
+      "texto": "E a próxima mensagem já fica agendada."
+    },
+    {
+      "id": "v1-07",
+      "voz": "narrador",
+      "texto": "Todo atendimento tem protocolo. Se o cliente pedir o histórico, você gera o PDF da conversa completa e envia na hora."
+    },
+    {
+      "id": "v1-08",
+      "voz": "narrador",
+      "texto": "No fim, a pesquisa de satisfação vai sozinha, e a avaliação aparece ali mesmo."
+    },
+    {
+      "id": "v1-09",
+      "voz": "narrador",
+      "texto": "E o gestor acompanha tudo nos indicadores: volume, tempo de espera, desempenho de cada equipe e a nota média da empresa."
+    },
+    {
+      "id": "v1-10",
+      "voz": "narrador",
+      "texto": "Selloop. Atenda e venda sem trocar de tela."
+    }
+  ]
+}

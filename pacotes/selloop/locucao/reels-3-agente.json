@@ -1,0 +1,89 @@
+{
+  "modelo": "eleven_v3",
+  "vozes": {
+    "narrador": "GDzHdQOi6jjf8zaXhCYD",
+    "lia": "n2a9VtkZLl8j1FSXHsL7",
+    "fabio": "YU8EsJtXFMyKMxYtheDk"
+  },
+  "ajustes": {
+    "narrador": {
+      "stability": 0.45,
+      "similarity_boost": 0.8,
+      "style": 0.3,
+      "speed": 1.03
+    },
+    "lia": {
+      "stability": 0.5,
+      "similarity_boost": 0.8,
+      "style": 0.3,
+      "speed": 1.06
+    },
+    "fabio": {
+      "stability": 0.4,
+      "similarity_boost": 0.8,
+      "style": 0.35,
+      "speed": 1.0
+    }
+  },
+  "pronuncia": {
+    "Selloop": "Sell Loop",
+    "23h47": "onze e quarenta e sete da noite"
+  },
+  "falas": [
+    {
+      "id": "fabio-01",
+      "voz": "fabio",
+      "texto": "Opa, boa noite! Vocês entregam lá em Joinville? Tô precisando de quarenta fardos de refrigerante até sexta."
+    },
+    {
+      "id": "lia-01",
+      "voz": "lia",
+      "texto": "Boa noite, Fábio! Entregamos em Joinville, sim. Pra quarenta fardos, consigo entregar já na quinta. Te mando o orçamento?"
+    },
+    {
+      "id": "v3-01",
+      "voz": "narrador",
+      "texto": "São 23h47. O seu time já foi para casa. E um cliente acabou de mandar um áudio."
+    },
+    {
+      "id": "v3-02",
+      "voz": "narrador",
+      "texto": "Quem responde é a Lia, a agente inteligente da Nova Rota. Ela entende o áudio e responde em áudio, com voz natural."
+    },
+    {
+      "id": "v3-03",
+      "voz": "narrador",
+      "texto": "A Lia atende 24 horas por dia, no WhatsApp, no Instagram e no Messenger da empresa."
+    },
+    {
+      "id": "v3-04",
+      "voz": "narrador",
+      "texto": "E não fica só na conversa: ela manda o orçamento,"
+    },
+    {
+      "id": "v3-05",
+      "voz": "narrador",
+      "texto": "marca a visita na agenda do vendedor,"
+    },
+    {
+      "id": "v3-06",
+      "voz": "narrador",
+      "texto": "cria a oportunidade no CRM"
+    },
+    {
+      "id": "v3-07",
+      "voz": "narrador",
+      "texto": "e, quando o assunto pede uma pessoa, transfere para a equipe certa, com o resumo da conversa."
+    },
+    {
+      "id": "v3-08",
+      "voz": "narrador",
+      "texto": "Você treina a Lia com o que a sua empresa sabe, escolhe as habilidades, o tom e a voz."
+    },
+    {
+      "id": "v3-09",
+      "voz": "narrador",
+      "texto": "Selloop. Atendimento inteligente, 24 horas por dia."
+    }
+  ]
+}

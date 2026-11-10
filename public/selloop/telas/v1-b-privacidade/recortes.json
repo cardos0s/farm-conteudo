@@ -1,0 +1,24 @@
+{
+ "cena": "v1-b-privacidade",
+ "largura": 1600,
+ "altura": 900,
+ "escala": 3,
+ "recortes": {
+  "abas": {
+   "caixa": {
+    "x": 105,
+    "y": 155,
+    "w": 302,
+    "h": 40
+   }
+  },
+  "meus": {
+   "caixa": {
+    "x": 97,
+    "y": 246,
+    "w": 318,
+    "h": 459
+   }
+  }
+ }
+}

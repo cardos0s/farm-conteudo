@@ -30,6 +30,8 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { caixaDe } from "./caixa.mjs";
+
 const require = createRequire(import.meta.url);
 const { chromium } = require("playwright");
 
@@ -231,6 +233,15 @@ async function principal() {
       const p = await ponto(alvo);
       eventos.push({ t: rel(), tipo: "foco", nome, caixa: p.caixa });
       return p;
+    },
+    /**
+     * Marca um elemento (ou vários, pela caixa que envolve todos) que a montagem pode destacar da tela.
+     * Aqui só registra quando e onde ele está; a imagem em alta resolução sai de scripts/telas/recortar.mjs.
+     */
+    async recorte(alvo, nome, { margem = 0, dentro = null } = {}) {
+      const caixa = await caixaDe(page, alvo, margem, dentro);
+      eventos.push({ t: rel(), tipo: "recorte", nome, caixa });
+      return caixa;
     },
   };
 

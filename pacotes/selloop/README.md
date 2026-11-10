@@ -39,6 +39,58 @@ próprio navegador (`demo/servidor.mjs`), então nada chega ao backend da Selloo
 
 As gravações (`public/selloop/telas/**/*.mp4`), a trilha e os vídeos finais (`saida/`) ficam fora do git.
 
+## Versão vertical (Reels e Stories)
+
+Os mesmos três vídeos em 1080×1920, com a voz da Raquel (ElevenLabs) e mais movimento: a tela fica numa
+janela no meio do quadro, a câmera acompanha cada clique, e os elementos importantes (uma mensagem, um
+cartão, um botão) saltam para fora da janela, com título animado e legenda palavra por palavra.
+
+| Reel | Composição | Edição | Locução |
+| --- | --- | --- | --- |
+| 1 · Ambiente de atendimento | `SelloopReelAtendimento` | `remotion/selloop/reel/R1Atendimento.tsx` | `locucao/reels-1-atendimento.json` → `r1` |
+| 2 · Disparador de campanhas | `SelloopReelCampanhas` | `remotion/selloop/reel/R2Campanhas.tsx` | `locucao/reels-2-campanhas.json` → `r2` |
+| 3 · Agente inteligente 24 h | `SelloopReelAgente` | `remotion/selloop/reel/R3Agente.tsx` | `locucao/reels-3-agente.json` → `r3` |
+
+As gravações são as mesmas do formato horizontal (1600×900): uma tela mais estreita quebra o cabeçalho
+da plataforma, então quem enquadra é a câmera. O que muda na produção:
+
+1. **Recortes**: nas cenas, `g.recorte(alvo, nome)` marca o elemento que vai saltar. Na gravação isso só
+   registra a caixa e o momento em `eventos.json`; a imagem sai em 3x de uma segunda passada, sem gravar:
+   ```bash
+   node scripts/telas/recortar.mjs pacotes/selloop/cenas/v1-c-recursos.mjs --saida public/selloop/telas
+   ```
+   Ficam em `public/selloop/telas/<cena>/recortes/<nome>.png` (com as caixas em `recortes.json`).
+   Depois de regravar uma cena, rode o recorte dela de novo.
+2. **Locução** com a voz da Raquel, em pastas próprias (`r1`, `r2`, `r3`):
+   ```bash
+   python3 scripts/telas/locucao.py pacotes/selloop/locucao/reels-1-atendimento.json public/selloop/locucao/r1
+   ```
+   O `locucao.json` gerado traz o tempo de cada palavra (legenda e sincronia dos saltos) e o volume médio
+   de cada fala (`nivel`), que a montagem usa para igualar as falas.
+3. **Efeitos sonoros** (`salto.wav` e `sino.wav`, gerados por código):
+   ```bash
+   python3 scripts/telas/efeitos.py public/selloop/sons
+   ```
+4. **Renderizar e masterizar**, como no horizontal:
+   ```bash
+   npx remotion render remotion/index.ts SelloopReelAtendimento saida/selloop/r1-atendimento.mp4 --browser-executable=/opt/pw-browsers/chromium --concurrency=3 --crf=17
+   ```
+   ```bash
+   scripts/telas/masterizar.sh saida/selloop/r1-atendimento.mp4 saida/selloop/selloop-reels-01-ambiente-de-atendimento.mp4
+   ```
+
+Como a edição vertical é montada (`remotion/selloop/reel/`):
+
+- `base.ts`: as zonas do quadro (marca, título, janela, legenda, dentro da área segura do Reels) e a
+  câmera, uma lista de alvos no tempo da gravação que `alvosDaGravacao` tira dos cliques, da digitação e
+  dos recortes.
+- `montagemReel.ts`: `criarGrupos` monta cada momento a partir da fala (a velocidade da tela se ajusta à
+  narração) e `salto(bloco, nome, opções)` agenda um recorte saindo do lugar exato onde está na tela.
+- `Reel.tsx`: a composição (fundo, janela, recortes, camadas, títulos, legenda, encerramento e áudio).
+- `Recorte.tsx`, `Efeitos.tsx`, `Texto.tsx`, `Palco.tsx`, `Icones.tsx`: as peças de motion design
+  (salto com brilho, selos, logos dos canais, confete, estrelas, contador, título e legenda animados).
+- `NoiteReel.tsx`: as duas cenas de celular do Reel 3 (o áudio do cliente e a resposta da Lia em áudio).
+
 ## Cenários da demo
 
 - **Dia** (vídeos 1 e 2): terça, 10/11/2026, 10:32. Caixa com as quatro equipes, campanhas dos últimos 30 dias.

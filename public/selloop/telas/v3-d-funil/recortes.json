@@ -1,0 +1,16 @@
+{
+ "cena": "v3-d-funil",
+ "largura": 1600,
+ "altura": 900,
+ "escala": 3,
+ "recortes": {
+  "card": {
+   "caixa": {
+    "x": 109,
+    "y": 287.64,
+    "w": 290,
+    "h": 146.75
+   }
+  }
+ }
+}

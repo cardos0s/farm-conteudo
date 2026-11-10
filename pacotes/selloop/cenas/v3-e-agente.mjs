@@ -1,6 +1,6 @@
 // Vídeo 3 · cena E: a configuração da Lia no Agente Hub: conhecimento, habilidades, tom e a voz
 // da resposta em áudio.
-import { cenaDemo, NOITE } from "./comum.mjs";
+import { blocoDe, cenaDemo, NOITE } from "./comum.mjs";
 
 export default cenaDemo({
   nome: "v3-e-agente",
@@ -17,21 +17,37 @@ export default cenaDemo({
     await g.clicar(menu("Conhecimento"), { depois: 600 });
     await g.mover(page.getByText("Tabela de preços · dezembro 2026.pdf").first());
     await g.esperar(500);
+    await g.recorte(
+      [blocoDe(page.getByText("Tabela de preços · dezembro 2026.pdf").first(), { largura: 300, altura: 44 }), blocoDe(page.getByText("novarota.com.br").first(), { largura: 300, altura: 44 })],
+      "conhecimento",
+      { margem: 8, semMouse: true },
+    );
     g.marca("habilidades");
     await g.clicar(menu("Habilidades"), { depois: 400 });
     await g.mover({ x: 1100, y: 620 });
     await g.rolar(650, { dur: 0.7 });
     await g.foco(page.getByText("Criar Card no CRM").first(), "crm");
+    await g.recorte(
+      [blocoDe(page.getByText("Agendar Reunião").first(), { largura: 500, altura: 50 }), blocoDe(page.getByText("Criar Card no CRM").first(), { largura: 500, altura: 50 })],
+      "habilidades",
+      { margem: 8 },
+    );
     g.marca("tom");
     await g.clicar(menu("Perfil"), { depois: 450 });
     await g.mover(page.getByText("Tom de Comunicação").first());
     await g.esperar(300);
+    await g.recorte(
+      [blocoDe(page.getByText("Tom de Comunicação").first(), { largura: 500, altura: 40 }), blocoDe(page.getByText("Emojis", { exact: true }).first(), { largura: 500, altura: 40 })],
+      "tom",
+      { margem: 10, semMouse: true },
+    );
     g.marca("voz");
     await g.mover({ x: 1100, y: 620 });
     await g.rolar(520, { dur: 0.6 });
     await g.foco(page.getByText("Resposta em Áudio").first(), "voz");
     await g.mover(page.getByText("Resposta em Áudio").first());
     await g.esperar(2600);
+    await g.recorte(blocoDe(page.getByText("Resposta em Áudio").first(), { largura: 500, altura: 80 }), "voz", { margem: 10, semMouse: true });
     g.marca("fim");
   },
 });

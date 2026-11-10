@@ -23,6 +23,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 import urllib.error
 import urllib.request
@@ -46,6 +47,16 @@ def falar(texto, voz, modelo, ajustes):
             return json.load(r)
     except urllib.error.HTTPError as e:
         raise SystemExit(f"ElevenLabs recusou a fala ({e.code}): {e.read()[:300]!r}")
+
+
+def nivel_medio(mp3):
+    """Volume médio do arquivo em dB (ffmpeg volumedetect); None se o ffmpeg não estiver disponível."""
+    try:
+        r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", mp3, "-af", "volumedetect", "-f", "null", "-"], capture_output=True, text=True)
+        m = re.search(r"mean_volume: ([-\d.]+)", r.stderr)
+        return float(m.group(1)) if m else None
+    except OSError:
+        return None
 
 
 def falado_com_mapa(texto, pronuncia):
@@ -133,6 +144,10 @@ def principal():
         }
         resultado.append(item)
         print(f"+ {f['id']} · {item['duracao']:.1f} s · {len(legendas)} legendas")
+    # nível médio de cada fala (dB): a montagem usa para deixar todas no mesmo volume
+    for item in resultado:
+        if "nivel" not in item:
+            item["nivel"] = nivel_medio(os.path.join(saida, item["arquivo"]))
     json.dump({"modelo": modelo, "falas": resultado}, open(manifesto_arq, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(f"Manifesto: {manifesto_arq}")
 

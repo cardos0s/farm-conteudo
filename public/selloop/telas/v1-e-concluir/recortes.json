@@ -1,0 +1,32 @@
+{
+ "cena": "v1-e-concluir",
+ "largura": 1600,
+ "altura": 900,
+ "escala": 3,
+ "recortes": {
+  "concluir": {
+   "caixa": {
+    "x": 608,
+    "y": 345,
+    "w": 384,
+    "h": 210
+   }
+  },
+  "pesquisa": {
+   "caixa": {
+    "x": 1130.13,
+    "y": 590,
+    "w": 428.88,
+    "h": 98
+   }
+  },
+  "avaliacao": {
+   "caixa": {
+    "x": 854.06,
+    "y": 690,
+    "w": 295.86,
+    "h": 35.39
+   }
+  }
+ }
+}

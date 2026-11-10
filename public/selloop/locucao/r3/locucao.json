@@ -1,0 +1,1048 @@
+{
+ "modelo": "eleven_v3",
+ "falas": [
+  {
+   "id": "fabio-01",
+   "voz": "fabio",
+   "texto": "Opa, boa noite! Vocês entregam lá em Joinville? Tô precisando de quarenta fardos de refrigerante até sexta.",
+   "arquivo": "fabio-01.mp3",
+   "duracao": 5.52,
+   "palavras": [
+    {
+     "texto": "Opa,",
+     "de": 0.0,
+     "ate": 0.32
+    },
+    {
+     "texto": "boa",
+     "de": 0.34,
+     "ate": 0.4
+    },
+    {
+     "texto": "noite!",
+     "de": 0.453,
+     "ate": 1.04
+    },
+    {
+     "texto": "Vocês",
+     "de": 1.1,
+     "ate": 1.36
+    },
+    {
+     "texto": "entregam",
+     "de": 1.406,
+     "ate": 1.76
+    },
+    {
+     "texto": "lá",
+     "de": 1.787,
+     "ate": 1.84
+    },
+    {
+     "texto": "em",
+     "de": 1.867,
+     "ate": 1.92
+    },
+    {
+     "texto": "Joinville?",
+     "de": 1.968,
+     "ate": 2.64
+    },
+    {
+     "texto": "Tô",
+     "de": 2.68,
+     "ate": 2.88
+    },
+    {
+     "texto": "precisando",
+     "de": 2.903,
+     "ate": 3.2
+    },
+    {
+     "texto": "de",
+     "de": 3.253,
+     "ate": 3.36
+    },
+    {
+     "texto": "quarenta",
+     "de": 3.413,
+     "ate": 3.681
+    },
+    {
+     "texto": "fardos",
+     "de": 3.76,
+     "ate": 4.08
+    },
+    {
+     "texto": "de",
+     "de": 4.107,
+     "ate": 4.16
+    },
+    {
+     "texto": "refrigerante",
+     "de": 4.213,
+     "ate": 4.8
+    },
+    {
+     "texto": "até",
+     "de": 4.84,
+     "ate": 4.96
+    },
+    {
+     "texto": "sexta.",
+     "de": 5.04,
+     "ate": 5.52
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Opa, boa noite!",
+     "de": 0.0,
+     "ate": 1.1
+    },
+    {
+     "texto": "Vocês entregam lá em Joinville?",
+     "de": 1.1,
+     "ate": 2.68
+    },
+    {
+     "texto": "Tô precisando de quarenta fardos de refrigerante até",
+     "de": 2.68,
+     "ate": 5.04
+    },
+    {
+     "texto": "sexta.",
+     "de": 5.04,
+     "ate": 5.52
+    }
+   ],
+   "assinatura": "29357d058bab",
+   "nivel": -16.6
+  },
+  {
+   "id": "lia-01",
+   "voz": "lia",
+   "texto": "Boa noite, Fábio! Entregamos em Joinville, sim. Pra quarenta fardos, consigo entregar já na quinta. Te mando o orçamento?",
+   "arquivo": "lia-01.mp3",
+   "duracao": 10.4,
+   "palavras": [
+    {
+     "texto": "Boa",
+     "de": 0.0,
+     "ate": 0.16
+    },
+    {
+     "texto": "noite,",
+     "de": 0.24,
+     "ate": 0.72
+    },
+    {
+     "texto": "Fábio!",
+     "de": 0.8,
+     "ate": 1.64
+    },
+    {
+     "texto": "Entregamos",
+     "de": 1.71,
+     "ate": 2.48
+    },
+    {
+     "texto": "em",
+     "de": 2.533,
+     "ate": 2.64
+    },
+    {
+     "texto": "Joinville,",
+     "de": 2.72,
+     "ate": 3.44
+    },
+    {
+     "texto": "sim.",
+     "de": 3.56,
+     "ate": 4.0
+    },
+    {
+     "texto": "Pra",
+     "de": 4.18,
+     "ate": 4.72
+    },
+    {
+     "texto": "quarenta",
+     "de": 4.773,
+     "ate": 5.28
+    },
+    {
+     "texto": "fardos,",
+     "de": 5.4,
+     "ate": 6.08
+    },
+    {
+     "texto": "consigo",
+     "de": 6.128,
+     "ate": 6.48
+    },
+    {
+     "texto": "entregar",
+     "de": 6.52,
+     "ate": 7.12
+    },
+    {
+     "texto": "já",
+     "de": 7.227,
+     "ate": 7.44
+    },
+    {
+     "texto": "na",
+     "de": 7.493,
+     "ate": 7.6
+    },
+    {
+     "texto": "quinta.",
+     "de": 7.68,
+     "ate": 8.6
+    },
+    {
+     "texto": "Te",
+     "de": 8.72,
+     "ate": 8.96
+    },
+    {
+     "texto": "mando",
+     "de": 9.0,
+     "ate": 9.2
+    },
+    {
+     "texto": "o",
+     "de": 9.24,
+     "ate": 9.28
+    },
+    {
+     "texto": "orçamento?",
+     "de": 9.333,
+     "ate": 10.4
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Boa noite, Fábio!",
+     "de": 0.0,
+     "ate": 1.71
+    },
+    {
+     "texto": "Entregamos em Joinville, sim.",
+     "de": 1.71,
+     "ate": 4.18
+    },
+    {
+     "texto": "Pra quarenta fardos, consigo entregar já na quinta.",
+     "de": 4.18,
+     "ate": 8.72
+    },
+    {
+     "texto": "Te mando o orçamento?",
+     "de": 8.72,
+     "ate": 10.4
+    }
+   ],
+   "assinatura": "dbb74dbed280",
+   "nivel": -15.6
+  },
+  {
+   "id": "v3-01",
+   "voz": "narrador",
+   "texto": "São 23h47. O seu time já foi para casa. E um cliente acabou de mandar um áudio.",
+   "arquivo": "v3-01.mp3",
+   "duracao": 6.08,
+   "palavras": [
+    {
+     "texto": "São",
+     "de": 0.0,
+     "ate": 0.24
+    },
+    {
+     "texto": "23h47.",
+     "de": 0.288,
+     "ate": 2.08
+    },
+    {
+     "texto": "O",
+     "de": 2.14,
+     "ate": 2.2
+    },
+    {
+     "texto": "seu",
+     "de": 2.23,
+     "ate": 2.32
+    },
+    {
+     "texto": "time",
+     "de": 2.368,
+     "ate": 2.56
+    },
+    {
+     "texto": "já",
+     "de": 2.613,
+     "ate": 2.72
+    },
+    {
+     "texto": "foi",
+     "de": 2.76,
+     "ate": 2.88
+    },
+    {
+     "texto": "para",
+     "de": 2.912,
+     "ate": 3.04
+    },
+    {
+     "texto": "casa.",
+     "de": 3.136,
+     "ate": 4.08
+    },
+    {
+     "texto": "E",
+     "de": 4.12,
+     "ate": 4.16
+    },
+    {
+     "texto": "um",
+     "de": 4.187,
+     "ate": 4.24
+    },
+    {
+     "texto": "cliente",
+     "de": 4.3,
+     "ate": 4.72
+    },
+    {
+     "texto": "acabou",
+     "de": 4.768,
+     "ate": 5.12
+    },
+    {
+     "texto": "de",
+     "de": 5.173,
+     "ate": 5.28
+    },
+    {
+     "texto": "mandar",
+     "de": 5.312,
+     "ate": 5.52
+    },
+    {
+     "texto": "um",
+     "de": 5.573,
+     "ate": 5.68
+    },
+    {
+     "texto": "áudio.",
+     "de": 5.72,
+     "ate": 6.08
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "São 23h47.",
+     "de": 0.0,
+     "ate": 2.14
+    },
+    {
+     "texto": "O seu time já foi para casa.",
+     "de": 2.14,
+     "ate": 4.12
+    },
+    {
+     "texto": "E um cliente acabou de mandar um áudio.",
+     "de": 4.12,
+     "ate": 6.08
+    }
+   ],
+   "assinatura": "d8df6820606e",
+   "nivel": -18.0
+  },
+  {
+   "id": "v3-02",
+   "voz": "narrador",
+   "texto": "Quem responde é a Lia, a agente inteligente da Nova Rota. Ela entende o áudio e responde em áudio, com voz natural.",
+   "arquivo": "v3-02.mp3",
+   "duracao": 7.36,
+   "palavras": [
+    {
+     "texto": "Quem",
+     "de": 0.0,
+     "ate": 0.16
+    },
+    {
+     "texto": "responde",
+     "de": 0.22,
+     "ate": 0.72
+    },
+    {
+     "texto": "é",
+     "de": 0.76,
+     "ate": 0.8
+    },
+    {
+     "texto": "a",
+     "de": 0.84,
+     "ate": 0.88
+    },
+    {
+     "texto": "Lia,",
+     "de": 0.98,
+     "ate": 1.6
+    },
+    {
+     "texto": "a",
+     "de": 1.64,
+     "ate": 1.68
+    },
+    {
+     "texto": "agente",
+     "de": 1.733,
+     "ate": 2.08
+    },
+    {
+     "texto": "inteligente",
+     "de": 2.13,
+     "ate": 2.72
+    },
+    {
+     "texto": "da",
+     "de": 2.747,
+     "ate": 2.8
+    },
+    {
+     "texto": "Nova",
+     "de": 2.864,
+     "ate": 3.12
+    },
+    {
+     "texto": "Rota.",
+     "de": 3.24,
+     "ate": 3.68
+    },
+    {
+     "texto": "Ela",
+     "de": 3.813,
+     "ate": 4.16
+    },
+    {
+     "texto": "entende",
+     "de": 4.2,
+     "ate": 4.64
+    },
+    {
+     "texto": "o",
+     "de": 4.68,
+     "ate": 4.72
+    },
+    {
+     "texto": "áudio",
+     "de": 4.8,
+     "ate": 5.12
+    },
+    {
+     "texto": "e",
+     "de": 5.2,
+     "ate": 5.28
+    },
+    {
+     "texto": "responde",
+     "de": 5.34,
+     "ate": 5.76
+    },
+    {
+     "texto": "em",
+     "de": 5.813,
+     "ate": 5.92
+    },
+    {
+     "texto": "áudio,",
+     "de": 5.96,
+     "ate": 6.32
+    },
+    {
+     "texto": "com",
+     "de": 6.36,
+     "ate": 6.48
+    },
+    {
+     "texto": "voz",
+     "de": 6.56,
+     "ate": 6.8
+    },
+    {
+     "texto": "natural.",
+     "de": 6.86,
+     "ate": 7.36
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Quem responde é a Lia, a agente inteligente da Nova Rota.",
+     "de": 0.0,
+     "ate": 3.813
+    },
+    {
+     "texto": "Ela entende o áudio e responde em áudio, com voz natural.",
+     "de": 3.813,
+     "ate": 7.36
+    }
+   ],
+   "assinatura": "0fd255d20580",
+   "nivel": -17.1
+  },
+  {
+   "id": "v3-03",
+   "voz": "narrador",
+   "texto": "A Lia atende 24 horas por dia, no WhatsApp, no Instagram e no Messenger da empresa.",
+   "arquivo": "v3-03.mp3",
+   "duracao": 5.28,
+   "palavras": [
+    {
+     "texto": "A",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "Lia",
+     "de": 0.12,
+     "ate": 0.24
+    },
+    {
+     "texto": "atende",
+     "de": 0.293,
+     "ate": 0.72
+    },
+    {
+     "texto": "24",
+     "de": 1.0,
+     "ate": 1.28
+    },
+    {
+     "texto": "horas",
+     "de": 1.32,
+     "ate": 1.52
+    },
+    {
+     "texto": "por",
+     "de": 1.58,
+     "ate": 1.76
+    },
+    {
+     "texto": "dia,",
+     "de": 1.86,
+     "ate": 2.16
+    },
+    {
+     "texto": "no",
+     "de": 2.213,
+     "ate": 2.32
+    },
+    {
+     "texto": "WhatsApp,",
+     "de": 2.382,
+     "ate": 2.96
+    },
+    {
+     "texto": "no",
+     "de": 2.987,
+     "ate": 3.04
+    },
+    {
+     "texto": "Instagram",
+     "de": 3.096,
+     "ate": 3.6
+    },
+    {
+     "texto": "e",
+     "de": 3.68,
+     "ate": 3.76
+    },
+    {
+     "texto": "no",
+     "de": 3.813,
+     "ate": 3.92
+    },
+    {
+     "texto": "Messenger",
+     "de": 3.976,
+     "ate": 4.48
+    },
+    {
+     "texto": "da",
+     "de": 4.507,
+     "ate": 4.56
+    },
+    {
+     "texto": "empresa.",
+     "de": 4.63,
+     "ate": 5.28
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "A Lia atende 24 horas por dia, no WhatsApp, no Instagram e",
+     "de": 0.0,
+     "ate": 3.813
+    },
+    {
+     "texto": "no Messenger da empresa.",
+     "de": 3.813,
+     "ate": 5.28
+    }
+   ],
+   "assinatura": "c588588f442c",
+   "nivel": -18.0
+  },
+  {
+   "id": "v3-04",
+   "voz": "narrador",
+   "texto": "E não fica só na conversa: ela manda o orçamento,",
+   "arquivo": "v3-04.mp3",
+   "duracao": 2.96,
+   "palavras": [
+    {
+     "texto": "E",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "não",
+     "de": 0.1,
+     "ate": 0.16
+    },
+    {
+     "texto": "fica",
+     "de": 0.208,
+     "ate": 0.4
+    },
+    {
+     "texto": "só",
+     "de": 0.453,
+     "ate": 0.56
+    },
+    {
+     "texto": "na",
+     "de": 0.587,
+     "ate": 0.64
+    },
+    {
+     "texto": "conversa:",
+     "de": 0.71,
+     "ate": 1.52
+    },
+    {
+     "texto": "ela",
+     "de": 1.58,
+     "ate": 1.76
+    },
+    {
+     "texto": "manda",
+     "de": 1.8,
+     "ate": 2.08
+    },
+    {
+     "texto": "o",
+     "de": 2.12,
+     "ate": 2.16
+    },
+    {
+     "texto": "orçamento,",
+     "de": 2.213,
+     "ate": 2.96
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "E não fica só na conversa: ela manda o orçamento,",
+     "de": 0.0,
+     "ate": 2.96
+    }
+   ],
+   "assinatura": "eee98972761b",
+   "nivel": -17.1
+  },
+  {
+   "id": "v3-05",
+   "voz": "narrador",
+   "texto": "marca a visita na agenda do vendedor,",
+   "arquivo": "v3-05.mp3",
+   "duracao": 2.0,
+   "palavras": [
+    {
+     "texto": "marca",
+     "de": 0.0,
+     "ate": 0.32
+    },
+    {
+     "texto": "a",
+     "de": 0.42,
+     "ate": 0.52
+    },
+    {
+     "texto": "visita",
+     "de": 0.549,
+     "ate": 0.72
+    },
+    {
+     "texto": "na",
+     "de": 0.773,
+     "ate": 0.88
+    },
+    {
+     "texto": "agenda",
+     "de": 0.926,
+     "ate": 1.2
+    },
+    {
+     "texto": "do",
+     "de": 1.227,
+     "ate": 1.28
+    },
+    {
+     "texto": "vendedor,",
+     "de": 1.32,
+     "ate": 2.0
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "marca a visita na agenda do vendedor,",
+     "de": 0.0,
+     "ate": 2.0
+    }
+   ],
+   "assinatura": "a3733b5e8275",
+   "nivel": -17.1
+  },
+  {
+   "id": "v3-06",
+   "voz": "narrador",
+   "texto": "cria a oportunidade no CRM",
+   "arquivo": "v3-06.mp3",
+   "duracao": 2.32,
+   "palavras": [
+    {
+     "texto": "cria",
+     "de": 0.0,
+     "ate": 0.24
+    },
+    {
+     "texto": "a",
+     "de": 0.28,
+     "ate": 0.32
+    },
+    {
+     "texto": "oportunidade",
+     "de": 0.38,
+     "ate": 1.28
+    },
+    {
+     "texto": "no",
+     "de": 1.307,
+     "ate": 1.36
+    },
+    {
+     "texto": "CRM",
+     "de": 1.56,
+     "ate": 2.32
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "cria a oportunidade no CRM",
+     "de": 0.0,
+     "ate": 2.32
+    }
+   ],
+   "assinatura": "fa76e01e5537",
+   "nivel": -16.2
+  },
+  {
+   "id": "v3-07",
+   "voz": "narrador",
+   "texto": "e, quando o assunto pede uma pessoa, transfere para a equipe certa, com o resumo da conversa.",
+   "arquivo": "v3-07.mp3",
+   "duracao": 4.8,
+   "palavras": [
+    {
+     "texto": "e,",
+     "de": 0.0,
+     "ate": 0.16
+    },
+    {
+     "texto": "quando",
+     "de": 0.183,
+     "ate": 0.32
+    },
+    {
+     "texto": "o",
+     "de": 0.36,
+     "ate": 0.4
+    },
+    {
+     "texto": "assunto",
+     "de": 0.46,
+     "ate": 0.88
+    },
+    {
+     "texto": "pede",
+     "de": 0.92,
+     "ate": 1.12
+    },
+    {
+     "texto": "uma",
+     "de": 1.14,
+     "ate": 1.2
+    },
+    {
+     "texto": "pessoa,",
+     "de": 1.28,
+     "ate": 1.92
+    },
+    {
+     "texto": "transfere",
+     "de": 1.966,
+     "ate": 2.4
+    },
+    {
+     "texto": "para",
+     "de": 2.432,
+     "ate": 2.56
+    },
+    {
+     "texto": "a",
+     "de": 2.64,
+     "ate": 2.72
+    },
+    {
+     "texto": "equipe",
+     "de": 2.743,
+     "ate": 2.88
+    },
+    {
+     "texto": "certa,",
+     "de": 2.96,
+     "ate": 3.44
+    },
+    {
+     "texto": "com",
+     "de": 3.46,
+     "ate": 3.52
+    },
+    {
+     "texto": "o",
+     "de": 3.56,
+     "ate": 3.6
+    },
+    {
+     "texto": "resumo",
+     "de": 3.68,
+     "ate": 4.08
+    },
+    {
+     "texto": "da",
+     "de": 4.107,
+     "ate": 4.16
+    },
+    {
+     "texto": "conversa.",
+     "de": 4.22,
+     "ate": 4.8
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "e, quando o assunto pede uma pessoa,",
+     "de": 0.0,
+     "ate": 1.966
+    },
+    {
+     "texto": "transfere para a equipe certa, com o resumo da conversa.",
+     "de": 1.966,
+     "ate": 4.8
+    }
+   ],
+   "assinatura": "b9a41a90e6f3",
+   "nivel": -17.7
+  },
+  {
+   "id": "v3-08",
+   "voz": "narrador",
+   "texto": "Você treina a Lia com o que a sua empresa sabe, escolhe as habilidades, o tom e a voz.",
+   "arquivo": "v3-08.mp3",
+   "duracao": 5.6,
+   "palavras": [
+    {
+     "texto": "Você",
+     "de": 0.0,
+     "ate": 0.24
+    },
+    {
+     "texto": "treina",
+     "de": 0.3,
+     "ate": 0.56
+    },
+    {
+     "texto": "a",
+     "de": 0.6,
+     "ate": 0.64
+    },
+    {
+     "texto": "Lia",
+     "de": 0.72,
+     "ate": 0.96
+    },
+    {
+     "texto": "com",
+     "de": 1.02,
+     "ate": 1.2
+    },
+    {
+     "texto": "o",
+     "de": 1.24,
+     "ate": 1.28
+    },
+    {
+     "texto": "que",
+     "de": 1.3,
+     "ate": 1.36
+    },
+    {
+     "texto": "a",
+     "de": 1.4,
+     "ate": 1.44
+    },
+    {
+     "texto": "sua",
+     "de": 1.48,
+     "ate": 1.6
+    },
+    {
+     "texto": "empresa",
+     "de": 1.65,
+     "ate": 2.0
+    },
+    {
+     "texto": "sabe,",
+     "de": 2.096,
+     "ate": 2.8
+    },
+    {
+     "texto": "escolhe",
+     "de": 2.853,
+     "ate": 3.2
+    },
+    {
+     "texto": "as",
+     "de": 3.227,
+     "ate": 3.28
+    },
+    {
+     "texto": "habilidades,",
+     "de": 3.32,
+     "ate": 4.24
+    },
+    {
+     "texto": "o",
+     "de": 4.28,
+     "ate": 4.32
+    },
+    {
+     "texto": "tom",
+     "de": 4.42,
+     "ate": 4.72
+    },
+    {
+     "texto": "e",
+     "de": 4.84,
+     "ate": 4.96
+    },
+    {
+     "texto": "a",
+     "de": 5.0,
+     "ate": 5.04
+    },
+    {
+     "texto": "voz.",
+     "de": 5.16,
+     "ate": 5.6
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Você treina a Lia com o que a sua empresa sabe,",
+     "de": 0.0,
+     "ate": 2.853
+    },
+    {
+     "texto": "escolhe as habilidades, o tom e a voz.",
+     "de": 2.853,
+     "ate": 5.6
+    }
+   ],
+   "assinatura": "de3f44920390",
+   "nivel": -19.0
+  },
+  {
+   "id": "v3-09",
+   "voz": "narrador",
+   "texto": "Selloop. Atendimento inteligente, 24 horas por dia.",
+   "arquivo": "v3-09.mp3",
+   "duracao": 3.92,
+   "palavras": [
+    {
+     "texto": "Selloop.",
+     "de": 0.0,
+     "ate": 0.88
+    },
+    {
+     "texto": "Atendimento",
+     "de": 0.933,
+     "ate": 1.44
+    },
+    {
+     "texto": "inteligente,",
+     "de": 1.5,
+     "ate": 2.4
+    },
+    {
+     "texto": "24",
+     "de": 2.68,
+     "ate": 2.96
+    },
+    {
+     "texto": "horas",
+     "de": 3.0,
+     "ate": 3.2
+    },
+    {
+     "texto": "por",
+     "de": 3.26,
+     "ate": 3.44
+    },
+    {
+     "texto": "dia.",
+     "de": 3.54,
+     "ate": 3.92
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Selloop.",
+     "de": 0.0,
+     "ate": 0.933
+    },
+    {
+     "texto": "Atendimento inteligente, 24 horas por dia.",
+     "de": 0.933,
+     "ate": 3.92
+    }
+   ],
+   "assinatura": "2d177eb9ef62",
+   "nivel": -17.1
+  }
+ ]
+}

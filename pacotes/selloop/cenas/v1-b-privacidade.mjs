@@ -11,6 +11,9 @@ export default cenaDemo({
     await g.esperar(700);
     g.marca("meus");
     await g.clicar("button[aria-label=Meus]", { depois: 1400 });
+    // as abas do atendente (sem "Todos") e as conversas dele
+    await g.recorte([page.locator("button[aria-label=Novos]"), page.locator("button[aria-label=Concluídos]")], "abas", { margem: 8, semMouse: true });
+    await g.recorte(page.locator("ul").filter({ has: page.getByText("Marina Costa") }).last(), "meus");
     await g.mover(page.getByText("Marina Costa").first());
     await g.esperar(1500);
   },

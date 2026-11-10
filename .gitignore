@@ -8,3 +8,5 @@ public/aulas/
 public/selloop/telas/**/*.mp4
 # Trilha do pack Selloop: gerada por scripts/telas/trilha.py
 public/selloop/sons/trilha.wav
+# Captura de diagnóstico de scripts/telas/recortar.mjs quando uma cena falha
+public/selloop/telas/**/recortes-erro.png

@@ -1,0 +1,1179 @@
+{
+ "modelo": "eleven_v3",
+ "falas": [
+  {
+   "id": "v2-01",
+   "voz": "narrador",
+   "texto": "Com as campanhas da Selloop, a mensagem certa chega a centenas de clientes de uma vez, pelo WhatsApp oficial.",
+   "arquivo": "v2-01.mp3",
+   "duracao": 6.0,
+   "palavras": [
+    {
+     "texto": "Com",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "as",
+     "de": 0.133,
+     "ate": 0.24
+    },
+    {
+     "texto": "campanhas",
+     "de": 0.28,
+     "ate": 0.64
+    },
+    {
+     "texto": "da",
+     "de": 0.667,
+     "ate": 0.72
+    },
+    {
+     "texto": "Selloop,",
+     "de": 0.784,
+     "ate": 1.52
+    },
+    {
+     "texto": "a",
+     "de": 1.56,
+     "ate": 1.6
+    },
+    {
+     "texto": "mensagem",
+     "de": 1.662,
+     "ate": 2.16
+    },
+    {
+     "texto": "certa",
+     "de": 2.224,
+     "ate": 2.56
+    },
+    {
+     "texto": "chega",
+     "de": 2.6,
+     "ate": 2.8
+    },
+    {
+     "texto": "a",
+     "de": 2.84,
+     "ate": 2.88
+    },
+    {
+     "texto": "centenas",
+     "de": 2.944,
+     "ate": 3.44
+    },
+    {
+     "texto": "de",
+     "de": 3.493,
+     "ate": 3.6
+    },
+    {
+     "texto": "clientes",
+     "de": 3.644,
+     "ate": 4.0
+    },
+    {
+     "texto": "de",
+     "de": 4.027,
+     "ate": 4.08
+    },
+    {
+     "texto": "uma",
+     "de": 4.12,
+     "ate": 4.24
+    },
+    {
+     "texto": "vez,",
+     "de": 4.34,
+     "ate": 4.72
+    },
+    {
+     "texto": "pelo",
+     "de": 4.752,
+     "ate": 4.88
+    },
+    {
+     "texto": "WhatsApp",
+     "de": 4.933,
+     "ate": 5.36
+    },
+    {
+     "texto": "oficial.",
+     "de": 5.42,
+     "ate": 6.0
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Com as campanhas da Selloop,",
+     "de": 0.0,
+     "ate": 1.56
+    },
+    {
+     "texto": "a mensagem certa chega a centenas de clientes de uma vez,",
+     "de": 1.56,
+     "ate": 4.752
+    },
+    {
+     "texto": "pelo WhatsApp oficial.",
+     "de": 4.752,
+     "ate": 6.0
+    }
+   ],
+   "assinatura": "6726b7cac90d",
+   "nivel": -18.7
+  },
+  {
+   "id": "v2-02",
+   "voz": "narrador",
+   "texto": "Você dá um nome, escolhe a equipe e o número que vai disparar.",
+   "arquivo": "v2-02.mp3",
+   "duracao": 3.36,
+   "palavras": [
+    {
+     "texto": "Você",
+     "de": 0.0,
+     "ate": 0.24
+    },
+    {
+     "texto": "dá",
+     "de": 0.293,
+     "ate": 0.4
+    },
+    {
+     "texto": "um",
+     "de": 0.427,
+     "ate": 0.48
+    },
+    {
+     "texto": "nome,",
+     "de": 0.56,
+     "ate": 0.96
+    },
+    {
+     "texto": "escolhe",
+     "de": 1.027,
+     "ate": 1.4
+    },
+    {
+     "texto": "a",
+     "de": 1.42,
+     "ate": 1.44
+    },
+    {
+     "texto": "equipe",
+     "de": 1.509,
+     "ate": 1.92
+    },
+    {
+     "texto": "e",
+     "de": 2.0,
+     "ate": 2.08
+    },
+    {
+     "texto": "o",
+     "de": 2.12,
+     "ate": 2.16
+    },
+    {
+     "texto": "número",
+     "de": 2.206,
+     "ate": 2.48
+    },
+    {
+     "texto": "que",
+     "de": 2.5,
+     "ate": 2.56
+    },
+    {
+     "texto": "vai",
+     "de": 2.6,
+     "ate": 2.72
+    },
+    {
+     "texto": "disparar.",
+     "de": 2.777,
+     "ate": 3.36
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Você dá um nome, escolhe a equipe e",
+     "de": 0.0,
+     "ate": 2.12
+    },
+    {
+     "texto": "o número que vai disparar.",
+     "de": 2.12,
+     "ate": 3.36
+    }
+   ],
+   "assinatura": "acbab0afbfca",
+   "nivel": -15.8
+  },
+  {
+   "id": "v2-03",
+   "voz": "narrador",
+   "texto": "O público sai da sua carteira: por tag, segmento ou cidade.",
+   "arquivo": "v2-03.mp3",
+   "duracao": 4.32,
+   "palavras": [
+    {
+     "texto": "O",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "público",
+     "de": 0.14,
+     "ate": 0.56
+    },
+    {
+     "texto": "sai",
+     "de": 0.62,
+     "ate": 0.8
+    },
+    {
+     "texto": "da",
+     "de": 0.827,
+     "ate": 0.88
+    },
+    {
+     "texto": "sua",
+     "de": 0.94,
+     "ate": 1.12
+    },
+    {
+     "texto": "carteira:",
+     "de": 1.173,
+     "ate": 1.92
+    },
+    {
+     "texto": "por",
+     "de": 1.94,
+     "ate": 2.0
+    },
+    {
+     "texto": "tag,",
+     "de": 2.12,
+     "ate": 2.64
+    },
+    {
+     "texto": "segmento",
+     "de": 2.72,
+     "ate": 3.36
+    },
+    {
+     "texto": "ou",
+     "de": 3.467,
+     "ate": 3.68
+    },
+    {
+     "texto": "cidade.",
+     "de": 3.749,
+     "ate": 4.32
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "O público sai da sua carteira: por tag,",
+     "de": 0.0,
+     "ate": 2.72
+    },
+    {
+     "texto": "segmento ou cidade.",
+     "de": 2.72,
+     "ate": 4.32
+    }
+   ],
+   "assinatura": "ca19b5eb4328",
+   "nivel": -17.5
+  },
+  {
+   "id": "v2-04",
+   "voz": "narrador",
+   "texto": "E antes de enviar, a Selloop confere quem tem WhatsApp.",
+   "arquivo": "v2-04.mp3",
+   "duracao": 3.04,
+   "palavras": [
+    {
+     "texto": "E",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "antes",
+     "de": 0.12,
+     "ate": 0.32
+    },
+    {
+     "texto": "de",
+     "de": 0.347,
+     "ate": 0.4
+    },
+    {
+     "texto": "enviar,",
+     "de": 0.457,
+     "ate": 0.96
+    },
+    {
+     "texto": "a",
+     "de": 1.0,
+     "ate": 1.04
+    },
+    {
+     "texto": "Selloop",
+     "de": 1.088,
+     "ate": 1.52
+    },
+    {
+     "texto": "confere",
+     "de": 1.568,
+     "ate": 2.0
+    },
+    {
+     "texto": "quem",
+     "de": 2.032,
+     "ate": 2.16
+    },
+    {
+     "texto": "tem",
+     "de": 2.22,
+     "ate": 2.4
+    },
+    {
+     "texto": "WhatsApp.",
+     "de": 2.462,
+     "ate": 3.04
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "E antes de enviar, a Selloop confere quem tem WhatsApp.",
+     "de": 0.0,
+     "ate": 3.04
+    }
+   ],
+   "assinatura": "fe8deff8c10c",
+   "nivel": -17.1
+  },
+  {
+   "id": "v2-05",
+   "voz": "narrador",
+   "texto": "Agende o disparo para o melhor horário, com intervalo e limite por dia.",
+   "arquivo": "v2-05.mp3",
+   "duracao": 3.92,
+   "palavras": [
+    {
+     "texto": "Agende",
+     "de": 0.0,
+     "ate": 0.4
+    },
+    {
+     "texto": "o",
+     "de": 0.5,
+     "ate": 0.6
+    },
+    {
+     "texto": "disparo",
+     "de": 0.629,
+     "ate": 0.88
+    },
+    {
+     "texto": "para",
+     "de": 0.912,
+     "ate": 1.04
+    },
+    {
+     "texto": "o",
+     "de": 1.12,
+     "ate": 1.2
+    },
+    {
+     "texto": "melhor",
+     "de": 1.223,
+     "ate": 1.36
+    },
+    {
+     "texto": "horário,",
+     "de": 1.4,
+     "ate": 1.92
+    },
+    {
+     "texto": "com",
+     "de": 1.96,
+     "ate": 2.08
+    },
+    {
+     "texto": "intervalo",
+     "de": 2.142,
+     "ate": 2.72
+    },
+    {
+     "texto": "e",
+     "de": 2.76,
+     "ate": 2.8
+    },
+    {
+     "texto": "limite",
+     "de": 2.869,
+     "ate": 3.28
+    },
+    {
+     "texto": "por",
+     "de": 3.32,
+     "ate": 3.44
+    },
+    {
+     "texto": "dia.",
+     "de": 3.52,
+     "ate": 3.92
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Agende o disparo para o melhor horário, com intervalo e",
+     "de": 0.0,
+     "ate": 2.869
+    },
+    {
+     "texto": "limite por dia.",
+     "de": 2.869,
+     "ate": 3.92
+    }
+   ],
+   "assinatura": "5928348947c7",
+   "nivel": -16.0
+  },
+  {
+   "id": "v2-06",
+   "voz": "narrador",
+   "texto": "A mensagem é um modelo aprovado pela Meta, com imagem, botões e o nome de cada cliente.",
+   "arquivo": "v2-06.mp3",
+   "duracao": 5.36,
+   "palavras": [
+    {
+     "texto": "A",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "mensagem",
+     "de": 0.142,
+     "ate": 0.64
+    },
+    {
+     "texto": "é",
+     "de": 0.68,
+     "ate": 0.72
+    },
+    {
+     "texto": "um",
+     "de": 0.747,
+     "ate": 0.8
+    },
+    {
+     "texto": "modelo",
+     "de": 0.846,
+     "ate": 1.12
+    },
+    {
+     "texto": "aprovado",
+     "de": 1.16,
+     "ate": 1.68
+    },
+    {
+     "texto": "pela",
+     "de": 1.728,
+     "ate": 1.92
+    },
+    {
+     "texto": "Meta,",
+     "de": 2.0,
+     "ate": 2.4
+    },
+    {
+     "texto": "com",
+     "de": 2.42,
+     "ate": 2.48
+    },
+    {
+     "texto": "imagem,",
+     "de": 2.571,
+     "ate": 3.2
+    },
+    {
+     "texto": "botões",
+     "de": 3.26,
+     "ate": 3.84
+    },
+    {
+     "texto": "e",
+     "de": 3.88,
+     "ate": 3.92
+    },
+    {
+     "texto": "o",
+     "de": 3.96,
+     "ate": 4.0
+    },
+    {
+     "texto": "nome",
+     "de": 4.064,
+     "ate": 4.32
+    },
+    {
+     "texto": "de",
+     "de": 4.373,
+     "ate": 4.48
+    },
+    {
+     "texto": "cada",
+     "de": 4.528,
+     "ate": 4.72
+    },
+    {
+     "texto": "cliente.",
+     "de": 4.79,
+     "ate": 5.36
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "A mensagem é um modelo aprovado pela Meta, com imagem,",
+     "de": 0.0,
+     "ate": 3.26
+    },
+    {
+     "texto": "botões e o nome de cada cliente.",
+     "de": 3.26,
+     "ate": 5.36
+    }
+   ],
+   "assinatura": "6c5195043c63",
+   "nivel": -17.5
+  },
+  {
+   "id": "v2-06b",
+   "voz": "narrador",
+   "texto": "Se o cliente não responder, a sequência manda um lembrete depois, no prazo que você definir.",
+   "arquivo": "v2-06b.mp3",
+   "duracao": 5.36,
+   "palavras": [
+    {
+     "texto": "Se",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "o",
+     "de": 0.12,
+     "ate": 0.16
+    },
+    {
+     "texto": "cliente",
+     "de": 0.22,
+     "ate": 0.64
+    },
+    {
+     "texto": "não",
+     "de": 0.68,
+     "ate": 0.8
+    },
+    {
+     "texto": "responder,",
+     "de": 0.864,
+     "ate": 1.52
+    },
+    {
+     "texto": "a",
+     "de": 1.56,
+     "ate": 1.6
+    },
+    {
+     "texto": "sequência",
+     "de": 1.664,
+     "ate": 2.16
+    },
+    {
+     "texto": "manda",
+     "de": 2.2,
+     "ate": 2.4
+    },
+    {
+     "texto": "um",
+     "de": 2.427,
+     "ate": 2.48
+    },
+    {
+     "texto": "lembrete",
+     "de": 2.507,
+     "ate": 3.04
+    },
+    {
+     "texto": "depois,",
+     "de": 3.12,
+     "ate": 3.84
+    },
+    {
+     "texto": "no",
+     "de": 3.893,
+     "ate": 4.0
+    },
+    {
+     "texto": "prazo",
+     "de": 4.053,
+     "ate": 4.32
+    },
+    {
+     "texto": "que",
+     "de": 4.34,
+     "ate": 4.4
+    },
+    {
+     "texto": "você",
+     "de": 4.48,
+     "ate": 4.8
+    },
+    {
+     "texto": "definir.",
+     "de": 4.853,
+     "ate": 5.36
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Se o cliente não responder,",
+     "de": 0.0,
+     "ate": 1.56
+    },
+    {
+     "texto": "a sequência manda um lembrete depois,",
+     "de": 1.56,
+     "ate": 3.893
+    },
+    {
+     "texto": "no prazo que você definir.",
+     "de": 3.893,
+     "ate": 5.36
+    }
+   ],
+   "assinatura": "585e82299041",
+   "nivel": -18.0
+  },
+  {
+   "id": "v2-07",
+   "voz": "narrador",
+   "texto": "Quando o cliente responde, quem atende pode ser o seu time ou o agente de IA, na hora.",
+   "arquivo": "v2-07.mp3",
+   "duracao": 5.2,
+   "palavras": [
+    {
+     "texto": "Quando",
+     "de": 0.0,
+     "ate": 0.16
+    },
+    {
+     "texto": "o",
+     "de": 0.2,
+     "ate": 0.24
+    },
+    {
+     "texto": "cliente",
+     "de": 0.29,
+     "ate": 0.64
+    },
+    {
+     "texto": "responde,",
+     "de": 0.7,
+     "ate": 1.28
+    },
+    {
+     "texto": "quem",
+     "de": 1.312,
+     "ate": 1.44
+    },
+    {
+     "texto": "atende",
+     "de": 1.493,
+     "ate": 1.84
+    },
+    {
+     "texto": "pode",
+     "de": 1.888,
+     "ate": 2.08
+    },
+    {
+     "texto": "ser",
+     "de": 2.12,
+     "ate": 2.24
+    },
+    {
+     "texto": "o",
+     "de": 2.28,
+     "ate": 2.32
+    },
+    {
+     "texto": "seu",
+     "de": 2.36,
+     "ate": 2.48
+    },
+    {
+     "texto": "time",
+     "de": 2.608,
+     "ate": 3.12
+    },
+    {
+     "texto": "ou",
+     "de": 3.173,
+     "ate": 3.28
+    },
+    {
+     "texto": "o",
+     "de": 3.36,
+     "ate": 3.44
+    },
+    {
+     "texto": "agente",
+     "de": 3.52,
+     "ate": 3.84
+    },
+    {
+     "texto": "de",
+     "de": 3.92,
+     "ate": 4.08
+    },
+    {
+     "texto": "IA,",
+     "de": 4.187,
+     "ate": 4.4
+    },
+    {
+     "texto": "na",
+     "de": 4.507,
+     "ate": 4.72
+    },
+    {
+     "texto": "hora.",
+     "de": 4.8,
+     "ate": 5.2
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Quando o cliente responde,",
+     "de": 0.0,
+     "ate": 1.312
+    },
+    {
+     "texto": "quem atende pode ser o seu time ou o agente de IA,",
+     "de": 1.312,
+     "ate": 4.507
+    },
+    {
+     "texto": "na hora.",
+     "de": 4.507,
+     "ate": 5.2
+    }
+   ],
+   "assinatura": "ab8062eca265",
+   "nivel": -17.8
+  },
+  {
+   "id": "v2-07b",
+   "voz": "narrador",
+   "texto": "Confira o resumo, confirme, e a campanha fica agendada.",
+   "arquivo": "v2-07b.mp3",
+   "duracao": 3.52,
+   "palavras": [
+    {
+     "texto": "Confira",
+     "de": 0.0,
+     "ate": 0.4
+    },
+    {
+     "texto": "o",
+     "de": 0.44,
+     "ate": 0.48
+    },
+    {
+     "texto": "resumo,",
+     "de": 0.54,
+     "ate": 1.04
+    },
+    {
+     "texto": "confirme,",
+     "de": 1.104,
+     "ate": 1.76
+    },
+    {
+     "texto": "e",
+     "de": 1.88,
+     "ate": 2.0
+    },
+    {
+     "texto": "a",
+     "de": 2.04,
+     "ate": 2.08
+    },
+    {
+     "texto": "campanha",
+     "de": 2.14,
+     "ate": 2.48
+    },
+    {
+     "texto": "fica",
+     "de": 2.544,
+     "ate": 2.8
+    },
+    {
+     "texto": "agendada.",
+     "de": 2.853,
+     "ate": 3.52
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Confira o resumo, confirme, e a campanha fica agendada.",
+     "de": 0.0,
+     "ate": 3.52
+    }
+   ],
+   "assinatura": "04672fa687a8",
+   "nivel": -18.1
+  },
+  {
+   "id": "v2-08",
+   "voz": "narrador",
+   "texto": "No relatório, você acompanha quem recebeu, quem leu e quem respondeu.",
+   "arquivo": "v2-08.mp3",
+   "duracao": 4.08,
+   "palavras": [
+    {
+     "texto": "No",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "relatório,",
+     "de": 0.14,
+     "ate": 0.84
+    },
+    {
+     "texto": "você",
+     "de": 0.864,
+     "ate": 0.96
+    },
+    {
+     "texto": "acompanha",
+     "de": 1.01,
+     "ate": 1.44
+    },
+    {
+     "texto": "quem",
+     "de": 1.472,
+     "ate": 1.6
+    },
+    {
+     "texto": "recebeu,",
+     "de": 1.691,
+     "ate": 2.32
+    },
+    {
+     "texto": "quem",
+     "de": 2.368,
+     "ate": 2.56
+    },
+    {
+     "texto": "leu",
+     "de": 2.64,
+     "ate": 2.88
+    },
+    {
+     "texto": "e",
+     "de": 2.96,
+     "ate": 3.04
+    },
+    {
+     "texto": "quem",
+     "de": 3.088,
+     "ate": 3.28
+    },
+    {
+     "texto": "respondeu.",
+     "de": 3.34,
+     "ate": 4.08
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "No relatório, você acompanha quem recebeu, quem leu e",
+     "de": 0.0,
+     "ate": 3.088
+    },
+    {
+     "texto": "quem respondeu.",
+     "de": 3.088,
+     "ate": 4.08
+    }
+   ],
+   "assinatura": "aa6676e09dcb",
+   "nivel": -17.1
+  },
+  {
+   "id": "v2-09",
+   "voz": "narrador",
+   "texto": "E quem não interagiu fica separado para uma nova abordagem.",
+   "arquivo": "v2-09.mp3",
+   "duracao": 3.44,
+   "palavras": [
+    {
+     "texto": "E",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "quem",
+     "de": 0.112,
+     "ate": 0.24
+    },
+    {
+     "texto": "não",
+     "de": 0.28,
+     "ate": 0.4
+    },
+    {
+     "texto": "interagiu",
+     "de": 0.453,
+     "ate": 1.04
+    },
+    {
+     "texto": "fica",
+     "de": 1.104,
+     "ate": 1.36
+    },
+    {
+     "texto": "separado",
+     "de": 1.413,
+     "ate": 2.0
+    },
+    {
+     "texto": "para",
+     "de": 2.016,
+     "ate": 2.08
+    },
+    {
+     "texto": "uma",
+     "de": 2.12,
+     "ate": 2.24
+    },
+    {
+     "texto": "nova",
+     "de": 2.32,
+     "ate": 2.64
+    },
+    {
+     "texto": "abordagem.",
+     "de": 2.667,
+     "ate": 3.44
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "E quem não interagiu fica separado para uma nova",
+     "de": 0.0,
+     "ate": 2.667
+    },
+    {
+     "texto": "abordagem.",
+     "de": 2.667,
+     "ate": 3.44
+    }
+   ],
+   "assinatura": "3ff5ba3feefb",
+   "nivel": -17.2
+  },
+  {
+   "id": "v2-10",
+   "voz": "narrador",
+   "texto": "Use para promoções, comunicados, lembretes de pagamento, lançamentos, para reativar quem parou de comprar ou convidar seus clientes para um evento.",
+   "arquivo": "v2-10.mp3",
+   "duracao": 9.36,
+   "palavras": [
+    {
+     "texto": "Use",
+     "de": 0.0,
+     "ate": 0.16
+    },
+    {
+     "texto": "para",
+     "de": 0.192,
+     "ate": 0.32
+    },
+    {
+     "texto": "promoções,",
+     "de": 0.387,
+     "ate": 1.12
+    },
+    {
+     "texto": "comunicados,",
+     "de": 1.18,
+     "ate": 2.08
+    },
+    {
+     "texto": "lembretes",
+     "de": 2.133,
+     "ate": 2.64
+    },
+    {
+     "texto": "de",
+     "de": 2.693,
+     "ate": 2.8
+    },
+    {
+     "texto": "pagamento,",
+     "de": 2.872,
+     "ate": 3.6
+    },
+    {
+     "texto": "lançamentos,",
+     "de": 3.696,
+     "ate": 4.88
+    },
+    {
+     "texto": "para",
+     "de": 4.96,
+     "ate": 5.28
+    },
+    {
+     "texto": "reativar",
+     "de": 5.333,
+     "ate": 5.92
+    },
+    {
+     "texto": "quem",
+     "de": 5.968,
+     "ate": 6.16
+    },
+    {
+     "texto": "parou",
+     "de": 6.22,
+     "ate": 6.48
+    },
+    {
+     "texto": "de",
+     "de": 6.533,
+     "ate": 6.64
+    },
+    {
+     "texto": "comprar",
+     "de": 6.7,
+     "ate": 7.12
+    },
+    {
+     "texto": "ou",
+     "de": 7.2,
+     "ate": 7.36
+    },
+    {
+     "texto": "convidar",
+     "de": 7.42,
+     "ate": 7.84
+    },
+    {
+     "texto": "seus",
+     "de": 7.888,
+     "ate": 8.08
+    },
+    {
+     "texto": "clientes",
+     "de": 8.124,
+     "ate": 8.48
+    },
+    {
+     "texto": "para",
+     "de": 8.512,
+     "ate": 8.64
+    },
+    {
+     "texto": "um",
+     "de": 8.667,
+     "ate": 8.72
+    },
+    {
+     "texto": "evento.",
+     "de": 8.789,
+     "ate": 9.36
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Use para promoções, comunicados, lembretes de pagamento,",
+     "de": 0.0,
+     "ate": 3.696
+    },
+    {
+     "texto": "lançamentos, para reativar quem parou de comprar ou",
+     "de": 3.696,
+     "ate": 7.42
+    },
+    {
+     "texto": "convidar seus clientes para um evento.",
+     "de": 7.42,
+     "ate": 9.36
+    }
+   ],
+   "assinatura": "9c0a4852e3bd",
+   "nivel": -19.2
+  },
+  {
+   "id": "v2-11",
+   "voz": "narrador",
+   "texto": "Selloop. Suas vendas em loop.",
+   "arquivo": "v2-11.mp3",
+   "duracao": 2.56,
+   "palavras": [
+    {
+     "texto": "Selloop.",
+     "de": 0.0,
+     "ate": 0.64
+    },
+    {
+     "texto": "Suas",
+     "de": 0.8,
+     "ate": 1.2
+    },
+    {
+     "texto": "vendas",
+     "de": 1.264,
+     "ate": 1.76
+    },
+    {
+     "texto": "em",
+     "de": 1.867,
+     "ate": 2.08
+    },
+    {
+     "texto": "loop.",
+     "de": 2.16,
+     "ate": 2.56
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Selloop.",
+     "de": 0.0,
+     "ate": 0.8
+    },
+    {
+     "texto": "Suas vendas em loop.",
+     "de": 0.8,
+     "ate": 2.56
+    }
+   ],
+   "assinatura": "5556f1394fac",
+   "nivel": -17.1
+  }
+ ]
+}

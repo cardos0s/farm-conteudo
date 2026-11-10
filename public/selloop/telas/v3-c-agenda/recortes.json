@@ -1,0 +1,24 @@
+{
+ "cena": "v3-c-agenda",
+ "largura": 1600,
+ "altura": 900,
+ "escala": 3,
+ "recortes": {
+  "visita-dia": {
+   "caixa": {
+    "x": 753.56,
+    "y": 517.47,
+    "w": 154.14,
+    "h": 28.7
+   }
+  },
+  "visita": {
+   "caixa": {
+    "x": 1273,
+    "y": 437.39,
+    "w": 286,
+    "h": 70
+   }
+  }
+ }
+}

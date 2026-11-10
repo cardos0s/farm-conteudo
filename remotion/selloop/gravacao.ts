@@ -10,7 +10,8 @@ export type Evento =
   | { t: number; tipo: "digitado" }
   | { t: number; tipo: "rolar"; dy: number }
   | { t: number; tipo: "marca"; nome: string }
-  | { t: number; tipo: "foco"; nome: string; caixa: Caixa };
+  | { t: number; tipo: "foco"; nome: string; caixa: Caixa }
+  | { t: number; tipo: "recorte"; nome: string; caixa: Caixa };
 
 export interface Gravacao {
   cena: string;
@@ -72,4 +73,11 @@ export function tempoFoco(g: Gravacao, nome: string): number {
   const e = g.eventos.find((x) => x.tipo === "foco" && x.nome === nome);
   if (!e) throw new Error(`Foco "${nome}" não existe na gravação ${g.cena}`);
   return e.t;
+}
+
+/** Um recorte marcado na cena (g.recorte): quando e onde o elemento está na gravação. */
+export function recorte(g: Gravacao, nome: string): { t: number; caixa: Caixa } {
+  const e = g.eventos.find((x) => x.tipo === "recorte" && x.nome === nome);
+  if (!e || e.tipo !== "recorte") throw new Error(`Recorte "${nome}" não existe na gravação ${g.cena}`);
+  return { t: e.t, caixa: e.caixa };
 }

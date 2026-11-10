@@ -32,6 +32,7 @@ export default cenaDemo({
     for (const [marca, nome] of MODELOS) {
       g.marca(marca);
       await g.clicar(modal().getByText(nome, { exact: true }).first(), { depois: 1250 });
+      await g.recorte(modal().locator("div.max-w-\\[19rem\\]").first(), `previa-${marca}`);
     }
     await g.esperar(600);
     g.marca("fim");

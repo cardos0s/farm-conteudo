@@ -19,7 +19,18 @@ export type Trecho = {
   legenda?: boolean;
 };
 
-export type OpcoesTrecho = { fala?: string; antes?: number; depois?: number; velMin?: number; velMax?: number; vel?: number; planos?: Plano[]; zoomCliques?: number };
+export type OpcoesTrecho = {
+  fala?: string;
+  antes?: number;
+  depois?: number;
+  velMin?: number;
+  velMax?: number;
+  vel?: number;
+  planos?: Plano[];
+  zoomCliques?: number;
+  /** Duração da transição que leva a este trecho (s), no lugar da padrão. */
+  entrada?: number;
+};
 
 export function criarMontagem(loc: FalaLocucao[], cfg: { url: string; transicao: number; pastaLocucao: string }) {
   const durFala = (id: string) => loc.find((f) => f.id === id)?.duracao ?? 0;
@@ -29,7 +40,7 @@ export function criarMontagem(loc: FalaLocucao[], cfg: { url: string; transicao:
   /** Um trecho de tela; a velocidade sai em `fechar()`, depois que se sabe quais trechos emendam. */
   function trecho(cena: string, de: number, ate: number, o: OpcoesTrecho = {}): Trecho {
     return {
-      bloco: { tipo: "tela", cena, url: cfg.url, de, ate, planos: o.planos, zoomCliques: o.zoomCliques },
+      bloco: { tipo: "tela", cena, url: cfg.url, de, ate, planos: o.planos, zoomCliques: o.zoomCliques, entrada: o.entrada },
       fala: o.fala,
       antes: o.antes ?? 0.45,
       depois: o.depois ?? 0.5,
@@ -78,6 +89,11 @@ export function criarMontagem(loc: FalaLocucao[], cfg: { url: string; transicao:
       const b = blocos[i] as Extract<Bloco, { tipo: "tela" }>;
       return ini[i] + (tRec - b.de) / (b.velocidade ?? 1);
     };
+    /** O inverso: que instante da gravação está na tela no instante tVideo do bloco i. */
+    const naGravacao = (i: number, tVideo: number) => {
+      const b = blocos[i] as Extract<Bloco, { tipo: "tela" }>;
+      return b.de + (tVideo - ini[i]) * (b.velocidade ?? 1);
+    };
     const falas = trechos.flatMap((x, i) => (x.fala ? [{ id: x.fala, em: ini[i] + transicaoAntes(base, i) * 0.5 + x.antes, legenda: x.legenda }] : []));
     const emFala = (id: string) => {
       const f = falas.find((x) => x.id === id);
@@ -87,7 +103,7 @@ export function criarMontagem(loc: FalaLocucao[], cfg: { url: string; transicao:
     /** Índice do trecho que tem a fala. */
     const idx = (fala: string) => trechos.findIndex((x) => x.fala === fala);
     const edicao: Omit<Edicao, "sobreposicoes"> = { blocos, falas, transicao: cfg.transicao, pastaLocucao: cfg.pastaLocucao };
-    return { edicao, blocos, inicioBloco, fimBloco, noBloco, emFala, idx };
+    return { edicao, blocos, inicioBloco, fimBloco, noBloco, naGravacao, emFala, idx };
   }
 
   return { durFala, palavra, trecho, sincronizar, fechar };

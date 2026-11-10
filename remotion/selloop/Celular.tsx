@@ -147,7 +147,9 @@ export const Celular: React.FC<{
   escala?: number;
   /** Linha embaixo do nome da empresa quando ela não está digitando nem gravando. */
   status?: string;
-}> = ({ mensagens, hora, estados = [], gravando, escala = 1, status = "Conta comercial" }) => {
+  /** Altura do aparelho (px, antes da escala). Menor que o padrão = um celular mais curto. */
+  altura?: number;
+}> = ({ mensagens, hora, estados = [], gravando, escala = 1, status = "Conta comercial", altura = H }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps;
@@ -156,8 +158,8 @@ export const Celular: React.FC<{
   const grav = gravando && t >= gravando.de && t < gravando.ate;
   const ultimaEmpresa = [...mensagens].filter((m) => m.lado === "empresa" && m.tipo !== "data" && t >= m.em).pop();
   return (
-    <div style={{ width: W, height: H, transform: `scale(${escala})`, transformOrigin: "top left", borderRadius: 58, background: "#111", padding: 12, boxShadow: "0 40px 90px #00042d99, inset 0 0 0 2px #333", fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif" }}>
-      <div style={{ position: "relative", width: W - 24, height: H - 24, borderRadius: 46, overflow: "hidden", background: COR.fundo }}>
+    <div style={{ width: W, height: altura, transform: `scale(${escala})`, transformOrigin: "top left", borderRadius: 58, background: "#111", padding: 12, boxShadow: "0 40px 90px #00042d99, inset 0 0 0 2px #333", fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif" }}>
+      <div style={{ position: "relative", width: W - 24, height: altura - 24, borderRadius: 46, overflow: "hidden", background: COR.fundo }}>
         <div style={{ position: "absolute", left: "50%", top: 10, transform: "translateX(-50%)", width: 110, height: 30, borderRadius: 16, background: "#000", zIndex: 3 }} />
         <div style={{ background: COR.topo }}>
           <BarraStatus hora={hora} />
@@ -216,3 +218,5 @@ export function useEntradaCelular(atraso = 0) {
 }
 
 export const FONTE_CELULAR = fonte;
+/** Largura do aparelho (px, antes da escala). */
+export const LARGURA_CELULAR = W;

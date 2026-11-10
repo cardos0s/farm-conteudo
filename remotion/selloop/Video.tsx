@@ -23,9 +23,11 @@ export type BlocoTela = {
   /** Enquadramentos em tempo da gravação. Sem planos, a câmera segue os cliques. */
   planos?: Plano[];
   zoomCliques?: number;
+  /** Duração da transição que leva a este bloco (s), no lugar da padrão da edição. */
+  entrada?: number;
 };
 /** Bloco desenhado por um componente do próprio vídeo (ex.: o celular do vídeo 3), pelo nome. */
-export type BlocoCena = { tipo: "cena"; dur: number; nome: string };
+export type BlocoCena = { tipo: "cena"; dur: number; nome: string; entrada?: number };
 export type Bloco = BlocoTela | BlocoCena | { tipo: "abertura"; dur: number } | { tipo: "encerramento"; dur: number; frase: string };
 
 export type Sobreposicao =
@@ -65,7 +67,9 @@ export function continua(blocos: Bloco[], i: number): boolean {
 
 /** Duração da transição que leva ao bloco i (0 no primeiro bloco e nas junções contínuas). */
 export function transicaoAntes(ed: Pick<Edicao, "blocos" | "transicao">, i: number): number {
-  return i === 0 || continua(ed.blocos, i) ? 0 : ed.transicao;
+  if (i === 0 || continua(ed.blocos, i)) return 0;
+  const b = ed.blocos[i];
+  return ("entrada" in b ? b.entrada : undefined) ?? ed.transicao;
 }
 
 export function inicios(ed: Pick<Edicao, "blocos" | "transicao">): number[] {
@@ -94,7 +98,7 @@ const Entrada: React.FC<{ transicao: number; dur: number; children: React.ReactN
 };
 
 /** Trilha que abaixa sozinha enquanto o narrador fala (rampa de 0,35 s). */
-const Trilha: React.FC<{ trilha: NonNullable<Edicao["trilha"]>; janelas: number[][] }> = ({ trilha, janelas }) => {
+export const Trilha: React.FC<{ trilha: NonNullable<Edicao["trilha"]>; janelas: number[][] }> = ({ trilha, janelas }) => {
   const { fps, durationInFrames } = useVideoConfig();
   const rampa = 0.35;
   const volume = (f: number) => {

@@ -1,0 +1,1280 @@
+{
+ "modelo": "eleven_v3",
+ "falas": [
+  {
+   "id": "v1-01",
+   "voz": "narrador",
+   "texto": "Seu cliente chama no WhatsApp, no Instagram, no Messenger. Na Selloop, tudo chega no mesmo lugar.",
+   "arquivo": "v1-01.mp3",
+   "duracao": 6.0,
+   "palavras": [
+    {
+     "texto": "Seu",
+     "de": 0.0,
+     "ate": 0.32
+    },
+    {
+     "texto": "cliente",
+     "de": 0.35,
+     "ate": 0.56
+    },
+    {
+     "texto": "chama",
+     "de": 0.587,
+     "ate": 0.88
+    },
+    {
+     "texto": "no",
+     "de": 0.907,
+     "ate": 0.96
+    },
+    {
+     "texto": "WhatsApp,",
+     "de": 1.022,
+     "ate": 1.6
+    },
+    {
+     "texto": "no",
+     "de": 1.627,
+     "ate": 1.68
+    },
+    {
+     "texto": "Instagram,",
+     "de": 1.728,
+     "ate": 2.24
+    },
+    {
+     "texto": "no",
+     "de": 2.267,
+     "ate": 2.32
+    },
+    {
+     "texto": "Messenger.",
+     "de": 2.384,
+     "ate": 3.36
+    },
+    {
+     "texto": "Na",
+     "de": 3.413,
+     "ate": 3.52
+    },
+    {
+     "texto": "Selloop,",
+     "de": 3.584,
+     "ate": 4.32
+    },
+    {
+     "texto": "tudo",
+     "de": 4.384,
+     "ate": 4.64
+    },
+    {
+     "texto": "chega",
+     "de": 4.7,
+     "ate": 5.04
+    },
+    {
+     "texto": "no",
+     "de": 5.093,
+     "ate": 5.2
+    },
+    {
+     "texto": "mesmo",
+     "de": 5.253,
+     "ate": 5.52
+    },
+    {
+     "texto": "lugar.",
+     "de": 5.573,
+     "ate": 6.0
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Seu cliente chama no WhatsApp, no Instagram, no Messenger.",
+     "de": 0.0,
+     "ate": 3.413
+    },
+    {
+     "texto": "Na Selloop, tudo chega no mesmo lugar.",
+     "de": 3.413,
+     "ate": 6.0
+    }
+   ],
+   "assinatura": "1a875dd809c0",
+   "nivel": -16.8
+  },
+  {
+   "id": "v1-02",
+   "voz": "narrador",
+   "texto": "E toda a empresa atende no mesmo número de WhatsApp, no Direct do Instagram e no Messenger.",
+   "arquivo": "v1-02.mp3",
+   "duracao": 4.96,
+   "palavras": [
+    {
+     "texto": "E",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "toda",
+     "de": 0.144,
+     "ate": 0.4
+    },
+    {
+     "texto": "a",
+     "de": 0.52,
+     "ate": 0.64
+    },
+    {
+     "texto": "empresa",
+     "de": 0.67,
+     "ate": 0.88
+    },
+    {
+     "texto": "atende",
+     "de": 0.933,
+     "ate": 1.2
+    },
+    {
+     "texto": "no",
+     "de": 1.253,
+     "ate": 1.36
+    },
+    {
+     "texto": "mesmo",
+     "de": 1.413,
+     "ate": 1.68
+    },
+    {
+     "texto": "número",
+     "de": 1.726,
+     "ate": 2.0
+    },
+    {
+     "texto": "de",
+     "de": 2.027,
+     "ate": 2.08
+    },
+    {
+     "texto": "WhatsApp,",
+     "de": 2.151,
+     "ate": 2.8
+    },
+    {
+     "texto": "no",
+     "de": 2.827,
+     "ate": 2.88
+    },
+    {
+     "texto": "Direct",
+     "de": 2.949,
+     "ate": 3.36
+    },
+    {
+     "texto": "do",
+     "de": 3.387,
+     "ate": 3.44
+    },
+    {
+     "texto": "Instagram",
+     "de": 3.496,
+     "ate": 4.0
+    },
+    {
+     "texto": "e",
+     "de": 4.08,
+     "ate": 4.16
+    },
+    {
+     "texto": "no",
+     "de": 4.187,
+     "ate": 4.24
+    },
+    {
+     "texto": "Messenger.",
+     "de": 4.304,
+     "ate": 4.96
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "E toda a empresa atende no mesmo número de WhatsApp,",
+     "de": 0.0,
+     "ate": 2.827
+    },
+    {
+     "texto": "no Direct do Instagram e no Messenger.",
+     "de": 2.827,
+     "ate": 4.96
+    }
+   ],
+   "assinatura": "bb44ff467445",
+   "nivel": -16.4
+  },
+  {
+   "id": "v1-03",
+   "voz": "narrador",
+   "texto": "Cada atendente vê só os próprios atendimentos.",
+   "arquivo": "v1-03.mp3",
+   "duracao": 2.8,
+   "palavras": [
+    {
+     "texto": "Cada",
+     "de": 0.0,
+     "ate": 0.16
+    },
+    {
+     "texto": "atendente",
+     "de": 0.213,
+     "ate": 0.88
+    },
+    {
+     "texto": "vê",
+     "de": 0.92,
+     "ate": 1.04
+    },
+    {
+     "texto": "só",
+     "de": 1.093,
+     "ate": 1.2
+    },
+    {
+     "texto": "os",
+     "de": 1.253,
+     "ate": 1.36
+    },
+    {
+     "texto": "próprios",
+     "de": 1.424,
+     "ate": 1.84
+    },
+    {
+     "texto": "atendimentos.",
+     "de": 1.893,
+     "ate": 2.8
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Cada atendente vê só os próprios atendimentos.",
+     "de": 0.0,
+     "ate": 2.8
+    }
+   ],
+   "assinatura": "1d48c1bcdaf4",
+   "nivel": -16.2
+  },
+  {
+   "id": "v1-04",
+   "voz": "narrador",
+   "texto": "E o administrador tem controle total: vê as conversas de todas as equipes e acompanha cada transferência, sem o cliente repetir nada.",
+   "arquivo": "v1-04.mp3",
+   "duracao": 8.24,
+   "palavras": [
+    {
+     "texto": "E",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "o",
+     "de": 0.12,
+     "ate": 0.16
+    },
+    {
+     "texto": "administrador",
+     "de": 0.208,
+     "ate": 0.96
+    },
+    {
+     "texto": "tem",
+     "de": 1.02,
+     "ate": 1.2
+    },
+    {
+     "texto": "controle",
+     "de": 1.253,
+     "ate": 1.68
+    },
+    {
+     "texto": "total:",
+     "de": 1.787,
+     "ate": 2.72
+    },
+    {
+     "texto": "vê",
+     "de": 2.76,
+     "ate": 2.88
+    },
+    {
+     "texto": "as",
+     "de": 2.907,
+     "ate": 2.96
+    },
+    {
+     "texto": "conversas",
+     "de": 3.02,
+     "ate": 3.52
+    },
+    {
+     "texto": "de",
+     "de": 3.547,
+     "ate": 3.6
+    },
+    {
+     "texto": "todas",
+     "de": 3.667,
+     "ate": 4.0
+    },
+    {
+     "texto": "as",
+     "de": 4.053,
+     "ate": 4.16
+    },
+    {
+     "texto": "equipes",
+     "de": 4.24,
+     "ate": 4.72
+    },
+    {
+     "texto": "e",
+     "de": 4.76,
+     "ate": 4.8
+    },
+    {
+     "texto": "acompanha",
+     "de": 4.85,
+     "ate": 5.28
+    },
+    {
+     "texto": "cada",
+     "de": 5.344,
+     "ate": 5.6
+    },
+    {
+     "texto": "transferência,",
+     "de": 5.644,
+     "ate": 6.48
+    },
+    {
+     "texto": "sem",
+     "de": 6.54,
+     "ate": 6.72
+    },
+    {
+     "texto": "o",
+     "de": 6.76,
+     "ate": 6.8
+    },
+    {
+     "texto": "cliente",
+     "de": 6.85,
+     "ate": 7.2
+    },
+    {
+     "texto": "repetir",
+     "de": 7.253,
+     "ate": 7.68
+    },
+    {
+     "texto": "nada.",
+     "de": 7.76,
+     "ate": 8.24
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "E o administrador tem controle total:",
+     "de": 0.0,
+     "ate": 2.76
+    },
+    {
+     "texto": "vê as conversas de todas as equipes e",
+     "de": 2.76,
+     "ate": 4.85
+    },
+    {
+     "texto": "acompanha cada transferência, sem o cliente repetir nada.",
+     "de": 4.85,
+     "ate": 8.24
+    }
+   ],
+   "assinatura": "c08847541a4d",
+   "nivel": -18.8
+  },
+  {
+   "id": "v1-05",
+   "voz": "narrador",
+   "texto": "Dentro da conversa, está tudo à mão. O catálogo vai com foto e preço.",
+   "arquivo": "v1-05.mp3",
+   "duracao": 4.32,
+   "palavras": [
+    {
+     "texto": "Dentro",
+     "de": 0.0,
+     "ate": 0.32
+    },
+    {
+     "texto": "da",
+     "de": 0.347,
+     "ate": 0.4
+    },
+    {
+     "texto": "conversa,",
+     "de": 0.47,
+     "ate": 1.04
+    },
+    {
+     "texto": "está",
+     "de": 1.072,
+     "ate": 1.2
+    },
+    {
+     "texto": "tudo",
+     "de": 1.28,
+     "ate": 1.6
+    },
+    {
+     "texto": "à",
+     "de": 1.64,
+     "ate": 1.68
+    },
+    {
+     "texto": "mão.",
+     "de": 1.76,
+     "ate": 2.08
+    },
+    {
+     "texto": "O",
+     "de": 2.24,
+     "ate": 2.4
+    },
+    {
+     "texto": "catálogo",
+     "de": 2.46,
+     "ate": 3.04
+    },
+    {
+     "texto": "vai",
+     "de": 3.08,
+     "ate": 3.2
+    },
+    {
+     "texto": "com",
+     "de": 3.24,
+     "ate": 3.36
+    },
+    {
+     "texto": "foto",
+     "de": 3.44,
+     "ate": 3.76
+    },
+    {
+     "texto": "e",
+     "de": 3.88,
+     "ate": 4.0
+    },
+    {
+     "texto": "preço.",
+     "de": 4.04,
+     "ate": 4.32
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Dentro da conversa, está tudo à mão.",
+     "de": 0.0,
+     "ate": 2.24
+    },
+    {
+     "texto": "O catálogo vai com foto e preço.",
+     "de": 2.24,
+     "ate": 4.32
+    }
+   ],
+   "assinatura": "e38301003055",
+   "nivel": -17.7
+  },
+  {
+   "id": "v1-05b",
+   "voz": "narrador",
+   "texto": "O cliente monta o orçamento no próprio WhatsApp.",
+   "arquivo": "v1-05b.mp3",
+   "duracao": 2.48,
+   "palavras": [
+    {
+     "texto": "O",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "cliente",
+     "de": 0.13,
+     "ate": 0.48
+    },
+    {
+     "texto": "monta",
+     "de": 0.528,
+     "ate": 0.8
+    },
+    {
+     "texto": "o",
+     "de": 0.84,
+     "ate": 0.88
+    },
+    {
+     "texto": "orçamento",
+     "de": 0.933,
+     "ate": 1.44
+    },
+    {
+     "texto": "no",
+     "de": 1.467,
+     "ate": 1.52
+    },
+    {
+     "texto": "próprio",
+     "de": 1.568,
+     "ate": 1.84
+    },
+    {
+     "texto": "WhatsApp.",
+     "de": 1.902,
+     "ate": 2.48
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "O cliente monta o orçamento no próprio WhatsApp.",
+     "de": 0.0,
+     "ate": 2.48
+    }
+   ],
+   "assinatura": "3750e76b22c7",
+   "nivel": -18.5
+  },
+  {
+   "id": "v1-05c",
+   "voz": "narrador",
+   "texto": "Os formulários voltam preenchidos.",
+   "arquivo": "v1-05c.mp3",
+   "duracao": 2.16,
+   "palavras": [
+    {
+     "texto": "Os",
+     "de": 0.0,
+     "ate": 0.16
+    },
+    {
+     "texto": "formulários",
+     "de": 0.217,
+     "ate": 0.8
+    },
+    {
+     "texto": "voltam",
+     "de": 0.88,
+     "ate": 1.28
+    },
+    {
+     "texto": "preenchidos.",
+     "de": 1.34,
+     "ate": 2.16
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Os formulários voltam preenchidos.",
+     "de": 0.0,
+     "ate": 2.16
+    }
+   ],
+   "assinatura": "52a9181e801f",
+   "nivel": -17.9
+  },
+  {
+   "id": "v1-05d",
+   "voz": "narrador",
+   "texto": "E as enquetes, com o voto na hora.",
+   "arquivo": "v1-05d.mp3",
+   "duracao": 2.16,
+   "palavras": [
+    {
+     "texto": "E",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "as",
+     "de": 0.133,
+     "ate": 0.24
+    },
+    {
+     "texto": "enquetes,",
+     "de": 0.293,
+     "ate": 1.0
+    },
+    {
+     "texto": "com",
+     "de": 1.03,
+     "ate": 1.12
+    },
+    {
+     "texto": "o",
+     "de": 1.2,
+     "ate": 1.28
+    },
+    {
+     "texto": "voto",
+     "de": 1.32,
+     "ate": 1.6
+    },
+    {
+     "texto": "na",
+     "de": 1.653,
+     "ate": 1.76
+    },
+    {
+     "texto": "hora.",
+     "de": 1.824,
+     "ate": 2.16
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "E as enquetes, com o voto na hora.",
+     "de": 0.0,
+     "ate": 2.16
+    }
+   ],
+   "assinatura": "a89f663d07e6",
+   "nivel": -15.7
+  },
+  {
+   "id": "v1-06",
+   "voz": "narrador",
+   "texto": "A cobrança por Pix sai dali mesmo, e você vê quando foi paga.",
+   "arquivo": "v1-06.mp3",
+   "duracao": 3.52,
+   "palavras": [
+    {
+     "texto": "A",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "cobrança",
+     "de": 0.12,
+     "ate": 0.48
+    },
+    {
+     "texto": "por",
+     "de": 0.54,
+     "ate": 0.72
+    },
+    {
+     "texto": "Pix",
+     "de": 0.8,
+     "ate": 1.04
+    },
+    {
+     "texto": "sai",
+     "de": 1.1,
+     "ate": 1.28
+    },
+    {
+     "texto": "dali",
+     "de": 1.32,
+     "ate": 1.6
+    },
+    {
+     "texto": "mesmo,",
+     "de": 1.667,
+     "ate": 2.08
+    },
+    {
+     "texto": "e",
+     "de": 2.12,
+     "ate": 2.16
+    },
+    {
+     "texto": "você",
+     "de": 2.224,
+     "ate": 2.48
+    },
+    {
+     "texto": "vê",
+     "de": 2.56,
+     "ate": 2.72
+    },
+    {
+     "texto": "quando",
+     "de": 2.743,
+     "ate": 2.88
+    },
+    {
+     "texto": "foi",
+     "de": 2.94,
+     "ate": 3.12
+    },
+    {
+     "texto": "paga.",
+     "de": 3.2,
+     "ate": 3.52
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "A cobrança por Pix sai dali mesmo,",
+     "de": 0.0,
+     "ate": 2.12
+    },
+    {
+     "texto": "e você vê quando foi paga.",
+     "de": 2.12,
+     "ate": 3.52
+    }
+   ],
+   "assinatura": "4f73252669fa",
+   "nivel": -18.9
+  },
+  {
+   "id": "v1-06b",
+   "voz": "narrador",
+   "texto": "A nota fiscal vem direto do sistema de gestão.",
+   "arquivo": "v1-06b.mp3",
+   "duracao": 2.56,
+   "palavras": [
+    {
+     "texto": "A",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "nota",
+     "de": 0.128,
+     "ate": 0.32
+    },
+    {
+     "texto": "fiscal",
+     "de": 0.377,
+     "ate": 0.72
+    },
+    {
+     "texto": "vem",
+     "de": 0.78,
+     "ate": 0.96
+    },
+    {
+     "texto": "direto",
+     "de": 1.024,
+     "ate": 1.36
+    },
+    {
+     "texto": "do",
+     "de": 1.413,
+     "ate": 1.52
+    },
+    {
+     "texto": "sistema",
+     "de": 1.57,
+     "ate": 1.92
+    },
+    {
+     "texto": "de",
+     "de": 1.947,
+     "ate": 2.0
+    },
+    {
+     "texto": "gestão.",
+     "de": 2.064,
+     "ate": 2.56
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "A nota fiscal vem direto do sistema de gestão.",
+     "de": 0.0,
+     "ate": 2.56
+    }
+   ],
+   "assinatura": "aeb518b51e45",
+   "nivel": -15.7
+  },
+  {
+   "id": "v1-06c",
+   "voz": "narrador",
+   "texto": "E a próxima mensagem já fica agendada.",
+   "arquivo": "v1-06c.mp3",
+   "duracao": 2.32,
+   "palavras": [
+    {
+     "texto": "E",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "a",
+     "de": 0.12,
+     "ate": 0.16
+    },
+    {
+     "texto": "próxima",
+     "de": 0.21,
+     "ate": 0.56
+    },
+    {
+     "texto": "mensagem",
+     "de": 0.622,
+     "ate": 1.12
+    },
+    {
+     "texto": "já",
+     "de": 1.227,
+     "ate": 1.44
+    },
+    {
+     "texto": "fica",
+     "de": 1.488,
+     "ate": 1.68
+    },
+    {
+     "texto": "agendada.",
+     "de": 1.733,
+     "ate": 2.32
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "E a próxima mensagem já fica agendada.",
+     "de": 0.0,
+     "ate": 2.32
+    }
+   ],
+   "assinatura": "051bcd5e99e6",
+   "nivel": -17.7
+  },
+  {
+   "id": "v1-07",
+   "voz": "narrador",
+   "texto": "Todo atendimento tem protocolo. Se o cliente pedir o histórico, você gera o PDF da conversa completa e envia na hora.",
+   "arquivo": "v1-07.mp3",
+   "duracao": 6.64,
+   "palavras": [
+    {
+     "texto": "Todo",
+     "de": 0.0,
+     "ate": 0.16
+    },
+    {
+     "texto": "atendimento",
+     "de": 0.213,
+     "ate": 0.8
+    },
+    {
+     "texto": "tem",
+     "de": 0.84,
+     "ate": 0.96
+    },
+    {
+     "texto": "protocolo.",
+     "de": 1.031,
+     "ate": 1.68
+    },
+    {
+     "texto": "Se",
+     "de": 1.787,
+     "ate": 2.0
+    },
+    {
+     "texto": "o",
+     "de": 2.04,
+     "ate": 2.08
+    },
+    {
+     "texto": "cliente",
+     "de": 2.12,
+     "ate": 2.4
+    },
+    {
+     "texto": "pedir",
+     "de": 2.44,
+     "ate": 2.72
+    },
+    {
+     "texto": "o",
+     "de": 2.82,
+     "ate": 2.92
+    },
+    {
+     "texto": "histórico,",
+     "de": 2.953,
+     "ate": 3.36
+    },
+    {
+     "texto": "você",
+     "de": 3.424,
+     "ate": 3.68
+    },
+    {
+     "texto": "gera",
+     "de": 3.72,
+     "ate": 3.92
+    },
+    {
+     "texto": "o",
+     "de": 3.96,
+     "ate": 4.0
+    },
+    {
+     "texto": "PDF",
+     "de": 4.1,
+     "ate": 4.4
+    },
+    {
+     "texto": "da",
+     "de": 4.427,
+     "ate": 4.48
+    },
+    {
+     "texto": "conversa",
+     "de": 4.53,
+     "ate": 4.96
+    },
+    {
+     "texto": "completa",
+     "de": 5.013,
+     "ate": 5.44
+    },
+    {
+     "texto": "e",
+     "de": 5.48,
+     "ate": 5.52
+    },
+    {
+     "texto": "envia",
+     "de": 5.58,
+     "ate": 5.92
+    },
+    {
+     "texto": "na",
+     "de": 5.973,
+     "ate": 6.08
+    },
+    {
+     "texto": "hora.",
+     "de": 6.144,
+     "ate": 6.64
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Todo atendimento tem protocolo.",
+     "de": 0.0,
+     "ate": 1.787
+    },
+    {
+     "texto": "Se o cliente pedir o histórico,",
+     "de": 1.787,
+     "ate": 3.424
+    },
+    {
+     "texto": "você gera o PDF da conversa completa e envia na hora.",
+     "de": 3.424,
+     "ate": 6.64
+    }
+   ],
+   "assinatura": "22bfe2c4daf2",
+   "nivel": -17.2
+  },
+  {
+   "id": "v1-08",
+   "voz": "narrador",
+   "texto": "No fim, a pesquisa de satisfação vai sozinha, e a avaliação aparece ali mesmo.",
+   "arquivo": "v1-08.mp3",
+   "duracao": 5.04,
+   "palavras": [
+    {
+     "texto": "No",
+     "de": 0.0,
+     "ate": 0.16
+    },
+    {
+     "texto": "fim,",
+     "de": 0.24,
+     "ate": 0.72
+    },
+    {
+     "texto": "a",
+     "de": 0.76,
+     "ate": 0.8
+    },
+    {
+     "texto": "pesquisa",
+     "de": 0.853,
+     "ate": 1.28
+    },
+    {
+     "texto": "de",
+     "de": 1.307,
+     "ate": 1.36
+    },
+    {
+     "texto": "satisfação",
+     "de": 1.4,
+     "ate": 2.0
+    },
+    {
+     "texto": "vai",
+     "de": 2.04,
+     "ate": 2.16
+    },
+    {
+     "texto": "sozinha,",
+     "de": 2.267,
+     "ate": 2.8
+    },
+    {
+     "texto": "e",
+     "de": 2.96,
+     "ate": 3.12
+    },
+    {
+     "texto": "a",
+     "de": 3.16,
+     "ate": 3.2
+    },
+    {
+     "texto": "avaliação",
+     "de": 3.248,
+     "ate": 3.76
+    },
+    {
+     "texto": "aparece",
+     "de": 3.813,
+     "ate": 4.24
+    },
+    {
+     "texto": "ali",
+     "de": 4.3,
+     "ate": 4.48
+    },
+    {
+     "texto": "mesmo.",
+     "de": 4.547,
+     "ate": 5.04
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "No fim, a pesquisa de satisfação vai sozinha,",
+     "de": 0.0,
+     "ate": 2.96
+    },
+    {
+     "texto": "e a avaliação aparece ali mesmo.",
+     "de": 2.96,
+     "ate": 5.04
+    }
+   ],
+   "assinatura": "c2717cf029df",
+   "nivel": -18.9
+  },
+  {
+   "id": "v1-09",
+   "voz": "narrador",
+   "texto": "E o gestor acompanha tudo nos indicadores: volume, tempo de espera, desempenho de cada equipe e a nota média da empresa.",
+   "arquivo": "v1-09.mp3",
+   "duracao": 7.84,
+   "palavras": [
+    {
+     "texto": "E",
+     "de": 0.0,
+     "ate": 0.08
+    },
+    {
+     "texto": "o",
+     "de": 0.16,
+     "ate": 0.24
+    },
+    {
+     "texto": "gestor",
+     "de": 0.272,
+     "ate": 0.56
+    },
+    {
+     "texto": "acompanha",
+     "de": 0.61,
+     "ate": 1.04
+    },
+    {
+     "texto": "tudo",
+     "de": 1.136,
+     "ate": 1.52
+    },
+    {
+     "texto": "nos",
+     "de": 1.56,
+     "ate": 1.68
+    },
+    {
+     "texto": "indicadores:",
+     "de": 1.733,
+     "ate": 2.8
+    },
+    {
+     "texto": "volume,",
+     "de": 2.88,
+     "ate": 3.44
+    },
+    {
+     "texto": "tempo",
+     "de": 3.493,
+     "ate": 3.76
+    },
+    {
+     "texto": "de",
+     "de": 3.787,
+     "ate": 3.84
+    },
+    {
+     "texto": "espera,",
+     "de": 3.92,
+     "ate": 4.48
+    },
+    {
+     "texto": "desempenho",
+     "de": 4.58,
+     "ate": 5.36
+    },
+    {
+     "texto": "de",
+     "de": 5.387,
+     "ate": 5.44
+    },
+    {
+     "texto": "cada",
+     "de": 5.488,
+     "ate": 5.68
+    },
+    {
+     "texto": "equipe",
+     "de": 5.76,
+     "ate": 6.24
+    },
+    {
+     "texto": "e",
+     "de": 6.32,
+     "ate": 6.4
+    },
+    {
+     "texto": "a",
+     "de": 6.44,
+     "ate": 6.48
+    },
+    {
+     "texto": "nota",
+     "de": 6.528,
+     "ate": 6.72
+    },
+    {
+     "texto": "média",
+     "de": 6.8,
+     "ate": 7.12
+    },
+    {
+     "texto": "da",
+     "de": 7.147,
+     "ate": 7.2
+    },
+    {
+     "texto": "empresa.",
+     "de": 7.26,
+     "ate": 7.84
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "E o gestor acompanha tudo nos indicadores: volume,",
+     "de": 0.0,
+     "ate": 3.493
+    },
+    {
+     "texto": "tempo de espera, desempenho de cada equipe e",
+     "de": 3.493,
+     "ate": 6.44
+    },
+    {
+     "texto": "a nota média da empresa.",
+     "de": 6.44,
+     "ate": 7.84
+    }
+   ],
+   "assinatura": "6709525f9004",
+   "nivel": -18.0
+  },
+  {
+   "id": "v1-10",
+   "voz": "narrador",
+   "texto": "Selloop. Atenda e venda sem trocar de tela.",
+   "arquivo": "v1-10.mp3",
+   "duracao": 3.04,
+   "palavras": [
+    {
+     "texto": "Selloop.",
+     "de": 0.0,
+     "ate": 0.88
+    },
+    {
+     "texto": "Atenda",
+     "de": 0.96,
+     "ate": 1.36
+    },
+    {
+     "texto": "e",
+     "de": 1.4,
+     "ate": 1.44
+    },
+    {
+     "texto": "venda",
+     "de": 1.507,
+     "ate": 1.84
+    },
+    {
+     "texto": "sem",
+     "de": 1.9,
+     "ate": 2.08
+    },
+    {
+     "texto": "trocar",
+     "de": 2.12,
+     "ate": 2.4
+    },
+    {
+     "texto": "de",
+     "de": 2.427,
+     "ate": 2.48
+    },
+    {
+     "texto": "tela.",
+     "de": 2.576,
+     "ate": 3.04
+    }
+   ],
+   "legendas": [
+    {
+     "texto": "Selloop.",
+     "de": 0.0,
+     "ate": 0.96
+    },
+    {
+     "texto": "Atenda e venda sem trocar de tela.",
+     "de": 0.96,
+     "ate": 3.04
+    }
+   ],
+   "assinatura": "639c6ada335f",
+   "nivel": -17.5
+  }
+ ]
+}

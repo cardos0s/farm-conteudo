@@ -12,6 +12,9 @@ import { DURACAO_TESTE, SelloopTeste } from "./selloop/Teste";
 import { DURACAO_V1, SelloopAtendimento } from "./selloop/v1/Atendimento";
 import { DURACAO_V2, SelloopCampanhas } from "./selloop/v2/Campanhas";
 import { DURACAO_V3, SelloopAgente } from "./selloop/v3/Agente";
+import { DURACAO_R1, SelloopReelAtendimento } from "./selloop/reel/R1Atendimento";
+import { DURACAO_R2, SelloopReelCampanhas } from "./selloop/reel/R2Campanhas";
+import { DURACAO_R3, SelloopReelAgente } from "./selloop/reel/R3Agente";
 
 export const Root: React.FC = () => (
   <>
@@ -64,6 +67,30 @@ export const Root: React.FC = () => (
       height={1080}
       fps={FPS_SELLOOP}
       durationInFrames={Math.round(DURACAO_V3 * FPS_SELLOOP)}
+    />
+    <Composition
+      id="SelloopReelAtendimento"
+      component={SelloopReelAtendimento}
+      width={1080}
+      height={1920}
+      fps={FPS_SELLOOP}
+      durationInFrames={Math.round(DURACAO_R1 * FPS_SELLOOP)}
+    />
+    <Composition
+      id="SelloopReelCampanhas"
+      component={SelloopReelCampanhas}
+      width={1080}
+      height={1920}
+      fps={FPS_SELLOOP}
+      durationInFrames={Math.round(DURACAO_R2 * FPS_SELLOOP)}
+    />
+    <Composition
+      id="SelloopReelAgente"
+      component={SelloopReelAgente}
+      width={1080}
+      height={1920}
+      fps={FPS_SELLOOP}
+      durationInFrames={Math.round(DURACAO_R3 * FPS_SELLOOP)}
     />
     <Composition id="SelloopAbertura" component={SelloopAbertura} width={1920} height={1080} fps={FPS_SELLOOP} durationInFrames={Math.round(2 * FPS_SELLOOP)} />
     <Composition
