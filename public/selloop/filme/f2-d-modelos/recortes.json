@@ -1,0 +1,56 @@
+{
+ "cena": "f2-d-modelos",
+ "largura": 1600,
+ "altura": 900,
+ "escala": 3,
+ "recortes": {
+  "previa-promocao": {
+   "caixa": {
+    "x": 819,
+    "y": 155.83,
+    "w": 304,
+    "h": 356.22
+   }
+  },
+  "previa-comunicado": {
+   "caixa": {
+    "x": 819,
+    "y": 166.73,
+    "w": 304,
+    "h": 215.58
+   }
+  },
+  "previa-boleto": {
+   "caixa": {
+    "x": 819,
+    "y": 139,
+    "w": 304,
+    "h": 140
+   }
+  },
+  "previa-lancamento": {
+   "caixa": {
+    "x": 819,
+    "y": 234.91,
+    "w": 304,
+    "h": 321.03
+   }
+  },
+  "previa-reativacao": {
+   "caixa": {
+    "x": 819,
+    "y": 191.92,
+    "w": 304,
+    "h": 140.56
+   }
+  },
+  "previa-convite": {
+   "caixa": {
+    "x": 819,
+    "y": 155.83,
+    "w": 304,
+    "h": 321.03
+   }
+  }
+ }
+}

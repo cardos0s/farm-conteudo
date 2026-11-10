@@ -52,9 +52,10 @@ const CelularNaCena: React.FC<Omit<React.ComponentProps<typeof Celular>, "escala
         style={{
           position: "absolute",
           left: lugar.x,
-          top: TOPO + (1 - s) * 220,
+          top: TOPO,
           opacity: prender(s * 1.6),
-          transform: `rotateY(${Math.sin(t * 0.6) * 2.4}deg) rotateX(${(1 - s) * 12 + Math.cos(t * 0.45) * 1.2}deg)`,
+          // a subida vai na transformação: movimento sem degraus de 1 px
+          transform: `translateY(${(1 - s) * 220}px) rotateY(${Math.sin(t * 0.6) * 2.4}deg) rotateX(${(1 - s) * 12 + Math.cos(t * 0.45) * 1.2}deg)`,
           transformOrigin: `${(LARGURA_CELULAR * lugar.escala) / 2}px ${ALTURA_NA_TELA / 2}px`,
         }}
       >
@@ -104,8 +105,8 @@ const Etiqueta: React.FC<{ em: number; ate?: number; x: number; y: number; giro?
       style={{
         position: "absolute",
         left: x,
-        top: y + Math.sin((t - em) * 1.5 + x) * 5,
-        transform: `translate(-50%, -50%) scale(${(0.5 + 0.5 * s) * (0.92 + 0.08 * some)}) rotate(${giro + (1 - s) * -8}deg)`,
+        top: y,
+        transform: `translate(-50%, -50%) translateY(${Math.sin((t - em) * 1.5 + x) * 5}px) scale(${(0.5 + 0.5 * s) * (0.92 + 0.08 * some)}) rotate(${giro + (1 - s) * -8}deg)`,
         opacity: Math.min(prender(s * 1.4), some),
         display: "flex",
         alignItems: "center",

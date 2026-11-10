@@ -1,0 +1,56 @@
+{
+ "cena": "f3-b-canais",
+ "largura": 1600,
+ "altura": 900,
+ "escala": 3,
+ "recortes": {
+  "conversa-whatsapp": {
+   "caixa": {
+    "x": 97,
+    "y": 590,
+    "w": 318,
+    "h": 115
+   }
+  },
+  "conversa-instagram": {
+   "caixa": {
+    "x": 97,
+    "y": 360,
+    "w": 318,
+    "h": 115
+   }
+  },
+  "conversa-messenger": {
+   "caixa": {
+    "x": 97,
+    "y": 475,
+    "w": 318,
+    "h": 115
+   }
+  },
+  "resposta-whatsapp": {
+   "caixa": {
+    "x": 983,
+    "y": 330,
+    "w": 576,
+    "h": 78
+   }
+  },
+  "resposta-instagram": {
+   "caixa": {
+    "x": 983,
+    "y": 330,
+    "w": 576,
+    "h": 78
+   }
+  },
+  "resposta-messenger": {
+   "caixa": {
+    "x": 983,
+    "y": 330,
+    "w": 576,
+    "h": 78
+   }
+  }
+ }
+}

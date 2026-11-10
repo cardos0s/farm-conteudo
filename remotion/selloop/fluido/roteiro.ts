@@ -199,6 +199,30 @@ export function criarRoteiro(o: { filmes: Record<string, Gravacao>; locucao: Fal
       }
       return R.anda(ate, ritmo(b === 0 ? 0 : a));
     },
+    /**
+     * O cursor faz a viagem `t` chegando ao destino no instante `quando` do vídeo: a tela espera parada
+     * (com o cursor em repouso) até a hora de ele sair. Depois de chegar, toca mais `assenta` segundos
+     * do filme (o realce do item acende).
+     */
+    chega(t: Trajeto, quando: number, assenta = 0.26) {
+      R.anda(t.t);
+      R.seguraAte(quando - (t.ate - t.t));
+      return R.anda(t.ate + assenta, { aperta: false });
+    },
+    /**
+     * O clique `c` do filme acontece no instante `quando` do vídeo: a tela espera parada antes de o
+     * cursor sair para ele. Se já passou da hora, o clique acontece assim que der. Depois do clique,
+     * toca mais `depois` segundos do filme.
+     */
+    clica(c: { t: number }, quando: number, depois = 0.12) {
+      const g = filme(tomada().cena);
+      // a viagem que termina neste clique
+      const v = [...trajetos(g)].reverse().find((x) => x.ate <= c.t + 1e-6 && x.ate > c.t - 0.35);
+      const sai = v && v.t >= m - 1e-6 ? v.t : m;
+      R.anda(sai);
+      R.seguraAte(quando - (c.t - sai));
+      return R.anda(c.t + depois, { aperta: false });
+    },
     /** Uma cena desenhada pelo próprio vídeo (ex.: o celular) ou o encerramento. */
     cena(nome: string, dur: number, op: { entrada?: number } = {}) {
       fechar();

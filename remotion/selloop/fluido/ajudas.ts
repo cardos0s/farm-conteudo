@@ -1,4 +1,4 @@
-import { recorte, type Caixa, type Gravacao } from "../gravacao";
+import { recorte, trajetos, type Caixa, type Gravacao, type Trajeto } from "../gravacao";
 import { projetar, type Alvo, type Ret } from "../reel/base";
 import { CENTRO, type OpcoesSalto } from "../reel/montagemReel";
 import type { SobreReel } from "../reel/Reel";
@@ -7,6 +7,28 @@ import type { Parte } from "./roteiro";
 
 // Ajudas para escrever a edição em tomada contínua: onde um elemento da tela está no quadro num
 // instante do vídeo, e o recorte que salta dali.
+
+/** A viagem do cursor que começa no instante `t` do filme, ou logo depois (a `ordem`-ésima). */
+export function viagemApos(g: Gravacao, t: number, ordem = 0): Trajeto {
+  const v = trajetos(g).filter((x) => x.t >= t - 0.06)[ordem];
+  if (!v) throw new Error(`Não há viagem do cursor depois de ${t.toFixed(2)} s em ${g.cena}.`);
+  return v;
+}
+
+/** Limites do centro da câmera (px CSS da tela). */
+export type Faixa = { x: [number, number]; y: [number, number] };
+
+/**
+ * Um alvo de câmera em cada clique do filme entre `de` e `ate` (s do filme): a câmera acompanha o
+ * cursor. Com `faixa`, o centro dela fica dentro desses limites, e ela acompanha sem atravessar a
+ * tela a cada clique. `saida` leva um instante do filme ao instante do vídeo em que ele aparece.
+ */
+export function alvosNosCliques(saida: (mt: number) => number, g: Gravacao, de: number, ate: number, zoom: number, faixa?: Faixa): Alvo[] {
+  const preso = (v: number, [a, b]: [number, number]) => Math.min(b, Math.max(a, v));
+  return g.eventos
+    .filter((e): e is Extract<Gravacao["eventos"][number], { tipo: "clique" }> => e.tipo === "clique" && e.t >= de && e.t < ate)
+    .map((c) => ({ t: saida(c.t) - 0.3, cx: faixa ? preso(c.x, faixa.x) : c.x, cy: faixa ? preso(c.y, faixa.y) : c.y, zoom }));
+}
 
 export function ajudasFluidas(o: { partes: Parte[]; filmes: Record<string, Gravacao>; alvos: Record<number, Alvo[]>; pastaFilme: string }) {
   const cenaDe = (i: number) => {

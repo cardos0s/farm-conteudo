@@ -27,8 +27,8 @@ export type EdicaoFluida = {
   caminhos: TrilhaDeCliques[];
   /** Alvos da câmera de cada tomada (pela posição dela em `partes`), no tempo do vídeo. */
   alvos: Record<number, Alvo[]>;
-  /** Endereço mostrado na barra da janela. */
-  url: string;
+  /** Endereço mostrado na barra da janela (fixo, ou conforme o instante do vídeo, quando a tela navega). */
+  url: string | ((o: number) => string);
   /** Pasta das filmagens em public/ (cada cena em <pasta>/<cena>/tela.mp4). */
   pastaFilme: string;
   pastaLocucao: string;
@@ -193,7 +193,7 @@ export const Fluido: React.FC<{
 
       {!noFim && <Marca assunto={edicao.assunto} icone={edicao.icone} />}
 
-      <Moldura url={edicao.url} presenca={presenca} escuro={escuro}>
+      <Moldura url={typeof edicao.url === "function" ? edicao.url(o) : edicao.url} presenca={presenca} escuro={escuro}>
         {partes.map((p, i) => {
           if (!ehTela(p)) return null;
           const ant = partes[i - 1];
