@@ -162,9 +162,9 @@ JSON. O Express sozinho não é MVC: você monta o padrão com rotas, controller
 <p>No MVP, a View não fala com o Model. Ela recebe o clique e repassa ao <b>Presenter</b> ("o usuário tocou em salvar").
 O Presenter busca ou altera o Model e depois diz à View exatamente o que mostrar, chamando métodos de uma interface:
 <code>mostrarCarregando()</code>, <code>mostrarErro(msg)</code>. Na variante <i>Passive View</i> (view passiva), a View
-não tem lógica; na <i>Supervising Controller</i>, ela faz as ligações simples com os dados. Em ambas, o Presenter é
+não tem lógica; na <i>Supervising Controller</i> (controlador supervisor), ela faz as ligações simples com os dados. Em ambas, o Presenter é
 testado com uma View falsa. O MVP brilhou onde a ligação automática entre tela e dados (<i>binding</i>) era fraca ou não
-existia: WinForms no .NET e Android antes do Jetpack, com suas Activities gigantes.</p>
+existia: WinForms no .NET e Android antes do Jetpack, com suas Activities (as classes de tela) gigantes.</p>
 
 <h4>MVVM: ViewModel e data binding</h4>
 <p>No MVVM, a peça do meio é o <b>ViewModel</b>: um objeto que expõe o <b>estado</b> da tela (a lista de pedidos, se está
@@ -172,15 +172,15 @@ carregando, a mensagem de erro) e <b>comandos</b> (recarregar, cancelar). A View
 binding</b> (ligação de dados): quando o estado muda, a tela se atualiza sozinha. A diferença para o MVP é essa: o
 ViewModel <b>não conhece a View</b>. Ele não chama <code>mostrarErro()</code>; só muda o estado, e quem estiver ligado
 reage.</p>
-<p>O padrão se popularizou com o WPF, da Microsoft. Angular e Vue trazem binding pronto (<code>[(ngModel)]</code>,
-<code>v-model</code>); no Android, o <code>ViewModel</code> do Jetpack (que sobrevive à rotação da tela) é usado com
-Compose; em SwiftUI, um objeto observável faz o papel. No Compose e no React, a recomendação é a mão única: o estado
+<p>O padrão se popularizou com o WPF, o framework de telas da Microsoft para Windows. Angular e Vue trazem binding pronto (<code>[(ngModel)]</code>,
+<code>v-model</code>); no Android, o <code>ViewModel</code> do Jetpack (que sobrevive à rotação da tela) é muito usado com
+o Compose; em SwiftUI, um objeto observável faz o papel. No Compose e no React, a recomendação é o fluxo de mão única: o estado
 desce para a tela e os eventos sobem como comandos.</p>
 
 <h4>Onde esses padrões ficam num sistema maior</h4>
-<p>Num sistema real é comum ter os dois: MVVM no front e MVC no back. Com regras de negócio ricas, o controller
+<p>Num sistema real é comum ter os dois: MVVM no front e MVC no back. Quando o negócio é rico, o controller
 não guarda regra: ele vira um <b>adaptador de entrada</b> do hexágono (capítulo 6). Na Clean
-Architecture (capítulo 7), controllers e presenters aparecem com esses nomes no anel de fora.</p>
+Architecture (capítulo 7), controllers e presenters aparecem com esses nomes no anel dos adaptadores de interface.</p>
 
 ${fig(borda(), "MVC, MVP e MVVM moram na borda. As regras ficam no núcleo, que não sabe se quem chamou foi uma tela, uma API ou um teste.")}
 
@@ -293,7 +293,7 @@ export function PedidosTela() {
   "web/src/pedidos/PedidosTela.tsx",
 )}
 
-<p>O React não impõe MVVM: aqui o hook customizado faz o papel de ViewModel. Repare que ele não sabe como a tela é:
+<p>O React não impõe MVVM: aqui o <i>hook</i> customizado (função do React que começa com <code>use</code> e guarda estado) faz o papel de ViewModel. Repare que ele não sabe como a tela é:
 amanhã ela pode virar uma tabela, ou ir para o React Native, e o hook não muda. Em MVP seria o contrário: a View implementaria uma interface (<code>TelaDePedidos</code>) e o Presenter chamaria
 <code>tela.mostrarPedidos(lista)</code> ou <code>tela.mostrarErro(msg)</code>.</p>
 
@@ -321,34 +321,34 @@ ${tabela(
 <h3>Erros comuns</h3>
 <ul>
 <li><b>Fat controller</b> (controller gordo): o método valida, calcula frete, aplica cupom, grava no banco e manda e-mail.
-Ninguém consegue reaproveitar essa regra num job ou num consumidor de fila. O controller deve só traduzir e chamar.</li>
-<li><b>Massive View Controller</b>: no iOS com UIKit, o <code>UIViewController</code> acumula rede, validação, navegação e
+Ninguém consegue reaproveitar essa regra num <i>job</i> (tarefa em segundo plano) ou num consumidor de fila. O controller deve só traduzir e chamar.</li>
+<li><b>Massive View Controller</b> (view controller gigante): no iOS com UIKit, o <code>UIViewController</code> acumula rede, validação, navegação e
 desenho. O apelido brinca com a própria sigla MVC. No Android antigo, o mesmo acontecia com Activities enormes. A saída é
 tirar a lógica para um ViewModel ou Presenter.</li>
 <li><b>Regra na View</b>: o template decide "se o cliente é VIP e o pedido passa de R$ 200, o frete é grátis". A regra
 vai para o Model, e a View só mostra <code>pedido.freteGratis</code>.</li>
 <li><b>ViewModel que conhece a tela</b>: importa componentes, mexe no DOM ou navega direto. No Android, guardar uma
-Activity ou uma View dentro do ViewModel ainda vaza memória, porque ele vive mais que a tela. Ele expõe estado e
+Activity ou uma View dentro do ViewModel também vaza memória, porque ele vive mais que a tela. O ViewModel só expõe estado e
 comandos; quem decide como desenhar é a View.</li>
-<li><b>Model que é só a tabela</b>: o model vira a classe do ORM com campos, e a regra vai para o controller ou a View.
-O extremo oposto também dói: "skinny controller, fat model" (lema famoso na comunidade Rails) levado longe demais cria
+<li><b>Model que é só a tabela</b>: o Model vira só a classe do ORM, com campos, e a regra vai para o controller ou a View.
+O extremo oposto também dói: "skinny controller, fat model" (controller magro, model gordo), lema famoso na comunidade Rails, levado longe demais cria
 um <code>Usuario</code> que faz tudo. Com regra rica, o Model vira o núcleo do capítulo 6.</li>
 </ul>
 
 ${pratica(
   "No mundo real",
-  "<p>O Shopify roda num dos maiores monólitos Ruby on Rails conhecidos, e Rails é MVC de ponta a ponta. No blog de engenharia, o time contou que organizar o código só pelas pastas do framework (<code>models/</code>, <code>controllers/</code>, <code>views/</code>) deixou de funcionar com tanta gente mexendo no mesmo lugar. A saída foi dividir o código por áreas de negócio (componentes), cada uma com seu próprio MVC por dentro, e criar o <b>Packwerk</b>, ferramenta open source que checa as dependências entre esses componentes. A lição: o MVC organiza a apresentação; para organizar o negócio, você precisa de módulos (capítulo 12).</p>",
+  "<p>O Shopify roda num dos maiores monólitos Ruby on Rails conhecidos, e Rails é MVC de ponta a ponta. No blog de engenharia, o time contou que organizar o código só pelas pastas do framework (<code>models/</code>, <code>controllers/</code>, <code>views/</code>) deixou de funcionar com tanta gente mexendo no mesmo lugar. A saída foi dividir o código por áreas de negócio (componentes), cada uma com seu próprio MVC por dentro, e criar o <b>Packwerk</b>, ferramenta de código aberto que checa as dependências entre esses componentes. A lição: o MVC organiza a apresentação; para organizar o negócio, você precisa de módulos (capítulo 12).</p>",
 )}
 
 ${dica(
   "Cada framework chama de um jeito",
-  "<p>O Django fala em <b>MTV</b> (Model, Template, View): o que ele chama de <i>view</i> faz o papel do controller, e o <i>template</i> é a View. No UIKit da Apple, o controller fica no meio, entre View e Model, bem parecido com um Presenter. E você vai ouvir falar de <b>MVI</b> (Model-View-Intent) e de Redux: variações de mão única, com um único objeto de estado. Não brigue com os nomes. Pergunte: quem recebe a entrada, quem guarda a regra e quem desenha?</p>",
+  "<p>O Django fala em <b>MTV</b> (Model, Template, View): o que ele chama de <i>view</i> faz o papel do controller, e o <i>template</i> é a View. No UIKit da Apple, o controller fica no meio, entre View e Model, bem parecido com um Presenter. E você vai ouvir falar de <b>MVI</b> (Model-View-Intent) e de Redux: variações de mão única, com todo o estado num objeto só. Não brigue com os nomes. Pergunte: quem recebe a entrada, quem guarda a regra e quem desenha?</p>",
 )}
 
 ${combina([
   [4, "Camadas", "MVC é a apresentação"],
   [6, "Hexagonal", "controller como adaptador"],
-  [7, "Clean e Onion", "controllers no anel de fora"],
+  [7, "Clean e Onion", "controllers no anel de adaptadores"],
   [12, "Monólito modular", "um MVC por módulo"],
   [16, "Micro-frontends", "ViewModels em cada pedaço"],
   [18, "Cliente-servidor", "MVVM no front, MVC no back"],

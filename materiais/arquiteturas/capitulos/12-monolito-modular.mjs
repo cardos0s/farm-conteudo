@@ -97,19 +97,19 @@ function extrair() {
   s += banco(610, 30, 120, 64, "schema\ncatálogo", { preench: claro.laranja, tam: 15 });
   s += txt(670, 110, "mesmo banco", { tam: 15, cor: cor.cinza });
   // depois: o módulo virou serviço
-  s += txt(20, 176, "depois", { tam: 18, ancora: "start" });
-  s += ret(100, 130, 300, 92, { tracejado: true, cor: cor.cinza, espessura: 1.5 });
-  s += txt(112, 144, "monólito", { tam: 15, cor: cor.cinza, ancora: "start" });
-  s += bloco(115, 158, 100, 46, "Pedidos", { preench: claro.amarelo });
-  s += seta(217, 181, 233, 181, { espessura: 2, ponta: 9 });
-  s += bloco(235, 152, 152, 58, "buscarProduto(id)\ncliente HTTP", { preench: claro.verde, hachura: "solid", tam: 15 });
-  s += seta(389, 181, 452, 181, { espessura: 2.2, cor: cor.azul, rotulo: "rede", corRotulo: cor.azul });
-  s += bloco(454, 154, 150, 54, "serviço\nCatálogo", { preench: claro.laranja, tam: 16 });
-  s += seta(606, 181, 640, 181, { espessura: 1.8 });
-  s += banco(642, 149, 100, 64, "banco\ncatálogo", { preench: claro.laranja, tam: 15 });
-  s += txt(692, 230, "banco próprio", { tam: 15, cor: cor.cinza });
-  s += txt(380, 258, "quem chama continua usando buscarProduto(id): só a implementação mudou", { tam: 15, cor: cor.vermelho });
-  return quadro(760, 274, s);
+  s += txt(20, 162, "depois", { tam: 18, ancora: "start" });
+  s += ret(100, 116, 300, 92, { tracejado: true, cor: cor.cinza, espessura: 1.5 });
+  s += txt(112, 130, "monólito", { tam: 15, cor: cor.cinza, ancora: "start" });
+  s += bloco(115, 144, 100, 46, "Pedidos", { preench: claro.amarelo });
+  s += seta(217, 167, 233, 167, { espessura: 2, ponta: 9 });
+  s += bloco(235, 138, 152, 58, "buscarProduto(id)\ncliente HTTP", { preench: claro.verde, hachura: "solid", tam: 15 });
+  s += seta(389, 167, 452, 167, { espessura: 2.2, cor: cor.azul, rotulo: "rede", corRotulo: cor.azul });
+  s += bloco(454, 140, 150, 54, "serviço\nCatálogo", { preench: claro.laranja, tam: 16 });
+  s += seta(606, 167, 640, 167, { espessura: 1.8 });
+  s += banco(642, 135, 100, 64, "banco\ncatálogo", { preench: claro.laranja, tam: 15 });
+  s += txt(692, 216, "banco próprio", { tam: 15, cor: cor.cinza });
+  s += txt(380, 242, "quem chama continua usando buscarProduto(id): só a implementação mudou", { tam: 15, cor: cor.vermelho });
+  return quadro(760, 258, s);
 }
 
 export default `
@@ -130,7 +130,7 @@ ${fig(diagrama(), "Três módulos no mesmo deploy. Cada um tem uma porta de entr
 <h3>Como funciona</h3>
 <ul>
 <li><b>Um deploy, um processo</b>: um build, um artefato no ar (pode haver várias cópias iguais atrás de um
-balanceador). Um módulo chama o outro com uma chamada de função, sem rede no meio.</li>
+balanceador). Um módulo usa o outro com uma chamada de função, sem rede no meio.</li>
 <li><b>Módulos por área do negócio</b>, não por camada técnica: catálogo, pedidos, pagamentos. Cada módulo é um <b>contexto
 delimitado</b> (<i>bounded context</i>, conceito do DDD, o <i>Domain-Driven Design</i>): uma parte do negócio com vocabulário
 e regras próprios. "Produto" no catálogo tem foto e descrição; em entregas, tem peso e tamanho da caixa.</li>
@@ -278,11 +278,11 @@ ${passos([
 ])}
 
 <h4>E se um dia precisar virar microsserviço?</h4>
-<p>Se um módulo ganhar um motivo real para deploy próprio (escala muito diferente, um time que precisa de autonomia, outra
-tecnologia), metade do trabalho já está feita. O schema vai para um banco próprio, o código vira um serviço, o
-<code>index.ts</code> vira um cliente HTTP com a mesma assinatura e os eventos daquele módulo passam por uma fila de verdade.
-Por isso vale, desde já, a API pública devolver <code>Promise</code> e dados simples (não entidades internas): a assinatura
-sobrevive à troca. O capítulo 30 mostra como fazer isso aos poucos, sem parar o sistema.</p>
+<p>Se um módulo ganhar um motivo real para deploy próprio (escala muito diferente, autonomia de um time, outra
+tecnologia), metade do trabalho já está feita. O schema ganha um banco próprio, o código vira serviço, o
+<code>index.ts</code> vira um cliente HTTP com a mesma assinatura e os eventos passam por uma fila de verdade.
+Por isso, desde já, a API pública deve devolver <code>Promise</code> e dados simples (não entidades internas): a assinatura
+sobrevive à troca. O capítulo 30 mostra como migrar sem parar o sistema.</p>
 
 ${fig(extrair(), "Extrair um módulo bem isolado é trocar a implementação da API pública. Quem chama não muda o código, mas passa a lidar com latência e falhas de rede.")}
 
@@ -291,9 +291,9 @@ ${tabela(
   ["Você ganha", "Você paga"],
   [
     ["Operar como um monólito: um deploy, um processo", "Tudo sobe junto: um bug grave afeta o app inteiro"],
-    ["Chamadas entre módulos sem rede: rápidas e fáceis de depurar", "Escala junto: não dá para escalar só um módulo"],
+    ["Módulos se chamam sem rede: rápido e fácil de depurar", "Escala junto: não dá para escalar só um módulo"],
     ["Times em áreas separadas, com menos conflito", "Disciplina e ferramentas para manter as fronteiras"],
-    ["Mover uma fronteira errada é refatorar, não migrar serviço", "Dados separados pedem cópias e eventos, não joins"],
+    ["Mover uma fronteira errada é refatorar, não migrar serviço", "Sem join entre módulos: só cópias e eventos"],
     ["Caminho aberto para extrair serviços depois", "Um pipeline e uma stack para todos os times"],
   ],
 )}
@@ -306,11 +306,11 @@ módulos. Módulo é uma fatia do negócio, com as camadas dentro.</li>
 fronteira.</li>
 <li><b>Join escondido</b>: a API está certinha, mas um relatório faz <code>select</code> juntando tabelas de dois módulos.
 Na hora de extrair, é ele que quebra.</li>
-<li><b>Transação que abraça vários módulos</b>: como o banco é um só, dá para gravar o pedido e baixar o estoque na mesma
-transação. Funciona, mas cola os dois módulos: no dia de extrair um deles, ela vira uma saga (capítulo 23). Prefira cada
-módulo confirmar a própria transação e avisar os outros por evento.</li>
-<li><b>Ciclos entre módulos</b>: pedidos chama pagamentos, que chama pedidos. Quebre com um evento ou invertendo a
-dependência (um módulo define a interface que precisa e o outro implementa, como as portas do capítulo 6).</li>
+<li><b>Transação que abraça vários módulos</b>: com um banco só, dá para gravar o pedido e baixar o estoque na mesma
+transação. Funciona, mas cola os dois módulos: ao extrair um deles, ela vira uma saga (capítulo 23). Prefira que cada
+módulo feche a própria transação e avise os outros por evento.</li>
+<li><b>Ciclos entre módulos</b>: pedidos chama pagamentos, que chama pedidos. Quebre com um evento ou com uma porta
+(capítulo 6): quem usa define a interface, o outro a implementa.</li>
 <li><b>Pasta compartilhada que vira depósito</b>: <code>compartilhado/</code> deve ter só infraestrutura (barramento, log) e
 tipos básicos (<code>Dinheiro</code>). Regra de negócio ali vira um módulo escondido do qual todos dependem.</li>
 <li><b>Rede dentro do monólito</b>: módulos conversando por HTTP com o próprio servidor. É o custo dos microsserviços sem os
@@ -329,16 +329,16 @@ ${alerta(
 
 ${dica(
   "Monólito modular ou microsserviços?",
-  "<p>Os dois dividem o sistema pelas mesmas fronteiras de negócio. A diferença é o que segura a fronteira: no monólito modular, uma regra de código checada no build; nos microsserviços (capítulo 14), a rede. Fronteira de código é barata de mover; fronteira de rede é cara. Quando ainda não se sabe onde cortar, comece pelo modular.</p>",
+  "<p>Os dois dividem o sistema pelas mesmas fronteiras de negócio. A diferença é o que segura a fronteira: no monólito modular, uma regra de código checada no build; nos microsserviços (capítulo 14), a rede. Fronteira de código é barata de mover; a de rede, cara. Na dúvida, comece pelo modular.</p>",
 )}
 
 ${combina([
-  [11, "Monólito", "o ponto de partida; o modular é a evolução"],
-  [6, "Hexagonal", "cada módulo com seu núcleo e adaptadores"],
-  [8, "Vertical Slice", "organizar cada módulo por funcionalidade"],
-  [20, "Orientada a eventos", "eventos internos entre módulos"],
-  [14, "Microsserviços", "quando um módulo precisar de deploy próprio"],
-  [30, "Como migrar sem parar o sistema", "extrair módulos aos poucos"],
+  [11, "Monólito", "o ponto de partida"],
+  [6, "Hexagonal", "o núcleo de cada módulo"],
+  [8, "Vertical Slice", "cada módulo em fatias"],
+  [20, "Orientada a eventos", "eventos entre módulos"],
+  [14, "Microsserviços", "um módulo vira serviço"],
+  [30, "Como migrar", "extrair módulos aos poucos"],
 ])}
 
 ${lembre([

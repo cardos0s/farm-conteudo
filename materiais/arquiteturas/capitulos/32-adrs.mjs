@@ -183,7 +183,7 @@ Um teste no CI barra imports das pastas internas de outro módulo.
 ## Consequências
 + Um deploy, um banco, transações locais: operação barata.
 + Fronteiras claras, prontas para extrair um serviço no futuro.
-- Tudo escala junto: no pico, todas as partes sobem juntas.
+- Tudo escala junto: no pico, é preciso subir cópias do sistema inteiro.
 - Exige disciplina: a regra de fronteiras precisa rodar sempre.
 
 Rever se: o time passar de uns 25 devs ou um módulo precisar de escala,
@@ -248,7 +248,7 @@ ${fig(cicloDeVida(), "Em cima, os status de um ADR. Embaixo, a pasta docs/adr: o
 <ul>
 <li><b>Memória</b>: o código mostra <b>o que</b> foi feito; o ADR mostra <b>por quê</b>. Daqui a dois anos ninguém lembra
 por que o time escolheu Postgres e não MongoDB.</li>
-<li><b>Menos discussão em looping</b>: "por que não microsserviços?" se responde com um link, não com uma reunião. E ler os
+<li><b>Menos discussão em círculos</b>: "por que não microsserviços?" se responde com um link, não com uma reunião. E ler os
 ADRs em ordem é a melhor visita guiada para quem acabou de chegar.</li>
 <li><b>Decisões melhores</b>: escrever contexto, alternativas e consequências obriga a pensar. Muita ideia ruim morre na
 hora de preencher o parágrafo de consequências.</li>
@@ -258,12 +258,12 @@ hora de preencher o parágrafo de consequências.</li>
 <p>Nygard sugere frases completas, escritas como uma conversa com um dev do futuro, em uma ou duas páginas no máximo:</p>
 <ul>
 <li><b>Título</b>: a decisão numa frase curta, com número ("ADR-0003: Usar monólito modular...").</li>
-<li><b>Status</b>: em que ponto a decisão está (veja o ciclo de vida logo abaixo).</li>
+<li><b>Status</b>: em que ponto a decisão está (veja o desenho acima).</li>
 <li><b>Contexto</b>: as forças em jogo (problema, prazo, time, restrições). Só fatos, sem defender a escolha ainda.</li>
 <li><b>Decisão</b>: o que o time vai fazer, em voz ativa: "Vamos usar...".</li>
 <li><b>Consequências</b>: o que fica mais fácil <b>e</b> o que fica mais difícil. Só listar o lado bom é propaganda.</li>
 </ul>
-<p>Muitos times somam data, quem decidiu e <b>alternativas consideradas</b> (o template MADR, por exemplo, já traz isso).
+<p>Muitos times acrescentam data, quem decidiu e <b>alternativas consideradas</b> (o modelo MADR, por exemplo, já traz esses campos).
 Vale a pena: metade do valor de um ADR está em saber o que <b>não</b> foi escolhido, e por quê.</p>
 
 <h3>Um exemplo preenchido</h3>
@@ -271,8 +271,8 @@ Vale a pena: metade do valor de um ADR está em saber o que <b>não</b> foi esco
 
 ${codigo(EXEMPLO, "docs/adr/0003-monolito-modular.md", { realce: false })}
 
-<p>Repare: o contexto fala de <b>time e prazo</b>, não só de tecnologia (capítulo 2); as consequências têm mais <b>e</b>
-menos; e a última linha diz <b>quando rever</b>. É isso que faz do ADR uma decisão consciente, e não uma regra eterna.</p>
+<p>Repare: o contexto fala de <b>time e prazo</b>, não só de tecnologia (capítulo 2); as consequências têm lado bom <b>e</b>
+lado ruim (+ e -); e a última linha diz <b>quando rever</b>. É isso que faz do ADR uma decisão consciente, e não uma regra eterna.</p>
 
 <h4>Modelo em branco para copiar</h4>
 ${codigo(MODELO, "docs/adr/template.md", { realce: false })}
@@ -287,6 +287,7 @@ loja/
 │   ├── adr/
 │   │   ├── template.md                 # o modelo em branco
 │   │   ├── 0001-registrar-decisoes.md  # o primeiro ADR explica o processo
+│   │   ├── 0002-typescript-no-backend.md
 │   │   ├── 0003-monolito-modular.md
 │   │   ├── 0004-filas-no-redis.md      # substituído por 0010
 │   │   └── 0010-filas-no-rabbitmq.md   # substitui 0004
@@ -296,7 +297,7 @@ loja/
 `)}
 
 <p>O ciclo de vida é o do desenho do começo do capítulo. O ADR nasce <b>proposto</b> num PR, e a discussão acontece nos
-comentários. Aprovado, vira <b>aceito</b> e a decisão não é mais reescrita: dali em diante, só o status e os links mudam. Se o time desiste, ele fica como <b>rejeitado</b> (assim a
+comentários. Aprovado, vira <b>aceito</b> e a decisão não é mais reescrita: dali em diante, só o status e os links mudam. Se o time desiste, o ADR fica como <b>rejeitado</b> (assim a
 mesma proposta não volta daqui a seis meses sem nada novo). Quando uma decisão nova troca a antiga, escreva um ADR novo e
 marque os dois: "substituído por ADR-0010" e "substitui ADR-0004". Nunca reescreva a história. <b>Obsoleto</b>
 (<i>deprecated</i>) é a decisão que deixou de valer sem outra no lugar (por exemplo, a parte do sistema que ela cobria foi
@@ -321,7 +322,7 @@ ${passos([
   "Crie <code>docs/adr/</code> com o <code>template.md</code> e escreva o ADR-0001, \"Registrar decisões de arquitetura em ADRs\" (é também o primeiro arquivo que a ferramenta adr-tools cria).",
   "Registre as 3 a 5 decisões passadas que mais geram pergunta hoje, avisando no contexto que o registro foi feito depois.",
   "Toda decisão nova que passe na régua acima entra como PR, em status <i>proposto</i>, antes do código.",
-  "Ponha um link para <code>docs/adr</code> no README. E toda regra que uma máquina consiga conferir vira função de aptidão.",
+  "Ponha um link para <code>docs/adr</code> no README. E toda regra que uma máquina consiga conferir vira função de aptidão (próxima seção).",
 ])}
 
 <h3>Funções de aptidão: decisões que se defendem sozinhas</h3>
@@ -344,7 +345,7 @@ ${codigo(TESTE, "testes/arquitetura.test.ts")}
 <h4>Exemplo 2: tempo de resposta</h4>
 <p>"A busca é rápida" não dá para testar. "95% das buscas respondem em menos de 300 ms com 50 usuários ao mesmo tempo" dá.
 Esse número é o <b>p95</b> (percentil 95): o tempo abaixo do qual ficam 95% das respostas. No k6, uma ferramenta de teste
-de carga, o limite vira um <i>threshold</i>, e o comando falha se ele for ultrapassado:</p>
+de carga, o limite vira um <i>threshold</i> (limiar), e o comando falha se ele for ultrapassado:</p>
 
 ${codigo(CARGA, "testes/carga/busca.js")}
 
@@ -368,7 +369,7 @@ começa no país e dá zoom até a rua. O nome vem dos quatro níveis: <i>Contex
 <i>Code</i>.</p>
 <ol>
 <li><b>Contexto</b>: o sistema como uma caixa só, quem usa e com que sistemas externos ele conversa. Para todo mundo.</li>
-<li><b>Contêineres</b>: as partes que rodam ou guardam dados separadamente: app web, app mobile, API, banco. Para devs e
+<li><b>Contêineres</b>: as partes que rodam ou guardam dados separadamente (app web, app mobile, API, banco). Para devs e
 operação.</li>
 <li><b>Componentes</b>: os módulos dentro de um contêiner. Para os devs daquele contêiner.</li>
 <li><b>Código</b>: classes e interfaces. Quase sempre opcional: a IDE gera quando alguém precisa.</li>
@@ -378,7 +379,7 @@ ${fig(c4(), "Cada nível dá zoom num elemento do nível anterior. Na prática, 
 
 ${alerta(
   "Contêiner no C4 não é contêiner Docker",
-  "<p>No C4, <b>contêiner</b> é qualquer coisa que roda ou guarda dados separadamente: uma aplicação web, uma API, um app mobile, um banco. Pode rodar num contêiner Docker ou não. Para desenhar a partir de texto e guardar ao lado dos ADRs, há ferramentas como Structurizr (do próprio Simon Brown), C4-PlantUML e Mermaid.</p>",
+  "<p>O nome confunde: no C4, <b>contêiner</b> é qualquer parte que roda ou guarda dados separadamente, como uma API ou um banco. Ela pode rodar num contêiner Docker ou não. Para desenhar a partir de texto e guardar ao lado dos ADRs, há ferramentas como Structurizr (do próprio Simon Brown), C4-PlantUML e Mermaid.</p>",
 )}
 
 <h3>Checklist de revisão de arquitetura</h3>
@@ -417,7 +418,7 @@ ${pratica(
 
 ${dica(
   "ADR, RFC ou design doc?",
-  "<p>Não competem. O RFC (ou design doc) é a conversa longa para propor e discutir uma mudança antes de decidir; o ADR é a ata curta da decisão, com link para o RFC. Quem chegar daqui a dois anos lê o ADR primeiro e só abre o RFC se precisar do detalhe.</p>",
+  "<p>Não competem. O RFC (<i>Request for Comments</i>, pedido de comentários) ou design doc (documento de design) é a conversa longa para propor e discutir uma mudança antes de decidir; o ADR é a ata curta da decisão, com link para o RFC. Quem chegar daqui a dois anos lê o ADR primeiro e só abre o RFC se precisar do detalhe.</p>",
 )}
 
 ${combina([

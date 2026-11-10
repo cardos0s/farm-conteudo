@@ -83,7 +83,7 @@ ${resumo(
 escreveu um controller que chama um service que chama um repository já trabalhou em camadas. A ideia de empilhar
 níveis, em que cada um só usa o de baixo, é antiga e aparece até em redes (o modelo OSI e a pilha TCP/IP são camadas).
 Martin Fowler, no livro <i>Patterns of Enterprise Application Architecture</i>, chama as três camadas principais
-de apresentação, domínio e fonte de dados. No dia a dia, a gente diz apresentação, negócio e dados.</p>
+de apresentação, domínio e fonte de dados. No dia a dia, a gente diz apresentação, negócio e persistência.</p>
 
 ${fig(pilha(), "A requisição desce pela pilha e a resposta sobe pelo mesmo caminho. Cada camada responde a uma pergunta diferente.", "grande")}
 
@@ -93,8 +93,8 @@ ${fig(pilha(), "A requisição desce pela pilha e a resposta sobe pelo mesmo cam
 Valida o <i>formato</i> (o campo veio? é número?), chama o negócio e escolhe o status HTTP. Não decide regra.</li>
 <li><b>Negócio</b> (ou aplicação): onde moram as regras. "Pedido sem itens não vale", "frete grátis acima de R$ 200".
 Em código, costumam ser os <b>services</b>, e é neles que a transação do banco começa e termina. Alguns times dividem
-em <b>aplicação</b> (orquestra o caso de uso) e <b>domínio</b> (as regras puras), como no DDD de Eric Evans.</li>
-<li><b>Persistência</b>: guarda e busca dados. Repositories, ORM, SQL. Sabe <i>como</i> salvar, não <i>por que</i>.</li>
+em <b>aplicação</b> (orquestra o caso de uso) e <b>domínio</b> (as regras puras), como no DDD (<i>Domain-Driven Design</i>, o design guiado pelo domínio) de Eric Evans.</li>
+<li><b>Persistência</b>: guarda e busca dados. Repositories, ORM, SQL. Sabe <i>como</i> salvar, não <i>por quê</i>.</li>
 <li><b>Banco e infraestrutura</b>: o banco em si e o que é técnico e compartilhado (e-mail, filas, logs, configuração).</li>
 <li><b>A regra</b>: cada camada só chama a de baixo, nunca a de cima. O repository não conhece o controller; o service não
 sabe se a chamada veio de HTTP, de uma fila ou de um teste.</li>
@@ -114,12 +114,12 @@ ${fig(fechadaAberta(), "À esquerda, o atalho é proibido. À direita, a camada 
 <h4>O anti-padrão sumidouro (sinkhole)</h4>
 <p>Acontece quando a requisição atravessa camadas que não fazem nada além de repassar. O controller chama
 <code>produtoService.buscar(id)</code>, que só faz <code>return this.repo.buscar(id)</code>. Richards sugere a regra
-80-20: uns 20% de requisições só de passagem é normal; se a maioria é assim, as camadas viraram burocracia. A saída é
+80-20: tudo bem se uns 20% das requisições só passam direto; se a maioria é assim, as camadas viraram burocracia. A saída é
 abrir camadas de propósito para as leituras simples ou organizar por fatias verticais (capítulo 8).</p>
 
 ${quando(
   [
-    "CRUDs e cadastros com regras moderadas: painel administrativo, backoffice, sistema de RH.",
+    "CRUDs (criar, ler, atualizar e apagar registros) com regras moderadas: painel administrativo, backoffice, RH.",
     "Time iniciante ou misto: todo mundo conhece controller, service e repository, e NestJS e Spring já sugerem essa divisão.",
     "Apps corporativos em que o mais importante é cada pessoa saber onde mexer.",
     "Primeira versão de um produto, quando ainda não se sabe onde vai estar a complexidade.",
@@ -160,7 +160,7 @@ src/
 │   ├── pedido.service.ts      # negócio
 │   └── pedido.repository.ts   # persistência
 ├── produtos/                  # mesma divisão em três arquivos
-├── compartilhado/db.ts        # pool do banco (infraestrutura)
+├── compartilhado/db.ts        # pool de conexões (infraestrutura)
 └── main.ts                    # liga as camadas
 `,
   "por funcionalidade, com camadas dentro (recomendado)",
@@ -170,9 +170,8 @@ src/
 
 ${codigo(
   `
-// pedidos/pedido.repository.ts — persistência: sabe salvar, não sabe por quê
+// persistência: sabe salvar, não sabe por quê
 import { Pool } from "pg";
-
 export class PedidoRepository {
   constructor(private db: Pool) {}
   async inserir(clienteId: string, totalCentavos: number) {
@@ -186,14 +185,13 @@ export class PedidoRepository {
 
 ${codigo(
   `
-// pedidos/pedido.service.ts — negócio: as regras moram aqui
+// negócio: as regras moram aqui
 import { PedidoRepository } from "./pedido.repository"; // a seta desce
 import { ProdutoRepository } from "../produtos/produto.repository";
 export class ErroDeNegocio extends Error {}
 
 export class PedidoService {
   constructor(private pedidos: PedidoRepository, private produtos: ProdutoRepository) {}
-
   async criar(clienteId: string, itens: { produtoId: string; qtd: number }[]) {
     if (itens.length === 0) throw new ErroDeNegocio("Pedido sem itens");
     let subtotal = 0;
@@ -212,7 +210,10 @@ export class PedidoService {
 
 ${codigo(
   `
-// pedidos/pedido.controller.ts — apresentação: traduz HTTP, não decide nada
+// apresentação: traduz HTTP, não decide nada
+import { Router } from "express";
+import { PedidoService, ErroDeNegocio } from "./pedido.service";
+
 export function rotasDePedidos(service: PedidoService) {
   const router = Router();
   router.post("/pedidos", async (req, res, next) => {
@@ -233,17 +234,17 @@ export function rotasDePedidos(service: PedidoService) {
   "src/pedidos/pedido.controller.ts",
 )}
 
-<p>Falta ligar as peças no <code>main.ts</code>, de baixo para cima: <code>new PedidoService(new PedidoRepository(pool),
-new ProdutoRepository(pool))</code> e depois <code>app.use(express.json(), rotasDePedidos(service))</code>. Se amanhã o
-pedido também chegar por uma fila, o consumidor chama o mesmo <code>service.criar()</code> e nenhuma regra é copiada.</p>
+<p>Falta ligar tudo no <code>main.ts</code>: <code>const service = new PedidoService(new PedidoRepository(pool),
+new ProdutoRepository(pool))</code> e <code>app.use(express.json(), rotasDePedidos(service))</code>. Se o pedido também
+chegar por uma fila, o consumidor chama o mesmo <code>service.criar()</code> e nenhuma regra é copiada.</p>
 
 <h4>Passo a passo para adotar</h4>
 ${passos([
   "Escreva no README o trabalho de cada camada: controller traduz, service decide, repository guarda.",
   "Escolha as pastas: por camada num projeto pequeno; por funcionalidade, com camadas dentro, quando passar de meia dúzia de entidades.",
-  "Comece pelo service: escreva a regra e um teste unitário com dublês (<i>mocks</i>) dos repositórios, sem subir banco.",
+  "Comece pelo service: escreva a regra e um teste unitário com dublês (<i>mocks</i>) dos repositories, sem subir banco.",
   "Deixe os controllers finos: validam o formato, chamam o service e montam a resposta. Nada de <code>req</code> ou <code>res</code> dentro do service.",
-  "Decida quais camadas são abertas (por exemplo, listagens simples podem ir do controller direto ao repository) e registre a decisão num ADR (capítulo 32).",
+  "Decida quais camadas são abertas (por exemplo, listagens simples podem ir do controller direto ao repository) e registre a decisão num ADR (registro de decisão de arquitetura, capítulo 32).",
   "Automatize a regra: com <code>no-restricted-imports</code> do ESLint ou com o dependency-cruiser, impeça que um repository importe um service ou que um service importe algo de HTTP.",
 ])}
 
@@ -253,7 +254,7 @@ ${tabela(
   [
     ["Fácil de entender: qualquer dev sabe onde procurar cada coisa", "Um campo novo atravessa todas as camadas (tela, service, repository, tabela)"],
     ["Trocar a tela ou o ORM mexe em uma camada só", "O negócio depende da persistência, a não ser que você inverta essa dependência"],
-    ["Frameworks e tutoriais seguem o padrão: o onboarding é rápido", "Tendência ao sumidouro: camadas que só repassam"],
+    ["Frameworks e tutoriais seguem o padrão: quem chega ao time se adapta rápido", "Tendência ao sumidouro: camadas que só repassam"],
     ["Regra concentrada nos services, num lugar só", "Com pastas por camada, cresce mal e vários times esbarram nas mesmas pastas"],
     ["Ótimo ponto de partida: evolui para hexagonal, Clean ou módulos", "Não diz nada sobre deploy e escala: tudo costuma ir para o ar junto"],
   ],
@@ -262,7 +263,7 @@ ${tabela(
 <h3>Erros comuns</h3>
 <ul>
 <li><b>Controller gordo</b>: o controller calcula desconto, consulta o banco e manda e-mail. Quando a mesma regra precisar
-rodar num job agendado, vai ser copiada. Regra vai no service; e se um service passar de mil linhas, quebre por caso de
+rodar numa tarefa agendada, vai ser copiada. Regra vai no service; e se um service passar de mil linhas, quebre por caso de
 uso (<code>CriarPedido</code>, <code>CancelarPedido</code>).</li>
 <li><b>Atalho "só dessa vez"</b>: o controller chama o repository direto sem ninguém ter decidido que a camada é aberta.
 Em poucos meses, metade das rotas pula o service e a regra se espalha. Abra camadas de propósito, não por pressa.</li>

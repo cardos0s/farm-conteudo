@@ -212,11 +212,11 @@ function escada() {
 export default `
 ${resumo(
   "Arquiteturas não competem: cada uma responde a uma pergunta diferente, e os sistemas de verdade juntam várias. Aqui estão <b>sete combinações que funcionam</b>, com o porquê, o encaixe e os riscos de cada uma.",
-  "Pense num prato feito: arroz, feijão, bife e salada. Cada item cumpre um papel e o conjunto funciona. Mas ninguém serve feijoada no café da manhã: a receita certa depende de quem vai comer.",
+  "Pense num prato feito: arroz, feijão, bife e salada. Cada item cumpre um papel e o conjunto funciona. Mas ninguém serve feijoada no café da manhã: a receita depende da hora e de quem vai comer.",
 )}
 
 <p>Até aqui, cada arquitetura apareceu sozinha. Na vida real elas andam juntas: ninguém escolhe "microsserviços" e para
-por aí. Isso funciona porque cada uma responde a uma pergunta diferente, e são exatamente as partes II, III e IV deste livro:</p>
+por aí. Isso funciona porque elas respondem a perguntas diferentes, que são exatamente as partes II, III e IV deste livro:</p>
 <ul>
 <li><b>Por dentro</b> (parte II): como organizar o código de cada aplicação?</li>
 <li><b>Por fora</b> (parte III): em quantas partes o sistema vai para o ar?</li>
@@ -243,17 +243,16 @@ ${tabela(
 <h3>Receita 1: MVP de startup</h3>
 <p><b>Ingredientes:</b> monólito (capítulo 11) + camadas (capítulo 4). <b>Para quem:</b> produto novo, time pequeno,
 muita dúvida sobre o que o cliente quer de verdade.</p>
-<p><b>Por que combina.</b> No começo, o que importa é a velocidade de aprender: lançar, medir, mudar. Um monólito tem um
-repositório, um deploy e um banco; uma transação resolve a consistência e não existe rede entre as partes para falhar. As
-camadas são o formato mais conhecido, e frameworks como Rails, Django, Laravel, NestJS e Spring já empurram nessa direção
-(entrada, regra, acesso a dados), então quem chega entende o projeto no primeiro dia. É a ideia do "Monolith First", de Martin Fowler (2015): comece pelo monólito e só
-divida quando souber onde ficam as fronteiras.</p>
+<p><b>Por que combina.</b> No começo, o que importa é a velocidade de aprender: lançar, medir, mudar. O monólito deixa
+pouca coisa para operar, e as camadas são o formato mais conhecido: frameworks como Rails, Django, Laravel, NestJS e Spring
+já empurram nessa direção, então quem chega entende o projeto no primeiro dia. É a ideia do "Monolith First", de Martin
+Fowler (2015): comece pelo monólito e só divida quando souber onde ficam as fronteiras.</p>
 
 ${tabela(
   ["Peça", "Papel na receita"],
   [
     ["Monólito", "Um deploy, um banco, nenhuma chamada de rede entre as partes. Uma transação garante a consistência."],
-    ["Camadas", "Rotas → serviços → repositórios. Todo dev reconhece o formato, e o framework já sugere algo parecido."],
+    ["Camadas", "Rotas → serviços → repositórios: entrada, regra e acesso a dados, cada um no seu lugar."],
     ["Pastas por funcionalidade", "<code>pedidos/</code> e <code>clientes/</code>, cada uma com as suas camadas dentro. Deixa o caminho pronto para a receita 2."],
   ],
 )}
@@ -269,12 +268,12 @@ um site com tráfego enorme atendido por um monólito rodando em poucos servidor
 (planos, cobrança, permissões).</p>
 <p><b>Por que combina.</b> Cada peça resolve uma dor diferente do crescimento. O monólito modular cria fronteiras entre
 áreas do negócio sem pagar o preço da rede: continua um deploy só. A hexagonal dentro de cada módulo protege a regra e
-deixa a tecnologia trocável. E os eventos internos tiram o acoplamento entre módulos: o faturamento avisa "fatura paga"
-e não precisa saber quem se interessa por isso.</p>
+deixa a tecnologia trocável. E os eventos internos diminuem o acoplamento entre módulos: o faturamento avisa "fatura paga"
+sem saber quem se interessa por isso.</p>
 
 ${fig(receitaModular(), "Três módulos num deploy só, cada um com o seu núcleo e os seus dados. Entre eles, só a API pública (seta preta) ou eventos internos.")}
 
-<p><b>Como as peças se encaixam.</b></p>
+<p style="break-after: avoid"><b>Como as peças se encaixam.</b></p>
 <ul>
 <li>Um módulo só fala com outro de dois jeitos: chamando a API pública dele (o <code>index.ts</code>) ou reagindo aos
 eventos que ele publica. Nunca lendo as tabelas dele.</li>
@@ -343,7 +342,7 @@ barramento.assinar<FaturaPaga>("FaturaPaga", (e) => liberarPlano.executar(e.cont
   "src/compartilhado e src/main.ts",
 )}
 
-<p><b>Riscos.</b></p>
+<p style="break-after: avoid"><b>Riscos.</b></p>
 <ul>
 <li><b>Fronteira furada</b>: um módulo importa um arquivo interno do outro "só dessa vez". Automatize a checagem
 (dependency-cruiser ou regras de lint no TypeScript; Packwerk no Ruby).</li>
@@ -371,11 +370,10 @@ chamadas síncronas: se o serviço de e-mail cair, o pedido não cai junto. A <b
 checkout, com um passo de desfazer para cada passo. E o <b>CQRS no catálogo</b> separa a escrita (cadastro, preço,
 descrição) da leitura (busca e vitrine), que ganha um modelo próprio, otimizado e escalado à parte.</p>
 
-
 <p><b>Como as peças se encaixam.</b> Por dentro, cada serviço segue camadas ou hexagonal: consumidores de eventos são
 adaptadores de entrada, e o publicador é uma porta de saída. O barramento (Kafka, RabbitMQ, SNS com SQS) é o único ponto
 que todos conhecem. O CQRS entra só no catálogo, onde leitura e escrita realmente divergem; no resto, um modelo basta.</p>
-<p><b>Riscos.</b></p>
+<p style="break-after: avoid"><b>Riscos.</b></p>
 <ul>
 <li><b>Operação pesada</b>: rastreamento distribuído, logs centralizados, versionamento de eventos e plantão por
 serviço. Sem isso, cada bug vira uma caça ao tesouro em dez serviços.</li>
@@ -396,8 +394,8 @@ sourcing</b>, o que se grava são os fatos (depósito recebido, transferência d
 é calculado a partir deles, e dá para reconstruir a conta em qualquer data. A <b>hexagonal</b> protege as regras que
 mudam com o negócio e com a regulação (limites, tarifas, antifraude) e isola os parceiros de fora: Pix, bandeira de
 cartão, birô de crédito, cada um atrás de um adaptador. As <b>sagas</b> coordenam operações que passam por mais de um
-sistema, como uma transferência para outro banco: debita aqui, envia para lá e, se o outro lado recusar, compensa. Repare
-que não é preciso ter microsserviços para precisar de saga: o parceiro externo já é "outro sistema".</p>
+sistema, como uma transferência para outro banco: debita aqui, envia para lá e, se o outro lado recusar, compensa. E não
+é preciso ter microsserviços para precisar de saga: o parceiro externo já é "outro sistema".</p>
 
 ${tabela(
   ["#", "Evento gravado (nunca muda)", "Valor", "Saldo calculado"],
@@ -410,14 +408,14 @@ ${tabela(
   ],
 )}
 
-<p>Repare na linha 4: a compensação da saga não apaga a linha 3, ela é um fato novo. O histórico conta a verdade
+<p>Repare na linha 4: a compensação da saga não apaga a linha 3: ela é um fato novo. O histórico conta a verdade
 inteira, inclusive o que deu errado.</p>
 <p><b>Como as peças se encaixam.</b> O <i>event store</i> (o banco de eventos) fica atrás de uma porta de saída, como
 <code>RepositorioDeContas</code>: ela carrega a conta somando os eventos e grava os novos. Cada parceiro (Pix, bandeira,
 birô) é outro adaptador de saída. A saga é um caso de uso que reage a eventos: ouve <code>TransferenciaDebitada</code>,
 chama a porta do parceiro e grava a resposta como um evento novo. Extrato e relatórios são projeções alimentadas pelos
 mesmos eventos (o lado de leitura do CQRS, capítulo 21).</p>
-<p><b>Riscos.</b> Event sourcing é a peça mais cara desta lista. Evento gravado não muda, então mudar o formato exige
+<p><b>Riscos.</b> Event sourcing é a peça mais cara desta receita. Evento gravado não muda, então mudar o formato exige
 versionamento; contas com muitos eventos pedem <i>snapshots</i> (fotos do estado) para não somar tudo a cada leitura; e
 perguntas como "quais clientes têm saldo acima de R$ 10 mil?" pedem projeções separadas. Se o que você precisa é só
 auditoria, um livro-razão (<i>ledger</i>) de partidas dobradas, em tabelas que só recebem inserções, já resolve boa
@@ -431,25 +429,24 @@ quem:</b> dados que não param de chegar: sensores de uma frota, medidores de en
 de delivery, os eventos de reprodução de um streaming de vídeo.</p>
 <p><b>Por que combina.</b> Aqui o dado já nasce como evento: cada leitura é um fato com horário. Um <b>log durável</b>
 (Kafka, Kinesis, Pulsar) recebe tudo, absorve os picos e guarda o histórico por um tempo. O processamento é uma sequência
-de etapas independentes (validar, enriquecer, agregar), que é exatamente <b>pipes and filters</b>: cada filtro pode ler
-de um tópico e escrever em outro, e escala de forma independente. E a <b>Kappa</b>, proposta por Jay Kreps em 2014, usa um caminho só,
-o de streaming: em vez de manter um sistema em lote em paralelo (como na Lambda), você reprocessa rodando o mesmo código
-de novo sobre o log.</p>
+de etapas independentes (validar, enriquecer, agregar), que é exatamente <b>pipes and filters</b>, e cada etapa escala por
+conta própria. E a <b>Kappa</b>, proposta por Jay Kreps em 2014, usa um caminho só, o de streaming: em vez de manter um
+sistema em lote em paralelo (como na arquitetura Lambda), você reprocessa rodando o mesmo código de novo sobre o log.</p>
 
-${fig(receitaStreaming(), "Cada leitura entra no log e passa por filtros independentes. Para corrigir um cálculo, a versão nova do mesmo pipeline lê o log desde o começo, numa tabela nova, e a leitura troca quando ela alcança o presente.")}
+${fig(receitaStreaming(), "Cada leitura entra no log e passa por filtros independentes. Para corrigir um cálculo, a versão nova do mesmo pipeline relê o log desde o começo e grava numa tabela nova; quando ela alcança o presente, a leitura troca de tabela.")}
 
 <p><b>Como as peças se encaixam.</b> Cada filtro é um consumidor que lê de um tópico e escreve no próximo: o log faz o
 papel do cano (<i>pipe</i>). Particione os tópicos pelo id do dispositivo; assim as leituras de um mesmo sensor chegam em
 ordem e o trabalho se espalha por várias cópias do filtro. Painel, alerta e tabela final são só mais consumidores do
 último tópico.</p>
-<p><b>Riscos.</b></p>
+<p style="break-after: avoid"><b>Riscos.</b></p>
 <ul>
 <li><b>Dado atrasado e repetido</b>: o sensor fica sem sinal e manda tudo de uma vez, horas depois. Agrupe pela hora do
 evento (não pela hora de chegada), aceite atrasos até um limite e descarte repetidos por um id.</li>
 <li><b>Reprocessar tem limite</b>: só dá para refazer o que ainda está no log. A retenção (dias, meses, para sempre) é
 decisão de negócio e de custo.</li>
 <li><b>Filtros com estado</b> (somas por janela, contagens) precisam guardar esse estado de forma segura para não
-perder a conta quando reiniciam. Frameworks como Flink (com <i>checkpoints</i>) e Kafka Streams já cuidam disso; não
+perder a conta quando reiniciam. Frameworks como Flink (com <i>checkpoints</i>, cópias periódicas do estado) e Kafka Streams já cuidam disso; não
 reinvente.</li>
 </ul>
 
@@ -461,7 +458,7 @@ usuários).</p>
 para testar sem emulador; é o formato do guia oficial de arquitetura do Android (com o ViewModel do Jetpack) e muito
 usado com SwiftUI. O <b>BFF</b>
 (<i>Backend for Frontend</i>, back-end para o front-end) é uma API feita sob medida para as telas do app: junta dados de
-vários serviços numa chamada só e devolve só os campos que a tela usa, o que pesa muito em rede móvel. E rodar o BFF e
+vários serviços numa chamada só e devolve só os campos que a tela usa, o que faz muita diferença em rede móvel. E rodar o BFF e
 as tarefas de fundo (redimensionar foto, mandar push) em <b>serverless</b> tira do time pequeno o trabalho de cuidar de
 servidor: escala sozinho no pico e custa pouco quando ninguém está usando.</p>
 
@@ -487,9 +484,9 @@ export async function telaInicial(usuarioId: string) {
 
 <p><b>Como as peças se encaixam.</b> O repositório do app só conversa com o BFF, nunca direto com os serviços. O BFF é
 dono do formato das telas; os serviços são donos das regras. Costuma existir um BFF por tipo de cliente (app, site), e o
-app iOS e o Android podem dividir o mesmo quando as telas são parecidas. As tarefas de fundo são outras funções,
+app iOS e o Android podem compartilhar o mesmo quando as telas são parecidas. As tarefas de fundo são outras funções,
 disparadas por fila, upload ou horário.</p>
-<p><b>Riscos.</b></p>
+<p style="break-after: avoid"><b>Riscos.</b></p>
 <ul>
 <li><b>Cold start</b>: a primeira chamada a uma função "fria" demora mais, e na tela inicial isso aparece. Meça antes de
 prometer tempo de resposta.</li>
@@ -514,7 +511,8 @@ ${fig(receitaCelulas(), "O roteador só sabe qual cliente mora em qual célula. 
 com tudo local à célula. Fora dela ficam só duas peças pequenas: o roteador e um plano de controle, que cria células e
 move clientes entre elas. As células também funcionam com um monólito dentro: o que se copia é a pilha, seja ela qual
 for. A AWS fala publicamente de arquitetura em células para reduzir o raio de impacto das falhas, e o Slack contou em 2023
-como migrou para uma arquitetura celular para conseguir tirar o tráfego de uma zona de disponibilidade com problema.</p>
+como migrou para células cortadas por zona de disponibilidade, e não por cliente (capítulo 17), para conseguir tirar
+o tráfego de uma zona com problema.</p>
 <p><b>Riscos.</b> Custa caro (cada célula tem uma capacidade mínima, mesmo meio vazia); o roteador vira peça crítica e
 precisa ser muito simples; tudo que cruza clientes (relatório global, busca entre empresas) fica difícil; e um cliente
 maior que uma célula exige tratamento especial. É o último degrau da escada, nunca o primeiro.</p>
@@ -550,7 +548,7 @@ ${tabela(
   ["Combinação", "Por que dá errado", "Faça em vez disso"],
   [
     ["Microsserviços + um banco compartilhado", "Mudar uma tabela quebra vários serviços; o deploy independente deixa de existir.", "Um banco (ou schema) por serviço, ou volte para o monólito modular."],
-    ["Event sourcing + CRUD sem regra", "Projeções, versões de eventos e replays sem ganho nenhum.", "Tabelas normais + log de auditoria."],
+    ["Event sourcing + CRUD sem regra", "Projeções, versões de eventos e reprocessamentos sem ganho nenhum.", "Tabelas normais + log de auditoria."],
     ["Saga dentro de um monólito com um banco só (e sem sistema externo no meio)", "Você reimplementa à mão o que uma transação faz de graça.", "Use a transação do banco."],
     ["Serverless + processo longo ou conexão sempre aberta", "Limite de tempo por execução (15 minutos no AWS Lambda) e conexões demais com o banco.", "Um contêiner ou servidor só para essa parte."],
     ["Micro-frontends com um time só", "Vários builds, deploys e versões de dependências para as mesmas pessoas.", "Um front-end modular, num repositório."],
@@ -560,7 +558,7 @@ ${tabela(
 )}
 <ul>
 <li><b>Montar o combo completo no dia 1</b>: microsserviços, Kafka, CQRS e células num produto sem clientes. Cada peça
-tem custo de operar, e você paga todos antes de ter a dor de qualquer um.</li>
+custa para operar, e você paga todas antes de ter a dor que alguma delas resolve.</li>
 <li><b>Copiar a receita de uma empresa gigante</b>: a arquitetura da Netflix resolve os problemas da Netflix, com o time
 da Netflix. Copie o raciocínio (dor → peça), não o resultado.</li>
 </ul>

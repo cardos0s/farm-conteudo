@@ -110,7 +110,7 @@ ${resumo(
 )}
 
 <p>Os capítulos 4 a 26 mostraram cada arquitetura sozinha, com o seu medidor. Aqui todas entram na mesma tabela, com as
-quatro notas do medidor e mais três critérios: testabilidade, deploy separado e consistência de dados. A tabela vem em três partes, uma por família (capítulo 3), porque só faz sentido comparar
+quatro notas e a faixa de time do medidor, mais três critérios: testabilidade, deploy separado e consistência de dados. A tabela vem em três partes, uma por família (capítulo 3), porque só faz sentido comparar
 dentro da mesma família: "hexagonal ou microsserviços?" não é uma escolha, já que uma organiza o código por dentro e a outra
 divide o sistema por fora. Depois vêm os padrões por trás dos números e as cinco
 comparações que mais aparecem em entrevistas e reuniões.</p>
@@ -118,8 +118,8 @@ comparações que mais aparecem em entrevistas e reuniões.</p>
 <h3>Como ler a grande tabela</h3>
 <ul>
 <li><b>Co, Es, Op e Ap</b> (começar, escala, operar e aprender): as notas de 1 a 5 do medidor de cada capítulo; o capítulo 3
-explica cada uma. <b>Te</b> (testar): quão fácil é cobrir a regra e o fluxo principal com testes automáticos rápidos. Essa nota não está nos
-medidores; ela foi dada aqui, pelo que cada capítulo mostra sobre testes.</li>
+explica cada uma. <b>Te</b> (testar): quão fácil é cobrir a regra e o fluxo principal com testes automáticos rápidos. Essa nota não vem dos
+medidores: foi dada aqui, com base em cada capítulo.</li>
 <li><b>Deploy separado</b>: se uma parte do sistema vai para produção sem levar as outras junto.</li>
 <li><b>Consistência</b>: <b>forte</b> quando todo mundo enxerga o dado novo logo depois de gravado; <b>eventual</b> quando as
 partes podem ficar alguns instantes desencontradas e se acertam depois.</li>
@@ -163,13 +163,13 @@ nada novo no ar. O preço delas está em começar e aprender, pago em código e 
 pagas todo mês, em infraestrutura e plantão.</li>
 <li><b>Deploy separado e consistência forte quase nunca andam juntos.</b> Consistência forte aparece onde há um banco só
 (monólito, monólito modular, cliente-servidor) ou dentro de uma fronteira pequena (uma célula, um ator). Quando cada parte ganha o seu banco, a consistência entre elas vira eventual
-e entram as sagas (capítulo 23). A figura abaixo mostra essa troca.</li>
+e entram as sagas (capítulo 23). A figura depois desta lista mostra essa troca.</li>
 <li><b>Testar fica mais difícil com a rede no meio.</b> As notas mais altas estão na parte II (hexagonal, clean, pipes and
 filters). As mais baixas (2) estão em SOA, peer-to-peer, sagas e space-based, onde o resultado depende de mensagens, tempo e
 falhas parciais, e na Lambda, que tem a mesma lógica escrita duas vezes (lote e tempo real). Cada serviço continua fácil de testar sozinho; o difícil é o conjunto.</li>
 <li><b>Na parte III, quem decide é o tamanho do time.</b> A Lei de Conway (Melvin Conway, 1968) diz que o sistema tende a copiar a
 estrutura de comunicação de quem o constrói. Microsserviços, micro-frontends e células só se pagam com vários times: com um
-time só, você compra a divisão e não usa.</li>
+time só, você paga a divisão sem usá-la.</li>
 </ol>
 
 ${fig(balanca(), "Dividir o sistema compra independência e cobra simplicidade. Por isso, na tabela, deploy separado e consistência forte quase nunca aparecem na mesma linha.")}
@@ -195,7 +195,7 @@ ${tabela(
 do banco (uma porta no núcleo, um adaptador por fora): é o primeiro passo da hexagonal. Dê nome aos anéis (Clean) quando muita gente precisar seguir a mesma convenção.</p>
 
 <h4>2. Monólito modular x microsserviços</h4>
-<p>É a dúvida mais cara do livro, porque a resposta errada custa caro para desfazer. As duas dividem o sistema por assunto do
+<p>É a dúvida mais cara do livro, porque a resposta errada é difícil de desfazer. As duas dividem o sistema por assunto do
 negócio; a diferença é se a fronteira é uma regra no código ou a rede.</p>
 ${tabela(
   ["", "Monólito modular (12)", "Microsserviços (14)"],
@@ -242,7 +242,7 @@ ${tabela(
   [
     ["<b>A ideia</b>", "um modelo para comandos, outro para consultas", "guardar cada evento; o estado atual é calculado a partir deles"],
     ["<b>Pergunta que resolve</b>", "leitura e escrita pedem formatos diferentes?", "preciso saber como e por que cheguei neste estado?"],
-    ["<b>Banco</b>", "o mesmo (níveis 1 e 2) ou um só para leitura (nível 3)", "um event store, mais projeções para leitura"],
+    ["<b>Banco</b>", "o mesmo (níveis 1 e 2) ou um à parte para leitura (nível 3)", "um event store, mais projeções para leitura"],
     ["<b>Consistência</b>", "forte no mesmo banco; eventual com banco de leitura separado", "escrita forte por agregado; projeções eventuais"],
     ["<b>Funciona sozinho?</b>", "sim, e é o uso mais comum", "quase nunca: para consultar, precisa de projeções (CQRS)"],
     ["<b>Começar / Operar / Aprender</b>", "3 / 3 / 3", "4 / 4 / 4"],
@@ -288,7 +288,7 @@ família (capítulo 29).</li>
 <h3>Como usar a tabela para decidir</h3>
 ${passos([
   "Escolha as três colunas que mais pesam no seu contexto. Exemplos: Começar, Operar e Consistência para uma startup de pagamentos; Escala, Deploy separado e Time para uma empresa com dez times no mesmo produto.",
-  "Em cada família, risque as linhas que ficam de fora: nota de Operar acima do que o time consegue cuidar, ou faixa de Time maior do que o time que você tem.",
+  "Em cada família, risque as linhas que ficam de fora: nota de Operar acima do que o time consegue sustentar, ou faixa de Time maior do que o time que você tem.",
   "Entre as linhas que sobraram, fique com a mais simples. Se empatar, fique com a mais fácil de desfazer: sair de um monólito modular para serviços é um caminho conhecido, módulo por módulo (capítulo 30); juntar microsserviços de volta costuma sair bem mais caro.",
   "Confira o resultado com a árvore do capítulo 28 e registre num ADR (capítulo 32) quais colunas decidiram e por quê.",
 ])}

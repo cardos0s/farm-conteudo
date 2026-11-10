@@ -39,40 +39,40 @@ function diagramaGeral() {
 function diagramaComunicacao() {
   semear("microsservicos-2");
   let s = "";
-  s += linha([[380, 14], [380, 336]], { tracejado: true, cor: cor.cinza, espessura: 1.2 });
+  s += linha([[380, 14], [380, 304]], { tracejado: true, cor: cor.cinza, espessura: 1.2 });
   // esquerda: síncrono
   s += txt(190, 22, "síncrono: pede e espera", { tam: 18, cor: cor.azul });
   const cadeia = [
-    ["Pedidos", 56, claro.azul],
-    ["Pagamentos", 152, claro.azul],
-    ["Antifraude", 248, claro.vermelho],
+    ["Pedidos", 46, claro.azul],
+    ["Pagamentos", 128, claro.azul],
+    ["Antifraude", 210, claro.vermelho],
   ];
   for (const [nome, y, c] of cadeia) s += bloco(100, y, 160, 50, nome, { preench: c, tam: 17 });
-  for (const y of [106, 202]) {
-    s += seta(160, y + 2, 160, y + 44, { cor: cor.azul, espessura: 2 });
-    s += seta(200, y + 44, 200, y + 4, { cor: cor.cinza, tracejado: true, espessura: 1.6 });
-    s += txt(214, y + 24, "espera...", { tam: 15, cor: cor.cinza, ancora: "start" });
+  for (const y of [96, 178]) {
+    s += seta(160, y + 2, 160, y + 30, { cor: cor.azul, espessura: 2 });
+    s += seta(200, y + 30, 200, y + 3, { cor: cor.cinza, tracejado: true, espessura: 1.6 });
+    s += txt(214, y + 18, "espera...", { tam: 15, cor: cor.cinza, ancora: "start" });
   }
-  s += xis(78, 273, 22);
-  s += txt(190, 326, "Antifraude caiu? o pedido inteiro falha", { tam: 15, cor: cor.vermelho });
+  s += xis(78, 235, 22);
+  s += txt(190, 296, "Antifraude caiu? o pedido inteiro falha", { tam: 15, cor: cor.vermelho });
   // direita: assíncrono
   s += txt(570, 22, "assíncrono: avisa e segue", { tam: 18, cor: cor.laranja });
-  s += bloco(495, 50, 150, 50, "Pedidos", { preench: claro.azul, tam: 17 });
-  s += seta(570, 102, 570, 134, { cor: cor.laranja, espessura: 2 });
-  s += txt(584, 118, "publica PedidoCriado", { tam: 15, cor: cor.laranja, ancora: "start" });
-  s += fila(470, 138, 200, 36, "");
+  s += bloco(495, 44, 150, 50, "Pedidos", { preench: claro.azul, tam: 17 });
+  s += seta(570, 96, 570, 122, { cor: cor.laranja, espessura: 2 });
+  s += txt(584, 112, "publica PedidoCriado", { tam: 15, cor: cor.laranja, ancora: "start" });
+  s += fila(470, 126, 200, 36, "");
   const consumidores = [
     ["Estoque", 408, claro.verde],
     ["E-mail", 518, claro.verde],
     ["Entregas", 628, claro.cinza],
   ];
   for (const [nome, x, c] of consumidores) {
-    s += bloco(x, 222, 104, 48, nome, { preench: c, tam: 16, tracejado: nome === "Entregas" });
-    s += seta(570 + (x + 52 - 570) * 0.15, 178, x + 52, 220, { cor: cor.laranja, espessura: 1.8 });
+    s += bloco(x, 200, 104, 48, nome, { preench: c, tam: 16, tracejado: nome === "Entregas" });
+    s += seta(570 + (x + 52 - 570) * 0.15, 165, x + 52, 198, { cor: cor.laranja, espessura: 1.8 });
   }
-  s += txt(570, 300, "Entregas caiu? o evento espera na fila", { tam: 15, cor: cor.verde });
-  s += txt(570, 326, "e Pedidos já respondeu ao cliente", { tam: 15, cor: cor.verde });
-  return quadro(760, 345, s);
+  s += txt(570, 274, "Entregas caiu? o evento espera na fila", { tam: 15, cor: cor.verde });
+  s += txt(570, 296, "e Pedidos já respondeu ao cliente", { tam: 15, cor: cor.verde });
+  return quadro(760, 312, s);
 }
 
 /** Diagrama 3: os estados do circuit breaker (disjuntor). */
@@ -146,7 +146,7 @@ serviço exige publicar outros três juntos, a independência é só no nome.</l
 <p><b>Síncrono</b>: um serviço chama o outro e espera a resposta. O mais comum é <b>REST</b> (HTTP com JSON). Entre
 serviços internos, muitos times usam <b>gRPC</b>: roda sobre HTTP/2, usa Protocol Buffers (formato binário com contrato
 tipado) e costuma ser mais rápido. Use quando precisa da resposta <b>agora</b>: o preço do frete, se o cartão passou.</p>
-<p><b>Assíncrono</b>: o serviço publica um <b>evento</b> ("pedido criado") num broker (Kafka, RabbitMQ, SQS) e segue a vida;
+<p><b>Assíncrono</b>: o serviço publica um <b>evento</b> ("pedido criado") num <i>broker</i> (intermediário de mensagens, como Kafka, RabbitMQ ou SQS) e segue a vida;
 quem tiver interesse consome quando puder, e quem publica nem sabe quem escuta. Use para avisar que algo aconteceu: mandar
 e-mail, emitir nota fiscal, separar no estoque (capítulo 20).</p>
 
@@ -169,16 +169,16 @@ estável que distribui as chamadas entre as réplicas.</p>
 <p>Num monólito, chamar uma função não falha por causa da rede. Entre serviços, falha. Quatro defesas básicas:</p>
 <ul>
 <li><b>Timeout</b>: toda chamada tem prazo. Sem ele, conexões ficam presas num serviço lento e a lentidão se espalha.</li>
-<li><b>Retry com backoff</b>: repetir só erros temporários (timeout, 5xx, 429 "muitas requisições"), esperando cada vez mais (200 ms, 400 ms,
+<li><b>Retry com backoff</b>: repetir a chamada só quando o erro é temporário (timeout, 5xx, 429 "muitas requisições"), esperando cada vez mais (200 ms, 400 ms,
 800 ms...) com um sorteio (<i>jitter</i>) para os clientes não voltarem todos juntos. Só repita operações
 <b>idempotentes</b> (rodar duas vezes não duplica o efeito) ou use uma chave de idempotência.</li>
 <li><b>Circuit breaker</b> (disjuntor): quando as falhas passam de um limite (por exemplo, metade das chamadas nos últimos
 10 segundos), ele "abre" e as chamadas falham na hora, sem bater no serviço doente, que ganha tempo para se recuperar.
 Depois de uma espera, deixa passar uma ou poucas chamadas de teste.</li>
-<li><b>Bulkhead</b> (as divisórias estanques do casco de um navio: um compartimento inunda, o navio não afunda): um pool de conexões para o frete, outro para o pagamento. Se o
+<li><b>Bulkhead</b> (as divisórias estanques do casco de um navio: um compartimento inunda, o navio não afunda): um <i>pool</i> (conjunto reservado) de conexões para o frete, outro para o pagamento. Se o
 frete travar, esgota só o próprio pool e o checkout segue.</li>
 </ul>
-<p>Some um <b>fallback</b> (plano B): se as recomendações do streaming caírem, mostre os mais vistos em vez de uma tela de
+<p>Tenha um <b>fallback</b> (plano B): se as recomendações do streaming caírem, mostre os mais vistos em vez de uma tela de
 erro. O circuit breaker e o bulkhead ficaram conhecidos pelo livro <i>Release It!</i>, de Michael Nygard. No código, use uma biblioteca
 (como cockatiel ou opossum, em Node) em vez de reinventar.</p>
 
@@ -228,7 +228,7 @@ ${quando(
 ${medidor({ complexidade: 5, escala: 5, operacao: 5, aprendizado: 4, time: "vários times autônomos; com um time só, quase nunca compensa" })}
 
 <h3>Como usar na prática</h3>
-<p>Uma loja com três serviços num monorepo (um repositório por serviço também serve). O que importa: cada serviço com build,
+<p>Uma loja com três serviços num <i>monorepo</i> (todos num repositório só; um repositório por serviço também serve). O que importa: cada serviço com build,
 banco e deploy próprios.</p>
 ${pastas(`
 loja/
@@ -322,7 +322,7 @@ ${tabela(
   [
     ["Deploy independente: cada time publica quando quiser", "Muito mais peças para operar: pipelines, monitoramento, plantão"],
     ["Escala só a parte que precisa (mais réplicas da busca, não do sistema todo)", "Rede no meio: latência, falhas parciais, timeouts"],
-    ["Falha isolada: se recomendações cai, o checkout continua", "Consistência eventual e sagas no lugar de transações"],
+    ["Falha isolada: se as recomendações caem, o checkout segue", "Consistência eventual e sagas no lugar de transações"],
     ["Times autônomos, com dono claro e liberdade de tecnologia", "Testar e depurar o fluxo inteiro exige contratos e tracing"],
   ],
 )}
@@ -337,7 +337,7 @@ ${fig(diagramaMonolitoDistribuido(), "O monólito distribuído: banco compartilh
 <li><b>Banco compartilhado</b>: dois serviços lendo as mesmas tabelas. Uma coluna renomeada quebra os dois, e eles nunca mais
 publicam separados.</li>
 <li><b>Cadeias síncronas longas</b>: uma requisição que atravessa cinco serviços em sequência. Se cada um tem 99,9% de
-disponibilidade, a cadeia fica com cerca de 99,5% (0,999 multiplicado cinco vezes): de 8,8 horas fora por ano, você vai
+disponibilidade, a cadeia fica com cerca de 99,5% (0,999 elevado a 5): de 8,8 horas fora por ano, você vai
 para quase 44. Prefira eventos, ou guarde uma cópia local (atualizada por eventos) dos dados que consulta toda hora.</li>
 <li><b>Serviços pequenos demais</b>: um serviço por tabela ("serviço de endereços", "serviço de clientes" que só faz CRUD).
 Toda funcionalidade nova mexe em quatro serviços. "Micro" não se mede em linhas: um bom serviço cabe na cabeça de um time

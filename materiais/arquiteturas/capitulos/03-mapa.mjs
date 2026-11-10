@@ -184,8 +184,8 @@ saber de qual pergunta cada arquitetura é resposta.</p>
 ${fig(mapa(), "As arquiteturas dos capítulos 4 a 26, agrupadas pela pergunta que respondem. O número na bolinha é o capítulo.", "grande")}
 
 <h3>Três perguntas, três famílias</h3>
-<p>Cada parte do meio do livro responde a uma pergunta. Elas mexem em coisas diferentes e são sentidas primeiro por
-pessoas diferentes.</p>
+<p>Cada parte do meio do livro responde a uma pergunta. As decisões de cada família mexem em coisas diferentes e são sentidas
+primeiro por pessoas diferentes.</p>
 
 ${tabela(
   ["Família", "A pergunta", "O que muda quando você decide", "Caps."],
@@ -228,7 +228,7 @@ ${tabela(
 
 <p>Repare em duas coisas. Primeiro, a resposta pode ser a mais simples: camadas, monólito e uma API REST é uma combinação
 muito comum e atende bem a muitos sistemas. Segundo, dá para usar mais de uma resposta na mesma família: o cardápio, quase um
-cadastro, fica em camadas; pagamentos, cheio de regra, ganha hexagonal. O capítulo 29 traz receitas completas.</p>
+cadastro, fica em camadas; pagamentos, cheio de regras, ganha hexagonal. O capítulo 29 traz receitas completas.</p>
 
 ${pratica(
   "No mundo real",
@@ -253,7 +253,7 @@ funções serverless é comum) e até voltar uma casa. A maioria dos sistemas vi
 
 ${dica(
   "E SOA, micro-frontends e células?",
-  "<p>As outras três da parte III não são pontos dessa linha; elas se combinam com ela. <b>SOA</b> (capítulo 13) é a antecessora dos microsserviços: serviços maiores, feitos para reuso entre sistemas da empresa e muitas vezes ligados por um barramento central (ESB). <b>Micro-frontends</b> (16) levam a divisão por times para a interface. <b>Células</b> (17) são cópias isoladas do conjunto inteiro, cada uma com uma parte dos clientes: se uma cai, as outras seguem.</p>",
+  "<p>As outras três da parte III não são pontos dessa linha, mas se relacionam com ela. <b>SOA</b> (capítulo 13) é a antecessora dos microsserviços: serviços maiores, feitos para reuso entre sistemas da empresa e muitas vezes ligados por um barramento central (ESB). <b>Micro-frontends</b> (16) levam a divisão por times para a interface. <b>Células</b> (17) são cópias isoladas do conjunto inteiro, cada uma com uma parte dos clientes: se uma cai, as outras seguem.</p>",
 )}
 
 <h3>Todas as arquiteturas do livro</h3>
@@ -339,7 +339,7 @@ e operação e entregar uma folga que você não vai usar.</li>
 (camadas, MVC, hexagonal, clean e vertical slice têm nota 1), porque não colocam nada novo no ar. Quem decide a conta de operação são as
 escolhas das partes III e IV.</li>
 <li><b>A curva depende do time.</b> As notas valem para um time típico. Quem já operou eventos em produção sente menos a curva
-do capítulo 20; quem nunca operou, sente mais.</li>
+do capítulo 20; quem nunca operou sente mais.</li>
 </ul>
 
 <h3>Confusões comuns</h3>
@@ -373,6 +373,7 @@ ${passos([
   "<b>28 (árvore de decisão) e 33 (cola final)</b>: para fechar. O resto (21 a 26, por exemplo) fica para quando um problema pedir.",
 ])}
 
+${novaPagina()}
 <h4>Se você já trabalha com isso</h4>
 ${passos([
   "<b>2 (critérios) e este mapa</b>: alinhe o vocabulário de trocas que você vai usar para defender decisões.",
