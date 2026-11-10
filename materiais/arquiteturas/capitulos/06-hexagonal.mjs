@@ -372,7 +372,7 @@ fakes para conferir status e validação sem banco. Testes com tudo real: poucos
 
 ${codigo(
   `
-// saida/memoria/repositorio.ts: o dublê da porta, um fake escrito uma vez e usado em todo teste
+// saida/memoria/repositorio.ts: o fake da porta, escrito uma vez e usado em todo teste
 class RepositorioEmMemoria implements RepositorioDePedidos {
   private dados = new Map<string, Pedido>();
   async salvar(p: Pedido) { this.dados.set(p.id, p); }
