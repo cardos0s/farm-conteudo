@@ -52,10 +52,10 @@ function curvaDoCusto() {
   semear("por-que-arquitetura-2");
   let s = "";
   // eixos
-  s += seta(80, 244, 555, 244, { espessura: 2 });
-  s += seta(80, 244, 80, 26, { espessura: 2 });
+  s += seta(80, 216, 555, 216, { espessura: 2 });
+  s += seta(80, 216, 80, 26, { espessura: 2 });
   s += txt(94, 22, "custo para mudar a decisão", { tam: 15, ancora: "start" });
-  s += txt(555, 290, "tempo de vida do sistema", { tam: 15, ancora: "end" });
+  s += txt(555, 262, "tempo de vida do sistema", { tam: 15, ancora: "end" });
   const marcas = [
     [125, "semana 1"],
     [240, "mês 6"],
@@ -63,23 +63,23 @@ function curvaDoCusto() {
     [500, "ano 5"],
   ];
   for (const [x, rot] of marcas) {
-    s += linha([[x, 238], [x, 250]], { espessura: 1.6 });
-    s += txt(x, 266, rot, { tam: 15, cor: cor.cinza });
+    s += linha([[x, 210], [x, 222]], { espessura: 1.6 });
+    s += txt(x, 238, rot, { tam: 15, cor: cor.cinza });
   }
   // as duas curvas
-  s += curva([[86, 232], [180, 228], [300, 206], [420, 146], [535, 50]], { cor: cor.vermelho, espessura: 3.2 });
-  s += curva([[86, 230], [250, 227], [400, 222], [535, 217]], { cor: cor.verde, espessura: 3.2 });
+  s += curva([[86, 205], [180, 201], [300, 182], [420, 130], [535, 47]], { cor: cor.vermelho, espessura: 3.2 });
+  s += curva([[86, 203], [250, 200], [400, 196], [535, 191]], { cor: cor.verde, espessura: 3.2 });
   // rótulos das curvas, à direita do fim de cada uma
-  s += txt(565, 46, "arquitetura", { tam: 18, cor: cor.vermelho, ancora: "start" });
-  s += txt(565, 72, "ex.: trocar o banco", { tam: 15, cor: cor.cinza, ancora: "start" });
-  s += txt(565, 202, "design de código", { tam: 18, cor: cor.verde, ancora: "start" });
-  s += txt(565, 228, "ex.: renomear função", { tam: 15, cor: cor.cinza, ancora: "start" });
+  s += txt(565, 44, "arquitetura", { tam: 18, cor: cor.vermelho, ancora: "start" });
+  s += txt(565, 68, "ex.: trocar o banco", { tam: 15, cor: cor.cinza, ancora: "start" });
+  s += txt(565, 178, "design de código", { tam: 18, cor: cor.verde, ancora: "start" });
+  s += txt(565, 202, "ex.: renomear função", { tam: 15, cor: cor.cinza, ancora: "start" });
   // anotações
-  s += txt(150, 160, "no começo,\nerrar é barato", { tam: 15, cor: cor.cinza });
-  s += seta(150, 184, 128, 220, { cor: cor.cinza, espessura: 1.4, ponta: 10 });
-  s += txt(330, 96, "ano 5: a mesma troca\nvira meses de migração", { tam: 15, cor: cor.vermelho });
-  s += seta(422, 104, 476, 104, { cor: cor.vermelho, espessura: 1.4, ponta: 10 });
-  return quadro(760, 300, s);
+  s += txt(150, 140, "no começo,\nerrar é barato", { tam: 15, cor: cor.cinza });
+  s += seta(150, 160, 128, 193, { cor: cor.cinza, espessura: 1.4, ponta: 10 });
+  s += txt(330, 86, "ano 5: a mesma troca\nvira meses de migração", { tam: 15, cor: cor.vermelho });
+  s += seta(422, 94, 476, 94, { cor: cor.vermelho, espessura: 1.4, ponta: 10 });
+  return quadro(760, 272, s);
 }
 
 /** Diagrama 3: o último momento responsável. */
@@ -132,8 +132,8 @@ meses para desfazer. Por exemplo: um banco de dados para o sistema todo ou um pa
 <li><b>Princípios</b>: regras que o time segue para a estrutura não se desmanchar com o tempo. Por exemplo: "um módulo
 nunca lê a tabela de outro" ou "regra de negócio não importa framework" (capítulo 6).</li>
 </ul>
-<p>Mark Richards e Neal Ford (<i>Fundamentals of Software Architecture</i>) acrescentam um quarto ingrediente: as <b>características</b> que o
-sistema precisa ter (desempenho, disponibilidade, segurança...), assunto do capítulo 2.</p>
+<p>Mark Richards e Neal Ford (<i>Fundamentals of Software Architecture</i>) incluem mais um: as <b>características</b> que o
+sistema precisa ter (desempenho, escala, segurança...), tema do capítulo 2.</p>
 
 <h3>Arquitetura x design de código</h3>
 <p>A fronteira entre os dois não é uma linha exata, mas existe um bom teste: <b>quanto custa mudar de ideia?</b> Se dá
@@ -152,7 +152,6 @@ ${tabela(
 
 <p>As duas importam. Os capítulos da parte II (camadas, hexagonal, clean...) ficam na fronteira: organizam o código por
 dentro, mas viram regra para o time todo e custam caro para trocar depois de dois anos.</p>
-
 
 <h3>A curva do custo de mudar</h3>
 <p>Toda decisão fica mais cara de mudar com o tempo, porque mais código, mais dados e mais pessoas passam a depender
@@ -221,6 +220,8 @@ começo é quando você menos sabe. Ainda não sabe quantos usuários virão, qu
 decisões caras são tomadas no <b>último momento responsável</b> (<i>last responsible moment</i>), o ponto em que você já
 sabe o bastante para escolher bem e adiar mais começaria a sair caro.</p>
 
+${fig(ultimoMomento(), "Com o tempo você sabe mais, mas as opções se fecham. A decisão cara fica melhor perto do cruzamento.")}
+
 <p>Até esse momento chegar, o trabalho é manter as opções abertas:</p>
 <ul>
 <li><b>Esconda a decisão atrás de uma interface.</b> Se o banco ainda pode mudar, o resto do código fala com um
@@ -233,9 +234,6 @@ módulo importa o que não devia. A arquitetura evolutiva chama isso de <i>fitne
 <li><b>Registre o porquê</b> de cada decisão grande num ADR (registro de decisão de arquitetura, capítulo 32). Quando o
 contexto mudar, você sabe o que revisar. Richards e Ford têm uma segunda lei para isso: o porquê é mais importante que o como.</li>
 </ul>
-
-${fig(ultimoMomento(), "Com o tempo você sabe mais, mas as opções se fecham. A decisão cara fica melhor perto do cruzamento.")}
-
 
 ${alerta(
   "Último momento responsável não é procrastinação",
