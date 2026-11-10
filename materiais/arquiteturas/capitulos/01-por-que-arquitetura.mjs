@@ -132,7 +132,7 @@ meses para desfazer. Por exemplo: um banco de dados para o sistema todo ou um pa
 <li><b>Princípios</b>: regras que o time segue para a estrutura não se desmanchar com o tempo. Por exemplo: "um módulo
 nunca lê a tabela de outro" ou "regra de negócio não importa framework" (capítulo 6).</li>
 </ul>
-<p>Mark Richards e Neal Ford (<i>Fundamentals of Software Architecture</i>) somam um quarto: as <b>características</b> que o
+<p>Mark Richards e Neal Ford (<i>Fundamentals of Software Architecture</i>) acrescentam um quarto ingrediente: as <b>características</b> que o
 sistema precisa ter (desempenho, disponibilidade, segurança...), assunto do capítulo 2.</p>
 
 <h3>Arquitetura x design de código</h3>
@@ -157,13 +157,13 @@ dentro, mas viram regra para o time todo e custam caro para trocar depois de doi
 <h3>A curva do custo de mudar</h3>
 <p>Toda decisão fica mais cara de mudar com o tempo, porque mais código, mais dados e mais pessoas passam a depender
 dela. O que muda de uma decisão para outra é a inclinação da curva.</p>
+
+${fig(curvaDoCusto(), "No começo, as duas custam pouco. Com o tempo, a decisão de arquitetura dispara; a de design quase não sai do lugar.")}
+
 <p>Na primeira semana, trocar MongoDB por PostgreSQL é uma tarde de trabalho: quase não há dados nem código. Dois anos
 depois, com milhões de registros, relatórios e integrações em cima, a mesma troca vira um projeto de meses, com migração
 de dados e risco de perder informação. Já renomear uma função custa quase o mesmo no primeiro dia e no quinto ano: o
 editor faz isso por você.</p>
-
-${fig(curvaDoCusto(), "No começo, as duas custam pouco. Com o tempo, a decisão de arquitetura dispara; a de design quase não sai do lugar.")}
-
 <p>A lição: gaste a sua atenção onde a curva é íngreme. Nas decisões baratas, não marque reunião.</p>
 
 <h3>Exemplos de decisões arquiteturais</h3>
@@ -173,9 +173,9 @@ ${tabela(
   [
     ["<b>Quantas partes</b>", "um monólito, um monólito modular ou vários serviços", "caps. 11 a 14"],
     ["<b>Organização do código</b>", "camadas, MVC, hexagonal, clean, vertical slice", "caps. 4 a 8"],
-    ["<b>Dados</b>", "um banco para tudo ou um por serviço; relacional ou de documentos", "caps. 14, 21, 22, 26"],
+    ["<b>Dados</b>", "um banco para tudo ou um por serviço; relacional ou de documentos", "caps. 14, 21, 22 e 26"],
     ["<b>Comunicação</b>", "síncrona (chama e espera, como HTTP) ou assíncrona (envia e segue, como uma fila)", "caps. 18 e 20"],
-    ["<b>Onde roda</b>", "servidores próprios, nuvem, contêineres ou funções serverless", "caps. 15, 17 e 18"],
+    ["<b>Onde roda</b>", "servidores próprios, nuvem, contêineres ou funções serverless (sem servidor para administrar)", "caps. 15, 17 e 18"],
     ["<b>Consistência</b>", "uma transação só, sagas ou consistência eventual (os dados se acertam depois de alguns instantes)", "cap. 23"],
   ],
 )}
@@ -196,7 +196,7 @@ primeira lei da arquitetura de software: tudo em arquitetura é um trade-off. Se
 
 ${pratica(
   "No mundo real",
-  "<p>O Stack Overflow, um dos sites mais usados por devs no mundo, roda como um monólito em poucos servidores. A Shopify mantém um monólito Rails grande, dividido em módulos, com as fronteiras entre eles checadas pela ferramenta Packwerk. A Netflix é um dos exemplos mais citados de microsserviços. As três escolhas fazem sentido no contexto de cada empresa, e nenhuma delas seria a certa para as outras duas.</p>",
+  "<p>O Stack Overflow, um dos sites mais usados por devs no mundo, roda como um monólito em poucos servidores. A Shopify mantém um monólito Rails grande, dividido em módulos, com as fronteiras entre eles checadas pela ferramenta Packwerk. A Netflix é um dos exemplos mais citados de microsserviços. As três contaram essas escolhas em blogs e palestras de engenharia. Cada uma faz sentido no contexto da sua empresa, e dificilmente serviria para as outras duas.</p>",
 )}
 
 <p>Mas "depende" sozinho é resposta preguiçosa. A resposta boa diz <b>do que</b> depende e termina com uma escolha. Um
@@ -211,7 +211,7 @@ ${passos([
 
 ${pratica(
   "Exemplo de resposta bem dada",
-  "<p><i>\"Para o nosso app de delivery, com cinco devs e alguns milhares de pedidos por dia, eu começaria com um monólito modular (capítulo 12): um deploy, um banco, transações simples. Abrimos mão de escalar partes separadas, mas a carga de hoje não pede isso. Se virarmos três times disputando o mesmo deploy, ou se o rastreio de entregadores precisar escalar sozinho, separamos esse módulo num serviço.\"</i> Repare: contexto, trade-off, escolha e gatilho de revisão, tudo em poucas frases.</p>",
+  "<p><i>\"Para o nosso app de delivery, com cinco devs e alguns milhares de pedidos por dia, eu começaria com um monólito modular (capítulo 12): um deploy, um banco, transações simples. Abrimos mão de escalar partes separadas, mas a carga de hoje não pede isso. Se virarmos três times disputando o mesmo deploy, ou se o rastreio de entregadores precisar escalar sozinho, separamos o módulo que estiver doendo num serviço.\"</i> Repare: contexto, trade-off, escolha e gatilho de revisão, tudo em poucas frases.</p>",
 )}
 
 <h3>Arquitetura evolutiva: decidir no último momento responsável</h3>
@@ -245,7 +245,7 @@ ${alerta(
 <h3>Quem decide</h3>
 <p>Muitas empresas têm alguém com o cargo de arquiteto ou arquiteta de software. Mas a arquitetura real é decidida por todo
 mundo que escreve código: cada vez que alguém faz um módulo ler a tabela de outro "só dessa vez", a arquitetura mudou,
-mesmo que nenhum diagrama mostre.</p>
+mesmo que nenhum diagrama mostre isso.</p>
 <ul>
 <li><b>Devs iniciantes e plenos</b>: seguem os princípios e são os primeiros a sentir quando eles atrapalham. Muita
 decisão de arquitetura começa com um "isso aqui está doendo".</li>
@@ -284,7 +284,7 @@ ${passos([
   "<b>Diagrama</b> e <b>como funciona</b>: as peças e como elas se ligam.",
   "<b>Use quando</b> x <b>evite quando</b>, lado a lado, e o <b>medidor</b> de 1 a 5.",
   "<b>Como usar na prática</b>: estrutura de pastas, código em TypeScript e passo a passo.",
-  "<b>Vantagens e custos</b>, <b>erros comuns</b>, um caso do <b>mundo real</b> e caixas com variações e confusões comuns.",
+  "<b>Vantagens e custos</b>, <b>erros comuns</b>, um caso do <b>mundo real</b> e caixas com variações e confusões frequentes.",
   "<b>Combina com</b> (arquiteturas que andam junto) e <b>para lembrar</b> (os três pontos principais).",
 ])}
 

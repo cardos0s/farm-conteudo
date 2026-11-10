@@ -45,7 +45,7 @@ function diagrama() {
   s += txt(165, 142, "roteador de células", { tam: 19 });
   s += txt(165, 168, "lê a loja e repassa", { tam: 15, cor: cor.cinza });
   s += ret(320, 124, 226, 60, { preench: "#ffffff", hachura: "solid", espessura: 1.4 });
-  s += txt(433, 138, "mapa loja → célula", { tam: 14, cor: cor.cinza });
+  s += txt(433, 138, "mapa loja → célula", { tam: 15, cor: cor.cinza });
   s += txt(385, 158, "A → 1", { tam: 15 });
   s += txt(481, 158, "B → 2", { tam: 15 });
   s += txt(385, 176, "C → 3", { tam: 15 });
@@ -143,8 +143,8 @@ ${resumo(
 )}
 
 <p>A inspiração é o padrão <i>bulkhead</i> (antepara), que vem dos navios: o casco é dividido em compartimentos estanques,
-e um furo alaga só um compartimento. A AWS diz que seus times usam células há mais de uma década e publicou em 2023 um
-guia sobre o tema no Well-Architected Framework; no mesmo ano, o Slack contou como migrou. Repare que o assunto aqui é como o sistema é
+e um furo alaga só um compartimento. A AWS publicou em 2023 um guia sobre o tema no Well-Architected Framework e, no
+mesmo ano, o Slack contou como migrou (os dois casos estão no fim do capítulo). Repare que o assunto aqui é como o sistema é
 <b>dividido e implantado</b>, não como o código é organizado: dentro de cada célula pode rodar um monólito (capítulo 11)
 ou um conjunto de microsserviços (capítulo 14).</p>
 
@@ -246,9 +246,10 @@ app.use(createProxyMiddleware({
   changeOrigin: true,
   router: async (req) => (await mapa.celulaDo(tenantDe(req.headers.host))).endereco,
 }));
+// erros ao descobrir a célula; se a célula em si cair, o próprio proxy devolve o erro
 const falhou: express.ErrorRequestHandler = (erro, _req, res, _next) => {
   if (erro instanceof TenantDesconhecido) res.status(404).json({ erro: "loja não existe" });
-  else res.status(503).json({ erro: "célula indisponível, tente de novo" });
+  else res.status(503).json({ erro: "não deu para achar a célula, tente de novo" });
 };
 app.use(falhou);
 app.listen(8080);`,
@@ -265,6 +266,7 @@ ${fig(moverCliente(), "Copiar com a loja no ar, bloquear a escrita por pouco tem
 ${codigo(
   `
 // plano-de-controle/mover-cliente.ts: roda fora do caminho das requisições
+import { CelulaAdmin, TTL_DO_CACHE_MS, agendarLimpeza, esperar, tabelaDoMapa } from "./operacoes";
 export async function moverCliente(tenantId: string, origem: CelulaAdmin, destino: CelulaAdmin) {
   await destino.copiarDados(origem, tenantId);       // 1. cópia com a loja no ar
   await origem.bloquearEscrita(tenantId);            // 2. a origem recusa escrita (503)...
@@ -282,7 +284,7 @@ ${passos([
   "Escolha a chave de partição (empresa, loja, conta) e confira que quase nenhuma operação precisa ler dados de dois clientes ao mesmo tempo.",
   "Torne a pilha inteira \"carimbável\": infraestrutura como código, num módulo com parâmetros (nome, tamanho), sem passo manual.",
   "Coloque o roteador na frente do sistema atual, com o mapa apontando todo mundo para a célula 1, que é o próprio sistema de hoje.",
-  "Separe o que é realmente global (cadastro de contas, cobrança), mantenha isso pequeno e fora do caminho de cada requisição.",
+  "Separe o que é realmente global (cadastro de contas, cobrança). Mantenha isso pequeno e fora do caminho de cada requisição.",
   "Defina o tamanho máximo de uma célula e faça teste de carga até ele. Crie a célula 2 para clientes novos e, com a migração testada, equilibre os antigos.",
   "Publique versões em ondas (uma célula primeiro) e dê a toda métrica e todo alarme a dimensão \"célula\".",
 ])}
@@ -308,12 +310,17 @@ risco para 100% dos clientes.</li>
 células; na hora da falha, é um sistema só.</li>
 <li><b>Chave de partição errada</b>: dividir por usuário quando o trabalho acontece por empresa faz uma única tela juntar
 dados de várias células.</li>
-<li><b>Mapa calculado com divisão</b>: <code>hash(tenant) % N</code> parece elegante, mas ao criar a célula N+1 quase
+<li><b>Mapa calculado com resto de divisão</b>: <code>hash(tenant) % N</code> parece elegante, mas ao criar a célula N+1 quase
 todos os clientes mudam de casa (e os dados teriam de ir junto). Guarde o mapa numa tabela: cliente só muda de célula quando
 o plano de controle decide.</li>
 <li><b>Célula sem limite</b>: deixar a célula 1 crescer "porque ainda aguenta" recria o sistema gigante que você queria evitar.</li>
 <li><b>Migração só em emergência</b>: a ferramenta de mover clientes falha justo no dia em que é necessária. Use-a com frequência.</li>
 </ul>
+
+${alerta(
+  "Célula não é shard, réplica nem microsserviço",
+  "<p><b>Shard</b> divide só o banco; a célula divide a pilha inteira. <b>Réplica</b> copia os mesmos dados, para leitura ou para assumir se o banco principal cair; cada célula tem dados <b>diferentes</b>. <b>Microsserviços</b> (capítulo 14) dividem por função (pedidos, pagamentos); células dividem por cliente, e cada célula pode conter todos os microsserviços.</p>",
+)}
 
 ${pratica(
   "No mundo real",
@@ -331,11 +338,6 @@ de uma zona em até 5 minutos). Migrar os serviços mais críticos voltados ao u
 ${dica(
   "Cortar por cliente ou por zona?",
   "<p>Em SaaS, o comum é cortar <b>por cliente</b>: protege contra deploy ruim, vizinho barulhento e dados corrompidos. O Slack cortou <b>por zona</b>: toda zona atende todo mundo, e a proteção é contra falhas de infraestrutura. Dá para somar as duas. Outra variação descrita pela AWS é o <i>shuffle sharding</i>: cada cliente recebe uma combinação sorteada de servidores, e dois clientes raramente dividem a combinação inteira.</p>",
-)}
-
-${alerta(
-  "Célula não é shard, réplica nem microsserviço",
-  "<p><b>Shard</b> divide só o banco; a célula divide a pilha inteira. <b>Réplica</b> copia os mesmos dados para leitura ou failover; cada célula tem dados <b>diferentes</b>. <b>Microsserviços</b> (capítulo 14) dividem por função (pedidos, pagamentos); células dividem por cliente, e cada célula pode conter todos os microsserviços.</p>",
 )}
 
 ${combina([

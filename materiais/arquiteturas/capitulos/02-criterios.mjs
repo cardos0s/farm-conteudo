@@ -126,8 +126,8 @@ ${resumo(
 <p>Todo sistema tem dois tipos de requisito. Os <b>funcionais</b> dizem <i>o que</i> ele faz: "o cliente faz um pedido".
 Os <b>atributos de qualidade</b> (também chamados de requisitos não funcionais) dizem <i>quão bem</i> ele faz: "o pedido é
 confirmado em menos de um segundo, mesmo na Black Friday". Quase qualquer arquitetura entrega os funcionais; quem decide a
-arquitetura são os atributos de qualidade. Mark Richards e Neal Ford chamam isso de primeira lei da arquitetura de software:
-<b>tudo é uma troca</b> (<i>trade-off</i>). Ganhar em um atributo quase sempre custa algo em outro.</p>
+arquitetura são os atributos de qualidade. Por trás disso está o que Mark Richards e Neal Ford chamam de primeira lei da arquitetura de software:
+<b>tudo é uma troca</b> (<i style="white-space:nowrap">trade-off</i>). Ganhar em um atributo quase sempre custa algo em outro.</p>
 
 ${fig(teia(), "O que importa num banco digital (azul) e num MVP de startup (laranja): dois bons sistemas, dois desenhos diferentes.")}
 
@@ -146,7 +146,7 @@ dispara perto do topo e continua sendo uma máquina só.</li>
 queda de uma delas. Em troca, a aplicação precisa ser <b>sem estado</b> (<i>stateless</i>): sessão, carrinho e arquivos saem da
 memória da máquina e vão para um banco, um cache (como o Redis) ou um armazenamento compartilhado. E o banco vira o próximo
 gargalo: réplicas de leitura ajudam; dividir as escritas (<i>sharding</i>) é bem mais difícil.</li>
-<li><b>Elasticidade</b>: crescer e encolher sozinho conforme a demanda (autoscaling, serverless). Serve para picos fortes, como
+<li><b>Elasticidade</b>: crescer e encolher sozinho conforme a demanda (escala automática, serverless). Serve para picos fortes, como
 um app de delivery cheio no almoço e quase parado de madrugada.</li>
 </ul>
 
@@ -174,8 +174,8 @@ ${tabela(
 <p>Cada nove a mais custa bem mais que o anterior: com 99,99%, um deploy ruim que leve uma hora para ser revertido estoura
 o ano. E disponibilidade <b>se multiplica</b>: três serviços em sequência, cada um com 99,9%, dão cerca de 99,7%
 (0,999 × 0,999 × 0,999), umas 26 horas fora por ano. Dividir em serviços só ajuda se uma parte puder falhar sem derrubar as
-outras. Três siglas: o <b>SLI</b> é o número medido (a porcentagem de requisições com sucesso, por exemplo); o <b>SLO</b>, a
-meta interna do time; o <b>SLA</b> (acordo de nível de serviço), a meta prometida em contrato, em geral mais folgada que o SLO
+outras. Três siglas: o <b>SLI</b> (indicador de nível de serviço) é o número medido (a porcentagem de requisições com sucesso, por exemplo); o <b>SLO</b> (objetivo
+de nível de serviço), a meta interna do time; o <b>SLA</b> (acordo de nível de serviço), a meta prometida em contrato, em geral mais folgada que o SLO
 e com multa se descumprida.</p>
 
 <h4>Desempenho: latência e vazão</h4>
@@ -184,17 +184,16 @@ latência em <b>percentis</b>, não em média: o <b>p95</b> é o tempo dentro do
 200 ms pode esconder um cliente em cada dez esperando 1,5 segundo no checkout: o p95 mostra isso; a média, não. Em fluxos
 críticos, acompanhe também o p99. Na arquitetura, o vilão é o salto de rede: uma
 chamada de função leva nanossegundos; uma chamada a outro serviço, mesmo no mesmo data center, de frações de milissegundo a
-vários milissegundos. Serviços que conversam demais (capítulo 14) deixam tudo lento; cache e CQRS (capítulo 21) ajudam
-quando a leitura domina.</p>
+vários milissegundos. Serviços que conversam demais (capítulo 14) deixam tudo lento; cache e CQRS (separar leitura de
+escrita, capítulo 21) ajudam quando a leitura domina.</p>
 
 <h4>Os outros sete</h4>
 <ul>
 <li><b>Manutenibilidade</b> (dá para mudar sem quebrar outra coisa?): mudar a regra do frete grátis deveria mexer em um lugar,
 não em 14 arquivos. Pede módulos com fronteiras claras (capítulos 4 a 8 e 12).</li>
-<li><b>Testabilidade</b> (dá para testar a regra sem subir o mundo?): testar o cálculo de juros de um empréstimo sem banco nem
-API externa. Pede regra isolada da infraestrutura (capítulos 6 e 7).</li>
+<li><b>Testabilidade</b> (dá para testar a regra sem subir o mundo?): testar os juros de um empréstimo sem banco de dados nem API externa. Pede regra isolada da infraestrutura (capítulos 6 e 7).</li>
 <li><b>Implantação independente</b> (dá para subir uma parte sem subir tudo?): o time de pagamentos publica uma correção às 15h
-sem esperar o release do catálogo (capítulos 14 e 16).</li>
+sem esperar a próxima versão do catálogo (capítulos 14 e 16).</li>
 <li><b>Segurança</b> (quem pode ver e mexer em quê?): num app de saúde, vazar exames é dano real e problema legal. Pede pouca
 superfície exposta, dados sensíveis isolados e permissão mínima.</li>
 <li><b>Custo</b> (quanto custa construir e manter?): cada serviço a mais traz pipeline, monitoramento e plantão;
@@ -222,9 +221,9 @@ ${tabela(
 <ul>
 <li><b>Tamanho e experiência do time</b>: cinco devs não sustentam 30 serviços, e tecnologia que ninguém operou em produção,
 com prazo curto, é risco dobrado. Time pequeno pede monólito ou monólito modular (capítulos 11 e 12).</li>
-<li><b>Prazo e orçamento</b>: pouco tempo favorece o simples e o gerenciado (serverless, plataformas prontas); cada parte
+<li><b>Prazo e orçamento</b>: pouco tempo favorece o simples e o gerenciado pelo provedor (serverless, plataformas prontas); cada parte
 implantável a mais tem custo fixo, de nuvem e de gente.</li>
-<li><b>Regulação</b>: LGPD, regras do Banco Central para instituições financeiras, PCI DSS para dados de cartão. Pedem dados
+<li><b>Regulação</b>: LGPD, regras do Banco Central para instituições financeiras e o padrão PCI DSS para dados de cartão. Pedem dados
 sensíveis isolados, trilha de auditoria e controle de onde o dado fica.</li>
 <li><b>Sistemas legados</b>: um ERP que só aceita arquivo à noite empurra para integração em lote. Isole o legado atrás de um
 adaptador (capítulo 6) e migre aos poucos (capítulo 30).</li>
@@ -251,7 +250,7 @@ ${alerta(
 
 <h4>Carga cognitiva dos times</h4>
 <p>É quanto um time precisa manter na cabeça para trabalhar bem: o negócio, os serviços que são dele, as ferramentas, o
-deploy, os alertas do plantão (no mundo do software, a ideia ficou popular com o livro <i>Team Topologies</i>, de Matthew
+deploy, os alertas do plantão (em software, a ideia ficou popular com o livro <i>Team Topologies</i>, de Matthew
 Skelton e Manuel Pais).
 Sinais de excesso: medo de mexer no próprio código e alertas que ninguém entende. Regra de bolso: cada time deve ser dono de uma parte que consegue entender por inteiro. Se cinco pessoas
 cuidam de doze serviços, junte serviços, divida o domínio entre mais times ou tire delas o que é ferramenta (deploy,
@@ -269,7 +268,7 @@ tela exige alterar quatro serviços.</p>
 
 ${dica(
   "YAGNI não é desculpa para bagunça",
-  "<p>Módulos com fronteiras claras e testes custam pouco e deixam portas abertas. É a ideia do <i>Monolith First</i>, de Martin Fowler (2015): começar com um monólito e só dividir quando as fronteiras estiverem claras (capítulo 12). Guarde o cuidado extra para o que é difícil de desfazer (o banco principal, um formato de dados público, a divisão em serviços) e decida rápido o resto.</p>",
+  "<p>Módulos com fronteiras claras e testes custam pouco e deixam portas abertas. É a ideia do <i>Monolith First</i> (\"primeiro o monólito\"), de Martin Fowler (2015): começar com um monólito e só dividir quando as fronteiras estiverem claras (capítulo 12). Guarde o cuidado extra para o que é difícil de desfazer (o banco principal, um formato de dados público, a divisão em serviços) e decida rápido o resto.</p>",
 )}
 
 <h3>Como priorizar: três atributos e o que você sacrifica</h3>
@@ -292,8 +291,8 @@ Medida:     p95 abaixo de 2 segundos, já contando o cartão`,
   { realce: false },
 )}
 
-<p>Melhor ainda se a meta virar um teste de carga no pipeline, que falha se o p95 passar do limite. É a <b>função de
-aptidão</b> (<i>fitness function</i>) do livro <i>Building Evolutionary Architectures</i>, de Neal Ford, Rebecca Parsons e
+<p>Melhor ainda se a meta virar um teste de carga no pipeline, que falha se o p95 passar do limite. É um exemplo de
+<b>função de aptidão</b> (<i>fitness function</i>) do livro <i>Building Evolutionary Architectures</i>, de Neal Ford, Rebecca Parsons e
 Patrick Kua.</p>
 
 <p><b>Exemplo preenchido.</b> Imagine um app de delivery para uma rede regional de restaurantes: seis devs, quatro meses para
@@ -306,7 +305,7 @@ ${tabela(
     ["Desempenho", "<b>Top 3</b>", "Checkout com p95 abaixo de 2 segundos no pico, já contando o cartão."],
     ["Segurança", "Piso", "Cartão só pelo gateway de pagamento; dados conforme a LGPD."],
     ["Escalabilidade", "Sacrifica", "Duas instâncias dão conta de uma rede; revisar se outras entrarem."],
-    ["Deploy independente", "Sacrifica", "Um deploy do sistema inteiro basta para um time só."],
+    ["Implantação independente", "Sacrifica", "Um deploy do sistema inteiro basta para um time só."],
     ["Observabilidade", "Parcial", "Logs e métricas agora; <i>tracing</i> só se surgirem serviços separados."],
   ],
 )}
@@ -322,7 +321,7 @@ e duas instâncias atrás de um balanceador. Gatilho para revisar: um segundo ti
 
 ${pratica(
   "No mundo real",
-  "<p>A Shopify contou no blog de engenharia que, em vez de quebrar seu grande monólito Rails em microsserviços, organizou-o por dentro em módulos com fronteiras claras e criou a ferramenta Packwerk para vigiar essas fronteiras. Pesaram o time produtivo e o código fácil de mudar, sem a conta de operar um sistema distribuído: atributos acima da moda (capítulo 12).</p>",
+  "<p>A Shopify contou no blog de engenharia que, em vez de quebrar seu grande monólito Rails em microsserviços, organizou-o por dentro em módulos com fronteiras claras e criou a ferramenta Packwerk para vigiar essas fronteiras. Priorizaram a produtividade do time e o código fácil de mudar, sem pagar a conta de operar um sistema distribuído: atributos acima da moda (capítulo 12).</p>",
 )}
 
 ${combina([

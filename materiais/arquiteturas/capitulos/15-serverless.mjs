@@ -137,8 +137,8 @@ ${resumo(
 você entrega o código e a configuração, e o provedor decide onde rodar, quantas cópias subir e quando desligar. A ideia
 ficou popular com o AWS Lambda, da Amazon, e hoje existe em todas as grandes nuvens (Azure Functions, as funções do Google
 Cloud, Cloudflare Workers). Uma arquitetura serverless junta duas peças: <b>FaaS</b> (<i>Function as a Service</i>, função
-como serviço), o seu código dividido em funções que rodam quando um evento acontece, e <b>BaaS</b> (<i>Backend as a
-Service</i>, backend como serviço), os serviços prontos que você usa por API em vez de instalar: banco, login, arquivos,
+como serviço), seu código dividido em funções que rodam quando um evento acontece, e <b>BaaS</b> (<i>Backend as a
+Service</i>, backend como serviço), os serviços prontos que você usa por API, sem instalar: banco, login, arquivos,
 filas, e-mail.</p>
 
 ${fig(diagrama(), "Cada gatilho dispara uma função; cada função faz uma coisa e usa serviços gerenciados. As cópias empilhadas mostram que uma função pode ter várias instâncias ao mesmo tempo.", "grande")}
@@ -147,13 +147,13 @@ ${fig(diagrama(), "Cada gatilho dispara uma função; cada função faz uma cois
 <ul>
 <li><b>Gatilho</b>: todo código serverless começa com um evento. Os mais comuns são uma requisição HTTP (que chega por um
 <i>API Gateway</i>, o "porteiro" que recebe as chamadas e repassa para a função), uma mensagem numa fila, um horário
-(agenda no estilo cron), um arquivo enviado para o armazenamento e uma mudança no banco.</li>
+(agenda no estilo do cron, o agendador de tarefas do Linux), um arquivo enviado para o armazenamento e uma mudança no banco.</li>
 <li><b>Função (handler)</b>: recebe o evento, faz uma coisa e termina. No modo padrão do AWS Lambda, cada instância atende
 um evento por vez: 50 chamadas simultâneas viram até 50 cópias da função rodando lado a lado.</li>
 <li><b>Escala até zero, paga por uso</b>: sem eventos, nada roda e a função não custa nada. A conta vem pelo número de
 execuções e pelo tempo de execução multiplicado pela memória reservada (no Lambda, medido em milissegundos).</li>
 <li><b>Sem estado local</b>: a instância pode ser destruída a qualquer momento, e a próxima chamada pode cair em outra. O
-que precisa durar vai para um serviço gerenciado (banco, cache, armazenamento de arquivos).</li>
+que precisa durar vai para um serviço gerenciado (banco, cache, arquivos).</li>
 <li><b>Limites</b>: cada execução tem tempo e memória máximos. No AWS Lambda, são 15 minutos e 10 GB de memória (a CPU
 cresce junto com a memória). Há também um limite de execuções simultâneas por conta e região, e, atrás de
 um API Gateway, a resposta HTTP precisa sair em cerca de 30 segundos.</li>
@@ -167,7 +167,8 @@ ao iniciar. As chamadas seguintes reaproveitam a instância "quente" e pulam ess
 
 ${fig(coldStart(), "A primeira chamada paga a inicialização; as seguintes, não. Depois de um tempo parada, a instância é desligada e o ciclo recomeça.")}
 
-<p>Para diminuir: pacote pequeno, poucas dependências e clientes de banco criados fora do handler. Quando a latência importa
+<p>Para diminuir: pacote pequeno e poucas dependências. E crie os clientes de banco fora do handler: assim eles são montados
+só no cold start e reaproveitados nas chamadas quentes. Quando a latência importa
 muito, dá para manter instâncias sempre ligadas (no Lambda, <i>provisioned concurrency</i>), mas elas são cobradas mesmo
 paradas: é voltar um pouco para o modelo de servidor fixo.</p>
 
@@ -204,7 +205,7 @@ ${quando(
   [
     "Toda chamada precisa de latência baixíssima e constante (jogos em tempo real, negociação na bolsa): o cold start atrapalha.",
     "O processamento é longo: vídeos de horas, treino de modelos, jobs que passam do limite de tempo (15 minutos no Lambda).",
-    "O tráfego é alto e estável 24 horas por dia: a conta tende a passar a de servidores fixos.",
+    "O tráfego é alto e estável 24 horas por dia: a conta tende a ficar maior que a de servidores fixos.",
     "Você precisa de estado em memória entre chamadas ou tem que rodar em qualquer nuvem sem reescrever.",
   ],
 )}
@@ -234,7 +235,7 @@ loja/
 ${codigo(
   `
 // gatilho HTTP. O handler só traduz: evento -> regra -> resposta
-import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
+import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { novoPedido } from "../compartilhado/pedido";
@@ -243,7 +244,7 @@ import { novoPedido } from "../compartilhado/pedido";
 const db = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const TABELA = process.env.TABELA_PEDIDOS!;
 
-export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
+export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   const dados = JSON.parse(event.body ?? "{}");
   if (!dados.itens?.length) {
     return { statusCode: 400, body: JSON.stringify({ erro: "Pedido vazio" }) };
@@ -308,7 +309,7 @@ ${tabela(
 
 <h3>Erros comuns</h3>
 <ul>
-<li><b>Função chamando função e esperando a resposta</b>: latências e cold starts se somam, e você paga pelas duas.
+<li><b>Função chamando função e esperando a resposta</b>: latências e cold starts se somam, e você paga pelas duas funções.
 Prefira filas, eventos ou um orquestrador (AWS Step Functions, capítulo 23).</li>
 <li><b>Contar com estado local</b>: carrinho ou sessão numa variável global ou no disco temporário. Funciona no
 teste e some em produção, quando a chamada cai em outra instância.</li>

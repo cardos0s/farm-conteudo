@@ -85,8 +85,8 @@ function bolaDeLama() {
   s += xis(700, 196, 14);
   s += txt(684, 187, "import direto:", { tam: 15, cor: cor.vermelho, ancora: "end" });
   s += txt(684, 206, "barrado no CI", { tam: 15, cor: cor.vermelho, ancora: "end" });
-  s += check(488, 394, 18);
-  s += txt(580, 396, "só se entra pela API", { tam: 16, cor: cor.verde });
+  s += check(476, 394, 18);
+  s += txt(584, 396, "só se entra pela API", { tam: 16, cor: cor.verde });
   return quadro(760, 412, s);
 }
 
@@ -167,7 +167,7 @@ código que cresceu sem plano, remendo sobre remendo, até virar uma bola de lam
 <b>nas decisões</b>. Cada um tem o mesmo formato: o que é, uma pergunta para o seu time (o <b>teste rápido</b>) e uma tabela
 com <b>como reconhecer</b>, <b>por que dói</b> e <b>como sair</b>.</p>
 
-${fig(bolaDeLama(), "Os mesmos pedaços, duas organizações. À esquerda, qualquer arquivo importa qualquer outro. À direita, cada módulo esconde o que é interno e só se fala pela API pública.")}
+${fig(bolaDeLama(), "Os mesmos pedaços, duas organizações. À esquerda, qualquer arquivo importa qualquer outro. À direita, cada módulo esconde o que é interno e os outros só entram pela API pública.")}
 
 <h4>Grupo 1 · No código</h4>
 <p>Os quatro primeiros acontecem <b>dentro</b> de uma aplicação, seja ela um monólito ou um microsserviço.</p>
@@ -175,12 +175,12 @@ ${fig(bolaDeLama(), "Os mesmos pedaços, duas organizações. À esquerda, qualq
 ${anti(
   1,
   "Bola de lama (big ball of mud)",
-  "Código sem estrutura reconhecível: qualquer parte usa qualquer outra e ninguém sabe onde termina uma responsabilidade. Quase nunca é escolhida; acontece um atalho de cada vez.",
+  "Código sem estrutura reconhecível: qualquer parte usa qualquer outra e ninguém sabe onde termina uma responsabilidade. Quase nunca é escolhida: vai se formando, um atalho de cada vez.",
   "chega uma regra nova de frete: o time concorda sobre onde ela entra, ou cada um aponta para um arquivo diferente?",
   ["Dependências circulares e uma pasta <code>utils</code> que todo mundo importa.", "Mudança pequena quebra algo longe dali; \"só o fulano entende isso\"."],
   ["Cada mudança custa mais que a anterior.", "Para testar uma parte, é preciso subir tudo."],
   [
-    "Não reescreva do zero: mapeie as dependências (dependency-cruiser, madge) e desenhe fronteiras pelo negócio.",
+    "Não reescreva do zero: mapeie as dependências (com ferramentas como dependency-cruiser e madge) e desenhe fronteiras pelo negócio.",
     "Transforme cada fronteira em módulo com API pública (capítulo 12), protegido por checagem no CI. Migre um pedaço de cada vez (capítulo 30).",
   ],
 )}
@@ -193,7 +193,7 @@ ${anti(
   ["<code>PedidoService.buscar(id)</code> só faz <code>return repo.buscar(id)</code>.", "Um campo novo na tela mexe em cinco arquivos que só copiam dados."],
   ["Mais arquivos, testes e revisão, sem valor nenhum.", "Esconde onde está a regra de verdade."],
   [
-    "Richards sugere a regra 80-20: uns 20% de requisições só de passagem é normal; a maioria, não.",
+    "Richards sugere a regra 80-20: ter uns 20% das requisições só de passagem é normal; a maioria, não.",
     "Deixe leituras simples irem direto ao repositório (camada aberta, capítulo 4) ou use fatias verticais (capítulo 8).",
   ],
 )}
@@ -247,7 +247,7 @@ ${fig(distribuido(), "Em cima, serviços separados que dependem do mesmo banco e
 ${anti(
   5,
   "Microsserviços prematuros",
-  "Começar com microsserviços antes de conhecer o domínio, ou sem time e operação para cuidar deles. Em <i>Monolith First</i> (2015), Martin Fowler notou que quase todas as histórias de sucesso começaram com um monólito que cresceu demais e foi dividido, e que quase todo sistema que nasceu em microsserviços teve problemas sérios.",
+  "Começar com microsserviços antes de conhecer o domínio, ou sem time e operação para cuidar deles. Em <i>Monolith First</i> (2015), Martin Fowler notou que quase todas as histórias de sucesso com microsserviços começaram com um monólito que cresceu demais e foi dividido, e que quase todo sistema que nasceu em microsserviços teve problemas sérios.",
   "o time tem mais serviços do que pessoas?",
   ["Quatro pessoas cuidando de quinze serviços.", "Fronteiras que mudam todo mês; mais tempo com cluster e pipeline do que com produto."],
   ["Fronteira errada entre serviços custa muito mais para corrigir do que entre pastas.", "Você paga o preço do distribuído sem ter o problema que ele resolve."],
@@ -260,7 +260,7 @@ ${anti(
   "Serviços que, na prática, só funcionam e só vão para o ar juntos. Somam o custo do sistema distribuído (rede, latência, falha parcial) ao acoplamento do monólito. É onde costuma parar quem sai da bola de lama mudando só a forma de fazer deploy.",
   "dá para implantar um serviço sozinho, numa terça à tarde, sem avisar outro time?",
   ["Deploy coordenado: \"sobe o A, depois o B, depois o C\".", "Cadeias de chamadas síncronas, banco compartilhado e uma biblioteca com as entidades de todos."],
-  ["Um serviço lento derruba o fluxo inteiro.", "Nenhuma vantagem prometida: nem deploy independente, nem times autônomos."],
+  ["Um serviço lento derruba o fluxo inteiro.", "Nenhuma das vantagens prometidas: nem deploy independente, nem times autônomos."],
   [
     "Se os serviços sempre mudam juntos, junte-os de novo. É uma saída honesta.",
     "Senão: dados com um só dono, eventos no lugar de cadeias síncronas (capítulo 20), fronteiras por capacidade de negócio.",
@@ -293,7 +293,7 @@ ${anti(
 ${anti(
   9,
   "Serviços tagarelas (chatty)",
-  "Serviços que trocam dezenas de chamadas entre si para responder uma única requisição. É o velho problema do N+1 do banco de dados, só que pela rede.",
+  "Serviços que trocam dezenas de chamadas entre si para responder uma única requisição. É o velho problema N+1 do banco de dados (uma consulta para a lista e mais uma para cada item), só que pela rede.",
   "quantas chamadas de rede acontecem para montar uma tela?",
   ["Laços <code>for</code> com uma chamada HTTP por item.", "Tela lenta, embora cada serviço, sozinho, responda rápido."],
   [
@@ -322,13 +322,13 @@ for (const item of carrinho.itens) item.preco = precos[item.produtoId];`,
 ${anti(
   10,
   "ESB \"deus\"",
-  "No SOA (capítulo 13), o barramento (ESB, <i>enterprise service bus</i>) deveria rotear e traduzir mensagens entre sistemas. Aos poucos ele ganha regras de negócio e orquestração, até virar o lugar onde a lógica da empresa mora.",
+  "Na SOA (capítulo 13), o barramento (ESB, <i>enterprise service bus</i>) deveria rotear e traduzir mensagens entre sistemas. Aos poucos ele ganha regras de negócio e orquestração, até virar o lugar onde a lógica da empresa mora.",
   "mudar uma regra de negócio exige o time do barramento?",
   ["Fila de pedidos para o \"time de integração\" a cada feature.", "Regras escritas em configuração do barramento, sem testes."],
   ["Gargalo de pessoas e ponto único de falha.", "Lógica difícil de testar e de versionar."],
   [
     "Pontas inteligentes, canos burros (<i>smart endpoints and dumb pipes</i>, do artigo de James Lewis e Martin Fowler, 2014): a regra volta para os serviços.",
-    "Tire uma integração de cada vez do barramento, sem big bang (capítulo 30).",
+    "Tire uma integração de cada vez do barramento, em vez de trocar tudo de uma vez (capítulo 30).",
   ],
 )}
 
@@ -342,7 +342,7 @@ ${anti(
   "que problema concreto essa tecnologia resolve, e o que acontece se não a usarmos?",
   ["Kubernetes, Kafka e GraphQL num sistema interno com 50 usuários.", "Mais tecnologias na stack do que pessoas no time."],
   ["Cada tecnologia nova traz custo de operação, de aprendizado e de plantão.", "Quem escolheu sai da empresa; quem fica herda a complexidade."],
-  ["Exija um ADR (capítulo 32) com o problema, as alternativas e o custo.", "Tecnologia conhecida por padrão; novidade só onde dá vantagem real. Para aprender, use protótipos."],
+  ["Exija um ADR (registro de decisão de arquitetura, capítulo 32) com o problema, as alternativas e o custo.", "Tecnologia conhecida por padrão; novidade só onde dá vantagem real. Para aprender, use protótipos."],
 )}
 
 ${anti(
@@ -380,7 +380,7 @@ ${pratica(
 
 ${alerta(
   "Não troque um anti-padrão por outro",
-  "<p>A fuga mais comum da bola de lama é partir direto para microsserviços. Sem fronteiras claras, o resultado é uma bola de lama distribuída: o monólito distribuído do item 6, agora com rede no meio. Simon Brown resume bem a ideia: se o time não consegue construir um monólito bem estruturado, microsserviços não vão ser a resposta. Primeiro as fronteiras (capítulo 12), depois a distribuição (capítulo 14).</p>",
+  "<p>A fuga mais comum da bola de lama é partir direto para microsserviços. Sem fronteiras claras, o resultado é uma bola de lama distribuída, agora com rede no meio: o monólito distribuído do item 6. Simon Brown resume bem a ideia: se o time não consegue construir um monólito bem estruturado, microsserviços não vão ser a resposta. Primeiro as fronteiras (capítulo 12), depois a distribuição (capítulo 14).</p>",
 )}
 
 ${dica(

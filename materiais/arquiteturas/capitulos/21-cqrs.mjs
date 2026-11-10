@@ -93,7 +93,7 @@ ${resumo(
 
 <p>Em quase todo sistema, o mesmo modelo (a mesma entidade, as mesmas tabelas) serve para gravar e para ler. Numa loja,
 gravar um pedido exige validar estoque, cupom e limite de crédito; já a tela "Meus pedidos" quer foto, nome da loja, status
-da entrega e total numa lista paginada: seis joins e nenhuma regra. A ideia de separar as duas coisas vem do <b>CQS</b>
+da entrega e total numa lista paginada: seis <i>joins</i> (junções de tabelas) e nenhuma regra. A ideia de separar as duas coisas vem do <b>CQS</b>
 (<i>Command-Query Separation</i>, separação entre comando e consulta), de Bertrand Meyer: um método ou <b>muda</b> o estado
 (comando) ou <b>devolve</b> uma resposta (consulta), nunca os dois. Por volta de 2010, Greg Young levou a ideia do método
 para a arquitetura com o nome <b>CQRS</b> (<i>Command Query Responsibility Segregation</i>, segregação de responsabilidades
@@ -125,7 +125,7 @@ ${fig(niveis(), "Do nível 1 ao 3, a leitura ganha liberdade para ter o seu pró
 <li><b>Nível 1: só o código separado.</b> Mesmo banco, mesmas tabelas. Comandos passam pelas entidades; consultas leem
 direto com SQL e devolvem objetos simples. Já resolve muito, sem atraso nenhum.</li>
 <li><b>Nível 2: tabelas de leitura no mesmo banco.</b> Tabelas desnormalizadas, feitas para a tela. Se o comando as
-atualiza na mesma transação, ficam sempre em dia. Uma <i>view</i> materializada também serve, mas no Postgres ela só muda
+atualiza na mesma transação, ficam sempre em dia. Uma <i>view</i> materializada (consulta com o resultado guardado em disco) também serve, mas no Postgres ela só muda
 quando alguém roda o <code>REFRESH</code>: até lá, fica para trás.</li>
 <li><b>Nível 3: banco só de leitura.</b> A escrita fica, por exemplo, no Postgres, e a leitura num índice de busca ou
 num cache. Uma projeção, alimentada por eventos, mantém os dois em sincronia.</li>
@@ -138,7 +138,7 @@ pedido, abre "Meus pedidos", o pedido ainda não aparece e ele faz tudo de novo.
 <ul>
 <li>A tela usa a resposta do próprio comando para se atualizar, sem esperar a consulta.</li>
 <li>Logo depois de gravar, aquele item específico é lido do lado de escrita (<i>read your own writes</i>, "leia o que você escreveu").</li>
-<li>A tela mostra "processando" e se atualiza quando a projeção chega (por <i>polling</i> ou notificação).</li>
+<li>A tela mostra "processando" e se atualiza quando a projeção termina (por <i>polling</i>, perguntando de novo a cada poucos segundos, ou por notificação).</li>
 <li>O comando aceita uma chave de idempotência, para a segunda tentativa não criar um segundo pedido.</li>
 </ul>
 
@@ -150,7 +150,7 @@ CQRS vive muito bem sozinho.</p>
 
 ${quando(
   [
-    "A leitura é muito diferente da escrita: telas que juntam vários agregados, busca com filtros, painéis e relatórios.",
+    "A leitura é muito diferente da escrita: telas que juntam dados de várias entidades, busca com filtros, painéis e relatórios.",
     "Há muito mais leitura do que escrita e você quer escalar a leitura sozinha (catálogo, feed, acompanhamento de pedido).",
     "O domínio é complexo e as regras de escrita estão ficando poluídas por necessidades de tela.",
     "Você usa event sourcing (capítulo 22): as projeções são o jeito de consultar.",
@@ -159,11 +159,16 @@ ${quando(
     "É um CRUD: a tela mostra o que foi gravado, do mesmo jeito que foi gravado.",
     "Índices, uma <i>view</i> ou uma réplica de leitura já resolvem a lentidão.",
     "O negócio não aceita atraso entre gravar e ler: fique no nível 1 ou 2.",
-    "Time pequeno, sem experiência com filas, pensando direto no nível 3. Ou um MVP.",
+    "Time pequeno, sem experiência com filas, pensando direto no nível 3. Ou um MVP (produto mínimo viável).",
   ],
 )}
 
 ${medidor({ complexidade: 3, escala: 4, operacao: 3, aprendizado: 3, time: "nível 1: qualquer um; nível 3: experiência com filas" })}
+
+${dica(
+  "Réplica de leitura não é CQRS",
+  "<p>Uma réplica de leitura (<i>read replica</i>) copia o mesmo banco, com as mesmas tabelas: resolve <b>volume</b>, não <b>formato</b>. O CQRS muda o formato, com um modelo de leitura desenhado para a tela. Muitas vezes a réplica basta. As duas também combinam (consultas do nível 1 lendo da réplica), e a réplica atrasa um pouco: é consistência eventual do mesmo jeito.</p>",
+)}
 
 <h3>Como usar na prática</h3>
 ${pastas(`
@@ -253,9 +258,9 @@ ${passos([
   "Comece no nível 1: classes separadas para comandos e para consultas, no mesmo banco.",
   "Nas consultas, pule as entidades: leia direto com SQL e devolva objetos no formato da tela.",
   "Ache a tela que dói (lenta, cheia de joins, ou que precisa de busca textual). Só para ela, crie uma tabela de leitura (nível 2) ou um banco próprio (nível 3).",
-  "Defina os eventos que alimentam essa leitura e publique com garantia (outbox).",
+  "Defina os eventos que alimentam essa leitura e publique com garantia (padrão <i>outbox</i>, explicado mais adiante).",
   "Escreva projeções idempotentes e tenha um script para reconstruir a tabela de leitura do zero, reprocessando os eventos ou relendo o lado de escrita.",
-  "Combine com o time de produto como cada tela lida com o atraso e monitore o <i>lag</i> das projeções.",
+  "Combine com o time de produto como cada tela lida com o atraso e monitore o atraso (<i>lag</i>) das projeções.",
 ])}
 
 <h3>Vantagens e custos</h3>
@@ -265,7 +270,7 @@ ${tabela(
     ["Cada lado com o modelo ideal: escrita com regras, leitura achatada e pronta para a tela", "Dois modelos para manter, mais o código que os sincroniza"],
     ["A leitura escala sozinha (cache, réplicas, banco próprio) sem pesar na escrita", "Consistência eventual: a tela pode mostrar um dado de um instante atrás"],
     ["Consultas rápidas e simples, sem joins enormes", "Projeções precisam ser idempotentes, monitoradas e reconstruíveis"],
-    ["Tela nova = projeção nova, sem mexer nas regras", "Mais infraestrutura nos níveis 2 e 3 (outbox, fila, outro banco)"],
+    ["Tela nova = projeção nova, sem mexer nas regras", "Mais peças nos níveis 2 e 3: tabelas extras e, no nível 3, outbox, fila e outro banco"],
   ],
 )}
 
@@ -276,7 +281,7 @@ realmente divergem; o resto pode ser CRUD.</li>
 <li><b>Ignorar o atraso</b>: a tela lê logo depois do comando, não acha o dado e o usuário repete a ação. Planeje a tela
 para o atraso e torne o comando idempotente.</li>
 <li><b>Projeção frágil</b>: soma o total de novo quando o mesmo evento chega duas vezes (a maioria das filas entrega
-"pelo menos uma vez"), ou não tem como ser reconstruída quando corrompe.</li>
+"pelo menos uma vez"), ou não tem como ser reconstruída se os dados se corromperem.</li>
 <li><b>Regra de negócio na projeção ou na consulta</b>: a projeção só copia e reorganiza dados. Quem decide é o lado de escrita.</li>
 <li><b>Decidir com o modelo de leitura</b>: o comando confere estoque ou saldo na tabela de leitura, que pode estar
 atrasada, e aprova o que não devia. Validação de comando usa os dados do lado de escrita.</li>
@@ -289,13 +294,9 @@ ${pratica(
 
 ${alerta(
   "Gravar e publicar: o problema da escrita dupla",
-  "<p>Salvar o pedido e <b>depois</b> publicar o evento na fila é arriscado: se o processo cair entre as duas coisas, a tabela de leitura fica errada para sempre. Por isso o exemplo usa <code>salvarComEvento</code>: o evento vai para uma tabela <b>outbox</b> na mesma transação do pedido, e um processo separado lê essa tabela e publica na fila (padrão <i>transactional outbox</i>). Ferramentas de CDC (<i>change data capture</i>, captura de mudanças), como o Debezium, fazem esse papel lendo o log do banco. Em qualquer caso, o mesmo evento pode sair duas vezes: por isso a projeção é idempotente.</p>",
+  "<p>Salvar o pedido e <b>depois</b> publicar o evento na fila é arriscado: se o processo cair entre as duas coisas, o evento se perde e a tabela de leitura fica errada sem ninguém perceber. Por isso o exemplo usa <code>salvarComEvento</code>: o evento vai para uma tabela <b>outbox</b> na mesma transação do pedido, e um processo separado lê essa tabela e publica na fila (padrão <i>transactional outbox</i>). Ferramentas de CDC (<i>change data capture</i>, captura de mudanças), como o Debezium, fazem esse papel lendo o log do banco. Em qualquer caso, o mesmo evento pode sair duas vezes: por isso a projeção é idempotente.</p>",
 )}
 
-${dica(
-  "Réplica de leitura não é CQRS",
-  "<p>Uma réplica de leitura (<i>read replica</i>) copia o mesmo banco, com as mesmas tabelas: resolve <b>volume</b>, não <b>formato</b>. O CQRS muda o formato, com um modelo de leitura desenhado para a tela. Muitas vezes a réplica basta. As duas também combinam (consultas do nível 1 lendo da réplica), e a réplica atrasa um pouco: é consistência eventual do mesmo jeito.</p>",
-)}
 
 ${combina([
   [22, "Event Sourcing", "a escrita guarda eventos; as projeções são a leitura"],

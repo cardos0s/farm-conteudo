@@ -97,7 +97,7 @@ function supervisao() {
 
 export default `
 ${resumo(
-  "O sistema vira um monte de <b>atores</b>: pequenas unidades com estado privado que só conversam por <b>mensagens</b>. Cada ator tem a sua caixa de entrada e trata uma mensagem por vez, então ninguém precisa de lock.",
+  "O sistema vira um monte de <b>atores</b>: pequenas unidades com estado privado que só conversam por <b>mensagens</b>. Cada ator tem a sua caixa de mensagens e trata uma mensagem por vez, então ninguém precisa de lock (trava).",
   "Um escritório em que cada pessoa tem uma bandeja de entrada. Ninguém mexe na gaveta do colega: deixa um bilhete na bandeja dele. Cada um lê um bilhete por vez. Se alguém passa mal, o chefe põe outra pessoa no lugar.",
 )}
 
@@ -117,7 +117,7 @@ direto: o único jeito de falar com ele é mandar uma mensagem.</li>
 novos atores. Só isso.</li>
 <li><b>Envio assíncrono</b>: o normal é "manda e segue" (<i>tell</i>). Quando precisa de resposta, ela volta como outra
 mensagem; as bibliotecas têm um atalho para isso (<i>ask</i> ou <i>call</i>), que espera com tempo limite.</li>
-<li><b>Garantias fracas, de propósito</b>: no Erlang e no Akka, entre o mesmo par de atores a ordem é mantida; entre
+<li><b>Garantias fracas, de propósito</b>: no Erlang e no Akka (biblioteca de atores para Java e Scala), entre o mesmo par de atores a ordem é mantida; entre
 remetentes diferentes, não. E a entrega padrão costuma ser "no máximo uma vez" (<i>at-most-once</i>): o que não pode se perder precisa de confirmação
 e reenvio.</li>
 </ul>
@@ -131,8 +131,8 @@ disputa nem chega a acontecer.</p>
 
 
 <h4>Supervisão e "let it crash"</h4>
-<p>No Erlang/OTP, os atores (lá chamados de <b>processos</b>, mas bem mais leves que um processo do sistema operacional)
-ficam numa <b>árvore de supervisão</b>. Supervisores não fazem trabalho de negócio: só vigiam os filhos e sobem outro no lugar
+<p>No Erlang, os atores se chamam <b>processos</b> (bem mais leves que um processo do sistema operacional). O <b>OTP</b>,
+conjunto de bibliotecas que acompanha o Erlang, organiza esses processos numa <b>árvore de supervisão</b>. Supervisores não fazem trabalho de negócio: só vigiam os filhos e sobem outro no lugar
 de quem cai, com uma estratégia:</p>
 <ul>
 <li><b>one_for_one</b>: reinicia só quem caiu (filhos independentes, como uma conexão por usuário);</li>
@@ -163,9 +163,9 @@ ou sumir.</p>
 ${tabela(
   ["Plataforma", "O que tem de especial"],
   [
-    ["<b>Erlang/OTP</b> (BEAM)", "Processos levíssimos (milhões numa máquina), supervisores e distribuição nativa."],
+    ["<b>Erlang/OTP</b> (BEAM)", "BEAM é a máquina virtual do Erlang. Processos levíssimos (milhões numa máquina), supervisores e distribuição nativa."],
     ["<b>Elixir</b> (BEAM)", "Criada pelo brasileiro José Valim: OTP com sintaxe moderna. Base do framework Phoenix."],
-    ["<b>Akka</b> (JVM)", "Atores tipados, cluster, sharding e persistência. Em 2022 trocou a licença aberta pela BSL; o fork aberto é o Apache Pekko."],
+    ["<b>Akka</b> (JVM)", "Atores tipados, cluster, sharding e persistência. Em 2022 deixou de ter licença aberta (passou para a BSL); a versão aberta derivada dele é o Apache Pekko."],
     ["<b>Orleans</b> (.NET)", "Atores virtuais (<i>grains</i>): você nunca cria nem destrói um; o runtime ativa sob demanda, em algum servidor, e desativa quando fica parado. Nasceu na Microsoft Research."],
     ["<b>Dapr actors</b>", "Atores virtuais no estilo Orleans, via sidecar, com SDK para JavaScript/TypeScript."],
   ],
@@ -290,6 +290,7 @@ Supervisor.start_link([
   {DynamicSupervisor, name: Carteiras.Sup, strategy: :one_for_one}
 ], strategy: :one_for_one)
 
+# no iex, o terminal interativo do Elixir:
 DynamicSupervisor.start_child(Carteiras.Sup, {Carteira, "ana"})
 Carteira.depositar("ana", 100)
 Carteira.sacar("ana", 80) #=> :ok

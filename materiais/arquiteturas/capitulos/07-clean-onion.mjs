@@ -163,7 +163,7 @@ formata a resposta para a tela ou para o JSON.</p>
 
 ${fig(fluxo(), "A chamada vai e volta, mas a dependência só entra. O truque está nas duas interfaces do anel de casos de uso.")}
 
-<p>Entre os anéis só passam <b>dados simples</b> (DTOs, do inglês <i>data transfer objects</i>): o caso de uso não recebe o
+<p>Pelas portas de entrada e de saída só passam <b>dados simples</b> (DTOs, do inglês <i>data transfer objects</i>): o caso de uso não recebe o
 <code>req</code> do Express nem devolve a entidade ou a linha do banco. Assim, mudar a tabela não quebra a API, e mudar
 a API não mexe na regra.</p>
 
@@ -203,7 +203,7 @@ ${quando(
   ],
   [
     "CRUD e painel administrativo: formulário e tabela, quase sem regra.",
-    "MVP, protótipo ou prova de conceito que pode ser jogada fora.",
+    "Protótipo, prova de conceito ou primeira versão para testar a ideia, que pode ir para o lixo.",
     "Time pequeno, com prazo curto, que ainda não domina interfaces e injeção de dependência: comece com camadas bem separadas (capítulo 4).",
     "Sistema em que o framework é o produto, como um site de conteúdo feito num CMS.",
   ],
@@ -328,7 +328,7 @@ app.post("/pedidos", async (req, res) => {
 ${passos([
   "Comece pelo centro: entidades com as regras que valem em qualquer canal (<code>pedido.adicionar()</code> recusa quantidade zero), sem framework nem ORM.",
   "Para cada ação do usuário, crie um caso de uso com DTO de entrada, DTO de saída e as interfaces do que ele precisa de fora (gateways), com nomes do negócio.",
-  "Escreva os adaptadores: o controller traduz a requisição em DTO, o presenter traduz o resultado em resposta e o gateway implementa o repositório com ORM ou SQL.",
+  "Escreva os adaptadores: o controller traduz a requisição em DTO, o presenter traduz o resultado em resposta e o adaptador do banco implementa o gateway com ORM ou SQL.",
   "Deixe frameworks e drivers na borda e ligue tudo no <code>main.ts</code> (o <i>composition root</i>) ou num container de injeção de dependência.",
   "Teste o interactor com dublês: um repositório em memória e um presenter falso que só guarda o que recebeu.",
   "Automatize a regra: <code>dominio/</code> e <code>aplicacao/</code> não podem importar <code>adaptadores/</code>, <code>infra/</code> nem bibliotecas como <code>express</code> e <code>pg</code> (dependency-cruiser ou regras de lint resolvem).",
@@ -355,7 +355,7 @@ pode ser CRUD direto (fatias verticais, capítulo 8).</li>
 os formatos diferem; telas de leitura podem consultar o banco direto (CQRS, capítulo 21).</li>
 <li><b>"Interface com uma implementação só."</b> Input ports quase nunca ganham uma segunda: o controller pode chamar o
 caso de uso direto. Guarde as interfaces para os gateways, onde há troca e dublê de teste.</li>
-<li><b>"Ninguém troca de banco."</b> É verdade, é raro. O ganho real é testar a regra sem infraestrutura e atualizar o
+<li><b>"Ninguém troca de banco."</b> É raro mesmo. O ganho real é testar a regra sem infraestrutura e atualizar o
 framework sem medo.</li>
 </ul>
 
@@ -365,7 +365,7 @@ framework sem medo.</li>
 centro ao framework. Mapeie no adaptador (ou registre o atalho num ADR, capítulo 32).</li>
 <li><b>Entidade atravessando a fronteira</b>: devolver o objeto <code>Pedido</code> direto no JSON expõe campos internos
 e amarra o contrato da API ao modelo. Use o DTO de saída.</li>
-<li><b>Transação no lugar errado</b>: abrir <code>BEGIN</code> com o cliente do <code>pg</code> dentro do caso de uso traz
+<li><b>Transação no lugar errado</b>: rodar <code>BEGIN</code> com o cliente do <code>pg</code> dentro do caso de uso traz
 o banco para o centro. Se o caso de uso grava várias coisas juntas, declare uma porta (ex.: <code>UnidadeDeTrabalho</code>)
 e deixe o adaptador abrir e fechar a transação.</li>
 <li><b>Template pronto</b>: copiar um repositório "clean" com oito projetos e quarenta pastas para um sistema de três

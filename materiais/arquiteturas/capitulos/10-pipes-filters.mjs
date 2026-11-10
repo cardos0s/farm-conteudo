@@ -105,15 +105,15 @@ ${resumo(
 <p>Pipes and Filters (canos e filtros) é um dos estilos mais antigos da computação. Ficou famoso com o Unix, nos Bell
 Labs, no começo dos anos 1970: o caractere <code>|</code> liga a saída de um programa à entrada do próximo, e programas
 pequenos que fazem uma coisa só viram ferramentas poderosas quando encadeados. A mesma ideia está hoje nos compiladores,
-no ETL, no processamento de vídeo, nos middlewares do Express e nos streams do Node.</p>
+no ETL (extrair, transformar e carregar dados), no processamento de vídeo, nos middlewares do Express e nos streams do Node.</p>
 
 ${fig(diagrama(), "Os dados entram pela fonte, atravessam filtros independentes ligados por canos e saem no destino. Em cada cano, o dado tem um formato combinado.", "grande")}
 
 <h3>Como funciona</h3>
 <ul>
 <li><b>Filtro</b>: lê da entrada, transforma e escreve na saída. Pode converter (texto em objeto), enriquecer (calcular o
-frete), descartar (só vendas válidas), agrupar, ou dividir e juntar canos (<i>fan-out</i> e <i>fan-in</i>, como o
-<code>tee</code> do Unix). Apesar do nome, "filtrar" aqui é transformar de qualquer jeito, não só remover.</li>
+frete), descartar (só vendas válidas), agrupar, ou dividir e juntar canos (<i>fan-out</i>, como o <code>tee</code> do Unix, e
+<i>fan-in</i>). Apesar do nome, "filtrar" aqui é transformar de qualquer jeito, não só remover.</li>
 <li><b>Cano (pipe)</b>: leva a saída de um filtro até a entrada do próximo. Pode ser um array em memória, um stream, o pipe
 do sistema operacional, um arquivo ou uma fila (RabbitMQ, SQS, Kafka). Em memória é rápido; com uma fila, cada filtro
 pode rodar em outra máquina.</li>
@@ -121,7 +121,7 @@ pode rodar em outra máquina.</li>
 <li><b>Contrato</b>: o formato do dado em cada cano. No Unix é texto, linha a linha; num programa TypeScript, um tipo como
 <code>Venda</code>. Respeitado o contrato, dá para trocar, reordenar e reaproveitar filtros.</li>
 <li><b>Regra de ouro</b>: um filtro nunca chama o próximo nem lê o estado dos vizinhos. Quem decide a ordem é quem monta
-o pipeline (a linha de comando, o <code>main.ts</code>).</li>
+o pipeline (a linha de comando, o <code>pipeline.ts</code>).</li>
 </ul>
 
 <p>O exemplo mais famoso cabe numa linha de terminal. Quais IPs mais causaram erro 500 no servidor?</p>
@@ -165,7 +165,7 @@ mesmo tempo, a memória fica quase constante e o primeiro resultado sai em insta
 </ul>
 
 <p>Cuidado com filtros que precisam ver tudo: o <code>sort</code> só escreve a primeira linha depois de ler a última, e
-vira um "ponto de lote" no meio do streaming. Rankings e totais têm o mesmo problema; em dados que nunca acabam, a saída
+vira um "ponto de lote" no meio do streaming. Rankings e totais têm o mesmo problema; em dados que nunca acabam, a solução
 é calcular por janelas de tempo (capítulo 26).</p>
 
 <h4>Backpressure: quando o cano enche</h4>
@@ -185,7 +185,7 @@ cópias do filtro seguinte.</li>
 <h4>Paralelismo e escala por filtro</h4>
 <p>Em streaming, as etapas se sobrepõem: enquanto o terceiro filtro trabalha no item 1, o segundo já está no item 2.
 Em processos separados (pipe do Unix, workers com filas), isso é paralelismo real; num único processo Node, as etapas
-se revezam na mesma thread. A vazão total nunca supera a do filtro mais lento, o gargalo, e a saída é escalar só ele,
+se revezam na mesma thread. A vazão total nunca supera a do filtro mais lento, o gargalo, e a solução é escalar só ele,
 com várias cópias lendo da mesma fila. É fácil se o filtro é <b>sem estado</b> (redimensionar uma imagem) e a ordem não
 importa, porque várias cópias embaralham a ordem. Se ele guarda estado (somar por loja), divida os dados por chave: as
 vendas da loja X caem sempre na mesma cópia, e a ordem dentro de cada chave se mantém.</p>
@@ -208,7 +208,7 @@ ${quando(
 ${medidor({ complexidade: 2, escala: 4, operacao: 2, aprendizado: 2, time: "qualquer tamanho; com filas, cada etapa pode ter um dono" })}
 
 <h3>Como usar na prática</h3>
-<p>O relatório do primeiro diagrama em duas versões: funções puras (lote) e streams do Node (arquivos grandes).</p>
+<p>Dois exemplos: o relatório do primeiro diagrama com funções puras (lote) e um filtro de logs com streams do Node (arquivos grandes).</p>
 
 ${pastas(`
 src/
@@ -329,8 +329,8 @@ ${tabela(
 <li><b>Ignorar o backpressure</b>: ler um arquivo enorme com <code>readFile</code>, ou chamar <code>write()</code> sem olhar
 o retorno. A memória explode em produção, nunca no teste com dez linhas.</li>
 <li><b>Filtro que não aguenta repetição</b>: com filas, a mesma mensagem pode chegar duas vezes (entrega "pelo menos
-uma vez"). Processar a mesma mensagem de novo não pode gravar dois registros nem somar em dobro: o filtro precisa ser idempotente.</li>
-<li><b>Granularidade errada</b>: <code>processarTudo</code> não é pipeline; vinte filtros triviais atrás de filas pagam latência a cada salto.</li>
+uma vez"). Processar de novo não pode gravar dois registros nem somar em dobro: o filtro precisa ser idempotente.</li>
+<li><b>Granularidade errada</b>: um único filtro <code>processarTudo</code> não é pipeline; vinte filtros triviais atrás de filas pagam latência a cada salto.</li>
 </ul>
 
 ${pratica(
@@ -340,13 +340,13 @@ ${pratica(
 
 ${dica(
   "Middleware do Express é pipeline, com duas diferenças",
-  "<p>Cada <code>app.use()</code> encaixa um filtro: <code>express.json()</code> transforma o corpo em objeto, a autenticação coloca <code>req.usuario</code> e a rota responde. Só que todos mexem no <b>mesmo</b> <code>req</code>/<code>res</code> (estado compartilhado), e qualquer um pode encerrar a corrida sem chamar <code>next()</code>. Por isso a ordem importa: autenticação registrada depois da rota não protege nada. E, como cada middleware chama o próximo, o desenho fica mais perto do padrão <i>Chain of Responsibility</i> (cadeia de responsabilidade) do que de filtros puros.</p>",
+  "<p>Cada <code>app.use()</code> encaixa um filtro: <code>express.json()</code> transforma o corpo em objeto, a autenticação coloca <code>req.usuario</code> e a rota responde. Só que todos mexem no <b>mesmo</b> <code>req</code>/<code>res</code> (estado compartilhado), e qualquer um pode encerrar o fluxo sem chamar <code>next()</code>. Por isso a ordem importa: autenticação registrada depois da rota não protege nada. E, como cada middleware chama o próximo, o desenho fica mais perto do padrão <i>Chain of Responsibility</i> (cadeia de responsabilidade) do que de filtros puros.</p>",
 )}
 
 ${combina([
   [26, "Arquiteturas de dados", "ETL e streaming em grande escala"],
-  [20, "Orientada a eventos", "filas como canos; lá, porém, quem publica não sabe quem consome"],
-  [15, "Serverless", "cada filtro uma função disparada pela etapa anterior"],
+  [20, "Orientada a eventos", "filas como canos; lá, porém, ninguém fixa a ordem e cada evento pode ter vários consumidores"],
+  [15, "Serverless", "cada filtro uma função, disparada quando o dado chega ao cano"],
   [6, "Hexagonal", "o pipeline no núcleo; fonte e destino como adaptadores"],
 ])}
 

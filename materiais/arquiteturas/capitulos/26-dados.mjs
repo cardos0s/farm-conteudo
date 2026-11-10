@@ -183,7 +183,8 @@ ${resumo(
 <p>O banco do seu app é <b>transacional</b> (OLTP, <i>online transaction processing</i>): feito para milhares de operações
 pequenas, como gravar um pedido. Análise é o contrário (OLAP, <i>online analytical processing</i>): poucas perguntas enormes,
 como "receita por categoria nos últimos dois anos". Rodar isso no banco de produção deixa o app lento, e juntar ali dados de
-vários sistemas (app, pagamentos, CRM) fica difícil. Por isso, as empresas copiam os dados para um lugar feito para análise.
+vários sistemas (app, pagamentos, CRM) fica difícil. Por isso, as empresas copiam os dados para um lugar feito para análise e BI (<i>business intelligence</i>: relatórios e
+painéis do negócio).
 As seis arquiteturas deste capítulo não competem entre si: respondem a três perguntas diferentes. Uma empresa pode ter um
 lakehouse (onde), processado no estilo Kappa (como) e organizado como Data Mesh (quem).</p>
 
@@ -193,7 +194,7 @@ ${fig(armazenamento(), "Três jeitos de guardar dados para análise. O lakehouse
 <h4>Onde guardar: warehouse, lake e lakehouse</h4>
 <ul>
 <li><b>Data warehouse</b> (armazém de dados): um banco feito para análise. Os modernos guardam os dados <b>por coluna</b>: para somar o
-valor de um bilhão de pedidos, lê só a coluna <code>valor</code>, não a linha inteira. Os dados entram limpos e modelados,
+valor de um bilhão de pedidos, leem só a coluna <code>valor</code>, não a linha inteira. Os dados entram limpos e modelados,
 em geral num <b>modelo estrela</b>: uma tabela de fatos (vendas) no meio, ligada a dimensões (produto, cliente, data). O
 esquema é definido antes de gravar (<i>schema-on-write</i>). Exemplos: Snowflake, Google BigQuery, Amazon Redshift.</li>
 <li><b>Data lake</b> (lago de dados): arquivos num armazenamento de objetos barato (Amazon S3, Google Cloud Storage, Azure
@@ -286,7 +287,7 @@ ${medidor({ complexidade: 4, escala: 5, operacao: 4, aprendizado: 4, time: "2 a 
 
 <h3>Como usar na prática</h3>
 <p>Um exemplo de plataforma enxuta para uma loja online: os dados do banco do app são copiados para um lakehouse e
-organizados em três camadas (bronze, prata e ouro, às vezes chamada de arquitetura medalhão), e um processador de stream
+organizados em três camadas (bronze, prata e ouro: a chamada arquitetura medalhão), e um processador de stream
 alimenta o painel de vendas ao vivo.</p>
 ${pastas(`
 plataforma-dados/

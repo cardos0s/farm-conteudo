@@ -159,7 +159,7 @@ ${fig(integracao(), "A diferença está em QUANDO as partes se juntam: antes do 
 <li><b>No build</b>: cada parte vira um pacote npm e a casca gera um bundle (o JavaScript final) único. Simples e com
 tipos de ponta a ponta, mas mudar o carrinho exige republicar a casca: perde-se o deploy independente. Por isso muita gente chama isso
 só de front modular.</li>
-<li><b>No navegador (em runtime)</b>: a casca baixa cada parte enquanto o usuário navega. Três técnicas comuns:
+<li><b>No navegador (em tempo de execução, o <i>runtime</i>)</b>: a casca baixa cada parte enquanto o usuário navega. Três técnicas comuns:
   <ul>
   <li><b>Module Federation</b>: nasceu no Webpack 5 (hoje existe também no Rspack, de forma nativa, e no Vite, por plugin).
   Um app <i>host</i> carrega módulos expostos por apps <i>remotes</i>, e eles dividem bibliotecas como o React.</li>
@@ -184,12 +184,12 @@ o outro. Nome e formato do evento viram contrato, como uma API.</li>
 
 <h4>O preço escondido: dependências duplicadas</h4>
 <p>Se cada time empacota o próprio React, o usuário baixa o React três vezes. E se o componente de um time for
-renderizado pelo React de outro, os hooks quebram (o erro <i>Invalid hook call</i>). Por isso o Module Federation tem a opção <code>shared</code> com <code>singleton: true</code>
+renderizado pelo React de outro, os hooks (como o <code>useState</code>) quebram com o erro <i>Invalid hook call</i>. Por isso o Module Federation tem a opção <code>shared</code> com <code>singleton: true</code>
 (uma cópia só para todos). Combine uma versão principal de framework e vigie o tamanho do bundle a cada deploy.</p>
 
 ${quando(
   [
-    "Vários times (três ou mais) mexem no mesmo produto web e travam um ao outro no deploy.",
+    "Vários times (três ou mais) mexem no mesmo produto web e travam uns aos outros no deploy.",
     "O produto é grande e tem áreas bem separadas: catálogo, checkout, conta, painel do vendedor.",
     "Você precisa trocar de framework aos poucos (sair de AngularJS ou jQuery), uma área por vez.",
     "Os times querem ser donos da tela, não só da API (o backend pode até ser um monólito: micro-frontend não exige microsserviço).",
@@ -205,7 +205,7 @@ ${quando(
 ${medidor({ complexidade: 4, escala: 4, operacao: 3, aprendizado: 3, time: "a partir de 3 times no mesmo front" })}
 
 <h3>Como usar na prática</h3>
-<p>Exemplo com Module Federation e React. Cada pasta pode ser um repositório ou um pacote num monorepo, desde que tenha
+<p>Exemplo com Module Federation e React. Cada pasta pode ser um repositório ou um pacote num monorepo (um repositório para tudo), desde que tenha
 build e deploy próprios.</p>
 ${pastas(`
 loja-web/
@@ -257,6 +257,10 @@ ter cache curto: com cache longo, o usuário continua na versão velha depois do
 ${codigo(
   `
 // casca/src/rotas.tsx: a casca só decide QUEM aparece em cada rota
+import { lazy, Suspense } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { ErrorBoundary } from "react-error-boundary"; // pacote pronto
+
 const Vitrine = lazy(() => import("catalogo/Vitrine")); // baixa o remote na hora
 const Carrinho = lazy(() => import("carrinho/Pagina"));
 
@@ -326,7 +330,7 @@ ${tabela(
 <li><b>Fatiar por peça técnica</b>: um micro-frontend para o cabeçalho, outro para os formulários. Todo recurso novo
 mexe em vários ao mesmo tempo.</li>
 <li><b>Casca gorda</b>: regra de negócio e chamadas de API na casca, que vira um monólito disfarçado.</li>
-<li><b>Estado global compartilhado</b>: uma store única que todos leem e escrevem. Um time renomeia um campo e quebra
+<li><b>Estado global compartilhado</b>: uma <i>store</i> única (o estado central do front, como no Redux) que todos leem e escrevem. Um time renomeia um campo e quebra
 o outro.</li>
 <li><b>Sem plano B</b>: um remote cai e a página fica branca. Toda parte carregada em runtime precisa de
 <i>fallback</i> (o <code>ErrorBoundary</code> do exemplo).</li>
@@ -335,7 +339,7 @@ o outro.</li>
 
 ${pratica(
   "No mundo real",
-  "<p>Imagine uma loja com front em React e quatro times, em que cada deploy junta o trabalho de todos. Ela separa casca e login (time Plataforma), vitrine (Descoberta), carrinho (Compras) e conta (Clientes), com Module Federation e React compartilhado. Cada time passa a publicar no seu ritmo. O custo: a Plataforma passa a cuidar da casca, do design system e do tamanho do bundle.</p>",
+  "<p>Imagine uma loja com front em React e quatro times, em que cada deploy junta o trabalho de todos. Ela separa casca e login (time Plataforma), vitrine (Descoberta), carrinho (Compras) e conta (Clientes), com Module Federation e React compartilhado. Cada time passa a publicar no seu ritmo. O custo: agora a Plataforma cuida da casca, do design system e do tamanho do bundle.</p>",
 )}
 
 ${dica(

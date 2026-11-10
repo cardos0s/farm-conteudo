@@ -122,7 +122,7 @@ function outbox() {
   // jeito certo
   s += txt(15, 214, "com outbox: uma transação grava o dado e o evento; o envio vem depois", { tam: 16, cor: cor.verde, ancora: "start" });
   s += banco(20, 236, 282, 160, "", { preench: claro.violeta });
-  s += txt(161, 270, "banco do Pagamentos", { tam: 15 });
+  s += txt(161, 270, "banco de Pagamentos", { tam: 15 });
   s += ret(32, 284, 258, 86, { tracejado: true, espessura: 1.4 });
   s += bloco(42, 292, 118, 44, "pagamentos", { preench: "#ffffff", hachura: "solid", tam: 15, espessura: 1.6 });
   s += bloco(170, 292, 110, 44, "outbox", { preench: claro.amarelo, hachura: "solid", tam: 15, espessura: 1.6 });
@@ -155,7 +155,7 @@ ${fig(diagrama(), "Em verde, a ida: quatro transações locais, cada uma no banc
 <h3>Como funciona</h3>
 <h4>Por que não uma transação só</h4>
 <p>Dentro de um banco, uma transação <b>ACID</b> (atômica, consistente, isolada e durável) garante o "tudo ou nada". Entre
-serviços com bancos separados, cada <code>COMMIT</code> vale só para o seu banco: se o Pagamento confirma e o Estoque
+serviços com bancos separados, cada <code>COMMIT</code> vale só para o seu banco: se a cobrança confirma e a reserva
 falha logo depois, o dinheiro já saiu. Existe um protocolo para amarrar vários bancos, o <b>2PC</b> (<i>two-phase
 commit</i>, confirmação em duas fases): um coordenador pergunta a todos "vocês conseguem confirmar?" e, se todos dizem
 sim, manda confirmar. Entre microsserviços ele costuma ser evitado, porque:</p>
@@ -187,7 +187,7 @@ o pedido no meio do caminho. Por isso os estados intermediários precisam existi
 <h4>Orquestração x coreografia</h4>
 <p>Há dois jeitos de coordenar os passos. Na <b>orquestração</b>, um componente central conhece a sequência, manda
 <b>comandos</b> para cada serviço ("cobre R$ 100 do pedido 123") e, conforme as respostas, decide o próximo passo ou as
-compensações. Ele pode morar dentro do serviço de Pedidos ou ser um motor de workflow (veja as ferramentas adiante).</p>
+compensações. Ele pode morar dentro do serviço de Pedidos ou ser um motor de <i>workflow</i> (fluxo de trabalho; veja as ferramentas adiante).</p>
 
 ${fig(orquestracao(), "Orquestração: um componente conhece o roteiro inteiro. Para saber em que pé está o pedido 123, basta olhar o estado guardado por ele.")}
 
@@ -290,7 +290,7 @@ const fim = await rodarSaga(ctx.pedidoId, fazerPedido, ctx);
 if (fim === "concluida") await pedidos.confirmar(ctx.pedidoId);`,
   "sagas/fazer-pedido/orquestrador.ts",
 )}
-<p>Repare num detalhe: a compensação entra na lista <b>antes</b> de o passo rodar. Se a cobrança der timeout, o cartão
+<p>Repare num detalhe: o passo entra na lista <code>aDesfazer</code> <b>antes</b> de rodar. Se a cobrança der timeout, o cartão
 pode ter sido cobrado mesmo assim, então o estorno roda também. Se não houve cobrança, ele não faz nada. Por isso toda
 compensação precisa ser idempotente e aceitar "não havia nada para desfazer".</p>
 
@@ -342,7 +342,7 @@ ${tabela(
   [
     ["<b>Temporal</b>", "Código comum (TypeScript, Go, Java, Python e outras); o motor guarda o histórico e retoma depois de quedas", "Times que querem a saga como código, com testes"],
     ["<b>Camunda</b>", "Diagrama BPMN (notação padrão de processos), executado pelo motor; o BPMN tem eventos de compensação", "Processos que analistas também leem, com tarefas humanas (aprovar, revisar)"],
-    ["<b>AWS Step Functions</b>", "Máquina de estados em JSON (Amazon States Language), com editor visual e <code>Retry</code>/<code>Catch</code> em cada estado", "Quem já está na AWS e orquestra funções Lambda (capítulo 15)"],
+    ["<b>AWS Step Functions</b>", "Máquina de estados em JSON (Amazon States Language), com editor visual e <code>Retry</code>/<code>Catch</code> nas tarefas", "Quem já está na AWS e orquestra funções Lambda (capítulo 15)"],
   ],
 )}
 
@@ -381,12 +381,12 @@ cliente pede para cancelar no meio da cobrança). Use o estado intermediário co
 <li><b>Compensação que apaga</b>: <code>delete from pedidos</code> em vez de marcar <code>CANCELADO</code>. Some o
 histórico, e uma mensagem atrasada pode "ressuscitar" o pedido.</li>
 <li><b>Coreografia que virou novelo</b>: muitos serviços reagindo aos eventos uns dos outros, ciclos, e ninguém sabe dizer
-qual é o fluxo. Passou de quatro ou cinco passos, considere orquestração.</li>
+qual é o fluxo. Passou de três ou quatro passos, considere orquestração.</li>
 </ul>
 
 ${pratica(
   "No mundo real",
-  "<p>Imagine um app de delivery de comida. A saga do pedido é: cobrar o cliente, o restaurante aceitar, alocar um entregador. Se nenhum entregador aceita em 10 minutos, a saga compensa: avisa o restaurante e estorna o cliente. Dois detalhes aparecem logo. Primeiro, a compensação depende do momento: se o prato já está pronto, \"desfazer\" vira outra regra de negócio (oferecer retirada no balcão, pagar o restaurante assim mesmo). Segundo, o prazo de 10 minutos é parte da saga: motores como Temporal e Step Functions têm timers duráveis para isso, sem cron improvisado.</p>",
+  "<p>Imagine um app de delivery de comida. A saga do pedido é: cobrar o cliente, esperar o restaurante aceitar, alocar um entregador. Se nenhum entregador aceita em 10 minutos, a saga compensa: avisa o restaurante e estorna a cobrança. Dois detalhes aparecem logo. Primeiro, a compensação depende do momento: se o prato já está pronto, \"desfazer\" vira outra regra de negócio (oferecer retirada no balcão, pagar o restaurante assim mesmo). Segundo, o prazo de 10 minutos é parte da saga: motores como Temporal e Step Functions têm timers duráveis para isso, sem um agendador (cron) improvisado.</p>",
 )}
 
 ${dica(

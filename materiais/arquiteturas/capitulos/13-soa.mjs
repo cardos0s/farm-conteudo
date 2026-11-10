@@ -139,16 +139,16 @@ ${fig(diagrama(), "Ninguém chama um serviço direto: tudo passa pelo ESB. Atrá
 <li><b>Serviços corporativos</b>: cada serviço é uma capacidade do negócio e atende a empresa inteira. O "Serviço de
 Clientes" é o único jeito de consultar um cliente, seja no internet banking, na agência ou no call center. Costumam ser
 serviços grandes (de granularidade grossa), feitos para serem <b>reutilizados</b>.</li>
-<li><b>Contratos formais</b>: o consumidor só conhece o contrato, nunca o sistema por trás. No SOA clássico, o contrato é
+<li><b>Contratos formais</b>: o consumidor só conhece o contrato, nunca o sistema por trás. Na SOA clássica, o contrato é
 um <b>WSDL</b> (operações e mensagens), os dados seguem um <b>XSD</b> (esquema XML) e a mensagem viaja num envelope
-<b>SOAP</b>. Depois, muitas empresas trocaram por REST, JSON e OpenAPI, mantendo a ideia.</li>
+<b>SOAP</b>. Depois, muitas empresas trocaram por REST, JSON e OpenAPI (um formato padrão para descrever APIs REST), mantendo a ideia.</li>
 <li><b>Modelo canônico</b>: um formato comum para os dados que circulam no barramento ("cliente", "endereço",
 "dinheiro"). Cada sistema traduz do seu formato para o canônico, e não para o formato de cada vizinho.</li>
 <li><b>ESB</b> (<i>Enterprise Service Bus</i>): a peça do meio. Faz <b>roteamento</b> (manda cada mensagem ao serviço
 certo, às vezes olhando o conteúdo), <b>transformação</b> (JSON para XML, SOAP para fila, registro posicional do
 mainframe para o canônico) e <b>orquestração</b> (chama vários serviços em ordem para montar um processo, como "abrir
-conta", muitas vezes descrito numa linguagem de processos como o BPEL), além de aplicar segurança, log e auditoria. Fala
-tanto síncrono (pedido e resposta) quanto assíncrono (filas).</li>
+conta", muitas vezes descrito numa linguagem de processos como o BPEL), além de aplicar segurança, log e auditoria. Funciona
+tanto de forma síncrona (pedido e resposta) quanto assíncrona (filas).</li>
 <li><b>Governança central</b>: um time de arquitetura mantém o catálogo de serviços, aprova contratos, define padrões e
 controla versões e SLAs (acordos de nível de serviço: disponibilidade e tempo de resposta prometidos).</li>
 </ul>
@@ -288,6 +288,11 @@ ${passos([
   "Publique no catálogo com dono, versão e SLA. Mudança que quebra vira v2, e a v1 fica no ar por um prazo anunciado. Monitore latência, erros e filas: alarme no barramento é alarme da empresa inteira.",
 ])}
 
+${alerta(
+  "O risco número 1: gargalo e ponto único de falha",
+  "<p>Todo o tráfego passa pelo ESB: se ele fica lento, tudo fica lento; se ele cai, nenhum sistema conversa com nenhum outro. E 99,9% de disponibilidade ainda são cerca de 8,8 horas fora do ar por ano. Rode o barramento em cluster (várias instâncias, uma cobrindo a falha da outra); use filas persistentes para o que pode ser assíncrono; defina timeouts (tempo máximo de espera) e limites por consumidor; e mantenha regra de negócio fora dele.</p>",
+)}
+
 <h3>Vantagens e custos</h3>
 ${tabela(
   ["Você ganha", "Você paga"],
@@ -296,13 +301,8 @@ ${tabela(
     ["Uma capacidade servindo dezenas de consumidores", "Mudança lenta: contrato, comitê, janela de deploy"],
     ["Contratos formais: cada lado sabe o que esperar", "Licenças caras e um time especialista para operar"],
     ["Segurança, log e auditoria num lugar só", "Latência extra a cada passagem pelo barramento"],
-    ["Quem consome não sabe onde o serviço roda", "Acoplamento escondido: mesmo serviço, mesmo banco"],
+    ["Quem consome não sabe onde o serviço roda", "Acoplamento escondido no banco compartilhado"],
   ],
-)}
-
-${alerta(
-  "O risco número 1: gargalo e ponto único de falha",
-  "<p>Todo o tráfego passa pelo ESB: se ele fica lento, tudo fica lento; se ele cai, nenhum sistema conversa com nenhum outro. E 99,9% de disponibilidade ainda são cerca de 8,8 horas fora do ar por ano. Rode o barramento em cluster, com redundância; use filas persistentes para o que pode ser assíncrono; defina timeouts e limites por consumidor; e mantenha regra de negócio fora dele.</p>",
 )}
 
 <h3>Erros comuns</h3>

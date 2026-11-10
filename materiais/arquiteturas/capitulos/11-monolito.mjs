@@ -150,7 +150,7 @@ Continua sendo um monólito: o que o define é a <b>unidade de deploy</b>, não 
 <li><b>Simplicidade</b>: um projeto para clonar, rodar e entender.</li>
 <li><b>Transações locais</b>: pedido e baixa de estoque numa única transação do banco; ou tudo acontece, ou nada. Com os
 dados espalhados em serviços, isso vira uma saga (capítulo 23).</li>
-<li><b>Depuração e deploy simples</b>: um <i>stack trace</i> (a pilha de chamadas do erro) mostra o caminho inteiro; há uma
+<li><b>Depuração e deploy simples</b>: um <i>stack trace</i> (a pilha de chamadas do erro) mostra o caminho inteiro; há uma só
 versão em produção, e voltar atrás é subir a anterior.</li>
 <li><b>Desempenho sem rede</b>: uma chamada de função custa nanossegundos. Uma chamada HTTP a outro serviço, mesmo no
 mesmo data center, custa de frações de milissegundo a alguns milissegundos (rede e serialização), e pode falhar no meio.</li>
@@ -161,7 +161,7 @@ mesmo data center, custa de frações de milissegundo a alguns milissegundos (re
 <ol>
 <li><b>Vertical</b>: mais CPU e memória na mesma máquina. Não muda código, mas tem teto e é um ponto único de falha.</li>
 <li><b>Réplicas atrás de um balanceador</b>: cópias idênticas da app, com um balanceador de carga dividindo as requisições.
-Pede app <b>sem estado</b> (<i>stateless</i>): sessão no Redis ou num token, arquivos num storage como o S3. De brinde,
+Pede app <b>sem estado</b> (<i>stateless</i>): sessão no Redis ou num token, arquivos num serviço de armazenamento como o S3. De brinde,
 deploy sem parar, trocando uma cópia por vez.</li>
 <li><b>Cache</b>: respostas caras (a página de um produto) guardadas em memória, num Redis por exemplo.</li>
 <li><b>Réplicas de leitura</b>: o banco principal recebe as escritas e copia os dados para réplicas que atendem as leituras.
@@ -199,7 +199,7 @@ ${quando(
     "Muitos times que precisam entregar de forma independente e já brigam pela fila de deploy.",
     "Uma parte com necessidade muito diferente (GPU, escala bem maior): extraia só ela.",
     "Uma parte que precisa ficar isolada por segurança ou regulação, como os dados de cartão.",
-    "Uma parte que pede outra linguagem, como machine learning em Python num sistema em Java.",
+    "Uma parte que pede outra linguagem, como aprendizado de máquina (<i>machine learning</i>) em Python num sistema em Java.",
   ],
 )}
 
@@ -301,8 +301,9 @@ ${tabela(
 <b>monólito distribuído</b>: a mesma bagunça, agora com rede no meio.</li>
 <li><b>Guardar estado no servidor</b>: sessão em memória, upload no disco local, tarefa agendada rodando em todas as cópias (e
 mandando o mesmo e-mail três vezes). Quebra quando entra a segunda máquina.</li>
-<li><b>Chamar serviço externo dentro da transação</b>: cobrar no gateway ou mandar e-mail no meio dela segura <i>locks</i>
-(travas) no banco e, se houver rollback, o e-mail já foi. Chame depois do commit; se o aviso não pode se perder, use o
+<li><b>Chamar serviço externo dentro da transação</b>: cobrar no gateway de pagamento ou mandar e-mail no meio dela segura <i>locks</i>
+(travas) no banco e, se houver <i>rollback</i> (a transação é desfeita), o e-mail já foi. Chame depois do <i>commit</i>
+(a confirmação da transação); se o aviso não pode se perder, use o
 padrão <i>outbox</i> (capítulo 23).</li>
 </ul>
 

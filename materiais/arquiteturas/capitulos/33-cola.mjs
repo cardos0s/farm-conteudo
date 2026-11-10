@@ -138,7 +138,7 @@ ${tabela(
   CAB,
   [
     [arq("Cliente-servidor", 18), "O cliente pede, o servidor atende; N camadas (tiers) dividem tela, regra e dados em máquinas.", "Quase todo app web e mobile: dados compartilhados e regras protegidas.", "Cliente falando direto com o banco; somar tiers sem um gargalo medido."],
-    [arq("Peer-to-peer", 19), "Cada nó é cliente e servidor ao mesmo tempo, sem centro.", "Arquivo grande para muitos; chamada 1:1; uso offline.", "Fonte única da verdade; controle e exclusão de dados."],
+    [arq("Peer-to-peer", 19), "Cada nó é cliente e servidor ao mesmo tempo; os dados vão direto entre os pares.", "Arquivo grande para muitos; chamada 1:1; uso offline.", "Fonte única da verdade; controle e exclusão de dados."],
     [arq("Orientada a eventos", 20), "Quem publica anuncia um fato; quem se interessa reage no seu tempo.", "Várias reações a uma ação; picos; parceiros instáveis.", "Usuário precisa da resposta na hora; transação forte; sistema pequeno."],
     [arq("CQRS", 21), "Um modelo para escrever (comandos) e outro para ler (consultas).", "Leitura muito diferente da escrita, ou em volume muito maior.", "CRUD; índice, view ou réplica de leitura já resolvem a lentidão."],
     [arq("Event Sourcing", 22), "Guarda cada fato, em ordem; o estado sai deles.", "Dinheiro, auditoria e a pergunta \"como estava em tal data?\".", "CRUD; um log de auditoria já basta; usar no sistema todo."],

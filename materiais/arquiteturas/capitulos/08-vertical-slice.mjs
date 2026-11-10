@@ -172,8 +172,8 @@ ${resumo(
 <p>A <b>Vertical Slice Architecture</b> (arquitetura de fatias verticais) foi popularizada por Jimmy Bogard, criador da
 biblioteca MediatR do mundo .NET, por volta de 2018. Ele a apresentou como alternativa às camadas (capítulo 4) e aos anéis
 da Clean e da Onion (capítulo 7). O incômodo de partida é conhecido: para mudar uma tela, você abre o controller, o
-service, o repository, o DTO e o mapper. A mudança é de <b>uma</b> funcionalidade, mas o código dela está espalhado em
-cinco pastas, misturado com o de todas as outras.</p>
+service, o repository, o DTO e o mapper. A mudança é de <b>uma</b> funcionalidade, mas o código dela está espalhado por
+várias pastas, misturado com o de todas as outras.</p>
 
 ${fig(camadasXFatias(), "À esquerda, cada pasta guarda um tipo de código de todas as features. À direita, cada pasta guarda uma feature inteira. A mesma mudança toca três pastas ou uma.", "grande")}
 
@@ -295,9 +295,9 @@ export const rota = Router().get("/clientes/:clienteId/pedidos", async (req, res
   "features/pedidos/listar-pedidos/listar-pedidos.ts",
 )}
 
-<p>Repare: cada fatia tem o próprio tipo <code>Entrada</code>, e ninguém tentou criar um DTO comum. A de escrita confere
+<p>Repare: cada fatia define a própria <code>Entrada</code>, e ninguém tentou criar um DTO comum. A de escrita confere
 os produtos e calcula o total; a de leitura nem passa por entidade. No <code>main.ts</code>, juntar tudo é só registrar a
-<code>rota</code> de cada fatia. E o teste chama <code>criarPedido()</code> contra um banco de teste: um teste de
+<code>rota</code> de cada fatia. E o teste chama a rota da fatia com um banco de teste por trás: um só teste de
 integração cobre a fatia inteira, da validação ao SQL.</p>
 
 <h4>Passo a passo para adotar</h4>
@@ -338,25 +338,24 @@ Regra que vale para o negócio inteiro mora no domínio, perto dos dados.</li>
 <li><b>Pasta compartilhada que vira lixão</b>: tudo que se repete duas vezes vai para <code>compartilhado/</code>, e você
 volta a ter uma camada de serviços gigante, agora sem nome. Extraia só o que já se provou comum.</li>
 <li><b>Fatia chamando fatia</b>: o handler de "fechar pedido" chama o de "reservar estoque", direto ou por um
-<code>mediator.send()</code>. É acoplamento escondido:
-mudar um quebra o outro. Extraia a regra comum ou publique um evento (capítulo 20).</li>
+<code>mediator.send()</code>. É acoplamento escondido: mudar um quebra o outro. Extraia a regra comum ou publique um evento (capítulo 20).</li>
 <li><b>Fatia gorda</b>: um <code>PedidosHandler</code> com doze métodos é um service de camadas com outro nome. Uma fatia,
 um caso de uso.</li>
 </ul>
 
 ${pratica(
   "No mundo real",
-  "<p>Imagine o backend de um app de delivery com uns 80 endpoints, organizado em camadas. Toda funcionalidade nova mexia em controller, service, repository, DTO e mapper, e o <code>PedidoService</code> era usado por quase todas as telas. Dois times viviam resolvendo conflito de merge nesse arquivo.</p><p>O time passou a criar as features novas como fatias e a mover as antigas aos poucos, sempre que alguém precisava mexer nelas. Os PRs encolheram, e a listagem de pedidos ganhou um SQL próprio, mais rápido do que carregar entidades inteiras para usar três campos.</p><p>O tropeço veio meses depois: a taxa de entrega tinha sido copiada nas fatias de carrinho, checkout e recompra. A regra mudou, uma cópia ficou para trás, e o app mostrou um preço no carrinho e cobrou outro no checkout. A correção foi a da figura de erros comuns: <code>calcularTaxaDeEntrega()</code> foi para o domínio e as três fatias passaram a usá-la.</p>",
+  "<p>Imagine o backend de um app de delivery com uns 80 endpoints, organizado em camadas. Toda funcionalidade nova mexia em controller, service, repository, DTO e mapper, e o <code>PedidoService</code> era usado por quase todas as telas. Dois times viviam resolvendo conflito de merge nesse arquivo.</p><p>O time passou a criar as features novas como fatias e a mover as antigas aos poucos, sempre que alguém precisava mexer nelas. Os PRs encolheram, e a listagem de pedidos ganhou um SQL próprio, mais rápido do que carregar entidades inteiras para usar três campos.</p><p>O tropeço veio meses depois: a taxa de entrega tinha sido copiada nas fatias de carrinho, checkout e recompra. A regra mudou, só a cópia do checkout foi atualizada, e o app mostrou um preço no carrinho e cobrou outro no checkout. A correção foi a da figura de erros comuns: <code>calcularTaxaDeEntrega()</code> foi para o domínio e as três fatias passaram a usá-la.</p>",
 )}
 
 ${dica(
   "Fatias, Clean ou hexagonal?",
-  "<p>Não precisa escolher um lado. As fatias se combinam bem com os anéis da Clean e da Onion (capítulo 7): fatias por fora e um domínio rico no centro, que várias fatias usam. Numa fatia que fala com um serviço externo instável (pagamento, por exemplo), nada impede de usar uma porta e um adaptador, como na hexagonal (capítulo 6). A diferença é que a interface aparece onde ajuda, e não em toda fatia por obrigação.</p>",
+  "<p>Não precisa escolher um lado. As fatias se combinam bem com os anéis da Clean e da Onion (capítulo 7): fatias por fora e um domínio rico no centro, que várias fatias usam. Numa fatia que fala com um serviço externo instável (pagamento, por exemplo), nada impede usar uma porta e um adaptador, como na hexagonal (capítulo 6). A diferença é que a interface aparece onde ajuda, e não em toda fatia por obrigação.</p>",
 )}
 
 ${alerta(
   "O que fatia não é",
-  "<p>Uma pasta <code>pedidos/</code> com <code>pedidos.controller.ts</code>, <code>pedidos.service.ts</code> e <code>pedidos.repository.ts</code> (o padrão de muitos projetos NestJS, por exemplo) agrupa por <b>entidade</b>, mas continua em camadas por dentro: o service atende todos os casos de uso de pedido. Na fatia, a divisão é por <b>caso de uso</b>. Fatia também não é microsserviço: todas rodam no mesmo processo e, em geral, usam o mesmo banco. E não confunda com a <i>fatia vertical</i> do planejamento ágil (quebrar o trabalho em entregas que vão da tela ao banco): a ideia é parecida, mas lá se fala de planejar entregas; aqui, de organizar o código.</p>",
+  "<p>Uma pasta <code>pedidos/</code> com <code>pedidos.controller.ts</code>, <code>pedidos.service.ts</code> e <code>pedidos.repository.ts</code> (o padrão de muitos projetos NestJS, por exemplo) agrupa por <b>entidade</b>, mas continua em camadas por dentro: o service atende todos os casos de uso de pedido. Na fatia, a divisão é por <b>caso de uso</b>. Fatia também não é microsserviço: as fatias rodam todas no mesmo processo e, em geral, usam o mesmo banco. E não confunda com a <i>fatia vertical</i> do planejamento ágil (quebrar o trabalho em entregas que vão da tela ao banco): a ideia é parecida, mas lá se fala de planejar entregas; aqui, de organizar o código.</p>",
 )}
 
 ${combina([

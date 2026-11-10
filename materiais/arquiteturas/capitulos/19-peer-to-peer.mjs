@@ -132,7 +132,7 @@ function webrtc() {
   s += bloco(205, 188, 62, 40, "NAT", { preench: claro.cinza, hachura: "solid", tam: 15 });
   s += bloco(493, 188, 62, 40, "NAT", { preench: claro.cinza, hachura: "solid", tam: 15 });
   s += passo(298, 184, "3", cor.verde);
-  s += txt(318, 184, "mídia direto (P2P)", { tam: 15, ancora: "start", cor: cor.verde });
+  s += txt(318, 184, "mídia direta (P2P)", { tam: 15, ancora: "start", cor: cor.verde });
 
   // 4. plano B: relé TURN
   s += bloco(290, 292, 180, 58, "TURN (relé)", { preench: claro.laranja, tracejado: true, tam: 17 });
@@ -151,7 +151,7 @@ ${resumo(
 
 <p>Quase tudo neste livro tem um servidor no meio (capítulo 18). <b>Peer-to-peer</b> (P2P, "de par para par") vira isso do
 avesso: os aparelhos dos usuários conversam entre si. A ideia ficou famosa com programas de troca de arquivos e hoje está
-no BitTorrent, nas chamadas de vídeo pelo navegador (WebRTC), nas blockchains e nos apps <i>local-first</i>. Um aviso
+no BitTorrent, nas chamadas de vídeo pelo navegador (WebRTC), nas blockchains e nos apps <i>local-first</i> (que guardam os dados no aparelho). Um aviso
 logo de cara: na prática, quase todo P2P é <b>híbrido</b>, com algum servidor pequeno ajudando os pares a se encontrarem.</p>
 
 ${fig(centralizadoXP2P(), "Os mesmos aparelhos, ligados de dois jeitos. No P2P não existe \"o servidor\": existe a rede, e a capacidade cresce com o número de nós.", "grande")}
@@ -171,7 +171,7 @@ dado em mais de um nó e refaz as rotas sozinha.</li>
 <p>Dois problemas exigem mais explicação: achar quem tem o dado e atravessar o roteador de casa.</p>
 
 <h4>Achando quem tem o dado: a DHT</h4>
-<p>Algumas das primeiras redes de troca de arquivos espalhavam cada busca de vizinho em vizinho (inundação), o que gera
+<p>Algumas das primeiras redes de troca de arquivos espalhavam cada busca de vizinho em vizinho (inundação), o que gerava
 muito tráfego. Esse boca a boca (<i>gossip</i>, "fofoca") ainda serve para espalhar novidades, como transações novas numa
 blockchain. Para achar um dado específico sem perguntar a todo mundo, muitas redes usam uma <b>tabela hash
 distribuída</b> (DHT, <i>distributed hash table</i>): um dicionário (chave → valor) dividido entre milhares de máquinas.
@@ -196,8 +196,8 @@ relé. Quase sempre funciona (ainda mais com TURN sobre TLS na porta 443), mas a
 <li><b>ICE</b> (<i>Interactive Connectivity Establishment</i>): junta tudo. Coleta os caminhos possíveis (os
 <b>candidatos</b>: endereço local, endereço visto pelo STUN, relé do TURN), testa e fica com o melhor que funcionar.</li>
 <li><b>Sinalização</b>: para começar, os dois lados trocam a descrição da sessão (SDP: formatos de áudio e vídeo, dados
-para a criptografia) e os candidatos. O WebRTC não define como: você escolhe o canal (WebSocket, HTTP...). É esse servidor que deixa o modelo
-híbrido.</li>
+para a criptografia) e os candidatos. O WebRTC não define como: você escolhe o canal (WebSocket, HTTP...). O servidor de sinalização,
+junto com STUN e TURN, é o que deixa o modelo híbrido.</li>
 </ul>
 
 ${fig(webrtc(), "Uma chamada de vídeo com WebRTC. Os servidores só ajudam Ana e Beto a se encontrarem; quando o caminho direto funciona, o vídeo não passa por eles.", "grande")}
@@ -209,7 +209,7 @@ ${tabela(
     ["P2P puro", "Nada fixo, além de alguns nós de entrada para o primeiro contato", "Redes de blockchain, DHT do BitTorrent"],
     ["Híbrido com índice", "Diz quem tem o quê; o dado vai direto entre os pares", "BitTorrent com tracker"],
     ["Híbrido com sinalização", "Apresenta os pares e serve de relé quando o direto falha", "Chamadas com WebRTC"],
-    ["Local-first", "Sincroniza ou guarda cópia quando há internet; o dado mora no aparelho", "Apps com CRDT (Automerge, Yjs)"],
+    ["Local-first", "Sincroniza ou guarda cópia quando há internet; o dado mora no aparelho", "Apps feitos com Automerge ou Yjs"],
   ],
 )}
 
@@ -317,11 +317,11 @@ sinal.onmessage = async (e) => {
 
 <h4>Passo a passo para adotar</h4>
 ${passos([
-  "Defina como os pares se encontram: servidor de sinalização (WebRTC), tracker ou DHT com alguns nós de entrada. Fora do navegador, não escreva DHT do zero: bibliotecas como a libp2p já trazem descoberta, DHT e travessia de NAT.",
+  "Defina como os pares se encontram: sinalização (WebRTC), tracker ou DHT. Fora do navegador, use uma biblioteca como a libp2p, que já traz descoberta, DHT e travessia de NAT.",
   "Suba STUN e TURN desde o primeiro dia (o coturn, de código aberto, faz os dois) e teste em 4G e em rede de empresa, não só no wifi de casa.",
   "Trate todo par como não confiável: autentique na sinalização, use credenciais de TURN temporárias e confira dados pelo hash.",
   "Projete para nós que somem e para conflitos: reconexão (no WebRTC, reinício de ICE), cópias em mais de um nó e uma regra clara de quem vence.",
-  "Meça do lado do cliente, porque os pares não estão nos seus servidores: taxa de conexão direta x relé, tempo para conectar, quedas.",
+  "Meça do lado do cliente, onde a conexão acontece: direto x relé, tempo para conectar, quedas.",
 ])}
 
 <h3>Vantagens e custos</h3>
@@ -340,7 +340,7 @@ ${tabela(
 <ul>
 <li><b>Achar que P2P dispensa servidor</b>: sinalização, nós de entrada e relé são pequenos, mas pedem deploy,
 monitoramento e plantão como qualquer servidor.</li>
-<li><b>Esquecer o TURN</b>: funciona na demo, no wifi do escritório, e não conecta para parte dos usuários em rede
+<li><b>Esquecer o TURN</b>: funciona na demo, no wifi de casa, e não conecta para parte dos usuários em rede
 móvel ou corporativa.</li>
 <li><b>Malha completa em grupo</b>: com 8 pessoas, cada uma envia o próprio vídeo 7 vezes e o upload acaba. Use um SFU
 (<i>Selective Forwarding Unit</i>): um servidor que recebe um vídeo de cada um e repassa.</li>

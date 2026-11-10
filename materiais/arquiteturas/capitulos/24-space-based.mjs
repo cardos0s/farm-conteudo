@@ -93,8 +93,11 @@ function colisao() {
   s += txt(52, 298, "tempo", { tam: 15, cor: cor.cinza });
   s += bloco(110, 20, 200, 50, "unidade 1", { preench: claro.verde, tam: 16 });
   s += bloco(450, 20, 200, 50, "unidade 2", { preench: claro.verde, tam: 16 });
-  s += linha([[210, 72], [210, 282]], { tracejado: true, cor: cor.cinza, espessura: 1.4 });
-  s += linha([[550, 72], [550, 282]], { tracejado: true, cor: cor.cinza, espessura: 1.4 });
+  // linhas do tempo em trechos, sem cruzar o texto dos blocos
+  for (const x of [210, 550]) {
+    s += linha([[x, 72], [x, 128]], { tracejado: true, cor: cor.cinza, espessura: 1.4 });
+    s += linha([[x, 164], [x, 240]], { tracejado: true, cor: cor.cinza, espessura: 1.4 });
+  }
   s += etiqueta(210, 100, "assento A12: livre", { tam: 15, preench: "#ffffff" });
   s += etiqueta(550, 100, "assento A12: livre", { tam: 15, preench: "#ffffff" });
   s += bloco(120, 128, 180, 36, "reserva p/ Ana", { preench: claro.azul, tam: 15 });
@@ -117,7 +120,7 @@ ${resumo(
 
 <p>O nome vem da ideia de <b>espaço de tuplas</b> (<i>tuple space</i>): uma memória compartilhada onde processos deixam e
 pegam dados sem conversar diretamente. Mark Richards descreveu esse estilo nos livros <i>Software Architecture Patterns</i> e
-<i>Fundamentals of Software Architecture</i> (este com Neal Ford). O problema que ele ataca é bem concreto: numa aplicação web comum, dá para
+<i>Fundamentals of Software Architecture</i> (este com Neal Ford). O problema que esse estilo ataca é bem concreto: numa aplicação web comum, dá para
 multiplicar os servidores de aplicação, mas todos continuam batendo no mesmo banco. Quando o pico chega, é o banco que cai
 primeiro. A saída do space-based é tirar o banco do caminho da requisição.</p>
 
@@ -138,11 +141,11 @@ RAM, sem ida ao banco. Você roda várias cópias iguais; uma cópia nova que so
   o assento e depois cobrar.</li>
   <li><b>gerente de implantação</b>: liga e desliga unidades conforme a carga. É ele que dá a elasticidade.</li>
   </ul></li>
-<li><b>Bombas de dados</b> (<i>data pumps</i>): cada mudança na memória vira uma mensagem numa fila persistente, de forma
-<b>assíncrona</b>. O usuário já recebeu a resposta quando a mensagem sai.</li>
+<li><b>Bombas de dados</b> (<i>data pumps</i>): cada mudança na memória vira uma mensagem numa fila persistente. A gravação
+no banco é <b>assíncrona</b>: o usuário recebe a resposta sem esperar por ela.</li>
 <li><b>Escritores de dados</b> (<i>data writers</i>): processos separados que consomem a fila e gravam no banco.</li>
-<li><b>Leitores de dados</b> (<i>data readers</i>): fazem o caminho contrário, só quando preciso. Se todas as unidades caírem
-ou uma versão nova subir do zero, eles carregam o banco de volta para a memória. Também buscam dado antigo que não está na grade.</li>
+<li><b>Leitores de dados</b> (<i>data readers</i>): fazem o caminho contrário, só quando é preciso. Se todas as unidades caírem
+ou uma versão nova subir do zero (a <b>partida a frio</b>), eles carregam o banco de volta para a memória. Também buscam dado antigo que não está na grade.</li>
 </ul>
 
 ${fig(comparacao(), "À esquerda, mais servidores só aumentam a fila no mesmo banco. À direita, cada pedido é resolvido na memória e o banco recebe as mudanças pela fila, no ritmo dele.")}
@@ -168,7 +171,7 @@ ${quando(
     "O negócio aceita que o banco fique alguns instantes atrás da memória.",
   ],
   [
-    "A carga é previsível e banco bem indexado, cache e réplicas de leitura dão conta (a maioria dos sistemas).",
+    "A carga é previsível e um banco bem indexado, com cache e réplicas de leitura, dá conta (a maioria dos sistemas).",
     "O volume de dados é grande demais para a memória, ou há muita escrita sobre os mesmos itens o tempo todo.",
     "Toda gravação precisa estar confirmada no banco antes de responder (lançamentos contábeis, por exemplo).",
     "O time é pequeno, sem experiência em sistemas distribuídos, ou o orçamento é curto: memória e muitos nós custam caro.",
@@ -179,7 +182,7 @@ ${medidor({ complexidade: 5, escala: 5, operacao: 4, aprendizado: 4, time: "time
 
 <h3>Como usar na prática</h3>
 <p>Ninguém escreve a grade de dados do zero. As ferramentas mais conhecidas são o <b>Hazelcast</b> (feito em Java, com edição
-open source e clientes para Node.js, Python, Go e outras), o <b>Apache Ignite</b> (da Apache, com consultas SQL e
+open source e clientes para Node.js, Python, Go e outras), o <b>Apache Ignite</b> (open source, com consultas SQL e
 processamento junto dos dados) e o <b>GigaSpaces</b> (comercial). A grade pode rodar <b>embutida</b> no processo da unidade
 ou como um cluster ao lado. Uma fila (Kafka, RabbitMQ) faz a bomba de dados e o autoscaling do Kubernetes ou da nuvem faz
 o gerente de implantação. Muitas grades já trazem a bomba pronta, o <b>write-behind</b> (gravação adiada): a própria grade
@@ -218,7 +221,7 @@ export class ReservarAssento {
     const novo: Assento = { ...atual, livre: false, clienteId, versao: atual.versao + 1 };
     // só grava se ninguém mexeu no assento desde a leitura
     if (!(await this.assentos.replaceIfSame(assentoId, atual, novo))) return "ocupado";
-    // o banco fica para depois: a mudança vai para a fila e o cliente já tem a resposta
+    // o banco fica para depois: a mudança vai para a fila e o cliente não espera o banco
     await this.bomba.enviar({ assentoId, clienteId, versao: novo.versao });
     return "ok";
   }
@@ -237,8 +240,12 @@ const SQL = "update assentos set livre = false, cliente_id = $2, versao = $3 " +
             "where id = $1 and versao < $3";
 fila.consumir("mudancas-assentos", async (m: Mudanca) => {
   await db.query(SQL, [m.assentoId, m.clienteId, m.versao]);
-});
+});`,
+  "escritor-de-dados/escritor.ts",
+)}
 
+${codigo(
+  `
 // leitor-de-dados/leitor.ts: na partida a frio, enche a grade a partir do banco
 export async function aquecerGrade(eventoId: string, mapa: MapaDistribuido<string, Assento>) {
   const sql = "select id, livre, cliente_id, versao from assentos where evento_id = $1";
@@ -246,7 +253,7 @@ export async function aquecerGrade(eventoId: string, mapa: MapaDistribuido<strin
   for (const { id, livre, cliente_id, versao } of rows)
     await mapa.put(id, { id, livre, clienteId: cliente_id, versao });
 }`,
-  "escritor-de-dados e leitor-de-dados",
+  "leitor-de-dados/leitor.ts",
 )}
 
 <h4>Passo a passo para adotar</h4>
@@ -267,7 +274,7 @@ ${tabela(
     ["Elasticidade: liga unidades no pico e desliga depois", "Custo alto de memória e de muitos nós rodando"],
     ["O banco deixa de ser o gargalo e de derrubar o sistema", "Banco um pouco atrás da memória (consistência eventual)"],
     ["Aguenta picos que ninguém conseguiu prever", "Colisões quando duas unidades mudam o mesmo item"],
-    ["Se uma unidade cai, as outras têm cópia dos dados", "Difícil de testar: só teste de carga realista mostra"],
+    ["Se uma unidade cai, as outras têm cópia dos dados", "Difícil de testar: os problemas só aparecem sob carga"],
   ],
 )}
 
@@ -285,7 +292,7 @@ carregar tudo de uma vez.</li>
 
 ${pratica(
   "No mundo real",
-  "<p>Imagine uma plataforma de ingressos. Em dias normais, duas unidades dão conta. Quando abre a venda de um show grande, uma multidão chega no mesmo minuto atrás dos mesmos assentos. Uma fila de espera virtual controla quantos entram por vez e o gerente de implantação liga dezenas de unidades. Os assentos ficam num mapa particionado: cada um tem um dono e não é vendido duas vezes. Reserva não paga em alguns minutos expira e libera o assento (as grades têm tempo de vida por item). Cada mudança chega ao Postgres pela bomba de dados e, passado o pico, as unidades extras são desligadas. Cadastro, pagamento e emissão do ingresso seguem como serviços comuns: só o mapa de assentos é space-based.</p>",
+  "<p>Imagine uma plataforma de ingressos. Em dias normais, duas unidades dão conta. Quando abre a venda de um show grande, uma multidão chega no mesmo minuto atrás dos mesmos assentos. Uma fila de espera virtual controla quantos entram por vez e o gerente de implantação liga dezenas de unidades. Os assentos ficam num mapa particionado: cada assento tem um nó dono e não é vendido duas vezes. Reserva não paga em alguns minutos expira e libera o assento (as grades têm tempo de vida por item). Cada mudança chega ao Postgres pela bomba de dados e, passado o pico, as unidades extras são desligadas. Cadastro, pagamento e emissão do ingresso seguem como serviços comuns: só o mapa de assentos é space-based.</p>",
 )}
 
 ${dica(
@@ -295,7 +302,7 @@ ${dica(
 
 ${alerta(
   "Memória não é disco",
-  "<p>Se todas as cópias de um dado caírem antes de a bomba entregar a mudança, ela se perde. Mantenha ao menos um backup de cada item em outra máquina, envie para a fila logo após gravar e combine com o negócio o que é aceitável perder. Para dinheiro, a resposta costuma ser \"nada\": nesse caso, confirme no banco antes de responder e use a grade só para ler.</p>",
+  "<p>Se todas as cópias de um dado caírem antes de a mudança chegar à fila persistente, ela se perde. Mantenha ao menos um backup de cada item em outra máquina, envie para a fila logo após gravar e combine com o negócio o que é aceitável perder. Para dinheiro, a resposta costuma ser \"nada\": nesse caso, confirme no banco antes de responder e use a grade só para ler.</p>",
 )}
 
 ${combina([

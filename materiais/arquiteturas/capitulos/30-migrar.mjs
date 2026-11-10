@@ -110,7 +110,7 @@ ${resumo(
   "Um restaurante que troca a cozinha sem fechar as portas. Instala o fogão novo ao lado do velho, passa um prato de cada vez para ele e só desmonta o velho quando nenhum prato depende mais dele. Os clientes continuam jantando durante a obra toda.",
 )}
 
-<p>Todo sistema que dá certo envelhece: o framework fica sem suporte, o banco não aguenta, o monólito virou bola de lama
+<p>Todo sistema que dá certo envelhece: o framework fica sem suporte, o banco não aguenta, o monólito vira bola de lama
 (capítulo 31). A tentação é parar e reescrever do zero, e quase sempre é a pior opção: enquanto a versão nova não fica
 pronta, a antiga continua mudando, e a nova corre atrás de um alvo que se move. Este capítulo mostra o caminho oposto, a
 <b>migração incremental</b>: passos pequenos, cada um medido e reversível. Ela também custa (dois sistemas no ar por
@@ -175,20 +175,20 @@ app.listen(80);`,
 )}
 
 <p>Três detalhes importam. O padrão é sempre o legado: uma rota esquecida não quebra. O canário é por usuário, não por
-requisição: a mesma pessoa não pula de um sistema para o outro a cada clique (e quem chega sem id fica no legado, em vez
-de cair todo no mesmo número). E reverter é trocar <code>100</code> por <code>0</code>, mas só enquanto o novo não
+requisição: a mesma pessoa não pula de um sistema para o outro a cada clique (e quem chega sem id fica no legado; senão,
+todos eles cairiam no mesmo número). E reverter é trocar <code>100</code> por <code>0</code>, mas só enquanto o novo não
 guarda dados próprios: depois que ele passa a gravar, voltar exige levar essas gravações para o legado (veja a seção do
 banco, adiante). Em produção, o mapa costuma vir de um serviço de configuração ou de feature flags, para mudar sem deploy.</p>
 
 <h3>Branch by abstraction: trocar por dentro</h3>
 <p>O proxy só enxerga o que passa pela rede. Quando a peça a trocar está dentro do código (um cálculo de frete, o ORM, a
 biblioteca de PDF), use <b>branch by abstraction</b> (ramificar por abstração). O nome engana: a ideia é justamente não
-abrir um branch de meses no Git, que nunca consegue fazer merge. Todo mundo segue no branch principal, e a "ramificação"
+abrir um branch de meses no Git, que no fim vira um merge doloroso. Todo mundo segue no branch principal, e a "ramificação"
 acontece no código, atrás de uma interface.</p>
 <ol>
-<li>Crie uma interface na frente do código antigo e faça todo mundo chamar a interface. Nada muda de comportamento.</li>
+<li>Crie uma interface na frente do código antigo e faça todo mundo usá-la. Nada muda ainda.</li>
 <li>Escreva a implementação nova atrás da mesma interface, aos poucos, indo para produção desligada.</li>
-<li>Troque por uma feature flag (por cliente ou por porcentagem) e compare os resultados.</li>
+<li>Ligue a nova com uma feature flag (por cliente ou porcentagem) e compare os resultados.</li>
 <li>Com a nova em 100% e estável, apague a antiga e a flag.</li>
 </ol>
 
@@ -223,8 +223,8 @@ export class FreteComparado implements CalculadoraDeFrete {
 Na <b>execução em paralelo</b> (<i>parallel run</i>), o antigo e o novo recebem a mesma entrada de produção, o cliente recebe
 só a resposta do antigo e um comparador registra cada diferença. Assim aparecem os casos que ninguém lembraria de testar (o
 CEP de zona rural, o cupom antigo que ainda vale) sem nenhum cliente ver o erro. A classe <code>FreteComparado</code> faz
-isso dentro do código; o mesmo vale no proxy, para serviços inteiros. Existem bibliotecas prontas para isso, como a
-Scientist, que o GitHub abriu como código aberto: ela roda o código antigo e o novo, devolve sempre o resultado do antigo e
+isso dentro do código; o mesmo vale no proxy, para serviços inteiros. Existem bibliotecas prontas, como a
+Scientist, que o GitHub publicou como código aberto: ela roda o código antigo e o novo, devolve sempre o resultado do antigo e
 publica as diferenças.</p>
 
 <ul>
@@ -269,7 +269,7 @@ ${tabela(
 ${passos([
   "<b>Escolha pelo motivo.</b> Bons candidatos: um módulo que muda muito, que precisa escalar sozinho ou que outro time vai assumir. Entre eles, o que tem menos dependências.",
   "<b>Modularize dentro do monólito primeiro</b> (capítulo 12): o resto do código fala com clientes só por uma interface pública, e ninguém mais faz <code>join</code> nas tabelas dele. Se isso é difícil dentro de um processo, pela rede será pior.",
-  "<b>Escreva testes de contrato</b> para essa interface e suba o serviço novo implementando a mesma interface (no começo, lendo uma réplica do banco do monólito).",
+  "<b>Escreva testes de contrato</b> para essa interface e suba o serviço novo cumprindo o mesmo contrato (no começo, lendo uma réplica do banco do monólito).",
   "<b>Troque a implementação interna por um cliente HTTP</b> (branch by abstraction), atrás de uma flag. O que era chamada de função agora pode demorar ou falhar: defina timeout e o que fazer quando o serviço cair. Rode em paralelo e depois como canário.",
   "<b>Mova os dados</b> para o banco do serviço (próxima seção). Costuma ser a etapa mais longa.",
   "<b>Apague o módulo do monólito</b> e a flag, e registre a decisão num ADR (capítulo 32).",
@@ -284,7 +284,7 @@ um, sistema que escreve nela.</p>
 ${fig(donoUnico(), "Antes, dois sistemas gravam na mesma tabela. Durante, só o serviço de clientes grava; o legado usa a API e lê uma cópia.")}
 
 <ul>
-<li><b>Mapeie</b> quem lê e quem escreve cada tabela (logs do banco e busca no código). As surpresas aparecem aqui: o
+<li><b>Mapeie</b> quem lê e quem escreve em cada tabela (logs do banco e busca no código). As surpresas aparecem aqui: o
 relatório noturno, o script do financeiro, a integração esquecida.</li>
 <li><b>Escritas</b> passam a ir pela API do dono. Se o legado grava cliente em dez lugares, cada um vira uma chamada.</li>
 <li><b>Leituras</b> do legado vão para uma <b>cópia</b>. Ela começa com uma carga do histórico (<i>backfill</i>) e depois é
@@ -292,7 +292,7 @@ mantida em dia por eventos ou por <b>CDC</b> (<i>change data capture</i>, captur
 Debezium lê o log de alterações do banco e publica cada mudança).
 Uma <b>visão</b> (<i>view</i>) com o nome e as colunas da tabela antiga faz o código legado ler a cópia sem perceber.</li>
 <li><b>Joins</b> entre donos diferentes viram composição na API ou um modelo só de leitura (capítulo 21).</li>
-<li><b>Mudanças de esquema</b> no caminho (renomear coluna, trocar formato) seguem a técnica <b>expandir e contrair</b>:
+<li><b>Mudanças de esquema</b> no caminho (renomear coluna, trocar formato) seguem a técnica <b>expandir e contrair</b> (<i>expand and contract</i>):
 cria o novo ao lado do antigo, migra dados e leituras e só então apaga o antigo. Cada passo continua compatível com a
 versão do código que ainda está no ar.</li>
 <li><b>Corte</b>: quando ninguém mais lê a cópia, apague a sincronização e a tabela velha.</li>
@@ -363,7 +363,7 @@ ${combina([
 
 ${lembre([
   "Não reescreva tudo de uma vez: troque por fatias pequenas, cada uma medida e reversível em minutos.",
-  "Strangler fig para o que passa pela rede, branch by abstraction para o que está no código, execução em paralelo para provar que o novo calcula igual.",
+  "Strangler Fig para o que passa pela rede, branch by abstraction para o que está no código, execução em paralelo para provar que o novo calcula igual.",
   "Os dados decidem: cada tabela com um dono único. E a migração só termina quando o código antigo é apagado.",
 ])}
 `;

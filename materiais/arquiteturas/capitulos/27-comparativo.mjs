@@ -74,14 +74,14 @@ const parte2 = [
   L("Hexagonal", 6, 3, 4, 1, 3, 5, "qualquer", "não muda", "não muda", "regra rica, várias entradas"),
   L("Clean e Onion", 7, 4, 4, 1, 4, 5, "3 ou mais devs", "não muda", "não muda", "regra rica e vida longa"),
   L("Vertical Slice", 8, 2, 4, 1, 2, 4, "qualquer", "não muda", "não muda", "muitas features independentes"),
-  L("Microkernel", 9, 3, 2, 2, 3, 4, "núcleo + terceiros", "plugins: sim", "não muda", "produto com plugins"),
+  L("Microkernel", 9, 3, 2, 2, 3, 4, "núcleo + terceiros", "em geral, não", "não muda", "produto com plugins"),
   L("Pipes and Filters", 10, 2, 4, 2, 2, 5, "qualquer", "com filas, sim", "não muda", "ETL, mídia, compiladores"),
 ];
 
 const parte3 = [
   L("Monólito", 11, 1, 3, 1, 1, 4, "1 dev a poucos times", "não", "forte", "começo, produto mudando rápido"),
   L("Monólito modular", 12, 2, 4, 1, 3, 4, "1 a vários times", "não", "forte", "vários times, um deploy só"),
-  L("SOA", 13, 4, 3, 4, 4, 2, "empresa grande", "parcial", "mista", "integrar legados e parceiros"),
+  L("SOA", 13, 4, 3, 4, 4, 2, "empresa grande", "coordenado", "mista", "integrar legados e parceiros"),
   L("Microsserviços", 14, 5, 5, 5, 4, 3, "vários times", "sim", "eventual", "muitos times autônomos"),
   L("Serverless", 15, 2, 4, 2, 3, 3, "pequeno, sem infra", "sim, por função", "a do banco usado", "carga em picos, tarefas por evento"),
   L("Micro-frontends", 16, 4, 4, 3, 3, 3, "3 ou mais times no front", "sim, por pedaço da tela", "não se aplica", "front grande, vários times"),
@@ -139,7 +139,8 @@ ${tabela(CAB, parte4, "compacta")}
 <p>As notas valem para um time típico, que ainda não rodou aquela arquitetura em produção: com experiência prévia, Op
 cai um pouco e Ap cai bastante. As linhas do capítulo 26 aparecem separadas porque Lambda, Kappa, Lakehouse e Data Mesh resolvem problemas
 diferentes; nelas, escala quer dizer volume de dados. O medidor daquele capítulo (4, 5, 4 e 4) vale para o caso típico, um
-lakehouse com um pouco de streaming; aqui cada peça aparece sozinha.</p>
+lakehouse com um pouco de streaming; aqui cada peça aparece sozinha. O warehouse gerenciado, que o capítulo 26 indica como
+primeira parada, fica abaixo de todas elas em custo.</p>
 
 ${alerta(
   "Número alto nem sempre é bom",

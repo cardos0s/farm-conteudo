@@ -121,7 +121,7 @@ ${resumo(
 
 <p>A ideia é antiga: telas reagem a cliques e sistemas corporativos trocam mensagens por filas há muito tempo. A
 <b>arquitetura orientada a eventos</b> (em inglês, <i>event-driven architecture</i>, ou EDA) ganhou força junto com os
-microsserviços (capítulo 14) e com brokers fáceis de usar, como Kafka, RabbitMQ e as filas gerenciadas da nuvem. A divisão
+microsserviços (capítulo 14) e com brokers (intermediários de mensagens) fáceis de usar, como Kafka, RabbitMQ e as filas gerenciadas da nuvem. A divisão
 em duas topologias, broker e mediador, que aparece adiante, segue a forma como Mark Richards apresenta o tema
 (<i>Software Architecture Patterns</i> e <i>Fundamentals of Software Architecture</i>).</p>
 
@@ -223,8 +223,8 @@ ${medidor({ complexidade: 3, escala: 5, operacao: 4, aprendizado: 4, time: "bril
 <h4>Entrega "pelo menos uma vez": prepare-se para repetidas</h4>
 <p><b>No máximo uma vez</b> (<i>at-most-once</i>) nunca repete, mas pode perder. <b>Pelo menos uma vez</b>
 (<i>at-least-once</i>) não perde, mas pode entregar duas vezes: o consumidor processa e cai antes de confirmar, ou o
-produtor reenvia porque não recebeu a confirmação. É a garantia mais comum. <b>Exatamente uma vez</b> existe só em parte: o Kafka garante isso para quem lê
-de um tópico e escreve em outro dentro dele, mas o e-mail que seu código enviou não tem como ser "desenviado".</p>
+produtor reenvia porque não recebeu a confirmação. É a garantia mais comum. <b>Exatamente uma vez</b> (<i>exactly-once</i>) existe só em parte: o Kafka garante isso para
+quem lê de um tópico e escreve em outro dentro do próprio Kafka, mas o e-mail que seu código enviou não tem como ser "desenviado".</p>
 <p>A saída é o consumidor <b>idempotente</b>: processar a mesma mensagem duas vezes tem o mesmo efeito que processar uma.
 Guarde o id de cada evento já processado (na mesma transação do efeito), prefira operações idempotentes por natureza
 (<code>status = 'PAGO'</code> pode rodar duas vezes, <code>saldo = saldo + 10</code> não) e mande chave de idempotência
@@ -233,9 +233,9 @@ para APIs externas que aceitam (a Stripe, por exemplo, aceita o cabeçalho <code
 <h4>Ordem</h4>
 <p>Não existe ordem global de graça. No Kafka, a ordem vale <b>dentro de uma partição</b>: publique com a chave
 <code>pedidoId</code> e os eventos do mesmo pedido chegam em sequência (entre pedidos diferentes não há ordem, e quase
-nunca precisa). Dentro de um grupo, cada partição é lida por uma instância só: o número de partições limita o paralelismo. No RabbitMQ, vários consumidores na mesma fila ou uma reentrega embaralham o processamento; no SQS, só a
-fila FIFO garante ordem. Defesa extra: ponha uma versão no evento e ignore os mais velhos que o estado atual (um
-<code>PedidoPago</code> atrasado não pode "ressuscitar" um pedido cancelado).</p>
+nunca precisa). Dentro de um grupo de consumidores, cada partição é lida por uma instância só: o número de partições limita o paralelismo. No RabbitMQ, vários consumidores na mesma fila ou uma reentrega embaralham o processamento; no SQS, só a
+fila FIFO garante ordem. Defesa extra: ponha no evento um número de sequência do pedido (1, 2, 3...) e ignore os que forem
+mais velhos que o estado atual (um <code>PedidoPago</code> atrasado não pode "ressuscitar" um pedido cancelado).</p>
 
 <h4>Outbox: não perder o evento</h4>
 <p>Gravar no banco e depois publicar no broker são <b>duas escritas</b>. Se o processo cai entre elas, o banco diz "pago" e
@@ -248,7 +248,7 @@ das suas tabelas). O capítulo 23 mostra o desenho completo.</p>
 <p>O evento publicado é uma <b>API pública</b>: você não sabe quem depende dele. Adicionar um campo <b>opcional</b> é
 seguro; remover, renomear ou mudar o tipo quebra alguém. Escreva consumidores <b>tolerantes</b>, que ignoram campos
 desconhecidos. Para uma mudança que quebra, publique a versão nova em paralelo (<code>versao: 2</code> ou outro tópico),
-migre os consumidores e só então desligue a antiga. Um <i>schema registry</i> (como o da Confluent, com Avro, Protobuf ou
+migre os consumidores e só então desligue a antiga. Um <i>schema registry</i> (registro de esquemas, como o da Confluent, com Avro, Protobuf ou
 JSON Schema) recusa um esquema novo que quebre a regra de compatibilidade escolhida; dá para checar isso no CI, antes do deploy.</p>
 
 <h4>Escolhendo o broker</h4>
@@ -264,15 +264,15 @@ ${tabela(
 nuvens, os equivalentes são o Pub/Sub (Google Cloud) e o Service Bus e o Event Hubs (Azure).</p>
 
 ${pastas(`
-contratos/                         # pacote compartilhado (ou schema registry)
-└── pedido-pago.ts                 # envelope + dados do evento
+contratos/                          # pacote compartilhado (ou schema registry)
+└── pedido-pago.ts                  # envelope + dados do evento
 servico-pedidos/
-├── src/pagar-pedido.ts            # muda o dado + grava na outbox
-├── src/outbox/publicador.ts       # envia a outbox para o broker
-└── migrations/                    # tabelas pedidos e outbox
+├── src/pagar-pedido.ts             # muda o dado + grava na outbox
+├── src/outbox/publicador.ts        # envia a outbox para o broker
+└── migrations/                     # tabelas pedidos e outbox
 servico-estoque/
 ├── src/consumidores/pedido-pago.ts # reage ao evento (idempotente)
-└── migrations/                    # estoque e mensagens_processadas
+└── migrations/                     # estoque e mensagens_processadas
 `)}
 
 ${codigo(
@@ -350,7 +350,7 @@ ${passos([
   "Nomeie os eventos no passado e com palavras do negócio (<code>PedidoPago</code>, não <code>PedidoAtualizado</code>). Escreva o contrato e trate como API pública.",
   "Publique pela outbox, na mesma transação da mudança, e escolha a chave de ordenação (geralmente o id da entidade).",
   "Faça cada consumidor idempotente. Configure retentativas com espera crescente e uma <b>fila de mensagens mortas</b> (<i>dead-letter queue</i>, DLQ) para o que falhar várias vezes.",
-  "Coloque um id de correlação em todo evento e monitore o atraso (<i>lag</i>) de cada consumidor: é ele que avisa que algo travou. Só depois do primeiro fluxo estável, leve a ideia para os próximos.",
+  "Coloque um id de correlação em todo evento (o mesmo id acompanha o fluxo de serviço em serviço) e monitore o atraso (<i>lag</i>) de cada consumidor: é ele que avisa que algo travou. Só depois do primeiro fluxo estável, leve a ideia para os próximos.",
 ])}
 
 <h3>Vantagens e custos</h3>
@@ -370,13 +370,13 @@ ${tabela(
 mandando, não contando. Publique <code>ClienteCadastrado</code> e deixe o serviço de e-mail decidir.</li>
 <li><b>Consumidor sem idempotência</b>: a mensagem chega duas vezes e o cliente é cobrado duas vezes.</li>
 <li><b>Escrita dupla</b>: grava no banco e publica no broker sem outbox. Um dia o evento some.</li>
-<li><b>Mensagem envenenada</b> (<i>poison message</i>): um evento com defeito falha sempre, volta para a fila e trava todo o
-resto. Limite as tentativas e mande para a DLQ.</li>
+<li><b>Mensagem envenenada</b> (<i>poison message</i>): um evento com defeito falha sempre, volta para a fila e pode travar
+os que vêm atrás dele. Limite as tentativas e mande para a DLQ.</li>
 <li><b>Pedir resposta por evento</b>: publicar <code>ConsultarSaldo</code> e esperar a resposta numa fila de retorno
-costuma ser uma chamada síncrona disfarçada. Precisa da resposta agora? Chame a API (capítulo 18).</li>
+costuma ser uma chamada síncrona disfarçada. Precisa dela agora? Chame a API (capítulo 18).</li>
 <li><b>Evento que espelha a tabela</b>: um <code>PedidoAtualizado</code> com todas as colunas amarra os consumidores ao
 seu banco. Publique o fato do negócio, com os dados que importam.</li>
-<li><b>Fliperama de eventos</b>: A publica, B reage e publica, C reage e publica... ninguém sabe mais explicar o fluxo.
+<li><b>Fliperama de eventos</b> (<i>event pinball</i>): A publica, B reage e publica, C reage e publica... ninguém sabe mais explicar o fluxo.
 Quando a cadeia passa de três ou quatro saltos e tem regras de falha, troque por um mediador.</li>
 </ul>
 
@@ -406,7 +406,7 @@ ${combina([
 
 ${lembre([
   "Evento é um fato no passado que quem publica anuncia sem saber quem escuta; comando é uma ordem para alguém específico.",
-  "A entrega é \"pelo menos uma vez\": outbox para não perder, consumidor idempotente para não repetir, chave para manter a ordem.",
+  "Conte com a entrega \"pelo menos uma vez\": outbox para não perder, consumidor idempotente para não repetir, chave para manter a ordem.",
   "Use para reações que podem esperar; quando a resposta precisa ser imediata e consistente, faça uma chamada direta ou uma transação.",
 ])}
 `;

@@ -129,8 +129,8 @@ ${fig(diagrama(), "Três módulos no mesmo deploy. Cada um tem uma porta de entr
 
 <h3>Como funciona</h3>
 <ul>
-<li><b>Um deploy, um processo</b>: um build, um artefato no ar (pode haver várias cópias atrás de um balanceador, mas
-todas iguais). Um módulo chama o outro com uma chamada de função comum, sem rede no meio.</li>
+<li><b>Um deploy, um processo</b>: um build, um artefato no ar (pode haver várias cópias iguais atrás de um
+balanceador). Um módulo chama o outro com uma chamada de função, sem rede no meio.</li>
 <li><b>Módulos por área do negócio</b>, não por camada técnica: catálogo, pedidos, pagamentos. Cada módulo é um <b>contexto
 delimitado</b> (<i>bounded context</i>, conceito do DDD, o <i>Domain-Driven Design</i>): uma parte do negócio com vocabulário
 e regras próprios. "Produto" no catálogo tem foto e descrição; em entregas, tem peso e tamanho da caixa.</li>
@@ -139,9 +139,9 @@ Entidades, repositórios e regras ficam numa pasta interna que outro módulo nã
 <li><b>Dados por módulo</b>: cada módulo tem seu schema (ou um prefixo nas tabelas) e só ele lê e grava ali. Nada de join
 nem chave estrangeira entre módulos. Precisa de um dado de outro? Peça pela API ou guarde uma cópia (o pedido guarda o preço
 do produto no momento da compra).</li>
-<li><b>Duas formas de conversar</b>: para uma resposta imediata, chame a API pública do outro módulo. Para avisar que algo
+<li><b>Duas formas de conversar</b>: para uma resposta imediata, chame a API pública do outro. Para avisar que algo
 aconteceu ("pagamento aprovado"), publique um <b>evento interno</b>; quem se interessa reage.</li>
-<li><b>Regras checadas por máquina</b>: a fronteira só existe de verdade se o build quebra quando alguém a atravessa.</li>
+<li><b>Regras checadas por máquina</b>: a fronteira só existe se o build quebra quando alguém a atravessa.</li>
 </ul>
 
 ${fig(conversa(), "À esquerda, uma chamada direta: Pedidos precisa do preço agora. À direita, um evento: Pagamentos avisa, e cada interessado reage do seu jeito.")}

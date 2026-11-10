@@ -185,11 +185,11 @@ ${tabela(
   [
     ["Comunicação", "Quem chama precisa da resposta agora para continuar?", "Chamada síncrona (HTTP, gRPC), no modelo cliente-servidor (cap. 18)"],
     ["Comunicação", "Uma ação dispara reações que não são da conta de quem agiu (e-mail, nota fiscal, pontos)?", "Eventos (cap. 20): quem publica não conhece quem consome"],
-    ["Comunicação", "Os participantes trocam dados direto entre si (arquivos, chamadas de vídeo)?", "Peer-to-peer (cap. 19), quase sempre com um servidor para os pares se encontrarem"],
+    ["Comunicação", "Os participantes trocam dados direto entre si (arquivos grandes, chamada entre poucas pessoas)?", "Peer-to-peer (cap. 19), quase sempre com um servidor para os pares se encontrarem"],
     ["Dados", "Leitura e escrita têm formatos ou volumes muito diferentes?", "CQRS (cap. 21). Antes, tente índices e réplica de leitura"],
     ["Dados", "Você precisa do histórico completo e de por que cada valor mudou?", "Event Sourcing (cap. 22), só nas partes que pedem isso"],
     ["Dados", "Uma operação grava em vários serviços, cada um com seu banco?", "Saga com compensação (cap. 23). Se cabe num banco só, use uma transação comum"],
-    ["Dados", "Os dados servem para análise e vêm de vários sistemas?", "Lakehouse, streaming ou Data Mesh (cap. 26)"],
+    ["Dados", "Os dados servem para análise e vêm de vários sistemas?", "Warehouse gerenciado para começar (cap. 26); lakehouse, streaming ou Data Mesh só quando volume, prazo ou times pedirem"],
   ],
   "compacta",
 )}
@@ -298,8 +298,8 @@ ou o app aparece na TV, chega uma multidão no mesmo minuto.</p>
 sozinho e cobra pelo uso.</li>
 <li><b>Evite</b>: mandar a notificação para todos de uma vez (envie em lotes, para não criar o próprio pico); milhares de
 funções abrindo conexão direto num banco relacional (use um proxy de conexões ou um banco que aguente esse padrão); mudar a
-API sem manter compatibilidade, porque muita gente demora a atualizar o app. Meça o <i>cold start</i> (a demora da primeira
-execução de uma função) nas rotas sensíveis à latência e confira antes da campanha o limite de execuções simultâneas da sua
+API sem manter compatibilidade, porque muita gente demora a atualizar o app. Meça o <i>cold start</i> (a demora extra quando o
+provedor sobe uma instância nova da função) nas rotas sensíveis à latência e confira antes da campanha o limite de execuções simultâneas da sua
 conta no provedor: serverless escala sozinho, mas não sem teto.</li>
 </ul>
 
@@ -311,8 +311,9 @@ das lojas físicas e do app.</p>
 capítulo 10): extrair, limpar, juntar, publicar. Para tirar dados dos sistemas de origem sem pesar neles, eventos de domínio
 ou CDC (<i>change data capture</i>, que lê as mudanças direto do log do banco). Se alguma parte precisa de tempo real
 (estoque, fraude), um fluxo de streaming só para ela.</li>
-<li><b>Por quê</b>: painéis e previsões costumam aceitar dados de horas atrás, e processar em lote é mais simples e barato
-de operar. Tempo real só onde o negócio perde dinheiro esperando.</li>
+<li><b>Por quê</b>: previsão de estoque e recomendações pedem ciência de dados sobre os mesmos dados dos painéis, o caso
+do lakehouse; se fossem só painéis, um warehouse gerenciado bastaria. Painéis e previsões costumam aceitar dados de horas
+atrás, e processar em lote é mais simples e barato de operar. Tempo real só onde o negócio perde dinheiro esperando.</li>
 <li><b>Evite</b>: relatórios pesados rodando no banco de produção; Lambda architecture (a mesma conta escrita duas vezes, em
 lote e em tempo real) sem necessidade real; Data Mesh com um único time de dados. O Data Mesh resolve um gargalo de
 organização: muitos times de domínio esperando uma equipe central.</li>

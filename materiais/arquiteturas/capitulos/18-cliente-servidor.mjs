@@ -144,7 +144,7 @@ que o cliente mande algo que diga quem ele é (um cookie ou um token).</li>
 
 <h4>2, 3 ou N camadas físicas</h4>
 <ul>
-<li><b>2 camadas (cliente + banco)</b>: o app instalado conecta direto no banco. Era o padrão dos sistemas desktop dos
+<li><b>2 camadas (cliente + banco)</b>: o app instalado fala direto com o banco. Era o padrão dos sistemas desktop dos
 anos 1990 (Delphi, Visual Basic), com as regras no cliente ou em <i>stored procedures</i> (procedimentos guardados no
 banco). É simples, mas cada PC guarda a senha do banco e abre conexões direto nele, e toda mudança de regra pede
 atualizar o app em todas as máquinas.</li>
@@ -161,7 +161,7 @@ ${fig(nCamadas(), "N camadas: arquivos estáticos saem da CDN; os pedidos à API
 
 <h4>Servidores sem estado atrás do balanceador</h4>
 <p>Para aguentar mais gente, você pode comprar um servidor maior (escala vertical, que tem teto) ou colocar <b>mais
-cópias</b> da API atrás de um balanceador (escala horizontal). A segunda só funciona se as cópias forem <b>sem
+cópias</b> da API atrás de um balanceador (escala horizontal). A segunda só funciona bem se as cópias forem <b>sem
 estado</b> (stateless): nenhuma guarda nada do usuário na própria memória ou no próprio disco entre um pedido e outro.
 O que precisa durar vai para fora: a sessão num token ou num Redis, os arquivos num armazenamento de objetos (como o S3),
 os dados no banco. O ganho: qualquer cópia atende qualquer pedido, dá para somar ou tirar máquinas a qualquer hora
@@ -178,7 +178,7 @@ ${tabela(
   ["", "Cliente magro", "Cliente gordo (ou rico)"],
   [
     ["<b>O que faz</b>", "Só mostra e coleta dados; o servidor monta as telas e decide tudo", "Monta as telas, guarda estado e às vezes dados locais; pode funcionar offline"],
-    ["<b>Exemplos</b>", "Site renderizado no servidor (PHP, Rails, Django), terminal de mainframe", "App desktop, SPA em React, app de celular, jogo"],
+    ["<b>Exemplos</b>", "Site renderizado no servidor (PHP, Rails, Django), terminal de mainframe", "App desktop, SPA (site de página única) em React, app de celular, jogo"],
     ["<b>Você ganha</b>", "Atualiza num lugar só; roda em aparelho simples", "Interface rápida, menos idas ao servidor, modo offline"],
     ["<b>Você paga</b>", "Depende da rede a cada clique", "Versões antigas do app continuam em uso; validação duplicada"],
   ],
@@ -215,7 +215,7 @@ ${quando(
 ${medidor({ complexidade: 2, escala: 4, operacao: 2, aprendizado: 1, time: "qualquer tamanho (notas para 3 camadas sem estado)" })}
 
 <h3>Como usar na prática</h3>
-<p>Exemplo: uma loja com site em React, API em Node e banco Postgres, com a API pronta para rodar em várias cópias.</p>
+<p>Exemplo: uma loja com site em React, API em Node (em várias cópias) e banco Postgres.</p>
 ${pastas(`
 loja/
 ├── web/src/                    # tier 1: cliente (roda no navegador)
@@ -290,9 +290,9 @@ app.listen(3000);`,
   "api/src/main.ts (rotas protegidas)",
 )}
 
-<p>A outra forma de manter a API sem estado é guardar a sessão num cache compartilhado. No login, o servidor grava a
-sessão no Redis com prazo de validade (<code>EX</code>) e manda só um id aleatório num cookie; em cada pedido, qualquer
-cópia busca esse id no Redis. A vantagem sobre o token: apagar a chave derruba a sessão na hora.</p>
+<p>A outra forma de manter a API sem estado é guardar a sessão no Redis. No login, o servidor grava a sessão lá com
+prazo de validade (<code>EX</code>) e manda só um id aleatório num cookie; em cada pedido, qualquer cópia busca esse id.
+Vantagem sobre o token: apagar a chave derruba a sessão na hora.</p>
 
 <h4>Passo a passo para montar</h4>
 ${passos([
@@ -316,8 +316,8 @@ ${tabela(
 <h3>Erros comuns</h3>
 <ul>
 <li><b>Cliente direto no banco em app público</b>: a senha do banco vai dentro do app ou do JavaScript. Qualquer pessoa
-consegue extrair e ganha acesso total aos dados.</li>
-<li><b>Confiar no cliente</b>: o preço e o desconto vêm do front e o servidor aceita. O usuário pode editar a requisição;
+consegue extraí-la e ganha acesso total aos dados.</li>
+<li><b>Confiar no cliente</b>: o preço e o desconto vêm do navegador e o servidor aceita. O usuário pode editar a requisição;
 o servidor precisa recalcular tudo.</li>
 <li><b>Estado escondido no servidor</b>: sessão em memória, upload no disco local, cache em variável global, tarefa
 agendada rodando em cada cópia. Funciona com 1 servidor e quebra (ou manda o mesmo e-mail duas vezes) com 2.</li>
@@ -337,7 +337,7 @@ ${dica(
 
 ${alerta(
   "Token não é cofre nem tem botão de desligar",
-  "<p>O conteúdo de um JWT é só codificado: qualquer pessoa consegue ler. A assinatura garante apenas que ninguém o alterou, então não coloque segredos nele. E um token continua válido até expirar: use validade curta com <i>refresh token</i>, ou sessão no Redis quando precisar derrubar acessos na hora (troca de senha, celular roubado).</p>",
+  "<p>O conteúdo de um JWT (JSON Web Token, o formato de token do exemplo) é só codificado, não criptografado: qualquer pessoa consegue lê-lo. A assinatura garante apenas que ninguém o alterou, então não coloque segredos nele. E um token continua válido até expirar: use validade curta com <i>refresh token</i> (um segundo token, de vida longa, que só serve para pedir um novo), ou sessão no Redis quando precisar derrubar acessos na hora (troca de senha, celular roubado).</p>",
 )}
 
 ${combina([

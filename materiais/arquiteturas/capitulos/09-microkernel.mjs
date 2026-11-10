@@ -150,8 +150,8 @@ ${resumo(
   "Pense num videogame. O console sabe ligar, ler o controle e mostrar a imagem. Cada jogo é um cartucho no formato que o console aceita. Você compra jogo novo sem abrir o console, e um jogo da geração errada simplesmente não encaixa.",
 )}
 
-<p>O nome vem dos sistemas operacionais. Um kernel monolítico, como o do Linux, roda drivers e sistema de arquivos dentro
-do próprio núcleo. Um <i>microkernel</i>, como o do MINIX ou o do QNX, guarda no núcleo só o essencial (agendar processos,
+<p>O nome vem dos sistemas operacionais. Um <i>kernel</i> (núcleo do sistema) monolítico, como o do Linux, roda drivers e sistema de
+arquivos dentro de si. Um <i>microkernel</i>, como o do MINIX ou o do QNX, guarda no núcleo só o essencial (agendar processos,
 gerenciar memória, trocar mensagens) e roda o resto como processos à parte. Em aplicações, a ideia é a mesma: um núcleo
 mínimo e funcionalidades plugáveis. Por isso o estilo também é chamado de <b>arquitetura de plugins</b> (<i>plug-in
 architecture</i>), como aparece nos livros de Mark Richards (<i>Software Architecture Patterns</i> e, com Neal Ford,
@@ -167,12 +167,12 @@ eventos). Não tem regra de nenhum cliente específico.</li>
 <li><b>Ponto de extensão</b> (<i>extension point</i>): um lugar onde o núcleo aceita ajuda de fora, descrito por um
 <b>contrato</b> (uma interface). "Quem sabe cotar frete?", "quem sabe exportar relatório?". O plugin só faz o que o
 contrato permite.</li>
-<li><b>Plugin</b>: um módulo que implementa um contrato. Depende só do contrato (e de um pequeno SDK que o núcleo oferece),
+<li><b>Plugin</b>: um módulo que implementa um contrato. Depende só do contrato (e de um pequeno SDK, um kit de desenvolvimento que o núcleo oferece),
 nunca das classes internas do núcleo. O ideal é que um plugin não conheça os outros.</li>
 <li><b>Manifesto</b>: a ficha do plugin. Nome, versão, versão do contrato que ele segue, permissões de que precisa,
 quando deve ser ativado. Com ela, o núcleo decide se aceita o plugin antes de executar uma linha dele.</li>
-<li><b>Registro</b> (<i>registry</i>): a lista de plugins carregados e dos pontos que cada um atende: um mapa em memória,
-um arquivo de configuração ou uma tabela com o que cada cliente ativou.</li>
+<li><b>Registro</b> (<i>registry</i>): a lista de plugins carregados e dos pontos que cada um atende. Pode ser um mapa em
+memória, um arquivo de configuração ou uma tabela com o que cada cliente ativou.</li>
 <li><b>Carregamento</b>: <i>estático</i> (os plugins vão no mesmo build e a configuração liga ou desliga cada um) ou
 <i>dinâmico</i> (descobertos com o sistema rodando: <code>import()</code>, uma pasta de plugins, pacotes npm, uma loja
 de extensões).</li>
@@ -182,7 +182,7 @@ ${fig(cicloDeVida(), "O ciclo de vida de um plugin: o núcleo lê a ficha antes 
 
 <h4>Duas formas de encaixar</h4>
 <p><b>Contrato</b>: o plugin entrega um objeto e o núcleo o chama quando precisa ("me dê uma cotação de frete"). É o
-padrão Strategy em escala de produto, e é o que vamos usar no código. <b>Ganchos</b> (<i>hooks</i>): o núcleo avisa
+padrão Strategy (trocar uma implementação por outra que segue a mesma interface) em escala de produto, e é o que vamos usar no código. <b>Ganchos</b> (<i>hooks</i>): o núcleo avisa
 "vou publicar o post" ou "terminei de compilar", e cada plugin interessado reage ou altera o dado que passa por ali. O
 WordPress chama isso de <i>actions</i> (reagir) e <i>filters</i> (alterar um valor); o webpack expõe dezenas de ganchos
 no seu compilador. Muitos produtos usam as duas formas.</p>
@@ -195,7 +195,7 @@ ${tabela(
     ["<b>WordPress</b>", "publicar páginas e posts", "plugins e temas por ganchos (<code>add_action</code>, <code>add_filter</code>)"],
     ["<b>ESLint</b>", "ler o código e percorrer a árvore sintática (AST)", "cada regra devolve funções chamadas para cada tipo de nó da árvore"],
     ["<b>webpack, Babel, Vite</b>", "empacotar ou transformar JavaScript", "webpack: ganchos do compilador; Babel: visitantes da AST; Vite: ganchos no formato dos plugins do Rollup"],
-    ["<b>Eclipse</b>", "uma plataforma sobre OSGi", "quase tudo é plugin, com pontos de extensão declarados em <code>plugin.xml</code>"],
+    ["<b>Eclipse</b>", "uma plataforma sobre OSGi (padrão de módulos para Java)", "quase tudo é plugin, com pontos de extensão declarados em <code>plugin.xml</code>"],
   ],
 )}
 
@@ -266,6 +266,9 @@ export default motoboy;`,
 ${codigo(
   `
 // main.ts — carrega sob demanda só os plugins que esta loja ativou
+import type { PluginDeFrete } from "./nucleo/contratos.js";
+import { RegistroDeFrete } from "./nucleo/registro.js";
+
 const DISPONIVEIS: Record<string, () => Promise<{ default: PluginDeFrete }>> = {
   "motoboy": () => import("./plugins/motoboy/index.js"),
   "retirada-na-loja": () => import("./plugins/retirada-na-loja/index.js"),
@@ -283,16 +286,18 @@ const opcoes = await registro.cotarTodos(pedido);   // o checkout nem sabe quais
 
 <p>Repare na lista fechada <code>DISPONIVEIS</code>: o carregamento é dinâmico (só o que a loja usa vai para a memória), mas
 a configuração só escolhe nomes; nenhum caminho de arquivo vem de fora. (O Babel e o formato antigo de configuração do
-ESLint também acham o pacote pelo nome: <code>"react"</code> vira <code>eslint-plugin-react</code>.) Por dentro, o registro
+ESLint também acham o pacote pelo nome: <code>"react"</code> vira <code style="white-space:nowrap">eslint-plugin-react</code>.) Por dentro, o registro
 recusa versões incompatíveis e não deixa um plugin lento ou quebrado travar o checkout:</p>
 
 ${codigo(
   `
 // nucleo/registro.ts — guarda os plugins e protege o núcleo deles
-import { VERSAO_API, type Cotacao, type PedidoParaFrete, type PluginDeFrete } from "./contratos.js";
+import { VERSAO_API } from "./contratos.js";
+import type { Cotacao, PedidoParaFrete, PluginDeFrete } from "./contratos.js";
 
 const comTempoLimite = <T>(p: Promise<T>, ms: number) =>
-  Promise.race([p, new Promise<never>((_, falha) => setTimeout(() => falha(new Error("tempo esgotado")), ms))]);
+  Promise.race([p, new Promise<never>((_, falha) =>
+    setTimeout(() => falha(new Error("tempo esgotado")), ms))]);
 
 export class RegistroDeFrete {
   private plugins = new Map<string, PluginDeFrete>();
@@ -324,9 +329,9 @@ export class RegistroDeFrete {
 <p>Depois que existem plugins, o contrato vira uma <b>API pública</b>: renomear um campo quebra o plugin de alguém. Regras
 que funcionam:</p>
 <ul>
-<li><b>Versão no contrato e no plugin</b>: o plugin diz para qual versão foi feito (um número, como no código acima, ou uma
-faixa no estilo semver, como o <code>"engines": { "vscode": "^1.80.0" }</code> das extensões do VS Code). O núcleo recusa
-com aviso o que não for compatível.</li>
+<li><b>Versão no contrato e no plugin</b>: o plugin diz para qual versão foi feito: um número, como no código acima, ou uma
+faixa semver (versionamento semântico, <code>maior.menor.correção</code>), como o <code>"^1.80.0"</code> que uma extensão do
+VS Code declara em <code>engines</code>. O núcleo recusa o que não for compatível.</li>
 <li><b>Mudança que só adiciona não quebra</b>: campo novo opcional, método novo com comportamento padrão. É versão menor.</li>
 <li><b>Mudança que remove ou muda o sentido quebra</b>: suba a versão maior, marque o antigo como obsoleto
 (<i>deprecated</i>) e aceite as duas versões por um tempo, com um adaptador que traduz a antiga para a nova.</li>
@@ -342,9 +347,11 @@ Quanto menos você confia em quem escreveu, mais isolamento precisa:</p>
 ${fig(isolamento(), "Três níveis de isolamento. Comece pelo mais simples que dá conta do nível de confiança nos autores dos plugins.")}
 
 <p>Em qualquer nível, valem as proteções do código acima: tempo limite, falha isolada, log com o nome do plugin e, se quiser
-ir além, desligamento automático de quem falha demais. Processo separado ou <i>worker</i> evita que um travamento derrube o
-núcleo, mas não impede um plugin de ler o que não deve. Para código de qualquer pessoa (uma loja aberta de extensões),
-some <b>permissões declaradas</b> no manifesto ("ler a aba atual", "acessar a rede"), revisão antes de publicar e um jeito
+ir além, desligamento automático de quem falha demais. Só que, no mesmo processo, o tempo limite protege de espera (uma
+API lenta), não de um laço infinito: esse trava tudo. Processo separado ou <i>worker</i> (uma linha de execução à parte)
+evita que um travamento derrube o núcleo, mas não impede um plugin de ler o que não deve. Para código de qualquer pessoa
+(uma loja aberta de extensões), rode o plugin numa <i>sandbox</i> (um ambiente fechado que só alcança o que foi liberado)
+e some <b>permissões declaradas</b> no manifesto ("ler a aba atual", "acessar a rede"), revisão antes de publicar e um jeito
 de desligar um plugin à distância. Lojas de extensões de navegadores e de editores já tiveram extensões maliciosas
 publicadas: trate plugin de terceiros como qualquer dependência de terceiros.</p>
 
@@ -354,8 +361,8 @@ ${passos([
   "Desenhe o contrato a partir do que o núcleo precisa (entrada e saída), com tipos do núcleo e o mínimo de métodos.",
   "Transforme o código que já existe no primeiro plugin (o frete atual vira o plugin <code>transportadora</code>). Se o contrato não serve nem para ele, não vai servir para os outros.",
   "Escreva o registro: registrar, validar a versão, listar por ponto de extensão, desligar. Desde o começo, proteja o núcleo: tempo limite, falha isolada, log com o nome do plugin.",
-  "Decida como cada cliente ativa os plugins (configuração, tabela no banco, <i>feature flag</i>) e como eles são carregados.",
-  "Versione e documente o contrato, com changelog e um kit de testes que todo plugin roda.",
+  "Decida como cada cliente ativa os plugins (configuração, tabela no banco, <i>feature flag</i>: uma chave que liga ou desliga um recurso) e como eles são carregados.",
+  "Versione e documente o contrato, com registro de mudanças (<i>changelog</i>) e um kit de testes que todo plugin roda.",
 ])}
 
 <h3>Vantagens e custos</h3>
@@ -376,7 +383,7 @@ ${tabela(
 ser plugin vazou para o núcleo, e o núcleo deixa de ser estável.</li>
 <li><b>Contrato que entrega tudo</b>: passar o <code>app</code> inteiro ou a conexão do banco para o plugin ("faça o que
 quiser"). Qualquer mudança interna quebra plugins, e qualquer plugin pode fazer qualquer coisa. Exponha só o necessário.</li>
-<li><b>Plugins que dependem uns dos outros</b>: o plugin A importa o plugin B e a ordem de carregamento passa a importar.
+<li><b>Plugins que dependem uns dos outros</b>: o plugin A importa o plugin B e a ordem de carregamento passa a fazer diferença.
 Se precisam conversar, que seja pelo núcleo (eventos) ou com a dependência declarada no manifesto.</li>
 <li><b>Confiar no plugin</b>: chamar a API da transportadora sem tempo limite. Ela fica lenta e o checkout inteiro espera.</li>
 </ul>
