@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
-import { mkdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { mkdir, rename } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { bundle } from "@remotion/bundler";
@@ -7,7 +8,7 @@ import { renderMedia, selectComposition } from "@remotion/renderer";
 
 // Renderiza uma aula da comunidade (1920x1080) e junta com a voz já tratada.
 // - complexidade: os vídeos 1440p dos clipes precisam estar em public/aulas/complexidade/ (ver scripts/aulas/README.md).
-// - llm-juiz: a voz vem de scripts/aulas/narrar.py.
+// - llm-juiz: a voz vem de scripts/aulas/alinhar.py (gravação alinhada). Sem voz, sai só o vídeo.
 // Uso: npm run render:aula -- [aula] [voz.wav] [saida.mp4]
 
 const AULAS: Record<string, { id: string; voz: string; destino: string }> = {
@@ -55,9 +56,15 @@ await renderMedia({
   },
 });
 
-execFileSync(
-  "ffmpeg",
-  ["-v", "error", "-y", "-i", soVideo, "-i", voz, "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", destino],
-  { stdio: "inherit" },
-);
-console.log(`ok: ${destino}`);
+if (!existsSync(voz)) {
+  await rename(soVideo, destino);
+  console.log(`ok (sem voz: ${voz} não existe): ${destino}`);
+} else {
+  // apad: se a voz terminar antes do vídeo (visão geral final), completa com silêncio em vez de cortar
+  execFileSync(
+    "ffmpeg",
+    ["-v", "error", "-y", "-i", soVideo, "-i", voz, "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy", "-af", "apad", "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", destino],
+    { stdio: "inherit" },
+  );
+  console.log(`ok: ${destino}`);
+}

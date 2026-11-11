@@ -146,7 +146,7 @@ function Promessa() {
       <Papel x={130} y={380} w={210} h={250} linhas={5} titulo="Resumo" corLinhas={cor.azul} de={W("r2", "avaliador") - 0.4} />
       <Seta desde={[360, 505]} para={[590, 505]} de={W("r2", "avaliador")} dur={0.45} />
       <Caixa x={610} y={360} w={540} h={290} texto={"avaliador\nem Python"} tam={64} preench={claro.violeta} de={W("r2", "avaliador") + 0.2} dur={0.7} />
-      <Texto x={880} y={700} tam={34} cor={cor.cinza} ancora="middle" de={W("r2", "Páiton") + 0.3}>
+      <Texto x={880} y={700} tam={34} cor={cor.cinza} ancora="middle" de={W("r2", "Python") + 0.3}>
         {"{ checks · evidências · score }"}
       </Texto>
 

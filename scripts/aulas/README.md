@@ -73,20 +73,27 @@ Todos recebem `de` (segundo em que começam a ser desenhados), `dur` e, opcional
 - Para conferir um corte sem ouvir, transcreva 2 s antes e depois da emenda no áudio final: palavra
   mordida aparece como palavra faltando ou trocada.
 
-## Aula sem gravação: narração sintética (Aula 2, LLM as a Judge)
+## Aula com voz da ElevenLabs (Aula 2, LLM as a Judge)
 
-Para aulas que ainda não foram gravadas, `narrar.py` gera uma voz provisória com o Piper (roda local,
-voz `pt_BR-cadu-medium`, baixada uma vez para `~/.cache/piper`):
+A lousa é feita antes da voz e se ajusta a ela depois:
 
-```bash
-pip install piper-tts
-python3 scripts/aulas/narrar.py remotion/aulas/llm-juiz/narracao saida/aulas/llm-juiz/voz.wav
-npm run render:aula -- llm-juiz
-```
+1. **Texto.** `remotion/aulas/llm-juiz/narracao/falas.json` tem a narração dividida em seções e falas
+   (cada fala tem um id, que é o que os desenhos usam para se sincronizar).
+2. **Tempos provisórios.** `narrar.py` mede cada fala com uma voz sintética local (Piper) e escreve
+   `tempos.json` e `roteiro-elevenlabs.md`. O áudio sintético não vai para o vídeo.
+   ```bash
+   pip install piper-tts
+   python3 scripts/aulas/narrar.py remotion/aulas/llm-juiz/narracao
+   ```
+3. **Gravação.** Gere na ElevenLabs **um arquivo por seção** do `roteiro-elevenlabs.md`, na ordem.
+4. **Alinhamento.** `alinhar.py` junta os arquivos (com o respiro de cada seção entre eles, para as visões
+   gerais da lousa), normaliza o volume, transcreve com o Whisper e acha cada fala e cada palavra no áudio.
+   O `tempos.json` passa a ter os tempos reais, e a voz vai para `saida/aulas/llm-juiz/voz.wav`.
+   ```bash
+   pip install faster-whisper numpy
+   python3 scripts/aulas/alinhar.py remotion/aulas/llm-juiz/narracao audios/*.mp3
+   ```
+5. **Render.** `npm run render:aula -- llm-juiz` junta vídeo e voz. Sem `voz.wav`, sai só o vídeo.
 
-- **`falas.json`** tem o texto narrado, fala por fala, com a pausa depois de cada uma. O texto é escrito
-  para o sintetizador: "Python" vira "Páiton", "colega" vira "colêga" e "LLM" vira "L L M,".
-  Para conferir a pronúncia sem ouvir, transcreva o `voz.wav` com o Whisper e procure palavras trocadas.
-- **`tempos.json`** (gerado) guarda o início e o fim de cada fala. Na lousa, `F("g2")` é o início da fala
-  g2 e `W("g2", "ligação")` o instante aproximado da palavra. Se a aula for gravada com voz real depois,
-  basta gerar um `tempos.json` com os mesmos ids e os desenhos continuam sincronizados.
+Pode trocar palavras na gravação: o alinhamento tolera diferenças. Fala que não for encontrada fica entre as
+vizinhas e aparece listada no fim. Se mudar o texto de uma fala de propósito, mude também em `falas.json`.

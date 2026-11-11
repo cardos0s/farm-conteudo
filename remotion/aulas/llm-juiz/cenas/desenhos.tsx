@@ -244,3 +244,104 @@ export function Martelo({ x, y, s = 1, de, ate }: { x: number; y: number; s?: nu
     </>
   );
 }
+
+/** Envelope. (x, y) canto superior esquerdo. Com `lacre`, um selo vermelho com o texto. */
+export function Envelope({ x, y, w = 200, h = 130, lacre, preench = "#ffffff", de, ate }: { x: number; y: number; w?: number; h?: number; lacre?: string; preench?: string; de: number; ate?: number }) {
+  return (
+    <>
+      <Ret x={x} y={y} w={w} h={h} redondo={false} preench={preench} hachura="solid" de={de} dur={0.4} ate={ate} />
+      <Linha pts={[[x, y], [x + w / 2, y + h * 0.58], [x + w, y]]} de={de + 0.3} dur={0.25} ate={ate} />
+      {lacre && (
+        <>
+          <Elipse cx={x + w / 2} cy={y + h * 0.6} w={h * 0.5} h={h * 0.5} preench={cor.vermelho} hachura="solid" cor={cor.vermelho} de={de + 0.5} dur={0.25} ate={ate} />
+          <Texto x={x + w / 2} y={y + h * 0.6 + h * 0.08} tam={h * 0.2} cor="#ffffff" ancora="middle" de={de + 0.65} ate={ate}>
+            {lacre}
+          </Texto>
+        </>
+      )}
+    </>
+  );
+}
+
+/** Calculadora. (x, y) canto superior esquerdo; `visor` é o texto mostrado. */
+export function Calculadora({ x, y, s = 1, visor, de, ate }: { x: number; y: number; s?: number; visor: string; de: number; ate?: number }) {
+  const w = 220 * s;
+  const h = 300 * s;
+  return (
+    <>
+      <Ret x={x} y={y} w={w} h={h} preench="#495057" hachura="solid" de={de} dur={0.4} ate={ate} />
+      <Ret x={x + 18 * s} y={y + 20 * s} w={w - 36 * s} h={64 * s} redondo={false} preench={claro.verde} hachura="solid" espessura={2} de={de + 0.2} dur={0.25} ate={ate} />
+      <Texto x={x + w - 28 * s} y={y + 66 * s} tam={36 * s} ancora="end" de={de + 0.4} ate={ate}>
+        {visor}
+      </Texto>
+      {[0, 1, 2, 3].map((r) =>
+        [0, 1, 2].map((c) => (
+          <Ret key={`${r}${c}`} x={x + (22 + c * 62) * s} y={y + (104 + r * 46) * s} w={50 * s} h={36 * s} redondo={false} preench="#dee2e6" hachura="solid" espessura={1.5} de={de + 0.3 + (r * 3 + c) * 0.02} dur={0.1} ate={ate} />
+        )),
+      )}
+    </>
+  );
+}
+
+/** Olho. (x, y) centro. */
+export function Olho({ x, y, s = 120, de, ate }: { x: number; y: number; s?: number; de: number; ate?: number }) {
+  return (
+    <>
+      <Caminho d={`M${x - s / 2} ${y} Q${x} ${y - s * 0.5} ${x + s / 2} ${y} Q${x} ${y + s * 0.5} ${x - s / 2} ${y} Z`} preench="#ffffff" hachura="solid" de={de} dur={0.4} ate={ate} />
+      <Elipse cx={x} cy={y} w={s * 0.32} h={s * 0.32} preench={cor.azul} hachura="solid" de={de + 0.3} dur={0.2} ate={ate} />
+      <Elipse cx={x} cy={y} w={s * 0.12} h={s * 0.12} preench={cor.tinta} hachura="solid" de={de + 0.45} dur={0.15} ate={ate} />
+    </>
+  );
+}
+
+/** Pilha de papéis (muitos documentos). (x, y) canto superior esquerdo do papel da frente. */
+export function Pilha({ x, y, w = 160, h = 200, n = 5, de, ate }: { x: number; y: number; w?: number; h?: number; n?: number; de: number; ate?: number }) {
+  return (
+    <>
+      {Array.from({ length: n }, (_, i) => n - 1 - i).map((k) => (
+        <Ret key={k} x={x + k * 14} y={y - k * 14} w={w} h={h} redondo={false} preench="#ffffff" hachura="solid" espessura={2.4} de={de + (n - 1 - k) * 0.08} dur={0.25} ate={ate} />
+      ))}
+      {[0, 1, 2, 3].map((i) => (
+        <Linha key={i} pts={[[x + 18, y + 40 + i * 36], [x + w - 18 - (i % 2) * 30, y + 40 + i * 36]]} cor={cor.cinza} espessura={2.5} de={de + n * 0.08 + i * 0.05} dur={0.15} ate={ate} />
+      ))}
+    </>
+  );
+}
+
+/** Gráfico de pontos numa reta (notas de 0,6 a 1,0), com a média tracejada. */
+export function Pontos({ x, y, w, valores, media, de, ate, corPonto = cor.azul, rotulo }: { x: number; y: number; w: number; valores: number[]; media?: number; de: number; ate?: number; corPonto?: string; rotulo?: string }) {
+  const px = (v: number) => x + ((v - 0.6) / 0.4) * w;
+  // valores repetidos ficam empilhados
+  const vistos = new Map<number, number>();
+  return (
+    <>
+      <Linha pts={[[x - 20, y], [x + w + 20, y]]} espessura={2.5} de={de} dur={0.35} ate={ate} />
+      {[0.6, 0.7, 0.8, 0.9, 1.0].map((v) => (
+        <React.Fragment key={v}>
+          <Linha pts={[[px(v), y - 10], [px(v), y + 10]]} espessura={2} de={de + 0.2} dur={0.1} ate={ate} />
+          <Texto x={px(v)} y={y + 50} tam={30} cor={cor.cinza} ancora="middle" de={de + 0.25} ate={ate}>
+            {v.toFixed(1).replace(".", ",")}
+          </Texto>
+        </React.Fragment>
+      ))}
+      {valores.map((v, i) => {
+        const k = vistos.get(v) ?? 0;
+        vistos.set(v, k + 1);
+        return <Elipse key={i} cx={px(v)} cy={y - 34 - k * 52} w={40} h={40} preench={corPonto} hachura="solid" cor={corPonto} de={de + 0.4 + i * 0.25} dur={0.2} ate={ate} />;
+      })}
+      {media !== undefined && (
+        <>
+          <Linha pts={[[px(media), y - 190], [px(media), y + 14]]} cor={cor.laranja} espessura={3.5} de={de + 0.4 + valores.length * 0.25} dur={0.3} ate={ate} />
+          <Texto x={px(media)} y={y - 205} tam={32} cor={cor.laranja} ancora="middle" de={de + 0.5 + valores.length * 0.25} ate={ate}>
+            {`média ${media.toFixed(2).replace(".", ",")}`}
+          </Texto>
+        </>
+      )}
+      {rotulo && (
+        <Texto x={x - 50} y={y + 12} tam={44} ancora="end" de={de} ate={ate}>
+          {rotulo}
+        </Texto>
+      )}
+    </>
+  );
+}
