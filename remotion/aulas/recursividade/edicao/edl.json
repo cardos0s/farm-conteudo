@@ -1,0 +1,394 @@
+{
+ "fps": 30,
+ "totalF": 9709,
+ "segmentos": [
+  {
+   "clip": "pausa",
+   "inF": 0,
+   "outF": 36,
+   "tomClip": "3582",
+   "tomIn": 78.95,
+   "fadeOut": 0.015,
+   "tomDur": 1.2,
+   "nota": "abertura: título na lousa",
+   "trecho": 0,
+   "startF": 0,
+   "endF": 36
+  },
+  {
+   "clip": "3581",
+   "inF": 40,
+   "outF": 508,
+   "nota": "uma função pode chamar ela mesma? recursividade, quando parar",
+   "fadeIn": 0.008,
+   "trecho": 1,
+   "startF": 36,
+   "endF": 504
+  },
+  {
+   "clip": "3581",
+   "inF": 525,
+   "outF": 886,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 1,
+   "startF": 504,
+   "endF": 865
+  },
+  {
+   "clip": "pausa",
+   "inF": 0,
+   "outF": 18,
+   "tomClip": "3582",
+   "tomIn": 31.9,
+   "fadeOut": 0.015,
+   "tomDur": 0.6,
+   "nota": "capítulo: fatorial",
+   "trecho": 2,
+   "startF": 865,
+   "endF": 883
+  },
+  {
+   "clip": "3582",
+   "inF": 47,
+   "outF": 308,
+   "nota": "fatorial, vocês estão vendo essa função na minha tela (sai: e essa função diz...)",
+   "fadeIn": 0.008,
+   "trecho": 3,
+   "startF": 883,
+   "endF": 1144
+  },
+  {
+   "clip": "3582",
+   "inF": 319,
+   "outF": 374,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 3,
+   "startF": 1144,
+   "endF": 1199
+  },
+  {
+   "clip": "3582",
+   "inF": 382,
+   "outF": 456,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 3,
+   "startF": 1199,
+   "endF": 1273
+  },
+  {
+   "clip": "3582",
+   "inF": 533,
+   "outF": 959,
+   "nota": "fatorial de 4 desce e sobe, caso-base, passo recursivo, O(n)",
+   "fadeIn": 0.008,
+   "trecho": 4,
+   "startF": 1273,
+   "endF": 1699
+  },
+  {
+   "clip": "3582",
+   "inF": 992,
+   "outF": 2088,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 4,
+   "startF": 1699,
+   "endF": 2795
+  },
+  {
+   "clip": "pausa",
+   "inF": 0,
+   "outF": 18,
+   "tomClip": "3582",
+   "tomIn": 79.0,
+   "fadeOut": 0.015,
+   "tomDur": 0.6,
+   "nota": "capítulo: Fibonacci",
+   "trecho": 5,
+   "startF": 2795,
+   "endF": 2813
+  },
+  {
+   "clip": "3582",
+   "inF": 2186,
+   "outF": 2268,
+   "nota": "O problema do Fibonacci é o seguinte (sai: agora a gente vai ter que imaginar que uma função...)",
+   "fadeIn": 0.008,
+   "trecho": 6,
+   "startF": 2813,
+   "endF": 2895
+  },
+  {
+   "clip": "3583",
+   "inF": 47,
+   "outF": 706,
+   "nota": "duas chamadas, sequência, código, tá vendo essa função na minha tela?",
+   "fadeIn": 0.008,
+   "trecho": 7,
+   "startF": 2895,
+   "endF": 3554
+  },
+  {
+   "clip": "3583",
+   "inF": 716,
+   "outF": 898,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 7,
+   "startF": 3554,
+   "endF": 3736
+  },
+  {
+   "clip": "3583",
+   "inF": 923,
+   "outF": 1437,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 7,
+   "startF": 3736,
+   "endF": 4250
+  },
+  {
+   "clip": "3583",
+   "inF": 1472,
+   "outF": 1555,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 7,
+   "startF": 4250,
+   "endF": 4333
+  },
+  {
+   "clip": "3583",
+   "inF": 1576,
+   "outF": 1699,
+   "nota": "árvore de f(4) (sai: eu vou,)",
+   "fadeIn": 0.008,
+   "trecho": 8,
+   "startF": 4333,
+   "endF": 4456
+  },
+  {
+   "clip": "3583",
+   "inF": 1709,
+   "outF": 1886,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 8,
+   "startF": 4456,
+   "endF": 4633
+  },
+  {
+   "clip": "3583",
+   "inF": 2002,
+   "outF": 2348,
+   "nota": "f(3), f(2), f(2) repetido, o problema é resolver o mesmo problema (sai: pra achar FG3 e FG2 / então acaba a alocação de memória)",
+   "fadeIn": 0.008,
+   "trecho": 9,
+   "startF": 4633,
+   "endF": 4979
+  },
+  {
+   "clip": "3583",
+   "inF": 2355,
+   "outF": 2956,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 9,
+   "startF": 4979,
+   "endF": 5580
+  },
+  {
+   "clip": "3583",
+   "inF": 2979,
+   "outF": 3179,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 9,
+   "startF": 5580,
+   "endF": 5780
+  },
+  {
+   "clip": "pausa",
+   "inF": 0,
+   "outF": 15,
+   "tomClip": "3583",
+   "tomIn": 171.7,
+   "fadeOut": 0.015,
+   "tomDur": 0.5,
+   "nota": "capítulo: Big O",
+   "trecho": 10,
+   "startF": 5780,
+   "endF": 5795
+  },
+  {
+   "clip": "3583",
+   "inF": 3320,
+   "outF": 3385,
+   "nota": "Big O, fatorial O(n), Fibonacci exponencial ... limite superior do seu tempo",
+   "fadeIn": 0.008,
+   "trecho": 11,
+   "startF": 5795,
+   "endF": 5860
+  },
+  {
+   "clip": "3583",
+   "inF": 3402,
+   "outF": 3835,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 11,
+   "startF": 5860,
+   "endF": 6293
+  },
+  {
+   "clip": "3583",
+   "inF": 3845,
+   "outF": 4391,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 11,
+   "startF": 6293,
+   "endF": 6839
+  },
+  {
+   "clip": "3583",
+   "inF": 4414,
+   "outF": 4833,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 11,
+   "startF": 6839,
+   "endF": 7258
+  },
+  {
+   "clip": "3583",
+   "inF": 5014,
+   "outF": 5053,
+   "nota": "O de 2 elevado a N (sai: O de N com N elevado a N, O de 2)",
+   "fadeIn": 0.008,
+   "trecho": 12,
+   "startF": 7258,
+   "endF": 7297
+  },
+  {
+   "clip": "3583",
+   "inF": 5071,
+   "outF": 5119,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 12,
+   "startF": 7297,
+   "endF": 7345
+  },
+  {
+   "clip": "3583",
+   "inF": 5198,
+   "outF": 5290,
+   "nota": "funciona para números pequenos, inviável para entradas maiores, quanto custa",
+   "fadeIn": 0.008,
+   "trecho": 13,
+   "startF": 7345,
+   "endF": 7437
+  },
+  {
+   "clip": "3583",
+   "inF": 5298,
+   "outF": 5773,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 13,
+   "startF": 7437,
+   "endF": 7912
+  },
+  {
+   "clip": "3583",
+   "inF": 5862,
+   "outF": 6131,
+   "nota": "comparação visual O(n) x exponencial (sai: O de 2 N ao quadrado é um limite superior)",
+   "fadeIn": 0.008,
+   "trecho": 14,
+   "startF": 7912,
+   "endF": 8181
+  },
+  {
+   "clip": "pausa",
+   "inF": 0,
+   "outF": 14,
+   "tomClip": "3583",
+   "tomIn": 206.2,
+   "fadeOut": 0.015,
+   "tomDur": 0.45,
+   "nota": "capítulo: recapitulando",
+   "trecho": 15,
+   "startF": 8181,
+   "endF": 8195
+  },
+  {
+   "clip": "3583",
+   "inF": 6406,
+   "outF": 6982,
+   "nota": "recapitulação, exercício, próxima aula, valeu",
+   "fadeIn": 0.008,
+   "trecho": 16,
+   "startF": 8195,
+   "endF": 8771
+  },
+  {
+   "clip": "3583",
+   "inF": 6990,
+   "outF": 7079,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 16,
+   "startF": 8771,
+   "endF": 8860
+  },
+  {
+   "clip": "3583",
+   "inF": 7105,
+   "outF": 7160,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 16,
+   "startF": 8860,
+   "endF": 8915
+  },
+  {
+   "clip": "3583",
+   "inF": 7168,
+   "outF": 7693,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 16,
+   "startF": 8915,
+   "endF": 9440
+  },
+  {
+   "clip": "3583",
+   "inF": 7706,
+   "outF": 7849,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 16,
+   "startF": 9440,
+   "endF": 9583
+  },
+  {
+   "clip": "pausa",
+   "inF": 0,
+   "outF": 126,
+   "tomClip": "3583",
+   "tomIn": 192.4,
+   "fadeOut": 1.4,
+   "tomDur": 2.7,
+   "nota": "encerramento: visão geral da lousa",
+   "trecho": 17,
+   "startF": 9583,
+   "endF": 9709
+  }
+ ]
+}

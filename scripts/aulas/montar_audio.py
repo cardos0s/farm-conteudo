@@ -48,10 +48,22 @@ grafo.append("".join(rotulos) + f"concat=n={len(rotulos)}:v=0:a=1[out]")
 bruta = saida.replace(".wav", "-bruta.wav")
 subprocess.run(args + ["-filter_complex", ";".join(grafo), "-map", "[out]", "-c:a", "pcm_s24le", bruta], check=True)
 
-VOZ = ("pan=mono|c0=0.5*c0+0.5*c1,highpass=f=80,afftdn=nr=10:nf=-48:tn=1,"
-       "acompressor=threshold=-24dB:ratio=2.5:attack=8:release=140:makeup=3dB,"
-       "volume=8.4dB,alimiter=limit=0.79:attack=4:release=80:level=false")
+CADEIA = ("pan=mono|c0=0.5*c0+0.5*c1,highpass=f=80,afftdn=nr=10:nf=-48:tn=1,"
+          "acompressor=threshold=-24dB:ratio=2.5:attack=8:release=140:makeup=3dB")
+ALVO = -16.0  # LUFS
+
+
+def loudness(arquivo, filtro):
+    saida_ffmpeg = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", arquivo, "-af", f"{filtro},ebur128" if filtro else "ebur128", "-f", "null", "-"],
+                                  capture_output=True, text=True).stderr
+    linhas = [l.strip() for l in saida_ffmpeg.splitlines() if l.strip().startswith(("I:", "LRA:"))]
+    return float(linhas[-2].split()[1]), " ".join(linhas[-2:])
+
+
+# ganho fixo calculado para cada gravação (sem normalização dinâmica, que "bombeia" a voz)
+medido, _ = loudness(bruta, CADEIA)
+ganho = ALVO - medido + 0.2  # o limitador tira ~0,2 LU
+VOZ = f"{CADEIA},volume={ganho:.2f}dB,alimiter=limit=0.79:attack=4:release=80:level=false"
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", bruta, "-af", VOZ, "-ac", "2", "-ar", "48000", "-c:a", "pcm_s24le", saida], check=True)
-medida = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", saida, "-af", "ebur128", "-f", "null", "-"],
-                        capture_output=True, text=True).stderr
-print("ok:", saida, "|", " ".join(l.strip() for l in medida.splitlines() if l.strip().startswith(("I:", "LRA:"))))
+_, resumo = loudness(saida, None)
+print(f"ok: {saida} | ganho {ganho:+.1f} dB | {resumo}")

@@ -4,6 +4,8 @@ import { Composition } from "remotion";
 import { FPS, duracaoTotal, type PropsReel } from "../src/core/roteiro";
 import { AulaComplexidade } from "./aulas/complexidade/Aula";
 import { FPS as FPS_AULA, TOTAL_QUADROS } from "./aulas/complexidade/roteiro";
+import { AulaRecursividade } from "./aulas/recursividade/Aula";
+import { FPS as FPS_AULA2, TOTAL_QUADROS as TOTAL_AULA2 } from "./aulas/recursividade/roteiro";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
 
@@ -26,6 +28,14 @@ export const Root: React.FC = () => (
       height={1080}
       fps={FPS_AULA}
       durationInFrames={TOTAL_QUADROS}
+    />
+    <Composition
+      id="AulaRecursividade"
+      component={AulaRecursividade}
+      width={1920}
+      height={1080}
+      fps={FPS_AULA2}
+      durationInFrames={TOTAL_AULA2}
     />
   </>
 );

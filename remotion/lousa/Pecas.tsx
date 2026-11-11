@@ -1,6 +1,6 @@
 import React from "react";
 import { Ret, type Estilo, type Tempo } from "./Esboco";
-import { tinta } from "./paleta";
+import { claro, tinta } from "./paleta";
 import { largura, Texto } from "./Texto";
 import { useT } from "./tempo";
 
@@ -63,4 +63,10 @@ export function Marca({ x, y, w, h, cor = "#ffec99", de, dur = 0.45, ate }: { x:
       />
     </g>
   );
+}
+
+/** Rótulo do capítulo no canto superior esquerdo da página ("capítulo 1 · fatorial"). */
+export function Capitulo({ n, titulo, de }: { n: number | string; titulo: string; de: number }) {
+  const texto = typeof n === "number" ? `capítulo ${n} · ${titulo}` : titulo;
+  return <Etiqueta x={70 + (largura(texto, 30) + 36) / 2} y={64} texto={texto} tam={30} pad={18} preench={claro.cinza} hachura="solid" de={de} dur={0.4} />;
 }

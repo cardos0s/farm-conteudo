@@ -3,12 +3,21 @@ import rough from "roughjs";
 import { AbsoluteFill, Freeze, OffthreadVideo, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { tinta } from "../../lousa/paleta";
 import { lerp, progresso, suave } from "../../lousa/tempo";
-import rostos from "./edicao/rostos.json";
-import { FPS, segmentos, type Segmento } from "./roteiro";
+import type { Segmento } from "./roteiro";
 
-// Camada da câmera. Cada segmento do EDL vira uma <Sequence> com o trecho do clipe 1440p.
-// O enquadramento depende do "modo" no tempo (tela cheia, dividida, PiP no canto ou oculta)
-// e o recorte acompanha o rosto (trilha suavizada de detecção facial, em edicao/rostos.json).
+// Camada da câmera, comum a todas as aulas. Cada segmento do EDL vira uma <Sequence> com o
+// trecho do clipe 1440p (em public/<pasta>/IMG_<clipe>.mp4). O enquadramento depende do "modo"
+// no tempo (tela cheia, dividida, PiP no canto, cartão ou oculta) e o recorte acompanha o rosto
+// (trilha suavizada de detecção facial, gerada por scripts/aulas/rostos.py).
+
+/** O que a câmera precisa saber de cada aula. */
+export type FonteAula = {
+  fps: number;
+  segmentos: Segmento[];
+  rostos: Record<string, [number, number, number, number][]>;
+  /** pasta dos vídeos dentro de public/, por exemplo "aulas/complexidade" */
+  pasta: string;
+};
 
 export type Modo = "oculta" | "cheia" | "dividida" | "pip" | "cartao" | "surge";
 export type ChaveModo = { t: number; modo: Modo; dur?: number };
@@ -41,10 +50,8 @@ function caixaDo(modo: Modo): Caixa {
   }
 }
 
-const trilhas = rostos as unknown as Record<string, [number, number, number, number][]>;
-
-function rosto(clip: string, t: number) {
-  const tr = trilhas[clip];
+function rosto(aula: FonteAula, clip: string, t: number) {
+  const tr = aula.rostos[clip];
   const i = prender(Math.floor(t * 2), 0, tr.length - 2);
   const [a, b] = [tr[i], tr[i + 1]];
   const k = prender((t - a[0]) / (b[0] - a[0] || 1), 0, 1);
@@ -57,8 +64,8 @@ function dentro(r: Ret): Ret {
   return { w, h, x: prender(r.x, 0, LW - w), y: prender(r.y, 0, LH - h) };
 }
 
-function recorteDo(modo: Modo, clip: string, t: number, zoom: number): Ret {
-  const f = rosto(clip, t);
+function recorteDo(aula: FonteAula, modo: Modo, clip: string, t: number, zoom: number): Ret {
+  const f = rosto(aula, clip, t);
   if (modo === "cartao" || modo === "surge") return { x: 0, y: 0, w: LW, h: LH };
   if (modo === "cheia") {
     if (zoom <= 1.001) return { x: 0, y: 0, w: LW, h: LH };
@@ -89,25 +96,25 @@ export function modoEm(t: number, chaves: ChaveModo[]) {
 }
 
 /** Zoom de "punch-in" alternado a cada corte em tela cheia, para disfarçar os cortes secos. */
-function zoomDo(seg: Segmento): number {
-  const doClipe = segmentos.filter((s) => s.clip === seg.clip);
+function zoomDo(aula: FonteAula, seg: Segmento): number {
+  const doClipe = aula.segmentos.filter((s) => s.clip === seg.clip);
   return doClipe.indexOf(seg) % 2 === 1 ? 1.12 : 1;
 }
 
-function Trecho({ seg, chaves, fonte, congelar }: { seg: Segmento; chaves: ChaveModo[]; fonte: { clip: string; inicio: number }; congelar: boolean }) {
+function Trecho({ aula, seg, chaves, fonte, congelar }: { aula: FonteAula; seg: Segmento; chaves: ChaveModo[]; fonte: { clip: string; inicio: number }; congelar: boolean }) {
   const frame = useCurrentFrame();
-  const t = (seg.startF + frame) / FPS;
-  const tSrc = (fonte.inicio + (congelar ? 0 : frame)) / FPS;
+  const t = (seg.startF + frame) / aula.fps;
+  const tSrc = (fonte.inicio + (congelar ? 0 : frame)) / aula.fps;
   const { de, para, p } = modoEm(t, chaves);
-  const zoom = seg.clip === "pausa" ? 1 : zoomDo(seg);
+  const zoom = seg.clip === "pausa" ? 1 : zoomDo(aula, seg);
   const c = mistura(caixaDo(de), caixaDo(para), p);
   if (c.alfa <= 0.001) return null;
-  const r = mistura(recorteDo(de, fonte.clip, tSrc, zoom), recorteDo(para, fonte.clip, tSrc, zoom), p);
+  const r = mistura(recorteDo(aula, de, fonte.clip, tSrc, zoom), recorteDo(aula, para, fonte.clip, tSrc, zoom), p);
   const escala = Math.max(c.w / r.w, c.h / r.h);
   const ehPip = 1 - prender((c.w - PIP.w) / (960 - PIP.w), 0, 1);
   const video = (
     <OffthreadVideo
-      src={staticFile(`aulas/complexidade/IMG_${fonte.clip}.mp4`)}
+      src={staticFile(`${aula.pasta}/IMG_${fonte.clip}.mp4`)}
       trimBefore={congelar ? 0 : fonte.inicio}
       muted
       style={{
@@ -141,9 +148,9 @@ function Trecho({ seg, chaves, fonte, congelar }: { seg: Segmento; chaves: Chave
 }
 
 /** Contorno à mão em volta do PiP (gerado uma vez e esticado para a caixa atual). */
-function MolduraPip({ chaves }: { chaves: ChaveModo[] }) {
+function MolduraPip({ chaves, fps }: { chaves: ChaveModo[]; fps: number }) {
   const frame = useCurrentFrame();
-  const t = frame / FPS;
+  const t = frame / fps;
   const caminhos = useMemo(() => {
     const g = rough.generator();
     const d = g.rectangle(4, 4, PIP.w - 8, PIP.h - 8, { seed: 11, roughness: 1.3, stroke: tinta, strokeWidth: 3.4, bowing: 1.2 });
@@ -166,7 +173,8 @@ function MolduraPip({ chaves }: { chaves: ChaveModo[] }) {
   );
 }
 
-export function Camera({ chaves }: { chaves: ChaveModo[] }) {
+export function Camera({ chaves, aula }: { chaves: ChaveModo[]; aula: FonteAula }) {
+  const { segmentos } = aula;
   return (
     <AbsoluteFill>
       {segmentos.map((seg, i) => {
@@ -183,11 +191,11 @@ export function Camera({ chaves }: { chaves: ChaveModo[] }) {
         }
         return (
           <Sequence key={i} from={seg.startF} durationInFrames={seg.endF - seg.startF} layout="none">
-            <Trecho seg={seg} chaves={chaves} fonte={fonte} congelar={congelar} />
+            <Trecho aula={aula} seg={seg} chaves={chaves} fonte={fonte} congelar={congelar} />
           </Sequence>
         );
       })}
-      <MolduraPip chaves={chaves} />
+      <MolduraPip chaves={chaves} fps={aula.fps} />
     </AbsoluteFill>
   );
 }

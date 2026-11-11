@@ -2,21 +2,14 @@ import React from "react";
 import { Caminho, Check, Elipse, Linha, Ret, Seta, Xis } from "../../../lousa/Esboco";
 import { NaPagina } from "../../../lousa/Lousa";
 import { claro, cor } from "../../../lousa/paleta";
-import { Caixa, Etiqueta, Marca } from "../../../lousa/Pecas";
+import { Caixa, Capitulo, Etiqueta, Marca } from "../../../lousa/Pecas";
 import { largura, Texto } from "../../../lousa/Texto";
 import { P } from "../paginas";
 import { S } from "../roteiro";
 
 const s = (t: number) => S("3229", t);
 
-/** Rótulo do capítulo no canto superior esquerdo da página. */
-export function Capitulo({ n, titulo, de }: { n: number; titulo: string; de: number }) {
-  return (
-    <>
-      <Etiqueta x={70 + (largura(`capítulo ${n} · ${titulo}`, 30) + 36) / 2} y={64} texto={`capítulo ${n} · ${titulo}`} tam={30} pad={18} preench={claro.cinza} hachura="solid" de={de} dur={0.4} />
-    </>
-  );
-}
+export { Capitulo };
 
 function PaginaEficiencia() {
   return (

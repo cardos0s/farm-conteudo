@@ -4,19 +4,22 @@ import "../../lousa/fontes";
 import { Lousa, vistaEm, type Enquadre } from "../../lousa/Lousa";
 import { FUNDO_LOUSA } from "../../lousa/paleta";
 import { useT } from "../../lousa/tempo";
-import { Camera, type ChaveModo } from "./Camera";
+import { Camera, type ChaveModo, type FonteAula } from "../comum/Camera";
 import { BigO } from "./cenas/BigO";
 import { Eficiencia } from "./cenas/Eficiencia";
 import { Intro } from "./cenas/Intro";
 import { ModeloRAM } from "./cenas/ModeloRAM";
 import { Encerramento, Sobreposicoes } from "./cenas/Sobreposicoes";
 import { P, todas } from "./paginas";
-import { S, pausas } from "./roteiro";
+import rostos from "./edicao/rostos.json";
+import { FPS, S, pausas, segmentos } from "./roteiro";
 
 // Aula 1 de Algoritmos e Estruturas de Dados: complexidade de algoritmos.
 // Vídeo 16:9 com a lousa no estilo Excalidraw e a câmera em tela cheia, dividida ou no canto.
 
 const c27 = (t: number) => S("3227", t);
+
+const aula: FonteAula = { fps: FPS, segmentos, rostos: rostos as unknown as FonteAula["rostos"], pasta: "aulas/complexidade" };
 
 /** Enquadramento da câmera ao longo do vídeo. */
 export const chaves: ChaveModo[] = [
@@ -75,7 +78,7 @@ export function AulaComplexidade() {
         <ModeloRAM />
         <BigO />
       </Lousa>
-      <Camera chaves={chaves} />
+      <Camera chaves={chaves} aula={aula} />
       <Sobreposicoes />
       <Encerramento />
     </AbsoluteFill>

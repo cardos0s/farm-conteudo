@@ -1,0 +1,226 @@
+{
+ "_doc": "Aula 2 (recursividade). Trechos mantidos de cada clipe, em segundos do arquivo original. IMG_3580 é a primeira tentativa da abertura e fica de fora. snapIn/snapOut = janela onde procurar o ponto mais silencioso. Pausas internas maiores que maxPausa são encurtadas. 'pausa' insere um respiro com tom de sala.",
+ "fps": 30,
+ "maxPausa": 0.5,
+ "pausaFinal": 0.28,
+ "trechos": [
+  {
+   "pausa": 1.2,
+   "tom": [
+    "3582",
+    78.95
+   ],
+   "nota": "abertura: título na lousa"
+  },
+  {
+   "clip": "3581",
+   "in": 1.3,
+   "out": 29.4,
+   "snapIn": [
+    1.2,
+    1.42
+   ],
+   "snapOut": [
+    29.22,
+    29.55
+   ],
+   "nota": "uma função pode chamar ela mesma? recursividade, quando parar"
+  },
+  {
+   "pausa": 0.6,
+   "tom": [
+    "3582",
+    31.9
+   ],
+   "nota": "capítulo: fatorial"
+  },
+  {
+   "clip": "3582",
+   "in": 1.45,
+   "out": 15.2,
+   "snapIn": [
+    1.35,
+    1.56
+   ],
+   "snapOut": [
+    15.05,
+    15.35
+   ],
+   "nota": "fatorial, vocês estão vendo essa função na minha tela (sai: e essa função diz...)"
+  },
+  {
+   "clip": "3582",
+   "in": 17.7,
+   "out": 69.6,
+   "snapIn": [
+    17.66,
+    17.76
+   ],
+   "snapOut": [
+    69.44,
+    69.75
+   ],
+   "nota": "fatorial de 4 desce e sobe, caso-base, passo recursivo, O(n)"
+  },
+  {
+   "pausa": 0.6,
+   "tom": [
+    "3582",
+    79.0
+   ],
+   "nota": "capítulo: Fibonacci"
+  },
+  {
+   "clip": "3582",
+   "in": 72.9,
+   "out": 75.5,
+   "snapIn": [
+    72.8,
+    72.97
+   ],
+   "snapOut": [
+    75.4,
+    75.68
+   ],
+   "nota": "O problema do Fibonacci é o seguinte (sai: agora a gente vai ter que imaginar que uma função...)"
+  },
+  {
+   "clip": "3583",
+   "in": 1.45,
+   "out": 51.6,
+   "snapIn": [
+    1.3,
+    1.6
+   ],
+   "snapOut": [
+    51.48,
+    51.9
+   ],
+   "nota": "duas chamadas, sequência, código, tá vendo essa função na minha tela?"
+  },
+  {
+   "clip": "3583",
+   "in": 52.45,
+   "out": 62.6,
+   "snapIn": [
+    52.4,
+    52.56
+   ],
+   "snapOut": [
+    62.48,
+    62.85
+   ],
+   "nota": "árvore de f(4) (sai: eu vou,)"
+  },
+  {
+   "clip": "3583",
+   "in": 66.8,
+   "out": 105.7,
+   "snapIn": [
+    66.7,
+    66.88
+   ],
+   "snapOut": [
+    105.59,
+    105.98
+   ],
+   "nota": "f(3), f(2), f(2) repetido, o problema é resolver o mesmo problema (sai: pra achar FG3 e FG2 / então acaba a alocação de memória)"
+  },
+  {
+   "pausa": 0.5,
+   "tom": [
+    "3583",
+    171.7
+   ],
+   "nota": "capítulo: Big O"
+  },
+  {
+   "clip": "3583",
+   "in": 110.55,
+   "out": 161.02,
+   "snapIn": [
+    110.45,
+    110.66
+   ],
+   "snapOut": [
+    160.98,
+    161.1
+   ],
+   "nota": "Big O, fatorial O(n), Fibonacci exponencial ... limite superior do seu tempo"
+  },
+  {
+   "clip": "3583",
+   "in": 167.05,
+   "out": 170.6,
+   "snapIn": [
+    166.9,
+    167.15
+   ],
+   "snapOut": [
+    170.44,
+    170.8
+   ],
+   "nota": "O de 2 elevado a N (sai: O de N com N elevado a N, O de 2)"
+  },
+  {
+   "clip": "3583",
+   "in": 173.3,
+   "out": 192.3,
+   "snapIn": [
+    173.2,
+    173.4
+   ],
+   "snapOut": [
+    192.12,
+    192.45
+   ],
+   "nota": "funciona para números pequenos, inviável para entradas maiores, quanto custa"
+  },
+  {
+   "clip": "3583",
+   "in": 195.4,
+   "out": 204.4,
+   "snapIn": [
+    195.3,
+    195.52
+   ],
+   "snapOut": [
+    204.24,
+    204.65
+   ],
+   "nota": "comparação visual O(n) x exponencial (sai: O de 2 N ao quadrado é um limite superior)"
+  },
+  {
+   "pausa": 0.45,
+   "tom": [
+    "3583",
+    206.2
+   ],
+   "nota": "capítulo: recapitulando"
+  },
+  {
+   "clip": "3583",
+   "in": 213.45,
+   "out": 261.5,
+   "snapIn": [
+    213.35,
+    213.58
+   ],
+   "snapOut": [
+    261.34,
+    261.75
+   ],
+   "nota": "recapitulação, exercício, próxima aula, valeu"
+  },
+  {
+   "pausa": 4.2,
+   "tom": [
+    "3583",
+    192.4
+   ],
+   "tomDur": 2.7,
+   "fadeOut": 1.4,
+   "nota": "encerramento: visão geral da lousa"
+  }
+ ]
+}

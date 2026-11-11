@@ -1,8 +1,14 @@
 # Aulas da comunidade: da gravação no celular ao vídeo com lousa
 
-Pipeline usado no vídeo **Algoritmos e Estruturas de Dados · Aula 1: Complexidade de algoritmos**
-(composição `AulaComplexidade` do Remotion). Os vídeos brutos e os renders não vão para o git:
-ficam numa pasta de trabalho fora do repositório e em `saida/`.
+Pipeline usado nos vídeos de **Algoritmos e Estruturas de Dados**:
+
+| Aula | Pasta (`remotion/aulas/…`) | Composição |
+|---|---|---|
+| 1 · Complexidade de algoritmos | `complexidade/` | `AulaComplexidade` |
+| 2 · Recursividade e complexidade | `recursividade/` | `AulaRecursividade` |
+
+Os vídeos brutos e os renders não vão para o git: ficam numa pasta de trabalho fora do repositório e em `saida/`.
+O passo a passo abaixo usa a aula 1 como exemplo; para outra aula, troque `complexidade` pelo nome da pasta.
 
 ## Requisitos
 
@@ -35,7 +41,7 @@ python3 scripts/aulas/rostos.py $P remotion/aulas/complexidade/edicao/rostos.jso
 
 # 7. Conferir no estúdio e renderizar (vídeo + voz)
 npm run estudio          # escolha a composição AulaComplexidade
-npm run render:aula
+npm run render:aula -- complexidade   # ou: recursividade
 ```
 
 ## Como a edição funciona
@@ -62,8 +68,13 @@ Os componentes ficam em `remotion/lousa/` e servem para qualquer aula:
 | `Texto` | texto manuscrito (Excalifont) que aparece letra a letra; `^{2}` sobrescrito, `*{palavra}` em destaque |
 | `Caixa`, `Etiqueta`, `Marca` | caixa com texto, etiqueta ajustada ao texto, marca-texto |
 | `Lousa`, `NaPagina`, `vistaEm` | canvas infinito com páginas; a câmera desliza entre elas |
+| `Codigo` | janela de editor com Python colorido, digitado caractere a caractere (fonte Cascadia Code) |
+| `Capitulo` | rótulo "capítulo n · título" no canto da página |
 
 Todos recebem `de` (segundo em que começam a ser desenhados), `dur` e, opcionalmente, `ate` (quando somem).
+
+O que é igual em toda aula fica em `remotion/aulas/comum/`: `Camera.tsx` (enquadramentos, recorte pelo
+rosto, PiP) e `roteiro.ts` (`criarRoteiro(edl)` devolve `S`, `pausas`, `FIM`… a partir do EDL da aula).
 
 ## Dicas que economizaram tempo
 

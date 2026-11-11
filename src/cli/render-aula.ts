@@ -5,12 +5,19 @@ import path from "node:path";
 import { bundle } from "@remotion/bundler";
 import { renderMedia, selectComposition } from "@remotion/renderer";
 
-// Renderiza a aula "Complexidade de algoritmos" (1920x1080) e junta com a voz já tratada.
-// Os vídeos 1440p dos clipes precisam estar em public/aulas/complexidade/ (ver scripts/aulas/README.md).
-// Uso: npm run render:aula -- [voz.wav] [saida.mp4]
+// Renderiza uma aula (1920x1080) e junta com a voz já tratada.
+// Os vídeos 1440p dos clipes precisam estar em public/aulas/<aula>/ (ver scripts/aulas/README.md).
+// Uso: npm run render:aula -- [aula] [voz.wav] [saida.mp4]     (aula: complexidade | recursividade)
 
-const voz = process.argv[2] ?? "saida/aulas/complexidade/voz.wav";
-const destino = process.argv[3] ?? "saida/aulas/complexidade/aula-1-complexidade.mp4";
+const AULAS: Record<string, { id: string; arquivo: string }> = {
+  complexidade: { id: "AulaComplexidade", arquivo: "aula-1-complexidade.mp4" },
+  recursividade: { id: "AulaRecursividade", arquivo: "aula-2-recursividade.mp4" },
+};
+const nome = process.argv[2] ?? "complexidade";
+const aula = AULAS[nome];
+if (!aula) throw new Error(`Aula desconhecida: "${nome}". Opções: ${Object.keys(AULAS).join(", ")}`);
+const voz = process.argv[3] ?? `saida/aulas/${nome}/voz.wav`;
+const destino = process.argv[4] ?? `saida/aulas/${nome}/${aula.arquivo}`;
 const soVideo = destino.replace(/\.mp4$/, "-sem-audio.mp4");
 const navegador = process.env.REMOTION_CHROME || null;
 
@@ -21,7 +28,7 @@ const serveUrl = await bundle({
   // os vídeos somam alguns GB: link simbólico em vez de copiar a pasta public a cada render
   symlinkPublicDir: true,
 });
-const composition = await selectComposition({ serveUrl, id: "AulaComplexidade", browserExecutable: navegador });
+const composition = await selectComposition({ serveUrl, id: aula.id, browserExecutable: navegador });
 
 const inicio = Date.now();
 let ultimo = -1;
