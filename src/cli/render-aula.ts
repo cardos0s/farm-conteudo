@@ -7,11 +7,12 @@ import { renderMedia, selectComposition } from "@remotion/renderer";
 
 // Renderiza uma aula (1920x1080) e junta com a voz já tratada.
 // Os vídeos 1440p dos clipes precisam estar em public/aulas/<aula>/ (ver scripts/aulas/README.md).
-// Uso: npm run render:aula -- [aula] [voz.wav] [saida.mp4]     (aula: complexidade | recursividade)
+// Uso: npm run render:aula -- [aula] [voz.wav] [saida.mp4]     (aula: complexidade | recursividade | agentes)
 
 const AULAS: Record<string, { id: string; arquivo: string }> = {
   complexidade: { id: "AulaComplexidade", arquivo: "aula-1-complexidade.mp4" },
   recursividade: { id: "AulaRecursividade", arquivo: "aula-2-recursividade.mp4" },
+  agentes: { id: "ReelAgentes", arquivo: "reel-orquestracao-de-agentes.mp4" },
 };
 const nome = process.argv[2] ?? "complexidade";
 const aula = AULAS[nome];

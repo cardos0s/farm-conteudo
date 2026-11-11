@@ -22,7 +22,10 @@ if not os.path.exists(modelo):
 W, H = 640, 360
 det = cv2.FaceDetectorYN.create(modelo, "", (W, H), score_threshold=0.6)
 trilhas = {}
-for caminho in sorted(glob.glob(os.path.join(pasta, "1440p", "*.mov"))):
+# ROSTOS_PASTA / ROSTOS_LARGURA: subpasta e largura dos vídeos (padrão: 1440p, 2560 px)
+SUBPASTA = os.environ.get("ROSTOS_PASTA", "1440p")
+LARGURA_FONTE = float(os.environ.get("ROSTOS_LARGURA", "2560"))
+for caminho in sorted(glob.glob(os.path.join(pasta, SUBPASTA, "*.mov"))):
     nome = os.path.basename(caminho).split(".")[0].replace("IMG_", "")
     proc = subprocess.Popen(["ffmpeg", "-v", "error", "-i", caminho, "-vf", f"fps=2,scale={W}:{H}", "-f", "rawvideo", "-pix_fmt", "bgr24", "-"],
                             stdout=subprocess.PIPE)
@@ -34,7 +37,7 @@ for caminho in sorted(glob.glob(os.path.join(pasta, "1440p", "*.mov"))):
         _, faces = det.detect(np.frombuffer(buf, np.uint8).reshape(H, W, 3))
         if faces is not None and len(faces):
             x, y, w, h = max(faces, key=lambda f: f[2] * f[3])[:4]
-            e = 2560 / W
+            e = LARGURA_FONTE / W
             linhas.append([(x + w / 2) * e, (y + h / 2) * e, max(w, h) * e])
         else:
             linhas.append([np.nan] * 3)

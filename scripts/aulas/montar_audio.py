@@ -50,7 +50,7 @@ subprocess.run(args + ["-filter_complex", ";".join(grafo), "-map", "[out]", "-c:
 
 CADEIA = ("pan=mono|c0=0.5*c0+0.5*c1,highpass=f=80,afftdn=nr=10:nf=-48:tn=1,"
           "acompressor=threshold=-24dB:ratio=2.5:attack=8:release=140:makeup=3dB")
-ALVO = -16.0  # LUFS
+ALVO = float(os.environ.get("ALVO_LUFS", "-16"))  # LUFS; Reels usam -14
 
 
 def loudness(arquivo, filtro):

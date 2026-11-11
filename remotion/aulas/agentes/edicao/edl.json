@@ -1,0 +1,226 @@
+{
+ "fps": 30,
+ "totalF": 4060,
+ "segmentos": [
+  {
+   "clip": "3604",
+   "inF": 34,
+   "outF": 162,
+   "nota": "o que é um agente, o problema da coordenação, orquestração e o fluxo; corta o \"enfim\" depois de \"o Codex\"",
+   "fadeIn": 0.008,
+   "trecho": 0,
+   "startF": 0,
+   "endF": 128
+  },
+  {
+   "clip": "3604",
+   "inF": 174,
+   "outF": 280,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 0,
+   "startF": 128,
+   "endF": 234
+  },
+  {
+   "clip": "3604",
+   "inF": 286,
+   "outF": 464,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 0,
+   "startF": 234,
+   "endF": 412
+  },
+  {
+   "clip": "3604",
+   "inF": 470,
+   "outF": 553,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 0,
+   "startF": 412,
+   "endF": 495
+  },
+  {
+   "clip": "3604",
+   "inF": 564,
+   "outF": 833,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 0,
+   "startF": 495,
+   "endF": 764
+  },
+  {
+   "clip": "3604",
+   "inF": 839,
+   "outF": 943,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 0,
+   "startF": 764,
+   "endF": 868
+  },
+  {
+   "clip": "3604",
+   "inF": 950,
+   "outF": 1084,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 0,
+   "startF": 868,
+   "endF": 1002
+  },
+  {
+   "clip": "3604",
+   "inF": 1097,
+   "outF": 1269,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 0,
+   "startF": 1002,
+   "endF": 1174
+  },
+  {
+   "clip": "3604",
+   "inF": 1276,
+   "outF": 1393,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 0,
+   "startF": 1174,
+   "endF": 1291
+  },
+  {
+   "clip": "3604",
+   "inF": 1419,
+   "outF": 1472,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 0,
+   "startF": 1291,
+   "endF": 1344
+  },
+  {
+   "clip": "3604",
+   "inF": 1483,
+   "outF": 1739,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 0,
+   "startF": 1344,
+   "endF": 1600
+  },
+  {
+   "clip": "3604",
+   "inF": 1752,
+   "outF": 2012,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 0,
+   "startF": 1600,
+   "endF": 1860
+  },
+  {
+   "clip": "3604",
+   "inF": 2030,
+   "outF": 2494,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 0,
+   "startF": 1860,
+   "endF": 2324
+  },
+  {
+   "clip": "3604",
+   "inF": 2535,
+   "outF": 2793,
+   "nota": "subagentes e modelos; termina em \"o agente,\" (o \"a sistema\" sai)",
+   "fadeIn": 0.008,
+   "trecho": 1,
+   "startF": 2324,
+   "endF": 2582
+  },
+  {
+   "clip": "3604",
+   "inF": 2829,
+   "outF": 3291,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 1,
+   "startF": 2582,
+   "endF": 3044
+  },
+  {
+   "clip": "3604",
+   "inF": 3302,
+   "outF": 3451,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 1,
+   "startF": 3044,
+   "endF": 3193
+  },
+  {
+   "clip": "3604",
+   "inF": 3465,
+   "outF": 3710,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 1,
+   "startF": 3193,
+   "endF": 3438
+  },
+  {
+   "clip": "3604",
+   "inF": 3738,
+   "outF": 3808,
+   "nota": "\"é a configuração...\", ferramentas e chamada para a comunidade; sobra 1,4 s para o encerramento",
+   "fadeIn": 0.008,
+   "trecho": 2,
+   "startF": 3438,
+   "endF": 3508
+  },
+  {
+   "clip": "3604",
+   "inF": 3817,
+   "outF": 3920,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 2,
+   "startF": 3508,
+   "endF": 3611
+  },
+  {
+   "clip": "3604",
+   "inF": 3926,
+   "outF": 3981,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 2,
+   "startF": 3611,
+   "endF": 3666
+  },
+  {
+   "clip": "3604",
+   "inF": 3990,
+   "outF": 4225,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 2,
+   "startF": 3666,
+   "endF": 3901
+  },
+  {
+   "clip": "3604",
+   "inF": 4248,
+   "outF": 4407,
+   "nota": "",
+   "fadeIn": 0.008,
+   "trecho": 2,
+   "startF": 3901,
+   "endF": 4060
+  }
+ ]
+}

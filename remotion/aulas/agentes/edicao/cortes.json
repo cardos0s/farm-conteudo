@@ -1,0 +1,37 @@
+{
+ "fps": 30,
+ "maxPausa": 0.4,
+ "pausaFinal": 0.22,
+ "trechos": [
+  {
+   "clip": "3604",
+   "in": 1.15,
+   "out": 83.15,
+   "nota": "o que é um agente, o problema da coordenação, orquestração e o fluxo; corta o \"enfim\" depois de \"o Codex\""
+  },
+  {
+   "clip": "3604",
+   "in": 84.6,
+   "out": 123.7,
+   "snapIn": [
+    84.4,
+    84.76
+   ],
+   "snapOut": [
+    123.65,
+    123.76
+   ],
+   "nota": "subagentes e modelos; termina em \"o agente,\" (o \"a sistema\" sai)"
+  },
+  {
+   "clip": "3604",
+   "in": 124.5,
+   "out": 146.9,
+   "snapIn": [
+    124.3,
+    124.6
+   ],
+   "nota": "\"é a configuração...\", ferramentas e chamada para a comunidade; sobra 1,4 s para o encerramento"
+  }
+ ]
+}
