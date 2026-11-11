@@ -24,7 +24,9 @@ export const chaves: ChaveModo[] = [
   { t: 0, modo: "surge" },
   { t: c81(1.3) - 0.08, modo: "cartao", dur: 0.35 },
   { t: c81(4.0), modo: "dividida", dur: 0.7 },
-  { t: pausas[1].de - 0.2, modo: "pip", dur: 0.7 },
+  // ela apresenta o fatorial olhando para a câmera; a lousa volta quando o título começa a ser escrito
+  { t: pausas[1].de - 0.2, modo: "cheia", dur: 0.7 },
+  { t: S("3582", 8.3), modo: "pip", dur: 0.7 },
   { t: S("3583", 253.0), modo: "cheia", dur: 0.6 },
   { t: pausas[5].de + 0.1, modo: "oculta", dur: 0.4 },
 ];
@@ -37,7 +39,7 @@ export const quadros: Enquadre[] = [
   { t: pausas[1].de + 0.3, pagina: P.fatorial },
   { t: S("3582", 39.9), pagina: P.conceitos },
   { t: pausas[2].de + 0.3, pagina: P.sequencia },
-  { t: S("3583", 52.6), pagina: P.arvore },
+  { t: S("3583", 53.0), pagina: P.arvore },
   { t: pausas[3].de + 0.3, pagina: P.bigo },
   { t: S("3583", 173.3), pagina: P.custo },
   { t: S("3583", 195.5), pagina: P.grafico },

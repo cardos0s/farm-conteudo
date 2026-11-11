@@ -76,8 +76,8 @@ function PaginaSequencia() {
       </Texto>
       {/* as duas chamadas recursivas, uma caixa para cada */}
       {[
-        [11, 27, 50.4],
-        [30, 46, 50.75],
+        [11, 27, 50.2],
+        [30, 46, 50.55],
       ].map(([c0, c1, t]) => {
         const x0 = colunaCodigo(cod.x, cod.tam, c0) - 8;
         const y0 = linhaCodigo(cod.y, cod.tam, 3) - cod.tam * 0.95;
@@ -107,7 +107,7 @@ function PaginaArvore() {
   const por = Object.fromEntries(nos.map((n) => [n.id, n]));
   return (
     <NaPagina p={P.arvore}>
-      <Texto x={960} y={125} tam={58} ancora="middle" de={s(53.3)} dur={1.0}>
+      <Texto x={960} y={125} tam={58} ancora="middle" de={s(53.6)} dur={1.0}>
         {"a árvore de chamadas de *{f(4)}"}
       </Texto>
       {nos.map((n) => {
