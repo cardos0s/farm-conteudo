@@ -7,9 +7,10 @@ import type { Segmento } from "../comum/roteiro";
 // Câmera do Reel vertical (1080x1920) a partir de um vídeo 3840x2160:
 //  - "rosto": a pessoa em tela cheia (recorte 9:16 que segue o rosto)
 //  - "painel": um painel embaixo, com barra de título como os terminais, e o canvas em cima
+//  - "pip": janelinha pequena no canto, com barra de título (a aula fica no canvas)
 //  - "oculta": some
 
-export type ModoV = "rosto" | "painel" | "oculta";
+export type ModoV = "rosto" | "painel" | "pip" | "oculta";
 export type ChaveV = { t: number; modo: ModoV; dur?: number };
 export type FonteVertical = { fps: number; segmentos: Segmento[]; rostos: Record<string, [number, number, number, number][]>; pasta: string };
 
@@ -18,10 +19,13 @@ const LH = 2160;
 
 type Caixa = { x: number; y: number; w: number; h: number; raio: number; alfa: number; barra: number };
 export const PAINEL: Caixa = { x: 40, y: 1124, w: 1000, h: 736, raio: 18, alfa: 1, barra: BARRA };
+/** Janelinha da câmera: abaixo do canvas, à esquerda (longe dos botões do Reels, à direita). */
+export const PIP: Caixa = { x: 40, y: 1196, w: 360, h: 300, raio: 16, alfa: 1, barra: 44 };
 const CAIXAS: Record<ModoV, Caixa> = {
   rosto: { x: 0, y: 0, w: 1080, h: 1920, raio: 0, alfa: 1, barra: 0 },
   painel: PAINEL,
-  oculta: { ...PAINEL, alfa: 0 },
+  pip: PIP,
+  oculta: { ...PIP, alfa: 0 },
 };
 
 type Ret = { x: number; y: number; w: number; h: number };
@@ -69,7 +73,7 @@ function recorteDo(aula: FonteVertical, modo: ModoV, clip: string, t: number, zo
     const w = h * aspecto;
     return dentro({ x: f.cx - w / 2, y: f.cy - h * 0.36, w, h });
   }
-  const h = prender(f.s * 2.05, 950, LH) / zoom;
+  const h = prender(f.s * (modo === "pip" ? 2.2 : 2.05), 950, LH) / zoom;
   const w = h * aspecto;
   return dentro({ x: f.cx - w / 2, y: f.cy - h * 0.42, w, h });
 }
@@ -91,7 +95,7 @@ function Trecho({ aula, seg, chaves }: { aula: FonteVertical; seg: Segmento; cha
   const r = mistura(recorteDo(aula, de, seg.clip, tSrc, zoom), recorteDo(aula, para, seg.clip, tSrc, zoom), p);
   const hv = c.h - c.barra;
   const escala = Math.max(c.w / r.w, hv / r.h);
-  const ehPainel = prender(c.barra / BARRA, 0, 1);
+  const ehPainel = prender(c.barra / 40, 0, 1);
   return (
     <div
       style={{
