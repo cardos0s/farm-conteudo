@@ -72,3 +72,21 @@ Todos recebem `de` (segundo em que começam a ser desenhados), `dur` e, opcional
   resolveu (foi assim que apareceram as instruções da CPU e o "merge sort").
 - Para conferir um corte sem ouvir, transcreva 2 s antes e depois da emenda no áudio final: palavra
   mordida aparece como palavra faltando ou trocada.
+
+## Aula sem gravação: narração sintética (Aula 2, LLM as a Judge)
+
+Para aulas que ainda não foram gravadas, `narrar.py` gera uma voz provisória com o Piper (roda local,
+voz `pt_BR-cadu-medium`, baixada uma vez para `~/.cache/piper`):
+
+```bash
+pip install piper-tts
+python3 scripts/aulas/narrar.py remotion/aulas/llm-juiz/narracao saida/aulas/llm-juiz/voz.wav
+npm run render:aula -- llm-juiz
+```
+
+- **`falas.json`** tem o texto narrado, fala por fala, com a pausa depois de cada uma. O texto é escrito
+  para o sintetizador: "Python" vira "Páiton", "colega" vira "colêga" e "LLM" vira "L L M,".
+  Para conferir a pronúncia sem ouvir, transcreva o `voz.wav` com o Whisper e procure palavras trocadas.
+- **`tempos.json`** (gerado) guarda o início e o fim de cada fala. Na lousa, `F("g2")` é o início da fala
+  g2 e `W("g2", "ligação")` o instante aproximado da palavra. Se a aula for gravada com voz real depois,
+  basta gerar um `tempos.json` com os mesmos ids e os desenhos continuam sincronizados.

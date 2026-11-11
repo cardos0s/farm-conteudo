@@ -1,0 +1,246 @@
+{
+ "voz": "pt_BR-cadu-medium",
+ "total": 194.204,
+ "falas": {
+  "a1": {
+   "de": 1.4,
+   "ate": 2.689,
+   "texto": "Aula dois."
+  },
+  "a2": {
+   "de": 3.139,
+   "ate": 5.437,
+   "texto": "L L M como juiz."
+  },
+  "a3": {
+   "de": 5.837,
+   "ate": 10.04,
+   "texto": "Como avaliar agentes de inteligência artificial com evidências e métricas."
+  },
+  "g1": {
+   "de": 11.34,
+   "ate": 14.939,
+   "texto": "Imagina que você construiu um agente de inteligência artificial."
+  },
+  "g2": {
+   "de": 15.339,
+   "ate": 21.69,
+   "texto": "Ele recebe a transcrição de uma ligação de vendas, lê tudo, e escreve um resumo para o time comercial."
+  },
+  "g3": {
+   "de": 22.29,
+   "ate": 24.798,
+   "texto": "Você testa com três ligações."
+  },
+  "g4": {
+   "de": 25.098,
+   "ate": 31.077,
+   "texto": "Os resumos ficam lindos: bem escritos, organizados, com as próximas tarefas no final."
+  },
+  "g5": {
+   "de": 31.477,
+   "ate": 34.53,
+   "texto": "Você mostra para o seu chefe, e ele adora."
+  },
+  "p1": {
+   "de": 35.73,
+   "ate": 38.076,
+   "texto": "Agora, eu te faço uma pergunta."
+  },
+  "p2": {
+   "de": 38.576,
+   "ate": 41.838,
+   "texto": "Como você prova que esse agente está fazendo o que deveria?"
+  },
+  "p3": {
+   "de": 42.638,
+   "ate": 45.738,
+   "texto": "E não vale responder: eu li, e achei bom."
+  },
+  "p5": {
+   "de": 46.438,
+   "ate": 50.478,
+   "texto": "Ele está pegando todas as tarefas que foram combinadas na ligação?"
+  },
+  "p6": {
+   "de": 50.978,
+   "ate": 54.287,
+   "texto": "Ele está inventando algum desconto que ninguém ofereceu?"
+  },
+  "p7": {
+   "de": 54.787,
+   "ate": 60.905,
+   "texto": "E quando você mudar as instruções dele, semana que vem, como vai saber se ele melhorou, ou piorou?"
+  },
+  "r1": {
+   "de": 62.105,
+   "ate": 64.578,
+   "texto": "É isso que a gente vai resolver nesta aula."
+  },
+  "r2": {
+   "de": 64.978,
+   "ate": 69.03,
+   "texto": "No final, você vai ter um avaliador funcionando, em Páiton,"
+  },
+  "r3": {
+   "de": 69.23,
+   "ate": 71.866,
+   "texto": "que responde essas perguntas com prova,"
+  },
+  "r4": {
+   "de": 72.116,
+   "ate": 73.381,
+   "texto": "e com número."
+  },
+  "f1": {
+   "de": 74.581,
+   "ate": 78.296,
+   "texto": "E tudo começa com uma frase, que eu quero que você leve daqui:"
+  },
+  "f2": {
+   "de": 78.796,
+   "ate": 80.294,
+   "texto": "parecer certo"
+  },
+  "f3": {
+   "de": 80.644,
+   "ate": 83.14,
+   "texto": "não é a mesma coisa que estar certo."
+  },
+  "l1": {
+   "de": 84.54,
+   "ate": 88.012,
+   "texto": "Antes de avaliar, vamos alinhar o que a gente está avaliando."
+  },
+  "l3": {
+   "de": 88.612,
+   "ate": 93.975,
+   "texto": "L L M, é a sigla, em inglês, para: grande modelo de linguagem."
+  },
+  "l4": {
+   "de": 94.375,
+   "ate": 99.774,
+   "texto": "É o tipo de programa que está por trás dos assistentes de inteligência artificial que você já usa."
+  },
+  "l5": {
+   "de": 100.274,
+   "ate": 106.926,
+   "texto": "Ele foi treinado lendo uma quantidade enorme de texto: livros, sites, documentos, conversas."
+  },
+  "l6": {
+   "de": 107.326,
+   "ate": 110.763,
+   "texto": "E, com isso, aprendeu a fazer uma coisa muito bem:"
+  },
+  "l7": {
+   "de": 110.963,
+   "ate": 113.657,
+   "texto": "prever qual é a próxima palavra mais provável."
+  },
+  "x1": {
+   "de": 114.757,
+   "ate": 116.034,
+   "texto": "Por exemplo."
+  },
+  "x2": {
+   "de": 116.334,
+   "ate": 118.853,
+   "texto": "O plano anual tem dez por cento de"
+  },
+  "x3": {
+   "de": 119.853,
+   "ate": 122.535,
+   "texto": "A palavra mais provável é: desconto."
+  },
+  "x4": {
+   "de": 123.035,
+   "ate": 127.04,
+   "texto": "Depois, ele prevê a próxima, e a próxima, e a próxima."
+  },
+  "x5": {
+   "de": 127.34,
+   "ate": 130.719,
+   "texto": "Palavra por palavra, ele escreve um texto inteiro."
+  },
+  "x6": {
+   "de": 131.219,
+   "ate": 136.49,
+   "texto": "É o autocompletar do celular. Só que gigantesco, e muito, muito melhor."
+  },
+  "c1": {
+   "de": 137.69,
+   "ate": 140.314,
+   "texto": "E isso tem uma consequência importante."
+  },
+  "c2": {
+   "de": 140.814,
+   "ate": 143.983,
+   "texto": "O modelo escreve com a mesma confiança quando acerta,"
+  },
+  "c3": {
+   "de": 144.183,
+   "ate": 145.542,
+   "texto": "e quando erra."
+  },
+  "c4": {
+   "de": 146.142,
+   "ate": 148.115,
+   "texto": "Olha essas duas frases."
+  },
+  "c5": {
+   "de": 148.415,
+   "ate": 151.678,
+   "texto": "Uma está certa. A outra está errada."
+  },
+  "c6": {
+   "de": 151.978,
+   "ate": 154.683,
+   "texto": "E as duas têm exatamente a mesma cara."
+  },
+  "c7": {
+   "de": 155.283,
+   "ate": 159.625,
+   "texto": "O modelo não tem uma luz vermelha que acende quando ele não sabe a resposta."
+  },
+  "h1": {
+   "de": 160.825,
+   "ate": 166.351,
+   "texto": "Quando o modelo inventa um dado com cara de verdadeiro, a gente chama isso de: alucinação."
+  },
+  "h2": {
+   "de": 166.951,
+   "ate": 171.259,
+   "texto": "E o perigo da alucinação é justamente esse: ela é bem escrita."
+  },
+  "k1": {
+   "de": 172.259,
+   "ate": 175.428,
+   "texto": "Sabe aquele colêga que responde tudo com a voz firme?"
+  },
+  "k2": {
+   "de": 175.828,
+   "ate": 177.686,
+   "texto": "Às vezes ele sabe."
+  },
+  "k3": {
+   "de": 177.986,
+   "ate": 180.052,
+   "texto": "Às vezes, não sabe."
+  },
+  "k4": {
+   "de": 180.452,
+   "ate": 182.565,
+   "texto": "Mas a voz é sempre a mesma."
+  },
+  "k5": {
+   "de": 183.565,
+   "ate": 187.547,
+   "texto": "Por isso, a gente não pode avaliar um agente pela cara da resposta."
+  },
+  "k6": {
+   "de": 187.847,
+   "ate": 190.204,
+   "texto": "A gente precisa de um jeito de conferir."
+  }
+ }
+}

@@ -5,12 +5,19 @@ import path from "node:path";
 import { bundle } from "@remotion/bundler";
 import { renderMedia, selectComposition } from "@remotion/renderer";
 
-// Renderiza a aula "Complexidade de algoritmos" (1920x1080) e junta com a voz já tratada.
-// Os vídeos 1440p dos clipes precisam estar em public/aulas/complexidade/ (ver scripts/aulas/README.md).
-// Uso: npm run render:aula -- [voz.wav] [saida.mp4]
+// Renderiza uma aula da comunidade (1920x1080) e junta com a voz já tratada.
+// - complexidade: os vídeos 1440p dos clipes precisam estar em public/aulas/complexidade/ (ver scripts/aulas/README.md).
+// - llm-juiz: a voz vem de scripts/aulas/narrar.py.
+// Uso: npm run render:aula -- [aula] [voz.wav] [saida.mp4]
 
-const voz = process.argv[2] ?? "saida/aulas/complexidade/voz.wav";
-const destino = process.argv[3] ?? "saida/aulas/complexidade/aula-1-complexidade.mp4";
+const AULAS: Record<string, { id: string; voz: string; destino: string }> = {
+  complexidade: { id: "AulaComplexidade", voz: "saida/aulas/complexidade/voz.wav", destino: "saida/aulas/complexidade/aula-1-complexidade.mp4" },
+  "llm-juiz": { id: "AulaLlmJuiz", voz: "saida/aulas/llm-juiz/voz.wav", destino: "saida/aulas/llm-juiz/aula-2-llm-juiz.mp4" },
+};
+const args = process.argv.slice(2);
+const aula = AULAS[args[0]] ? AULAS[args.shift()!] : AULAS.complexidade;
+const voz = args[0] ?? aula.voz;
+const destino = args[1] ?? aula.destino;
 const soVideo = destino.replace(/\.mp4$/, "-sem-audio.mp4");
 const navegador = process.env.REMOTION_CHROME || null;
 
@@ -21,7 +28,7 @@ const serveUrl = await bundle({
   // os vídeos somam alguns GB: link simbólico em vez de copiar a pasta public a cada render
   symlinkPublicDir: true,
 });
-const composition = await selectComposition({ serveUrl, id: "AulaComplexidade", browserExecutable: navegador });
+const composition = await selectComposition({ serveUrl, id: aula.id, browserExecutable: navegador });
 
 const inicio = Date.now();
 let ultimo = -1;

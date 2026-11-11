@@ -132,7 +132,15 @@ Além dos Reels automáticos, o projeto monta aulas gravadas no celular: junta o
 npm run render:aula
 ```
 
-Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/complexidade/`. O passo a passo completo (baixar do Drive, converter o HDR do iPhone, transcrever, cortar, renderizar) está em `scripts/aulas/README.md`; os componentes da lousa ficam em `remotion/lousa/`.
+Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/complexidade/`.
+
+```bash
+npm run render:aula -- llm-juiz
+```
+
+Renderiza o trecho inicial (3 min) da **Aula 2: LLM as a Judge**, só lousa e narração, em `saida/aulas/llm-juiz/`.
+A voz é provisória, sintetizada localmente com o Piper (`python3 scripts/aulas/narrar.py remotion/aulas/llm-juiz/narracao saida/aulas/llm-juiz/voz.wav`, depois de `pip install piper-tts`).
+O texto narrado fica em `remotion/aulas/llm-juiz/narracao/falas.json`, e a lousa se sincroniza pelos ids das falas. O passo a passo completo (baixar do Drive, converter o HDR do iPhone, transcrever, cortar, renderizar) está em `scripts/aulas/README.md`; os componentes da lousa ficam em `remotion/lousa/`.
 
 ### Aula 2: LLM as a Judge (roteiro e material)
 

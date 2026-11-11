@@ -1,0 +1,247 @@
+{
+  "voz": "pt_BR-cadu-medium",
+  "velocidade": 1.0,
+  "inicio": 1.4,
+  "falas": [
+    {
+      "id": "a1",
+      "texto": "Aula dois.",
+      "pausa": 0.45
+    },
+    {
+      "id": "a2",
+      "texto": "L L M como juiz.",
+      "pausa": 0.4
+    },
+    {
+      "id": "a3",
+      "texto": "Como avaliar agentes de inteligência artificial com evidências e métricas.",
+      "pausa": 1.3
+    },
+    {
+      "id": "g1",
+      "texto": "Imagina que você construiu um agente de inteligência artificial.",
+      "pausa": 0.4
+    },
+    {
+      "id": "g2",
+      "texto": "Ele recebe a transcrição de uma ligação de vendas, lê tudo, e escreve um resumo para o time comercial.",
+      "pausa": 0.6
+    },
+    {
+      "id": "g3",
+      "texto": "Você testa com três ligações.",
+      "pausa": 0.3
+    },
+    {
+      "id": "g4",
+      "texto": "Os resumos ficam lindos: bem escritos, organizados, com as próximas tarefas no final.",
+      "pausa": 0.4
+    },
+    {
+      "id": "g5",
+      "texto": "Você mostra para o seu chefe, e ele adora.",
+      "pausa": 1.2
+    },
+    {
+      "id": "p1",
+      "texto": "Agora, eu te faço uma pergunta.",
+      "pausa": 0.5
+    },
+    {
+      "id": "p2",
+      "texto": "Como você prova que esse agente está fazendo o que deveria?",
+      "pausa": 0.8
+    },
+    {
+      "id": "p3",
+      "texto": "E não vale responder: eu li, e achei bom.",
+      "pausa": 0.7
+    },
+    {
+      "id": "p5",
+      "texto": "Ele está pegando todas as tarefas que foram combinadas na ligação?",
+      "pausa": 0.5
+    },
+    {
+      "id": "p6",
+      "texto": "Ele está inventando algum desconto que ninguém ofereceu?",
+      "pausa": 0.5
+    },
+    {
+      "id": "p7",
+      "texto": "E quando você mudar as instruções dele, semana que vem, como vai saber se ele melhorou, ou piorou?",
+      "pausa": 1.2
+    },
+    {
+      "id": "r1",
+      "texto": "É isso que a gente vai resolver nesta aula.",
+      "pausa": 0.4
+    },
+    {
+      "id": "r2",
+      "texto": "No final, você vai ter um avaliador funcionando, em Páiton,",
+      "pausa": 0.2
+    },
+    {
+      "id": "r3",
+      "texto": "que responde essas perguntas com prova,",
+      "pausa": 0.25
+    },
+    {
+      "id": "r4",
+      "texto": "e com número.",
+      "pausa": 1.2
+    },
+    {
+      "id": "f1",
+      "texto": "E tudo começa com uma frase, que eu quero que você leve daqui:",
+      "pausa": 0.5
+    },
+    {
+      "id": "f2",
+      "texto": "parecer certo",
+      "pausa": 0.35
+    },
+    {
+      "id": "f3",
+      "texto": "não é a mesma coisa que estar certo.",
+      "pausa": 1.4
+    },
+    {
+      "id": "l1",
+      "texto": "Antes de avaliar, vamos alinhar o que a gente está avaliando.",
+      "pausa": 0.6
+    },
+    {
+      "id": "l3",
+      "texto": "L L M, é a sigla, em inglês, para: grande modelo de linguagem.",
+      "pausa": 0.4
+    },
+    {
+      "id": "l4",
+      "texto": "É o tipo de programa que está por trás dos assistentes de inteligência artificial que você já usa.",
+      "pausa": 0.5
+    },
+    {
+      "id": "l5",
+      "texto": "Ele foi treinado lendo uma quantidade enorme de texto: livros, sites, documentos, conversas.",
+      "pausa": 0.4
+    },
+    {
+      "id": "l6",
+      "texto": "E, com isso, aprendeu a fazer uma coisa muito bem:",
+      "pausa": 0.2
+    },
+    {
+      "id": "l7",
+      "texto": "prever qual é a próxima palavra mais provável.",
+      "pausa": 1.1
+    },
+    {
+      "id": "x1",
+      "texto": "Por exemplo.",
+      "pausa": 0.3
+    },
+    {
+      "id": "x2",
+      "texto": "O plano anual tem dez por cento de",
+      "pausa": 1.0
+    },
+    {
+      "id": "x3",
+      "texto": "A palavra mais provável é: desconto.",
+      "pausa": 0.5
+    },
+    {
+      "id": "x4",
+      "texto": "Depois, ele prevê a próxima, e a próxima, e a próxima.",
+      "pausa": 0.3
+    },
+    {
+      "id": "x5",
+      "texto": "Palavra por palavra, ele escreve um texto inteiro.",
+      "pausa": 0.5
+    },
+    {
+      "id": "x6",
+      "texto": "É o autocompletar do celular. Só que gigantesco, e muito, muito melhor.",
+      "pausa": 1.2
+    },
+    {
+      "id": "c1",
+      "texto": "E isso tem uma consequência importante.",
+      "pausa": 0.5
+    },
+    {
+      "id": "c2",
+      "texto": "O modelo escreve com a mesma confiança quando acerta,",
+      "pausa": 0.2
+    },
+    {
+      "id": "c3",
+      "texto": "e quando erra.",
+      "pausa": 0.6
+    },
+    {
+      "id": "c4",
+      "texto": "Olha essas duas frases.",
+      "pausa": 0.3
+    },
+    {
+      "id": "c5",
+      "texto": "Uma está certa. A outra está errada.",
+      "pausa": 0.3
+    },
+    {
+      "id": "c6",
+      "texto": "E as duas têm exatamente a mesma cara.",
+      "pausa": 0.6
+    },
+    {
+      "id": "c7",
+      "texto": "O modelo não tem uma luz vermelha que acende quando ele não sabe a resposta.",
+      "pausa": 1.2
+    },
+    {
+      "id": "h1",
+      "texto": "Quando o modelo inventa um dado com cara de verdadeiro, a gente chama isso de: alucinação.",
+      "pausa": 0.6
+    },
+    {
+      "id": "h2",
+      "texto": "E o perigo da alucinação é justamente esse: ela é bem escrita.",
+      "pausa": 1.0
+    },
+    {
+      "id": "k1",
+      "texto": "Sabe aquele colêga que responde tudo com a voz firme?",
+      "pausa": 0.4
+    },
+    {
+      "id": "k2",
+      "texto": "Às vezes ele sabe.",
+      "pausa": 0.3
+    },
+    {
+      "id": "k3",
+      "texto": "Às vezes, não sabe.",
+      "pausa": 0.4
+    },
+    {
+      "id": "k4",
+      "texto": "Mas a voz é sempre a mesma.",
+      "pausa": 1.0
+    },
+    {
+      "id": "k5",
+      "texto": "Por isso, a gente não pode avaliar um agente pela cara da resposta.",
+      "pausa": 0.3
+    },
+    {
+      "id": "k6",
+      "texto": "A gente precisa de um jeito de conferir.",
+      "pausa": 4.0
+    }
+  ]
+}
