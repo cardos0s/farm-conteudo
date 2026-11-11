@@ -1,0 +1,68 @@
+/* Estilo dos PDFs da Aula 2 (apostila e roteiro de gravação), no visual da lousa do Excalidraw. */
+@font-face { font-family: "Excalifont"; src: url("../../../../public/fontes/Excalifont-Regular.woff2"); }
+@font-face { font-family: "Comic Shanns"; src: url("../../../../public/fontes/ComicShanns-Regular.woff2"); }
+@font-face { font-family: "Inter"; font-weight: 400; src: url("../../../../node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2"); }
+@font-face { font-family: "Inter"; font-weight: 400; font-style: italic; src: url("../../../../node_modules/@fontsource/inter/files/inter-latin-400-italic.woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("../../../../node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("../../../../node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2"); }
+
+:root {
+  --tinta: #1e1e1e; --cinza: #868e96; --azul: #1971c2; --vermelho: #e03131; --verde: #2f9e44; --laranja: #f08c00; --violeta: #6741d9;
+  --c-azul: #e7f5ff; --c-amarelo: #fff9db; --c-verde: #ebfbee; --c-vermelho: #fff5f5; --c-violeta: #f3f0ff; --c-cinza: #f8f9fa;
+}
+@page { size: A4; margin: 17mm 17mm 20mm 17mm; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: "Inter", sans-serif; font-size: 10.4pt; line-height: 1.58; color: var(--tinta); margin: 0; background: #fff; }
+h1, h2, h3, .mao { font-family: "Excalifont", "Inter", sans-serif; font-weight: 400; }
+h1 { font-size: 27pt; line-height: 1.15; margin: 0 0 6mm; break-before: page; }
+h1 .num { color: var(--azul); margin-right: 3mm; }
+h2 { font-size: 17pt; margin: 7mm 0 2.5mm; break-after: avoid; }
+h3 { font-size: 13pt; margin: 5mm 0 1.5mm; break-after: avoid; color: var(--azul); }
+p { margin: 0 0 2.6mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+strong { font-weight: 600; }
+em { color: #343a40; }
+.destaque { color: var(--vermelho); }
+.cinza { color: var(--cinza); }
+code { font-family: "Comic Shanns", monospace; font-size: 9pt; background: var(--c-cinza); padding: 0 1.2mm; border-radius: 1.2mm; }
+pre { font-family: "Comic Shanns", monospace; font-size: 8.6pt; line-height: 1.5; background: #fff; border: 1.6px solid var(--tinta);
+      border-radius: 3mm; padding: 3.2mm 4mm; margin: 2mm 0 4mm; white-space: pre-wrap; break-inside: avoid; }
+pre .k { color: var(--violeta); } pre .s { color: var(--verde); } pre .n { color: var(--laranja); } pre .c { color: var(--cinza); } pre .f { color: var(--azul); }
+pre .m { background: #fff3bf; }
+.arq { display: inline-block; font-family: "Comic Shanns", monospace; font-size: 8pt; color: var(--cinza); background: var(--c-cinza);
+       border: 1.2px solid #ced4da; border-bottom: 0; border-radius: 1.5mm 1.5mm 0 0; padding: 0.4mm 2.5mm; margin: 2mm 0 -2mm 4mm; }
+
+.caixa { border: 1.6px solid var(--tinta); border-radius: 3mm; padding: 3mm 4.5mm; margin: 3mm 0 4mm; break-inside: avoid; }
+.caixa .rotulo { font-family: "Excalifont", sans-serif; font-size: 12.5pt; display: block; margin-bottom: 1mm; }
+.analogia { background: var(--c-amarelo); } .analogia .rotulo { color: var(--laranja); }
+.chave { background: var(--c-azul); } .chave .rotulo { color: var(--azul); }
+.atencao { background: var(--c-vermelho); } .atencao .rotulo { color: var(--vermelho); }
+.pratica { background: var(--c-verde); } .pratica .rotulo { color: var(--verde); }
+.caixa p:last-child, .caixa ul:last-child { margin-bottom: 0; }
+
+table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm; font-size: 9.6pt; break-inside: avoid; }
+th, td { border: 1.2px solid #adb5bd; padding: 1.6mm 2.4mm; vertical-align: top; text-align: left; }
+th { background: var(--c-cinza); font-weight: 600; }
+
+figure { margin: 3mm 0 4.5mm; break-inside: avoid; text-align: center; }
+figure img { width: 100%; border: 1.4px solid #ced4da; border-radius: 3mm; }
+figure.meia img { width: 72%; }
+figcaption { font-size: 8.6pt; color: var(--cinza); margin-top: 1.2mm; }
+
+.capa { height: 255mm; display: flex; flex-direction: column; justify-content: center; text-align: center; }
+.capa .etiqueta { font-family: "Excalifont"; display: inline-block; margin: 0 auto 6mm; background: #ffec99; border: 1.6px solid var(--tinta); border-radius: 3mm; padding: 1mm 5mm; font-size: 14pt; }
+.capa h1 { break-before: auto; font-size: 44pt; margin-bottom: 2mm; }
+.capa .sub { font-family: "Excalifont"; font-size: 17pt; margin-bottom: 9mm; }
+.capa .sub b { color: var(--vermelho); font-weight: 400; }
+.capa img { width: 82%; margin: 0 auto; border: 1.4px solid #ced4da; border-radius: 3mm; }
+.capa .rodape { margin-top: 9mm; color: var(--cinza); font-size: 9.5pt; }
+
+.sumario ol { list-style: none; padding: 0; columns: 2; column-gap: 10mm; }
+.sumario li { font-size: 10.5pt; margin-bottom: 2mm; break-inside: avoid; }
+.sumario li b { font-family: "Excalifont"; color: var(--azul); font-weight: 400; font-size: 13pt; margin-right: 2mm; }
+
+.duas { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+.perguntas li { margin-bottom: 2.4mm; }
+.resposta { color: #495057; font-size: 9.6pt; }

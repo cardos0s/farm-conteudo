@@ -72,3 +72,18 @@ Os relatórios de cada rodada vão para `relatorios/` (fora do git).
 4. Script de cálculo e comparação de scores: `score.py`.
 5. Três casos de teste com resultados esperados: `casos/esperado.json`.
 6. Desafio: `DESAFIO.md`.
+
+## PDFs para estudar e gravar
+
+- **`pdf/LLM-as-a-Judge-apostila.pdf`**: o conteúdo da aula explicado do zero, com analogias, o código
+  comentado, glossário, perguntas frequentes e um "teste-se" com respostas.
+- **`pdf/LLM-as-a-Judge-roteiro-de-gravacao.pdf`**: o texto de cada seção da narração (um arquivo de áudio
+  por seção), com o tempo estimado, a página da lousa que aparece e o que entender antes de gravar.
+
+Para gerar de novo (depois de mudar a narração ou a lousa), a partir da raiz do repositório:
+
+```bash
+npm run miniaturas:aula
+python3 aulas/llm-como-juiz/pdf/fonte/gerar_roteiro.py
+node aulas/llm-como-juiz/pdf/fonte/gerar_pdf.mjs
+```
