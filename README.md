@@ -134,6 +134,24 @@ npm run render:aula
 
 Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/complexidade/`. O passo a passo completo (baixar do Drive, converter o HDR do iPhone, transcrever, cortar, renderizar) está em `scripts/aulas/README.md`; os componentes da lousa ficam em `remotion/lousa/`.
 
+## Explica, Mente! (animação 3D)
+
+Vídeos curtos em desenho 3D que mostram situações reais de clínica, para divulgar o app de clínicas. O primeiro episódio é o do tênis (terapia ocupacional), 1080×1920, 40 s.
+
+```bash
+npm run render:explica
+```
+
+Renderiza em `saida/explica-mente/explica-mente-tenis.mp4`. Sem locução o vídeo sai mudo, só com as legendas; para incluir a voz, salve o áudio em `saida/explica-mente/locucao.wav` (ou passe o caminho: `npm run render:explica -- minha-voz.wav`).
+
+- **Falas, narração e tempos**: `remotion/explica-mente/roteiro.ts`. As legendas e as bocas dos personagens seguem essa lista; ao gravar a locução, ajuste `de` e `ate` de cada fala.
+- **Movimentos e câmeras**: `remotion/explica-mente/coreografia.ts`, uma função por bloco do roteiro.
+- **Personagens, tênis e sala**: `Boneco.tsx`, `Tenis.tsx` e `Cenario.tsx`, feitos de formas simples do Three.js (sem modelos externos).
+- **Marca na tela final**: `Final` em `Legendas.tsx`. A marca de lá é provisória; troque pela logo oficial.
+- **Conferir quadros sem renderizar tudo**: `scripts/explica-mente/folha.sh saida/folha.jpg 6 0 60 130 300` monta uma folha de contato com os quadros pedidos.
+
+O render usa WebGL por software (`swangle`), então funciona em servidor sem placa de vídeo. Numa máquina com GPU, `REMOTION_GL=angle` deixa mais rápido.
+
 ## Estrutura
 
 ```
@@ -141,6 +159,7 @@ verticais/          uma configuração por app (fontes, tom, regras, cores, volu
 remotion/           templates de vídeo: cenas, elemento de cada marca, fontes
 remotion/lousa/     lousa no estilo Excalidraw (formas à mão, texto manuscrito, canvas infinito)
 remotion/aulas/     aulas da comunidade (cenas, cortes e EDL de cada aula)
+remotion/explica-mente/  animação 3D do Explica, Mente! (personagens, cenário, coreografia, legendas)
 scripts/aulas/      pipeline das aulas: Drive, HDR→SDR, transcrição, cortes, voz, rosto
 src/coleta/         RSS e APIs de dados
 src/agentes/        editor, redator, revisor e editor da newsletter (Claude)
