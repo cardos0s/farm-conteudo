@@ -1,14 +1,19 @@
 import { execFileSync } from "node:child_process";
 import { readdirSync } from "node:fs";
 import path from "node:path";
-import { FALAS, FPS, TOTAL_QUADROS } from "../../remotion/explica-mente/roteiro";
+import * as tenis from "../../remotion/explica-mente/roteiro";
+import * as tarefa from "../../remotion/explica-mente/tarefa/roteiro";
 
 // Junta os áudios das falas (um arquivo por fala) numa locução única, cada um no tempo da sua legenda.
 // Nome dos arquivos: o número da fala (01.mp3, 02.mp3 ...) ou um intervalo gravado de uma vez (04-08.mp3).
-// Uso: npx tsx scripts/explica-mente/montar_locucao.ts [pasta-dos-audios] [saida.wav]
+// Uso: npx tsx scripts/explica-mente/montar_locucao.ts [tenis|tarefa] [pasta-dos-audios] [saida.wav]
 
-const pasta = process.argv[2] ?? "saida/explica-mente/vozes";
-const saida = process.argv[3] ?? "saida/explica-mente/locucao.wav";
+const nome = process.argv[2] ?? "tenis";
+const roteiro = { tenis, tarefa }[nome];
+if (!roteiro) throw new Error(`Vídeo desconhecido: "${nome}". Opções: tenis, tarefa`);
+const { FALAS, FPS, TOTAL_QUADROS } = roteiro;
+const pasta = process.argv[3] ?? `saida/explica-mente/${nome}/vozes`;
+const saida = process.argv[4] ?? `saida/explica-mente/${nome}/locucao.wav`;
 
 const clipes = readdirSync(pasta)
   .map((nome) => ({ nome, m: nome.match(/^(\d+)(?:-(\d+))?\.(mp3|wav|m4a|ogg)$/i) }))

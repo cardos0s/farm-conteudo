@@ -14,8 +14,8 @@ const QUEM: Record<Fala["quem"], { nome: string; cor: string } | null> = {
 };
 
 /** Legenda da fala ou da narração do momento, acima da faixa de botões do Instagram. */
-export const Legenda: React.FC<{ f: number }> = ({ f }) => {
-  const fl = FALAS.find((x) => f >= x.de && f < x.ate);
+export const Legenda: React.FC<{ f: number; falas?: Fala[] }> = ({ f, falas = FALAS }) => {
+  const fl = falas.find((x) => f >= x.de && f < x.ate);
   if (!fl) return null;
   const entra = prog(f, fl.de, fl.de + 7, sair);
   const sai = 1 - prog(f, fl.ate - 5, fl.ate);
@@ -72,11 +72,11 @@ export const Replay: React.FC<{ f: number }> = ({ f }) => {
 };
 
 /** A anotação da terapeuta, escrita à mão. */
-export const Nota: React.FC<{ f: number }> = ({ f }) => {
-  if (f < NOTA.de || f >= NOTA.ate + 10) return null;
-  const entra = prog(f, NOTA.de, NOTA.de + 12, elastico);
-  const sai = prog(f, NOTA.ate, NOTA.ate + 10);
-  const n = Math.round(limitar((f - NOTA.de - 8) / (NOTA.escreveAte - NOTA.de - 8)) * NOTA.texto.length);
+export const Nota: React.FC<{ f: number; nota?: typeof NOTA }> = ({ f, nota: NOTA_ = NOTA }) => {
+  if (f < NOTA_.de || f >= NOTA_.ate + 10) return null;
+  const entra = prog(f, NOTA_.de, NOTA_.de + 12, elastico);
+  const sai = prog(f, NOTA_.ate, NOTA_.ate + 10);
+  const n = Math.round(limitar((f - NOTA_.de - 8) / (NOTA_.escreveAte - NOTA_.de - 8)) * NOTA_.texto.length);
   return (
     <AbsoluteFill style={{ alignItems: "center" }}>
       <div
@@ -97,8 +97,8 @@ export const Nota: React.FC<{ f: number }> = ({ f }) => {
       >
         <div style={{ position: "absolute", top: -26, left: "50%", marginLeft: -110, width: 220, height: 62, borderRadius: 16, background: "#8B8FA8", boxShadow: "inset 0 -8px 0 rgba(0,0,0,0.15)" }} />
         <div style={{ fontFamily: FONTE_LOUSA, fontSize: 62, lineHeight: "88px", color: MARCA.tinta }}>
-          {NOTA.texto.slice(0, n)}
-          <span style={{ color: "transparent" }}>{NOTA.texto.slice(n)}</span>
+          {NOTA_.texto.slice(0, n)}
+          <span style={{ color: "transparent" }}>{NOTA_.texto.slice(n)}</span>
         </div>
       </div>
     </AbsoluteFill>
@@ -106,14 +106,14 @@ export const Nota: React.FC<{ f: number }> = ({ f }) => {
 };
 
 /** Tela final: marca e as duas linhas. */
-export const Final: React.FC<{ f: number }> = ({ f }) => {
-  if (f < FINAL.de) return null;
-  const fundo = prog(f, FINAL.de, FINAL.de + 12);
-  const p1 = prog(f, FINAL.de + 8, FINAL.de + 24, elastico);
-  const p2 = prog(f, FINAL.de + 14, FINAL.de + 30, elastico);
-  const balao = prog(f, FINAL.de + 4, FINAL.de + 20, elastico);
-  const l1 = prog(f, FINAL.de + 34, FINAL.de + 46, sair);
-  const l2 = prog(f, FINAL.de + 46, FINAL.de + 58, sair);
+export const Final: React.FC<{ f: number; final?: { de: number; marca: string[]; linhas: string[] } }> = ({ f, final: FINAL_ = FINAL }) => {
+  if (f < FINAL_.de) return null;
+  const fundo = prog(f, FINAL_.de, FINAL_.de + 12);
+  const p1 = prog(f, FINAL_.de + 8, FINAL_.de + 24, elastico);
+  const p2 = prog(f, FINAL_.de + 14, FINAL_.de + 30, elastico);
+  const balao = prog(f, FINAL_.de + 4, FINAL_.de + 20, elastico);
+  const l1 = prog(f, FINAL_.de + 34, FINAL_.de + 46, sair);
+  const l2 = prog(f, FINAL_.de + 46, FINAL_.de + 58, sair);
   return (
     <AbsoluteFill style={{ background: MARCA.creme, opacity: fundo, alignItems: "center", justifyContent: "center" }}>
       <div style={{ position: "absolute", top: -260, right: -260, width: 760, height: 760, borderRadius: "50%", background: MARCA.sol, opacity: 0.55 }} />
@@ -122,12 +122,14 @@ export const Final: React.FC<{ f: number }> = ({ f }) => {
         {/* marca provisória: balão de fala + nome */}
         <div style={{ position: "relative", transform: `scale(${balao})`, background: MARCA.roxo, borderRadius: 90, padding: "70px 80px 60px", boxShadow: "0 30px 70px rgba(75,43,191,0.3)" }}>
           <div style={{ position: "absolute", bottom: -58, left: 110, width: 0, height: 0, borderLeft: "20px solid transparent", borderRight: "90px solid transparent", borderTop: `70px solid ${MARCA.roxo}` }} />
-          <div style={{ fontFamily: POPPINS, fontWeight: 800, fontSize: 150, lineHeight: 1.02, color: "#FFFFFF", transform: `scale(${p1})`, transformOrigin: "left center", letterSpacing: -3 }}>{FINAL.marca[0]}</div>
-          <div style={{ fontFamily: POPPINS, fontWeight: 800, fontSize: 150, lineHeight: 1.02, color: MARCA.sol, transform: `scale(${p2})`, transformOrigin: "left center", letterSpacing: -3 }}>{FINAL.marca[1]}</div>
+          <div style={{ fontFamily: POPPINS, fontWeight: 800, fontSize: 150, lineHeight: 1.02, color: "#FFFFFF", transform: `scale(${p1})`, transformOrigin: "left center", letterSpacing: -3 }}>{FINAL_.marca[0]}</div>
+          <div style={{ fontFamily: POPPINS, fontWeight: 800, fontSize: 150, lineHeight: 1.02, color: MARCA.sol, transform: `scale(${p2})`, transformOrigin: "left center", letterSpacing: -3 }}>{FINAL_.marca[1]}</div>
         </div>
-        <div style={{ marginTop: 150, fontFamily: POPPINS, fontWeight: 800, fontSize: 64, color: MARCA.tinta, opacity: l1, transform: `translateY(${(1 - l1) * 30}px)` }}>{FINAL.linhas[0]}</div>
-        <div style={{ marginTop: 34, fontFamily: POPPINS, fontWeight: 700, fontSize: 46, color: "#FFFFFF", background: MARCA.coral, padding: "18px 40px 14px", borderRadius: 999, opacity: l2, transform: `translateY(${(1 - l2) * 30}px)` }}>
-          {FINAL.linhas[1]}
+        {FINAL_.linhas[0] && (
+          <div style={{ marginTop: 150, fontFamily: POPPINS, fontWeight: 800, fontSize: 64, color: MARCA.tinta, opacity: l1, transform: `translateY(${(1 - l1) * 30}px)` }}>{FINAL_.linhas[0]}</div>
+        )}
+        <div style={{ marginTop: FINAL_.linhas[0] ? 34 : 150, fontFamily: POPPINS, fontWeight: 700, fontSize: 46, color: "#FFFFFF", background: MARCA.coral, padding: "18px 40px 14px", borderRadius: 999, opacity: l2, transform: `translateY(${(1 - l2) * 30}px)` }}>
+          {FINAL_.linhas[1]}
         </div>
       </div>
     </AbsoluteFill>

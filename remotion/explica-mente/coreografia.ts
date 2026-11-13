@@ -56,7 +56,7 @@ const mixPose = (a: Pose, b: Pose, t: number): Pose => ({
 });
 
 /** Vira a cabeça para um ponto do mundo. */
-const olhar = (p: Pose, alvo: V3, altCabeca: number, peso = 1): V3 => {
+export const olhar = (p: Pose, alvo: V3, altCabeca: number, peso = 1): V3 => {
   const cab: V3 = [p.pos[0], p.pos[1] + altCabeca * Math.cos(p.inclina), p.pos[2]];
   const d = sub(alvo, cab);
   let giro = Math.atan2(d[0], d[2]) - p.yaw - p.giroTorso;
@@ -65,7 +65,7 @@ const olhar = (p: Pose, alvo: V3, altCabeca: number, peso = 1): V3 => {
   const baixar = -Math.atan2(d[1], Math.hypot(d[0], d[2])) - p.inclina * 0.75;
   return [limitar(baixar, -0.6, 0.7) * peso, limitar(giro, -1.15, 1.15) * peso, 0];
 };
-const ALT_CAB_LIA = LIA.torso + LIA.cabeca;
+export const ALT_CAB_LIA = LIA.torso + LIA.cabeca;
 const ALT_CAB_TERA = TERA.torso + TERA.cabeca;
 
 /** Boca de quem fala (segue a lista de falas do roteiro). */

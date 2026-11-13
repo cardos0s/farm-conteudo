@@ -136,16 +136,27 @@ Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/
 
 ## Explica, Mente! (animação 3D)
 
-Vídeos curtos em desenho 3D que mostram situações reais de clínica, para divulgar o app de clínicas. O primeiro episódio é o do tênis (terapia ocupacional), 1080×1920, 40 s.
+Vídeos curtos em desenho 3D que mostram situações reais de clínica, para divulgar o app de clínicas (1080×1920). Há dois episódios:
+
+| Nome | O que é | Duração |
+|---|---|---|
+| `tenis` | historinha da Lia e da terapeuta, com falas | 40 s |
+| `tarefa` | explicação direta, só narração: "o que calçar um tênis tem a ver com terapia ocupacional?" | 38 s |
 
 ```bash
-npm run render:explica
+npm run render:explica -- tarefa
 ```
 
-Renderiza em `saida/explica-mente/explica-mente-tenis.mp4`. Sem locução o vídeo sai mudo, só com as legendas; para incluir a voz, salve o áudio em `saida/explica-mente/locucao.wav` (ou passe o caminho: `npm run render:explica -- minha-voz.wav`).
+Renderiza em `saida/explica-mente/explica-mente-<nome>.mp4`. Sem locução o vídeo sai mudo, só com as legendas. Para incluir a voz, salve um áudio por fala (`01.mp3`, `02.mp3`, ... na ordem do roteiro) em `saida/explica-mente/<nome>/vozes/` e rode:
 
-- **Falas, narração e tempos**: `remotion/explica-mente/roteiro.ts`. As legendas e as bocas dos personagens seguem essa lista; ao gravar a locução, ajuste `de` e `ate` de cada fala.
-- **Movimentos e câmeras**: `remotion/explica-mente/coreografia.ts`, uma função por bloco do roteiro.
+```bash
+npx tsx scripts/explica-mente/montar_locucao.ts tarefa
+```
+
+Ele encaixa cada áudio no tempo da sua legenda, avisa qual passou do espaço e gera `saida/explica-mente/<nome>/locucao.wav`, que o render seguinte já inclui.
+
+- **Falas, narração e tempos**: `remotion/explica-mente/roteiro.ts` (tenis) e `remotion/explica-mente/tarefa/roteiro.ts` (tarefa). As legendas e as bocas dos personagens seguem essa lista; ao gravar a locução, ajuste `de` e `ate` de cada fala.
+- **Movimentos e câmeras**: `coreografia.ts` de cada episódio.
 - **Personagens, tênis e sala**: `Boneco.tsx`, `Tenis.tsx` e `Cenario.tsx`, feitos de formas simples do Three.js (sem modelos externos).
 - **Marca na tela final**: `Final` em `Legendas.tsx`. A marca de lá é provisória; troque pela logo oficial.
 - **Conferir quadros sem renderizar tudo**: `scripts/explica-mente/folha.sh saida/folha.jpg 6 0 60 130 300` monta uma folha de contato com os quadros pedidos.
