@@ -12,6 +12,7 @@ import { TenisCadarco } from "../Tenis";
 import { ALTURA, LARGURA } from "../roteiro";
 import { estado, type EstadoTarefa } from "./coreografia";
 import { FALAS, FINAL, NOTA } from "./roteiro";
+import { noRoteiro } from "./tempo";
 
 const Camera: React.FC<{ cam: EstadoTarefa["cam"] }> = ({ cam }) => {
   const camera = useThree((s) => s.camera) as PerspectiveCamera;
@@ -67,7 +68,8 @@ const Cena: React.FC<{ e: EstadoTarefa }> = ({ e }) => (
 
 /** "Explica, Mente!" · o que calçar um tênis tem a ver com terapia ocupacional (1080×1920, 38 s). */
 export const ExplicaMenteTarefa: React.FC = () => {
-  const f = useCurrentFrame();
+  // tudo é desenhado no tempo do roteiro; `noRoteiro` acompanha a locução quando ela existe
+  const f = noRoteiro(useCurrentFrame());
   return (
     <AbsoluteFill style={{ background: MARCA.creme }}>
       {f < FINAL.de + 14 && <Cena e={estado(f)} />}

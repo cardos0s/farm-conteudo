@@ -147,13 +147,17 @@ Vídeos curtos em desenho 3D que mostram situações reais de clínica, para div
 npm run render:explica -- tarefa
 ```
 
-Renderiza em `saida/explica-mente/explica-mente-<nome>.mp4`. Sem locução o vídeo sai mudo, só com as legendas. Para incluir a voz, salve um áudio por fala (`01.mp3`, `02.mp3`, ... na ordem do roteiro) em `saida/explica-mente/<nome>/vozes/` e rode:
+Renderiza em `saida/explica-mente/explica-mente-<nome>.mp4`. Sem locução o vídeo sai mudo, só com as legendas. Para a voz:
+
+```bash
+npx tsx scripts/explica-mente/gerar_voz.ts tarefa
+```
 
 ```bash
 npx tsx scripts/explica-mente/montar_locucao.ts tarefa
 ```
 
-Ele encaixa cada áudio no tempo da sua legenda, avisa qual passou do espaço e gera `saida/explica-mente/<nome>/locucao.wav`, que o render seguinte já inclui.
+O primeiro gera um mp3 por fala no ElevenLabs (precisa de `ELEVENLABS_API_KEY`; aceita o id da voz e a velocidade como argumentos) em `saida/explica-mente/<nome>/vozes/`. Se preferir gravar, salve ali os seus áudios (`01.mp3`, `02.mp3`, ... na ordem do roteiro). O segundo tira os silêncios, junta tudo em `locucao.wav` e, no episódio `tarefa`, grava em `tempos.json` o tempo real de cada fala: as cenas e as legendas se ajustam à voz no render seguinte.
 
 - **Falas, narração e tempos**: `remotion/explica-mente/roteiro.ts` (tenis) e `remotion/explica-mente/tarefa/roteiro.ts` (tarefa). As legendas e as bocas dos personagens seguem essa lista; ao gravar a locução, ajuste `de` e `ate` de cada fala.
 - **Movimentos e câmeras**: `coreografia.ts` de cada episódio.
