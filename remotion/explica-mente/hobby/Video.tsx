@@ -11,8 +11,8 @@ import { andando, olharPara, sentado } from "../kit/poses";
 import { REGISTRO, TEXTOS } from "./roteiro";
 import tempos from "./tempos.json";
 
-const CAM: Cam = { pos: [0.15, 1.05, 3.1], alvo: [0.2, 0.75, -0.8], fov: 34 };
-const NO_SUPORTE: V3 = [1.0, 0.1, -0.75];
+const CAM: Cam = { pos: [0.08, 1.05, 3.3], alvo: [0.1, 0.75, -0.8], fov: 34 };
+const NO_SUPORTE: V3 = [0.6, 0.1, -0.45];
 
 const Violao: React.FC<{ pos: V3; rot: V3 }> = ({ pos, rot }) => (
   <group position={pos} rotation={[rot[0], rot[1], rot[2], "YXZ"]}>
@@ -41,11 +41,11 @@ const Cena: React.FC<{ f: number; modo: "olha" | "toca" | "passa"; t?: number; l
     pose = andando(ADULTO, [-1.35, 0, -0.2], [1.75, 0, -0.2], t, f);
     pose = { ...pose, sorriso: 0.1, cabeca: [0.08, 0, 0] };
   } else {
-    pose = sentado(ADULTO, [0, 0, -0.86], 0, 0.42, f);
+    pose = sentado(ADULTO, [-0.18, 0, -0.86], 0, 0.42, f);
     if (modo === "toca") {
       const bate = Math.sin(f * 0.5);
-      violao = { pos: [0.3, 0.52, -0.52], rot: [0.25, 0, 1.25] };
-      pose = { ...pose, maoE: [0.68, 0.86, -0.5], maoD: [-0.08, 0.7 + 0.04 * bate, -0.42], inclina: 0.14, tomba: 0.05 * Math.sin(f * 0.25), cabeca: [0.12, 0, 0.1 * Math.sin(f * 0.25)], sorriso: 1 };
+      violao = { pos: [-0.5, 0.5, -0.52], rot: [0.2, 0, -1.25] };
+      pose = { ...pose, maoE: [0.16, 0.72, -0.48], maoD: [-0.3, 0.62 + 0.04 * bate, -0.4], inclina: 0.14, tomba: 0.05 * Math.sin(f * 0.25), cabeca: [0.12, 0, 0.1 * Math.sin(f * 0.25)], sorriso: 1 };
     } else {
       pose = { ...pose, sorriso: 0.05, sobr: 0.15, cabeca: olharPara(ADULTO, pose, [NO_SUPORTE[0], 0.6, NO_SUPORTE[2]], 0.8) };
     }
@@ -60,7 +60,7 @@ const Cena: React.FC<{ f: number; modo: "olha" | "toca" | "passa"; t?: number; l
         {modo === "toca" &&
           [0, 1, 2].map((i) => {
             const u = ((f + i * 22) % 66) / 66;
-            return <Esfera key={i} r={0.035 * Math.min(1, u * 5, (1 - u) * 4)} pos={[0.35 + 0.1 * Math.sin(u * 6 + i), 0.95 + u * 0.5, -0.4]} cor={i % 2 ? "#2EC4B6" : "#FFC53D"} sombra={false} />;
+            return <Esfera key={i} r={0.035 * Math.min(1, u * 5, (1 - u) * 4)} pos={[0.2 + 0.1 * Math.sin(u * 6 + i), 1.0 + u * 0.5, -0.4]} cor={i % 2 ? "#2EC4B6" : "#FFC53D"} sombra={false} />;
           })}
       </Palco>
       <AbsoluteFill style={{ background: "#241A4A", opacity: 0.38 * (1 - luz) }} />
@@ -106,7 +106,7 @@ const MES_DIA_RUIM: Dia[] = [T, T, N, T, T, T, T, T, T, T, N, T, T, T, T, N, T, 
 
 const desenhar = (q: Quadro) => {
   const { f, p, em, F } = q;
-  if (em(0)) return <Cena f={f} modo="olha" cam={{ ...CAM, pos: [0.15, 1.05, mix(2.6, 3.1, p(0))] }} />;
+  if (em(0)) return <Cena f={f} modo="olha" cam={{ ...CAM, pos: [0.08, 1.05, mix(2.8, 3.3, p(0))] }} />;
   if (em(1)) {
     // os dias passam: a luz muda, a pessoa passa, o violão fica
     const x = p(1);

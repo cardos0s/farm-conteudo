@@ -108,11 +108,12 @@ export const criarEpisodio = (cfg: {
 export { sair };
 
 /** Balão com texto (pedido de um adulto, pensamento). */
-export const Balao: React.FC<{ texto: string; p: number; topo: number; esquerda?: number; cor?: string; corTexto?: string; tamanho?: number }> = ({ texto, p, topo, esquerda, cor = "#FFFFFF", corTexto = MARCA.tinta, tamanho = 50 }) => (
+export const Balao: React.FC<{ texto: string; p: number; topo: number; esquerda?: number; cor?: string; corTexto?: string; tamanho?: number }> = ({ texto, p, topo, esquerda, cor = "#FFFFFF", corTexto = MARCA.tinta, tamanho = 50 }) =>
+  p < 0.01 ? null : (
   <div style={{ position: "absolute", top: topo, left: esquerda ?? 0, right: esquerda === undefined ? 0 : undefined, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
     <div style={{ transform: `scale(${Math.max(0.001, p)})`, background: cor, color: corTexto, fontFamily: POPPINS, fontWeight: 800, fontSize: tamanho, lineHeight: 1.15, padding: "24px 44px 20px", borderRadius: 44, boxShadow: "0 14px 36px rgba(36,26,74,0.22)", textAlign: "center", maxWidth: 880 }}>{texto}</div>
   </div>
-);
+  );
 
 /** Ciclo desenhado em roda: etapas ligadas por setas, com uma em destaque. */
 export const Roda: React.FC<{ itens: string[]; aceso: number; visiveis: number; cores?: string[]; cy?: number; raio?: number }> = ({ itens, aceso, visiveis, cores = [], cy = 760, raio = 300 }) => {

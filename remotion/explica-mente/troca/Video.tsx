@@ -11,7 +11,7 @@ import { emPe, sentado } from "../kit/poses";
 import { ETAPAS, REGISTRO, TEXTOS } from "./roteiro";
 import tempos from "./tempos.json";
 
-const CAM_JOGO: Cam = { pos: [0.2, 0.75, 3.1], alvo: [0.35, 0.5, -0.5], fov: 34 };
+const CAM_JOGO: Cam = { pos: [0.45, 0.78, 3.7], alvo: [0.5, 0.5, -0.45], fov: 34 };
 
 /** Jogando videogame, de perfil para a TV. `ligada` 0 = tela apagada; `encerra` 0..1 estica a mão para desligar. */
 const Jogo: React.FC<{ f: number; ligada: number; encerra?: number; cam?: Cam; largura?: number; altura?: number }> = ({ f, ligada, encerra = 0, cam = CAM_JOGO, largura, altura }) => {

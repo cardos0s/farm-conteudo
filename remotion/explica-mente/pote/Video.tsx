@@ -44,7 +44,7 @@ const SetaGiro: React.FC<{ y: number; raio: number; cor: string; forca: number; 
   <group position={[POTE[0], y, POTE[2]]} rotation={[0, f * 0.04, 0]}>
     {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => {
       const a = 0.4 + (i / 8) * 2.2;
-      return <Esfera key={i} r={(i === 8 ? 0.016 : 0.007) * forca} pos={[raio * Math.sin(a), 0, raio * Math.cos(a)]} cor={cor} emissivo={cor} brilho={0.5} sombra={false} />;
+      return <Esfera key={i} r={(i === 8 ? 0.026 : 0.012) * forca} pos={[raio * Math.sin(a), 0, raio * Math.cos(a)]} cor={cor} emissivo={cor} brilho={0.5} sombra={false} />;
     })}
   </group>
 );

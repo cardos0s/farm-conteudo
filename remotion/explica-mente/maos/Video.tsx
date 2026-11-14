@@ -20,8 +20,8 @@ const balancando = (f: number, onde: Onde, humor: number): Pose => {
   return {
     ...p,
     pos: [p.pos[0], p.pos[1] + pulo, p.pos[2]],
-    maoE: [p.pos[0] + 0.21 + 0.03 * b, 0.7 + 0.06 * a + pulo, p.pos[2] + 0.16],
-    maoD: [p.pos[0] - 0.21 - 0.03 * a, 0.7 + 0.06 * b + pulo, p.pos[2] + 0.16],
+    maoE: [p.pos[0] + 0.15 + 0.03 * b, 0.7 + 0.06 * a + pulo, p.pos[2] + 0.16],
+    maoD: [p.pos[0] - 0.15 - 0.03 * a, 0.7 + 0.06 * b + pulo, p.pos[2] + 0.16],
     cabeca: [humor < 0 ? 0.12 : -0.03, 0, 0.05 * Math.sin(f * 0.3)],
     sorriso: mix(-0.45, 1, (humor + 1) / 2),
     sobr: humor < 0 ? 0.7 : 0,
@@ -29,8 +29,8 @@ const balancando = (f: number, onde: Onde, humor: number): Pose => {
   };
 };
 
-const MAOS_SOM: Cam = { pos: [-0.16, 0.72, 0.35], alvo: [-0.16, 0.7, -0.6], fov: 26 };
-const MAOS_LIQ: Cam = { pos: [0.08, 0.72, 0.37], alvo: [0.08, 0.7, -0.58], fov: 26 };
+const MAOS_SOM: Cam = { pos: [-0.16, 0.5, 0.42], alvo: [-0.16, 0.5, -0.58], fov: 36 };
+const MAOS_LIQ: Cam = { pos: [0.08, 0.5, 0.44], alvo: [0.08, 0.5, -0.56], fov: 36 };
 const misturar = (a: Cam, b: Cam, t: number): Cam => ({ pos: mixV(a.pos, b.pos, t), alvo: mixV(a.alvo, b.alvo, t), fov: mix(a.fov, b.fov, t) });
 
 const Cena: React.FC<{ f: number; onde: Onde; cam: Cam; contexto: number }> = ({ f, onde, cam, contexto }) => (
@@ -56,7 +56,7 @@ const desenhar = (q: Quadro) => {
       <>
         <Cena f={f} onde="som" cam={CAM_SOM} contexto={1} />
         <Conceito f={f} de={F[4].de + 4} ate={F[5].de - 4} texto="stimming" />
-        <Etapas itens={FUNCOES} aceso={Math.min(2, Math.floor(prog(p(4), 0.4, 1, (v) => v) * 3))} emColuna topo={400} opacidade={prog(p(4), 0.34, 0.42)} />
+        <Etapas itens={FUNCOES} aceso={Math.min(2, Math.floor(prog(p(4), 0.4, 1, (v) => v) * 3))} topo={372} opacidade={prog(p(4), 0.34, 0.42)} />
       </>
     );
   const x = em(5) ? p(5) : 1;
