@@ -180,7 +180,8 @@ const Pe: React.FC<{ m: Medidas; pos: V3; yaw: number; inc: number; calcado?: bo
   </group>
 );
 
-export const Boneco: React.FC<{ m: Medidas; p: Pose; calcadoD?: boolean; tenisAberto?: number }> = ({ m, p, calcadoD, tenisAberto }) => {
+/** `fantasma` desenha um dos braços só como contorno pontilhado (a posição que o corpo sente, sem a imagem). */
+export const Boneco: React.FC<{ m: Medidas; p: Pose; calcadoD?: boolean; tenisAberto?: number; fantasma?: "E" | "D" }> = ({ m, p, calcadoD, tenisAberto, fantasma }) => {
   const rotT: V3 = [p.inclina, p.yaw + p.giroTorso, p.tomba];
   const rotY: V3 = [0, p.yaw, 0];
   const membro = (l: 1 | -1, tipo: "braco" | "perna") => {
@@ -228,6 +229,15 @@ export const Boneco: React.FC<{ m: Medidas; p: Pose; calcadoD?: boolean; tenisAb
 
       {/* braços */}
       {([[bE, 1], [bD, -1]] as const).map(([b, l]) => (
+        fantasma === (l === 1 ? "E" : "D") ? (
+          <group key={l}>
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
+              const t = i / 9;
+              const pt = t < 0.5 ? b.raiz.map((v, j) => v + (b.meio[j] - v) * t * 2) : b.meio.map((v, j) => v + (b.fim[j] - v) * (t - 0.5) * 2);
+              return <Esfera key={i} r={i === 9 ? m.mao * 0.55 : m.rBraco * 0.42} pos={pt as V3} cor="#6C4BD8" emissivo="#6C4BD8" brilho={0.5} sombra={false} />;
+            })}
+          </group>
+        ) : (
         <group key={l}>
           <Seg a={b.raiz} b={b.meio} r={m.rBraco * 1.12} r2={m.rBraco} cor={c.manga} />
           <Seg a={b.meio} b={b.fim} r={m.rBraco * 0.93} r2={m.rBraco * 0.86} cor={c.pele} />
@@ -236,6 +246,7 @@ export const Boneco: React.FC<{ m: Medidas; p: Pose; calcadoD?: boolean; tenisAb
             <Seg a={b.fim} b={soma(b.fim, esc(norm(sub(b.fim, b.meio)), m.mao * 2.1))} r={m.mao * 0.34} cor={c.pele} />
           )}
         </group>
+        )
       ))}
 
       {/* pernas */}

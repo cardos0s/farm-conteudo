@@ -136,3 +136,23 @@ export const buscarELevar = (m: Medidas, f: number, x: number, c: { inicio: V3; 
   const cai = limitar((x - 0.92) / 0.06);
   return { pose: { ...p, inclina: 0.03 + 0.3 * solta, maoD: mao }, objeto: [mao[0], mao[1] - 0.08 - (mao[1] - 0.08 - c.destino[1]) * cai, mao[2]] };
 };
+
+/** Lia sentada à mesa do episódio da colher (tampo em y = 0), mãos sobre a mesa. */
+export const naMesa = (f: number): Pose => ({
+  pos: [0, -0.14, -0.3],
+  yaw: 0,
+  inclina: 0.12,
+  tomba: 0,
+  giroTorso: 0,
+  cabeca: [0.15, 0, 0],
+  maoE: [0.17, 0.04, -0.1],
+  maoD: [-0.17, 0.04, -0.1],
+  peE: [0.07, -0.57, -0.2],
+  peD: [-0.07, -0.57, -0.2],
+  peEInc: 0,
+  peDInc: 0,
+  boca: 0,
+  sorriso: 0.6,
+  olhos: piscar(f, 3),
+  sobr: 0,
+});
