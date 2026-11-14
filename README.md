@@ -138,11 +138,32 @@ Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/
 
 Vídeos curtos em desenho 3D que mostram situações reais de clínica, para divulgar o app de clínicas (1080×1920). Há dois episódios:
 
-| Nome | O que é | Duração |
-|---|---|---|
-| `tenis` | historinha da Lia e da terapeuta, com falas | 40 s |
-| `tarefa` | explicação direta, só narração: "o que calçar um tênis tem a ver com terapia ocupacional?" | 38 s |
-| `colher` | por que uma terapeuta ocupacional levaria uma colher pra sessão: feedback sensorial, os três momentos da tarefa e o que observar em casa | cerca de 1 min |
+| Nome | O que é |
+|---|---|
+| `tenis` | historinha da Lia e da terapeuta, com falas (40 s) |
+| `tarefa` | "o que calçar um tênis tem a ver com terapia ocupacional?" |
+| `colher` | pauta 1 · feedback tátil e os três momentos da tarefa |
+| `liquidificador` | pauta 2 · processamento sensorial: previsibilidade e controle do som |
+| `instrucoes` | pauta 3 · memória de trabalho: três pedidos, um de cada vez |
+| `porta` | pauta 4 · ciclo da compulsão no TOC |
+| `caixa` | pauta 5 · controle antecipatório: a caixa vazia que "sobe voando" |
+| `antecipacao` | pauta 6 · tapar os ouvidos antes de o aparelho ligar |
+| `quarto` | pauta 7 · planejamento: "arruma o quarto" × "põe a roupa no cesto" |
+| `coracao` | pauta 8 · sensações do corpo e medo no pânico |
+| `mao` | pauta 9 · propriocepção |
+| `camiseta` | pauta 10 · sensibilidade tátil |
+| `licao` | pauta 11 · iniciação de tarefa |
+| `mapa` | pauta 12 · ansiedade antecipatória e evitação |
+| `pote` | pauta 13 · coordenação bilateral |
+| `maos` | pauta 14 · stimming |
+| `troca` | pauta 15 · troca de tarefa |
+| `hobby` | pauta 16 · anedonia |
+
+Da pauta 2 em diante os episódios usam a base comum em `remotion/explica-mente/kit/`: cada um tem só o `roteiro.ts` (uma frase por legenda e o exemplo de registro) e o `Video.tsx` (cenas). Para produzir um episódio do começo ao fim (narração no ElevenLabs, alinhamento das legendas com a voz e render):
+
+```bash
+PYTHON=python3 scripts/explica-mente/produzir.sh liquidificador
+```
 
 ```bash
 npm run render:explica -- tarefa
