@@ -8,9 +8,9 @@ import { renderMedia, selectComposition } from "@remotion/renderer";
 
 // Renderiza o episódio animado em 3D do "Explica, Mente!" (1080x1920, 40 s).
 // Se existir uma locução, ela entra no arquivo final; sem ela, o vídeo sai mudo, só com as legendas.
-// Uso: npm run render:explica -- [tenis|tarefa] [locucao.wav] [saida.mp4]
+// Uso: npm run render:explica -- [tenis|tarefa|colher] [locucao.wav] [saida.mp4]
 
-const VIDEOS: Record<string, string> = { tenis: "ExplicaMenteTenis", tarefa: "ExplicaMenteTarefa" };
+const VIDEOS: Record<string, string> = { tenis: "ExplicaMenteTenis", tarefa: "ExplicaMenteTarefa", colher: "ExplicaMenteColher" };
 const nome = process.argv[2] ?? "tenis";
 if (!VIDEOS[nome]) throw new Error(`Vídeo desconhecido: "${nome}". Opções: ${Object.keys(VIDEOS).join(", ")}`);
 const voz = process.argv[3] ?? `saida/explica-mente/${nome}/locucao.wav`;

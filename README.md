@@ -142,6 +142,7 @@ Vídeos curtos em desenho 3D que mostram situações reais de clínica, para div
 |---|---|---|
 | `tenis` | historinha da Lia e da terapeuta, com falas | 40 s |
 | `tarefa` | explicação direta, só narração: "o que calçar um tênis tem a ver com terapia ocupacional?" | 38 s |
+| `colher` | por que uma terapeuta ocupacional levaria uma colher pra sessão: feedback sensorial, os três momentos da tarefa e o que observar em casa | cerca de 1 min |
 
 ```bash
 npm run render:explica -- tarefa
@@ -157,7 +158,7 @@ npx tsx scripts/explica-mente/gerar_voz.ts tarefa
 npx tsx scripts/explica-mente/montar_locucao.ts tarefa
 ```
 
-Se a narração já estiver gravada num arquivo só (por exemplo, exportada do site do ElevenLabs), basta `python3 scripts/explica-mente/alinhar_narracao.py narracao.mp3`: ele acha cada frase no áudio e ajusta as cenas e legendas a ela (precisa de `pip install faster-whisper numpy`).
+Se a narração já estiver gravada num arquivo só (por exemplo, exportada do site do ElevenLabs), basta `python3 scripts/explica-mente/alinhar_narracao.py colher narracao.mp3` (episódios `tarefa` e `colher`): ele acha cada frase no áudio e ajusta as cenas e legendas a ela (precisa de `pip install faster-whisper numpy`).
 
 Para gerar a voz por aqui: o primeiro comando gera um mp3 por fala no ElevenLabs (precisa de `ELEVENLABS_API_KEY`; aceita o id da voz e a velocidade como argumentos) em `saida/explica-mente/<nome>/vozes/`. Se preferir gravar, salve ali os seus áudios (`01.mp3`, `02.mp3`, ... na ordem do roteiro). O segundo tira os silêncios, junta tudo em `locucao.wav` e, no episódio `tarefa`, grava em `tempos.json` o tempo real de cada fala: as cenas e as legendas se ajustam à voz no render seguinte.
 
