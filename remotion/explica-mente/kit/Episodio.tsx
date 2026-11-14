@@ -90,7 +90,8 @@ export const criarEpisodio = (cfg: {
       f,
       F: FALAS,
       p: (i, j = i) => limitar((f - FALAS[i].de) / (FALAS[j].ate - FALAS[i].de)),
-      em: (i, j = i) => f >= FALAS[i].de - 4 && f < (FALAS[j + 1]?.de ?? Infinity) - 4,
+      // a primeira fala vale desde o quadro zero, para o vídeo não abrir com a cena errada
+      em: (i, j = i) => (i === 0 || f >= FALAS[i].de - 4) && f < (FALAS[j + 1]?.de ?? Infinity) - 4,
     };
     return (
       <AbsoluteFill style={{ background: MARCA.creme }}>
