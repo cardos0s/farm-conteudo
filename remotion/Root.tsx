@@ -14,6 +14,7 @@ import { ExplicaMenteTarefa } from "./explica-mente/tarefa/Video";
 import { TOTAL as TOTAL_EM2 } from "./explica-mente/tarefa/tempo";
 import { ExplicaMenteColher } from "./explica-mente/colher/Video";
 import { TOTAL as TOTAL_EM3 } from "./explica-mente/colher/tempo";
+import { ExplicaMenteLiquidificador, TOTAL as TOTAL_LIQ } from "./explica-mente/liquidificador/Video";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
 
@@ -56,5 +57,7 @@ export const Root: React.FC = () => (
     <Composition id="ExplicaMenteTenis" component={ExplicaMenteTenis} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_EM} />
     <Composition id="ExplicaMenteTarefa" component={ExplicaMenteTarefa} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_EM2} />
     <Composition id="ExplicaMenteColher" component={ExplicaMenteColher} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_EM3} />
+    {/* episódios novos do Explica, Mente!: um por pauta */}
+    <Composition id="ExplicaMenteLiquidificador" component={ExplicaMenteLiquidificador} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_LIQ} />
   </>
 );

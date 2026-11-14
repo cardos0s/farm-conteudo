@@ -8,11 +8,11 @@ import { renderMedia, selectComposition } from "@remotion/renderer";
 
 // Renderiza o episódio animado em 3D do "Explica, Mente!" (1080x1920, 40 s).
 // Se existir uma locução, ela entra no arquivo final; sem ela, o vídeo sai mudo, só com as legendas.
-// Uso: npm run render:explica -- [tenis|tarefa|colher] [locucao.wav] [saida.mp4]
+// Uso: npm run render:explica -- <episodio> [locucao.wav] [saida.mp4]
 
-const VIDEOS: Record<string, string> = { tenis: "ExplicaMenteTenis", tarefa: "ExplicaMenteTarefa", colher: "ExplicaMenteColher" };
 const nome = process.argv[2] ?? "tenis";
-if (!VIDEOS[nome]) throw new Error(`Vídeo desconhecido: "${nome}". Opções: ${Object.keys(VIDEOS).join(", ")}`);
+// o id da composição segue o nome do episódio: tenis -> ExplicaMenteTenis
+const idComposicao = `ExplicaMente${nome[0].toUpperCase()}${nome.slice(1)}`;
 const voz = process.argv[3] ?? `saida/explica-mente/${nome}/locucao.wav`;
 const destino = process.argv[4] ?? `saida/explica-mente/explica-mente-${nome}.mp4`;
 const temVoz = existsSync(voz);
@@ -23,7 +23,7 @@ const chromiumOptions = { gl: (process.env.REMOTION_GL ?? "swangle") as "swangle
 
 await mkdir(path.dirname(destino), { recursive: true });
 const serveUrl = await bundle({ entryPoint: path.resolve("remotion/index.ts"), publicDir: path.resolve("public"), symlinkPublicDir: true });
-const composition = await selectComposition({ serveUrl, id: VIDEOS[nome], browserExecutable: navegador, chromiumOptions });
+const composition = await selectComposition({ serveUrl, id: idComposicao, browserExecutable: navegador, chromiumOptions });
 
 const inicio = Date.now();
 let ultimo = -1;

@@ -27,7 +27,13 @@ raiz = os.path.join(os.path.dirname(__file__), "..", "..")
 roteiro = open(os.path.join(raiz, f"remotion/explica-mente/{episodio}/roteiro.ts"), encoding="utf-8").read()
 falas = [(int(a), int(b), t) for a, b, t in re.findall(r'(?:\{ de: |\bn\()(\d+), (?:ate: )?(\d+), (?:quem: "\w+", texto: )?"([^"]+)"', roteiro)]
 m = re.search(r"TOTAL_QUADROS = (\d+)( \* FPS)?", roteiro)
-total_roteiro = int(m.group(1)) * (FPS if m.group(2) else 1)
+novo = re.search(r"TEXTOS = \[(.*?)\n\];", roteiro, re.S)
+if novo:
+    # episódios novos: só o texto; a cauda da logo é fixa
+    falas = [(0, 0, t) for t in re.findall(r'^\s*"((?:[^"\\]|\\.)*)",?\s*$', novo.group(1), re.M)]
+    total_roteiro = 100
+else:
+    total_roteiro = int(m.group(1)) * (FPS if m.group(2) else 1)
 
 
 def limpa(p):

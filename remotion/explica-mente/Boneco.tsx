@@ -4,7 +4,7 @@ import { Tenis, TORNOZELO_NO_TENIS } from "./Tenis";
 import { esc, girar, ik, norm, soma, sub, type V3 } from "./anim";
 
 export type Medidas = {
-  estilo: "lia" | "tera";
+  estilo: "lia" | "tera" | "adulto";
   cabeca: number;
   torso: number;
   raioTorso: number;
@@ -131,6 +131,14 @@ const Cabelo: React.FC<{ m: Medidas }> = ({ m }) => {
       </>
     );
   }
+  if (m.estilo === "adulto") {
+    return (
+      <>
+        <Esfera r={r * 1.13} pos={[0, r * 0.22, r * -0.3]} cor={c} rug={0.9} />
+        <Esfera r={r * 0.5} pos={[r * 0.35, r * 0.95, r * 0.25]} escala={[1.3, 0.6, 0.9]} cor={c} rug={0.9} />
+      </>
+    );
+  }
   return (
     <>
       <Esfera r={r * 1.13} pos={[0, r * 0.2, r * -0.28]} cor={c} rug={0.8} />
@@ -240,4 +248,11 @@ export const Boneco: React.FC<{ m: Medidas; p: Pose; calcadoD?: boolean; tenisAb
       ))}
     </>
   );
+};
+
+/** Um adulto qualquer (mãe, pai, a própria pessoa do exemplo), diferente da terapeuta. */
+export const ADULTO: Medidas = {
+  ...TERA,
+  estilo: "adulto",
+  cores: { pele: "#A9683F", cabelo: "#2E1F1A", blusa: "#FF7A59", quadril: "#3B4A7A", coxa: "#3B4A7A", canela: "#3B4A7A", manga: "#FF7A59", pe: "#FFFFFF" },
 };
