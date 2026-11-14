@@ -7,15 +7,15 @@ import { Palco, projetar, type Cam } from "../kit/Palco";
 import { REGISTRO, TEXTOS } from "./roteiro";
 import tempos from "./tempos.json";
 
-const CAM: Cam = { pos: [0, 9.2, 6.4], alvo: [0, 0, -0.1], fov: 34 };
+const CAM: Cam = { pos: [0, 9.2, 6.65], alvo: [0, 0, 0.2], fov: 34 };
 const CINZA = "#C9C6D0";
 
 const LUGARES = {
-  casa: { pos: [0, 0, 2.5] as V3, nome: "Casa" },
-  onibus: { pos: [-0.85, 0, 0.9] as V3, nome: "Ônibus" },
-  mercado: { pos: [1.0, 0, 0.85] as V3, nome: "Mercado" },
-  praca: { pos: [-1.0, 0, -1.0] as V3, nome: "Praça" },
-  trabalho: { pos: [0.75, 0, -2.5] as V3, nome: "Trabalho" },
+  casa: { pos: [0, 0, 1.3] as V3, nome: "Casa" },
+  onibus: { pos: [-0.85, 0, 0.2] as V3, nome: "Ônibus" },
+  mercado: { pos: [0.75, 0, 0.15] as V3, nome: "Mercado" },
+  praca: { pos: [-1.0, 0, -1.05] as V3, nome: "Praça" },
+  trabalho: { pos: [0.7, 0, -1.95] as V3, nome: "Trabalho" },
 };
 type Lugar = keyof typeof LUGARES;
 
@@ -32,9 +32,9 @@ const Cidade: React.FC<{ fora: Partial<Record<Lugar, number>> }> = ({ fora }) =>
       </mesh>
       {/* casa */}
       <group position={L.casa.pos}>
-        <Caixa t={[0.8, 0.6, 0.7]} raio={0.04} pos={[0, 0.3, 0]} cor="#FF7A59" />
-        <Cilindro r={0.02} r2={0.62} h={0.4} pos={[0, 0.8, 0]} cor="#6C4BD8" />
-        <Caixa t={[0.2, 0.32, 0.04]} raio={0.01} pos={[0, 0.16, 0.35]} cor="#FFFFFF" />
+        <Caixa t={[0.8, 0.6, 0.7]} raio={0.04} pos={[0, 0.3, 0]} cor="#FFF6E6" />
+        <Cilindro r={0.02} r2={0.5} h={0.34} pos={[0, 0.77, 0]} cor="#FF5A4E" />
+        <Caixa t={[0.2, 0.32, 0.04]} raio={0.01} pos={[0, 0.16, 0.35]} cor="#B8793F" />
       </group>
       {/* ônibus */}
       <group position={L.onibus.pos}>
@@ -79,8 +79,8 @@ const Cidade: React.FC<{ fora: Partial<Record<Lugar, number>> }> = ({ fora }) =>
   );
 };
 
-const DIRETO: V3[] = [LUGARES.casa.pos, [-0.75, 0, 1.75], LUGARES.onibus.pos, [-0.2, 0, -0.7], LUGARES.trabalho.pos];
-const DESVIO: V3[] = [LUGARES.casa.pos, [1.75, 0, 2.0], [1.95, 0, 0.2], [1.75, 0, -1.4], LUGARES.trabalho.pos];
+const DIRETO: V3[] = [LUGARES.casa.pos, [-0.7, 0, 0.85], LUGARES.onibus.pos, [-0.15, 0, -0.9], LUGARES.trabalho.pos];
+const DESVIO: V3[] = [LUGARES.casa.pos, [1.4, 0, 1.1], [1.62, 0, 0.0], [1.5, 0, -1.2], LUGARES.trabalho.pos];
 
 const noCaminho = (pts: V3[], t: number): V3 => {
   const x = Math.max(0, Math.min(1, t)) * (pts.length - 1);
@@ -113,7 +113,7 @@ const Trajeto: React.FC<{ pts: V3[]; ate: number; cor: string; pino?: boolean }>
 
 /** Área que a rotina ainda alcança. */
 const Zona: React.FC<{ raio: number; forca: number }> = ({ raio, forca }) => (
-  <mesh position={[LUGARES.casa.pos[0] + 0.3, 0.03, LUGARES.casa.pos[2] - raio * 0.72]} rotation={[-Math.PI / 2, 0, 0]}>
+  <mesh position={[LUGARES.casa.pos[0], 0.03, LUGARES.casa.pos[2] - raio * 0.6]} rotation={[-Math.PI / 2, 0, 0]}>
     <ringGeometry args={[raio * 0.965, raio, 80]} />
     <meshBasicMaterial color="#4B2BBF" transparent opacity={forca} depthWrite={false} />
   </mesh>
@@ -178,7 +178,7 @@ const desenhar = (q: Quadro) => {
     );
   }
   const fora = { onibus: 1, mercado: 1, praca: em(4) ? prog(p(4), 0.55, 0.65, elastico) : em(3) ? 0 : 1 };
-  const raio = em(3) ? 4.6 : em(4) ? mix(4.6, 1.5, prog(p(4), 0.08, 0.8)) : 1.5;
+  const raio = em(3) ? 3.6 : em(4) ? mix(3.6, 1.15, prog(p(4), 0.08, 0.8)) : 1.15;
   return (
     <>
       <Mapa fora={fora}>

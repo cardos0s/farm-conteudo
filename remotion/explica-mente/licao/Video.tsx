@@ -10,7 +10,7 @@ import { naMesa } from "../kit/poses";
 import { REGISTRO, TEXTOS } from "./roteiro";
 import tempos from "./tempos.json";
 
-const CAM: Cam = { pos: [0.03, 0.6, 1.7], alvo: [0, 0.14, -0.1], fov: 34 };
+const CAM: Cam = { pos: [0.03, 0.62, 1.95], alvo: [0, 0.07, -0.1], fov: 34 };
 const CADERNO: V3 = [0, 0, 0.04];
 
 /** Caderno na mesa. `abre` 0..1 vira a capa; `pagina` 0..1 folheia até a página certa. */
