@@ -60,9 +60,9 @@ const Cena: React.FC<{ f: number; medo: number; ritmo: number; olha?: number; ca
 };
 
 const Medidor: React.FC<{ v: number; entra: number }> = ({ v, entra }) => (
-  <div style={{ position: "absolute", right: 60, top: 300, width: 120, opacity: entra, transform: `translateX(${(1 - entra) * 80}px)` }}>
+  <div style={{ position: "absolute", right: 50, top: 440, width: 120, opacity: entra, transform: `translateX(${(1 - entra) * 80}px)` }}>
     <div style={{ fontFamily: POPPINS, fontWeight: 800, fontSize: 38, color: MARCA.tinta, textAlign: "center", marginBottom: 10 }}>medo</div>
-    <div style={{ height: 620, borderRadius: 60, background: "#FFFFFF", boxShadow: "0 12px 30px rgba(36,26,74,0.2)", position: "relative", overflow: "hidden" }}>
+    <div style={{ height: 560, borderRadius: 60, background: "#FFFFFF", boxShadow: "0 12px 30px rgba(36,26,74,0.2)", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: `${v * 100}%`, background: MARCA.coral, borderRadius: 60 }} />
     </div>
   </div>

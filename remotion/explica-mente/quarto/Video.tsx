@@ -64,18 +64,18 @@ const travada = (f: number): Pose => {
 };
 
 const POSICOES = [
-  [70, 430],
-  [560, 400],
-  [120, 640],
-  [600, 610],
-  [330, 800],
+  [40, 392],
+  [600, 372],
+  [20, 524],
+  [700, 524],
+  [36, 664],
 ];
 const Nuvem: React.FC<{ quantas: number; opacidade?: number; f: number }> = ({ quantas, opacidade = 1, f }) => (
   <>
     {DUVIDAS.map((t, i) => {
       const p = prog(quantas, i, i + 0.6, elastico);
       return (
-        <div key={i} style={{ position: "absolute", left: POSICOES[i][0], top: POSICOES[i][1] + 8 * Math.sin(f * 0.08 + i), transform: `scale(${Math.max(0.001, p)}) rotate(${(i % 2 ? 3 : -3)}deg)`, opacity: opacidade, background: "#FFFFFF", borderRadius: 40, padding: "20px 34px 16px", fontFamily: POPPINS, fontWeight: 700, fontSize: 40, color: MARCA.tinta, boxShadow: "0 10px 26px rgba(36,26,74,0.2)" }}>
+        <div key={i} style={{ position: "absolute", left: POSICOES[i][0], top: POSICOES[i][1] + 8 * Math.sin(f * 0.08 + i), transform: `scale(${Math.max(0.001, p)}) rotate(${(i % 2 ? 3 : -3)}deg)`, opacity: opacidade, background: "#FFFFFF", borderRadius: 40, padding: "20px 34px 16px", fontFamily: POPPINS, fontWeight: 700, fontSize: 34, color: MARCA.tinta, boxShadow: "0 10px 26px rgba(36,26,74,0.2)" }}>
           {t}
         </div>
       );
@@ -103,9 +103,9 @@ const desenhar = (q: Quadro) => {
       <>
         <Cena lia={travada(f)} roupa={ROUPA} cam={{ ...CAM, pos: mixV(CAM.pos, [0, 1.0, 3.3], em(1) ? p(1) : 1) }} />
         <Balao texto={AMPLA} p={1} topo={236} />
-        <Nuvem quantas={quantas} f={f} opacidade={em(3) ? 0.35 : 1} />
-        {em(3) && <Conceito f={f} de={F[3].de + 4} ate={F[4].de - 4} texto="planejamento" topo={470} />}
-        {em(3) && <Etapas itens={["Escolher", "Organizar", "Ordenar"]} aceso={Math.min(2, Math.floor(prog(p(3), 0.42, 0.95, (v) => v) * 3))} topo={640} opacidade={prog(p(3), 0.36, 0.44)} emColuna />}
+        <Nuvem quantas={quantas} f={f} opacidade={em(3) ? 1 - prog(p(3), 0, 0.08) : 1} />
+        {em(3) && <Conceito f={f} de={F[3].de + 4} ate={F[4].de - 4} texto="planejamento" topo={340} />}
+        {em(3) && <Etapas itens={["Escolher", "Organizar", "Ordenar"]} aceso={Math.min(2, Math.floor(prog(p(3), 0.42, 0.95, (v) => v) * 3))} topo={478} opacidade={prog(p(3), 0.36, 0.44)} />}
       </>
     );
   }
@@ -115,7 +115,7 @@ const desenhar = (q: Quadro) => {
       <>
         <Cena lia={{ ...emPe(LIA, INICIO, 0, f), cabeca: [0.2, 0.5, 0] }} roupa={ROUPA} seta={prog(x, 0.45, 0.95)} />
         <Balao texto={AMPLA} p={1 - prog(x, 0.2, 0.3)} topo={236} />
-        <Nuvem quantas={6} f={f} opacidade={0.35 * (1 - prog(x, 0.1, 0.25))} />
+        
         <Balao texto={CONCRETA} p={prog(x, 0.3, 0.45, elastico)} topo={236} cor={MARCA.roxo} corTexto="#FFFFFF" />
       </>
     );
