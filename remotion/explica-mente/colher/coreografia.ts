@@ -157,7 +157,7 @@ const comerEVirar = (f: number, t: number, vel: number) => {
   };
 };
 
-const CAM_MESA = (t: number) => ({ pos: mixV([0.05, 0.62, 1.95], [0, 0.6, 1.8], t), alvo: [0, 0.13, -0.1] as V3, fov: 34 });
+const CAM_MESA = (t: number) => ({ pos: mixV([0.05, 0.6, 1.72], [0, 0.58, 1.6], t), alvo: [0, 0.14, -0.1] as V3, fov: 34 });
 
 // ---------- os três quadros (segurar, pegar, levar) ----------
 const fala = (i: number) => FALAS[i - 1];
