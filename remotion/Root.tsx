@@ -17,6 +17,10 @@ import { TOTAL as TOTAL_EM3 } from "./explica-mente/colher/tempo";
 import { ExplicaMenteLiquidificador, TOTAL as TOTAL_LIQ } from "./explica-mente/liquidificador/Video";
 import { ExplicaMenteInstrucoes, TOTAL as TOTAL_INS } from "./explica-mente/instrucoes/Video";
 import { ExplicaMentePorta, TOTAL as TOTAL_POR } from "./explica-mente/porta/Video";
+import { ExplicaMenteCaixa, TOTAL as TOTAL_CAI } from "./explica-mente/caixa/Video";
+import { ExplicaMenteAntecipacao, TOTAL as TOTAL_ANT } from "./explica-mente/antecipacao/Video";
+import { ExplicaMenteQuarto, TOTAL as TOTAL_QUA } from "./explica-mente/quarto/Video";
+import { ExplicaMenteCoracao, TOTAL as TOTAL_COR } from "./explica-mente/coracao/Video";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
 
@@ -63,5 +67,9 @@ export const Root: React.FC = () => (
     <Composition id="ExplicaMenteLiquidificador" component={ExplicaMenteLiquidificador} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_LIQ} />
     <Composition id="ExplicaMenteInstrucoes" component={ExplicaMenteInstrucoes} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_INS} />
     <Composition id="ExplicaMentePorta" component={ExplicaMentePorta} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_POR} />
+    <Composition id="ExplicaMenteCaixa" component={ExplicaMenteCaixa} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_CAI} />
+    <Composition id="ExplicaMenteAntecipacao" component={ExplicaMenteAntecipacao} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_ANT} />
+    <Composition id="ExplicaMenteQuarto" component={ExplicaMenteQuarto} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_QUA} />
+    <Composition id="ExplicaMenteCoracao" component={ExplicaMenteCoracao} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_COR} />
   </>
 );

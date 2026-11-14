@@ -105,3 +105,47 @@ export const criarEpisodio = (cfg: {
 };
 
 export { sair };
+
+/** Balão com texto (pedido de um adulto, pensamento). */
+export const Balao: React.FC<{ texto: string; p: number; topo: number; esquerda?: number; cor?: string; corTexto?: string; tamanho?: number }> = ({ texto, p, topo, esquerda, cor = "#FFFFFF", corTexto = MARCA.tinta, tamanho = 50 }) => (
+  <div style={{ position: "absolute", top: topo, left: esquerda ?? 0, right: esquerda === undefined ? 0 : undefined, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
+    <div style={{ transform: `scale(${Math.max(0.001, p)})`, background: cor, color: corTexto, fontFamily: POPPINS, fontWeight: 800, fontSize: tamanho, lineHeight: 1.15, padding: "24px 44px 20px", borderRadius: 44, boxShadow: "0 14px 36px rgba(36,26,74,0.22)", textAlign: "center", maxWidth: 880 }}>{texto}</div>
+  </div>
+);
+
+/** Ciclo desenhado em roda: etapas ligadas por setas, com uma em destaque. */
+export const Roda: React.FC<{ itens: string[]; aceso: number; visiveis: number; cores?: string[]; cy?: number; raio?: number }> = ({ itens, aceso, visiveis, cores = [], cy = 760, raio = 300 }) => {
+  const n = itens.length;
+  const cx = 540;
+  const passo = (2 * Math.PI) / n;
+  const folga = n === 3 ? 0.5 : 0.42;
+  return (
+    <>
+      <svg width="1080" height="1920" style={{ position: "absolute" }}>
+        <circle cx={cx} cy={cy} r={raio} fill="none" stroke={MARCA.roxo} strokeOpacity="0.25" strokeWidth="14" strokeDasharray="2 26" strokeLinecap="round" />
+        {itens.map((_, i) => {
+          const a0 = i * passo + folga;
+          const a1 = (i + 1) * passo - folga;
+          const p0 = { x: cx + raio * Math.sin(a0), y: cy - raio * Math.cos(a0) };
+          const p1 = { x: cx + raio * Math.sin(a1), y: cy - raio * Math.cos(a1) };
+          return (
+            <g key={i} opacity={i + 1 < visiveis || visiveis > n ? 1 : 0}>
+              <path d={`M${p0.x} ${p0.y} A${raio} ${raio} 0 0 1 ${p1.x} ${p1.y}`} fill="none" stroke={MARCA.roxo} strokeWidth="12" strokeLinecap="round" />
+              <circle cx={p1.x} cy={p1.y} r="18" fill={MARCA.roxo} />
+            </g>
+          );
+        })}
+      </svg>
+      {itens.map((t, i) => {
+        const x = cx + raio * Math.sin(i * passo);
+        const y = cy - raio * Math.cos(i * passo);
+        const on = i === aceso;
+        return (
+          <div key={i} style={{ position: "absolute", left: x - 200, top: y - 66, width: 400, height: 132, borderRadius: 66, background: on ? (cores[i] ?? MARCA.roxo) : "#FFFFFF", color: on ? "#FFFFFF" : MARCA.tinta, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", lineHeight: 1.08, fontFamily: POPPINS, fontWeight: 800, fontSize: t.length > 16 ? 38 : 46, boxShadow: "0 12px 30px rgba(36,26,74,0.2)", transform: `scale(${(i < visiveis ? 1 : 0) * (on ? 1.08 : 1)})` }}>
+            {t}
+          </div>
+        );
+      })}
+    </>
+  );
+};

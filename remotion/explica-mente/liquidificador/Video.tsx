@@ -12,18 +12,18 @@ import tempos from "./tempos.json";
 
 const BALCAO = 0.47;
 const SOM: V3 = [-0.52, BALCAO, -1.02];
-const LIQ: V3 = [0.56, BALCAO, -1.02];
+export const LIQ: V3 = [0.56, BALCAO, -1.02];
 const BOTAO_SOM = soma(SOM, [0.05, 0.3, 0.02]);
-const BOTAO_LIQ = soma(LIQ, [0, 0.055, 0.085]);
+export const BOTAO_LIQ = soma(LIQ, [0, 0.055, 0.085]);
 
-const Balcao: React.FC = () => (
+export const Balcao: React.FC = () => (
   <>
     <Caixa t={[2.8, BALCAO - 0.04, 0.5]} raio={0.02} pos={[0, (BALCAO - 0.04) / 2, -1.22]} cor="#FFFFFF" />
     <Caixa t={[2.86, 0.04, 0.56]} raio={0.012} pos={[0, BALCAO - 0.02, -1.22]} cor="#D99B5B" />
   </>
 );
 
-const CaixaDeSom: React.FC<{ pulsa: number }> = ({ pulsa }) => (
+export const CaixaDeSom: React.FC<{ pulsa: number }> = ({ pulsa }) => (
   <group position={SOM}>
     <Caixa t={[0.26, 0.3, 0.17]} raio={0.03} pos={[0, 0.15, 0]} cor="#6C4BD8" />
     <Cilindro r={0.078 * (1 + 0.06 * pulsa)} h={0.012} pos={[0, 0.13, 0.088]} rot={[Math.PI / 2, 0, 0]} cor="#FFC53D" />
@@ -33,8 +33,8 @@ const CaixaDeSom: React.FC<{ pulsa: number }> = ({ pulsa }) => (
   </group>
 );
 
-const Liquidificador: React.FC<{ ligado: number; f: number }> = ({ ligado, f }) => (
-  <group position={[LIQ[0] + 0.004 * ligado * Math.sin(f * 2.3), LIQ[1], LIQ[2] + 0.004 * ligado * Math.sin(f * 3.1)]}>
+export const Liquidificador: React.FC<{ ligado: number; f: number; pos?: V3 }> = ({ ligado, f, pos = LIQ }) => (
+  <group position={[pos[0] + 0.004 * ligado * Math.sin(f * 2.3), pos[1], pos[2] + 0.004 * ligado * Math.sin(f * 3.1)]}>
     <Caixa t={[0.17, 0.11, 0.17]} raio={0.025} pos={[0, 0.055, 0]} cor="#FF5A4E" />
     <Cilindro r={0.02} h={0.012} pos={[0, 0.055, 0.088]} rot={[Math.PI / 2, 0, 0]} cor="#FFC53D" />
     <Cilindro r={0.078} r2={0.058} h={0.2} pos={[0, 0.21, 0]} cor="#CFEFFF" rug={0.25} />
@@ -62,7 +62,7 @@ const Notas: React.FC<{ f: number; volume: number }> = ({ f, volume }) => (
 );
 
 /** Ondas ásperas saindo do liquidificador (só imagem; o vídeo não reproduz o ruído). */
-const Ruido: React.FC<{ f: number; forca: number }> = ({ f, forca }) => (
+export const Ruido: React.FC<{ f: number; forca: number }> = ({ f, forca }) => (
   <>
     {forca > 0.03 &&
       [0, 1, 2].map((i) => {
@@ -78,7 +78,7 @@ const Ruido: React.FC<{ f: number; forca: number }> = ({ f, forca }) => (
 );
 
 /** Braço de outra pessoa entrando no quadro para ligar o aparelho. */
-const Braco: React.FC<{ mao: V3 }> = ({ mao }) => {
+export const Braco: React.FC<{ mao: V3 }> = ({ mao }) => {
   const cotovelo: V3 = [mao[0] + 0.3, mao[1] + 0.2, mao[2] + 0.12];
   return (
     <>
@@ -90,10 +90,10 @@ const Braco: React.FC<{ mao: V3 }> = ({ mao }) => {
 };
 
 const CAM_SOM: Cam = { pos: [-0.3, 0.8, 2.7], alvo: [-0.32, 0.56, -0.9], fov: 34 };
-const CAM_LIQ: Cam = { pos: [0.3, 0.8, 2.7], alvo: [0.3, 0.56, -0.9], fov: 34 };
+export const CAM_LIQ: Cam = { pos: [0.3, 0.8, 2.7], alvo: [0.3, 0.56, -0.9], fov: 34 };
 const aproximar = (c: Cam, t: number): Cam => ({ ...c, pos: mixV(c.pos, [c.pos[0], c.pos[1], c.pos[2] - 0.3], t) });
 
-const incomodada = (p: Pose, forca: number): Pose => {
+export const incomodada = (p: Pose, forca: number): Pose => {
   const o = nosOuvidos(LIA, p);
   return { ...p, maoE: mixV(p.maoE, o.maoE, forca), maoD: mixV(p.maoD, o.maoD, forca), inclina: p.inclina + 0.12 * forca, sobr: 0.8 * forca, sorriso: mix(p.sorriso, -0.6, forca), olhos: mix(p.olhos, 0.3, forca), cabeca: [0.15 * forca, p.cabeca[1], 0.08 * forca] };
 };
@@ -112,7 +112,7 @@ const dancando = (f: number, forca: number): Pose => {
   };
 };
 
-const pertoDoLiq = (f: number): Pose => {
+export const pertoDoLiq = (f: number): Pose => {
   const p = emPe(LIA, [0.05, 0, -0.72], 0.2, f, 1);
   return { ...p, cabeca: olharPara(LIA, p, soma(LIQ, [0, 0.2, 0]), 0.6) };
 };
