@@ -76,7 +76,7 @@ const polegar = (fecha: number): V3[] => {
 /** Caminho do sinal: da ponta de um dedo até o antebraço (coordenadas da mão). */
 export const caminhoDoSinal = (i: number, fecha: number): V3[] => [...dedo(i, fecha).reverse(), [0, 0, 0.004], [0, -0.05, 0], [0, -0.16, 0], [0, -0.34, 0]];
 
-export const Mao: React.FC<{ fecha: number }> = ({ fecha }) => {
+export const Mao: React.FC<{ fecha: number; faixa?: string }> = ({ fecha, faixa }) => {
   const pg = polegar(fecha);
   return (
     <group>
@@ -97,6 +97,7 @@ export const Mao: React.FC<{ fecha: number }> = ({ fecha }) => {
       {/* pulso, antebraço e manga */}
       <Seg a={[0, -0.03, 0]} b={[0, -0.2, 0]} r={0.027} r2={0.031} cor={CORES.pele} />
       <Seg a={[0, -0.2, 0]} b={[0, -0.6, 0]} r={0.036} r2={0.04} cor={CORES.manga} />
+      {faixa && <Seg a={[0, -0.05, 0]} b={[0, -0.085, 0]} r={0.033} cor={faixa} pontas={false} />}
     </group>
   );
 };

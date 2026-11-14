@@ -11,7 +11,7 @@ import { REGISTRO, TEXTOS } from "./roteiro";
 import tempos from "./tempos.json";
 
 const BALCAO = 0.47;
-const SOM: V3 = [-0.52, BALCAO, -1.02];
+export const SOM: V3 = [-0.52, BALCAO, -1.02];
 export const LIQ: V3 = [0.56, BALCAO, -1.02];
 const BOTAO_SOM = soma(SOM, [0.05, 0.3, 0.02]);
 export const BOTAO_LIQ = soma(LIQ, [0, 0.055, 0.085]);
@@ -44,7 +44,7 @@ export const Liquidificador: React.FC<{ ligado: number; f: number; pos?: V3 }> =
 );
 
 /** Notas que sobem da caixa de som. */
-const Notas: React.FC<{ f: number; volume: number }> = ({ f, volume }) => (
+export const Notas: React.FC<{ f: number; volume: number }> = ({ f, volume }) => (
   <>
     {volume > 0.03 &&
       [0, 1, 2, 3].map((i) => {
@@ -89,7 +89,7 @@ export const Braco: React.FC<{ mao: V3 }> = ({ mao }) => {
   );
 };
 
-const CAM_SOM: Cam = { pos: [-0.3, 0.8, 2.7], alvo: [-0.32, 0.56, -0.9], fov: 34 };
+export const CAM_SOM: Cam = { pos: [-0.3, 0.8, 2.7], alvo: [-0.32, 0.56, -0.9], fov: 34 };
 export const CAM_LIQ: Cam = { pos: [0.3, 0.8, 2.7], alvo: [0.3, 0.56, -0.9], fov: 34 };
 const aproximar = (c: Cam, t: number): Cam => ({ ...c, pos: mixV(c.pos, [c.pos[0], c.pos[1], c.pos[2] - 0.3], t) });
 

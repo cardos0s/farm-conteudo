@@ -13,7 +13,7 @@ import tempos from "./tempos.json";
 const CAM: Cam = { pos: [0.1, 1.05, 2.7], alvo: [0, 0.82, -0.8], fov: 34 };
 const PEITO: V3 = [0.05, 0.86, -0.66];
 
-const Sofa: React.FC = () => (
+export const Sofa: React.FC = () => (
   <>
     <Caixa t={[1.5, 0.42, 0.62]} raio={0.06} pos={[0, 0.21, -0.9]} cor="#2EC4B6" />
     <Caixa t={[1.5, 0.56, 0.2]} raio={0.07} pos={[0, 0.66, -1.17]} cor="#27AFA3" />

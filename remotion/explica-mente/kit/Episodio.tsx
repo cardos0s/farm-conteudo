@@ -150,3 +150,26 @@ export const Roda: React.FC<{ itens: string[]; aceso: number; visiveis: number; 
     </>
   );
 };
+
+/** Três quadros empilhados (três cenas ao mesmo tempo), com etiqueta e destaque. `aceso` = índices em destaque, ou null para todos. */
+export const TresQuadros: React.FC<{ f: number; de: number; rotulos: string[]; aceso: number[] | null; cenas: (largura: number, altura: number) => React.ReactNode[] }> = ({ f, de, rotulos, aceso, cenas }) => {
+  const L = 980;
+  const A = 364;
+  return (
+    <AbsoluteFill style={{ background: MARCA.creme }}>
+      {cenas(L, A).map((cena, i) => {
+        const entra = prog(f, de + 2 + i * 12, de + 18 + i * 12, elastico);
+        const on = !aceso || aceso.includes(i);
+        return (
+          <div key={i} style={{ position: "absolute", left: 50, top: 196 + i * (A + 18), width: L, height: A, borderRadius: 36, overflow: "hidden", transform: `scale(${Math.max(0.001, entra)})`, opacity: on ? 1 : 0.38, outline: `${aceso && on ? 10 : 0}px solid ${MARCA.roxo}`, outlineOffset: -10, boxShadow: "0 12px 30px rgba(36,26,74,0.18)" }}>
+            {cena}
+            <div style={{ position: "absolute", left: 22, top: 20, display: "flex", alignItems: "center", gap: 12, background: aceso && on ? MARCA.roxo : "#FFFFFF", color: aceso && on ? "#FFFFFF" : MARCA.tinta, borderRadius: 999, padding: "10px 26px 8px 10px", fontFamily: POPPINS, fontWeight: 700, fontSize: 34, boxShadow: "0 8px 22px rgba(36,26,74,0.18)" }}>
+              <span style={{ width: 46, height: 46, borderRadius: "50%", background: aceso && on ? MARCA.sol : MARCA.roxo, color: aceso && on ? MARCA.tinta : "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800 }}>{i + 1}</span>
+              {rotulos[i]}
+            </div>
+          </div>
+        );
+      })}
+    </AbsoluteFill>
+  );
+};
