@@ -291,3 +291,33 @@ img, video { display: block; }
 .criar-linha input { flex: 1; border: 0; outline: none; background: transparent; }
 
 .aviso { position: absolute; z-index: 40; left: 50%; bottom: calc(var(--barra) + env(safe-area-inset-bottom) + 18px); transform: translateX(-50%); background: #262626; color: #fff; padding: 11px 18px; border-radius: 10px; font-weight: 500; font-size: 13px; white-space: nowrap; animation: aparece .2s; box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+
+/* Story: texto e enquete */
+.story-texto { position: absolute; left: 24px; right: 24px; top: 22%; margin: 0; text-align: center; font: 700 22px/1.25 "Inter", sans-serif; color: #fff; }
+.story-texto { background: rgba(0,0,0,.55); padding: 10px 14px; border-radius: 10px; box-decoration-break: clone; -webkit-box-decoration-break: clone; width: fit-content; margin: 0 auto; }
+.enquete { position: absolute; left: 50%; top: 55%; transform: translate(-50%, -50%) rotate(-2deg); width: 72%; background: #fff; color: #111; border-radius: 16px; padding: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.35); z-index: 3; }
+.enquete p { margin: 0 0 10px; text-align: center; font-weight: 800; font-size: 17px; }
+.enquete button { position: relative; display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 12px 14px; margin-top: 8px; border-radius: 10px; background: #f1f1f1; font-weight: 700; overflow: hidden; color: #111; }
+.enquete button i { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, #ffc93c, #ee2a7b); opacity: .35; transition: width .6s cubic-bezier(.2,.8,.2,1); }
+.enquete button.votada i { opacity: .7; }
+.enquete button span, .enquete button b { position: relative; }
+.enquete button:disabled { cursor: default; }
+.post { scroll-margin-top: 54px; }
+.post.em-destaque .post-midia { outline: 3px solid #7cf7c4; outline-offset: -3px; }
+.link-demo { color: #7cf7c4; font-weight: 700; }
+
+/* Modo demo: um cartão só, embaixo, com o passo e o que aconteceu por trás */
+.demo { position: absolute; z-index: 60; bottom: calc(var(--barra) + env(safe-area-inset-bottom) + 8px); left: 8px; right: 8px; max-height: 46%; overflow-y: auto; background: rgba(12,12,14,.95); color: #fff; border-radius: 16px; padding: 10px 12px 12px; box-shadow: 0 10px 40px rgba(0,0,0,.4); border: 1px solid rgba(124,247,196,.45); backdrop-filter: blur(10px); animation: sobe .25s cubic-bezier(.2,.8,.2,1); }
+.demo-topo { display: flex; justify-content: space-between; align-items: center; gap: 8px; font: 600 11px/1 ui-monospace, monospace; color: #7cf7c4; text-transform: uppercase; letter-spacing: .06em; }
+.demo-topo button { color: #aaa; font: 600 12px "Inter", sans-serif; text-transform: none; letter-spacing: 0; }
+.demo b { display: block; font-size: 16px; margin: 8px 0 2px; }
+.demo-botoes { display: flex; align-items: center; gap: 14px; }
+.demo p { margin: 0; font-size: 13px; line-height: 1.4; color: #ddd; }
+.demo-pontos { display: flex; gap: 4px; margin-top: 10px; }
+.demo-pontos i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.18); }
+.demo-pontos i.feito { background: #7cf7c4; }
+.demo-topo .demo-proximo { background: #7cf7c4; color: #052e1f; font-weight: 800; font-size: 13px; padding: 7px 12px; border-radius: 10px; }
+.demo-por-tras { margin-top: 8px; padding: 8px 10px; border-radius: 10px; background: rgba(124,247,196,.08); border: 1px dashed rgba(124,247,196,.35); animation: destaca 1.2s ease-out; }
+.demo-por-tras span { font: 600 11px/1.3 ui-monospace, monospace; color: #7cf7c4; }
+.demo-por-tras ol { margin: 4px 0 0; padding-left: 18px; font-size: 11.5px; line-height: 1.4; color: #d4d4d4; }
+.demo-por-tras li::marker { color: #7cf7c4; }

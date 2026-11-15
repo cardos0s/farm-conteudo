@@ -179,16 +179,19 @@ export function Compartilhar({ post, onFechar, avisar }: { post: Post; onFechar:
   );
 }
 
-/** Visualizador de stories: barras de progresso, avança sozinho em 5 s, toque à esquerda/direita. */
-export function VerStories({ inicio, onFechar }: { inicio: number; onFechar: () => void }) {
-  const { stories, usuario, acoes } = useLoja();
+/** Visualizador de stories: barras da pessoa atual, avança sozinho em 5 s, toque à esquerda/direita, enquete.
+ *  `indice` (opcional) deixa o modo demo controlar qual story aparece, sem avançar sozinho. */
+export function VerStories({ inicio, indice, onFechar }: { inicio: number; indice?: number; onFechar: () => void }) {
+  const { stories, usuario, acoes, estado } = useLoja();
   const [i, setI] = useState(inicio);
   const [prog, setProg] = useState(0);
-  const s = stories[i];
+  const atual = indice ?? i;
+  const s = stories[atual];
   useEffect(() => {
     if (!s) return onFechar();
-    acoes.verStory(s.id);
+    acoes.verStory(s);
     setProg(0);
+    if (indice !== undefined) return; // demo controla
     const t0 = performance.now();
     let raf = 0;
     const passo = (t: number) => {
@@ -201,17 +204,22 @@ export function VerStories({ inicio, onFechar }: { inicio: number; onFechar: () 
     };
     raf = requestAnimationFrame(passo);
     return () => cancelAnimationFrame(raf);
-  }, [i]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [atual]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!s) return null;
   const u = usuario(s.autor);
+  const grupo = stories.filter((x) => x.autor === s.autor);
+  const pos = grupo.findIndex((x) => x.id === s.id);
+  const voto = estado.votos[s.id];
+  const votos = s.enquete ? (s.enquete.votos.map((v, k) => v + (voto === k ? 1 : 0)) as [number, number]) : undefined;
+  const pct = (k: number) => (votos ? Math.round((votos[k] / (votos[0] + votos[1])) * 100) : 0);
   return (
     <div className="stories-tela">
       <img src={s.midia} alt="" className="story-fundo" />
       <img src={s.midia} alt="" className="story-img" />
       <div className="story-barras">
-        {stories.map((x, k) => (
+        {grupo.map((x, k) => (
           <i key={x.id}>
-            <b style={{ width: `${k < i ? 100 : k === i ? prog * 100 : 0}%` }} />
+            <b style={{ width: `${k < pos ? 100 : k === pos ? (indice !== undefined ? 100 : prog * 100) : 0}%` }} />
           </i>
         ))}
       </div>
@@ -222,13 +230,28 @@ export function VerStories({ inicio, onFechar }: { inicio: number; onFechar: () 
           <Icone nome="fechar" tam={26} />
         </button>
       </header>
-      <button className="story-tras" onClick={() => setI((x) => Math.max(0, x - 1))} aria-label="Anterior" />
-      <button className="story-frente" onClick={() => setI((x) => x + 1)} aria-label="Próximo" />
-      <form className="story-responder" onSubmit={(e) => e.preventDefault()}>
-        <input placeholder="Enviar mensagem" />
-        <Icone nome="coracao" tam={26} />
-        <Icone nome="enviar" tam={24} />
-      </form>
+      <button className="story-tras" onClick={() => setI(Math.max(0, atual - 1))} aria-label="Anterior" />
+      <button className="story-frente" onClick={() => setI(atual + 1)} aria-label="Próximo" />
+      {s.texto && <p className="story-texto">{s.texto}</p>}
+      {s.enquete && (
+        <div className="enquete">
+          <p>{s.enquete.pergunta}</p>
+          {s.enquete.opcoes.map((op, k) => (
+            <button key={op} className={voto === undefined ? "" : voto === k ? "votada" : "outra"} onClick={() => acoes.votarEnquete(s, k as 0 | 1)} disabled={voto !== undefined}>
+              {voto !== undefined && <i style={{ width: `${pct(k)}%` }} />}
+              <span>{op}</span>
+              {voto !== undefined && <b>{pct(k)}%</b>}
+            </button>
+          ))}
+        </div>
+      )}
+      {s.autor === EU ? null : (
+        <form className="story-responder" onSubmit={(e) => e.preventDefault()}>
+          <input placeholder={`Responder a ${u.id}...`} />
+          <Icone nome="coracao" tam={26} />
+          <Icone nome="enviar" tam={24} />
+        </form>
+      )}
     </div>
   );
 }

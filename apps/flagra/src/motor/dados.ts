@@ -11,6 +11,8 @@ export const EU = "voce";
 
 export const USUARIOS: Usuario[] = [
   { id: EU, nome: "Você", seguidores: 312, seguindo: 6, bio: "flagrando o que ninguém acredita" },
+  { id: "duda.sem.freio", nome: "Duda", avatar: m("avatar-duda.svg"), seguidores: 48_300, seguindo: 211, bio: "planejo tudo. o Rafa só dirige (mal) 🌴 dia 3 longe de casa" },
+  { id: "rafa.na.estrada", nome: "Rafa", avatar: m("avatar-rafa.svg"), seguidores: 39_900, seguindo: 1, bio: "copiloto oficial da @duda.sem.freio · devolvo o que pego emprestado" },
   { id: "vizinha_do_302", nome: "Bia · 302", avatar: m("flamingo.jpg"), seguidores: 18_400, seguindo: 410, bio: "síndica não oficial" },
   { id: "lixeira.cam", nome: "Câmera da Lixeira", avatar: m("guaxinim.jpg"), seguidores: 92_100, seguindo: 12 },
   { id: "bar.do.porto", nome: "Bar do Porto", avatar: m("galo-bar.jpg"), verificado: true, seguidores: 241_000, seguindo: 88 },
@@ -26,7 +28,8 @@ export const USUARIOS: Usuario[] = [
 ];
 
 /** Quem "você" segue no começo da demo. */
-export const SEGUINDO_INICIAL = ["vizinha_do_302", "capivara.news", "meteoro.logo", "bar.do.porto", "mergulho.crystal", "ocean.drive.diario"];
+// Você segue o Rafa, mas ainda não segue a Duda: os posts dela chegam até você pelos reposts dele.
+export const SEGUINDO_INICIAL = ["rafa.na.estrada", "vizinha_do_302", "capivara.news", "meteoro.logo", "bar.do.porto", "mergulho.crystal", "ocean.drive.diario"];
 
 const p = (o: Omit<Post, "visualizacoes" | "salvos"> & { visualizacoes?: number; salvos?: number }): Post => ({
   visualizacoes: o.curtidas * 9,
@@ -35,6 +38,14 @@ const p = (o: Omit<Post, "visualizacoes" | "salvos"> & { visualizacoes?: number;
 });
 
 export const POSTS: Post[] = [
+  // ── Duda e Rafa, o casal da demo ──
+  p({ id: "duda-mapa", autor: "duda.sem.freio", tipo: "post", midia: { tipo: "foto", url: m("duda-mapa.jpg"), proporcao: 0.75 }, legenda: "Plano infalível, parte 1. O Rafa não pode saber do final.", tags: ["roadtrip", "plano", "fuga"], local: "Rodovia US-1, Flórida", criadoEm: ha(22), curtidas: 8_420, comentarios: 612, reposts: 940 }),
+  p({ id: "rafa-por-do-sol", autor: "rafa.na.estrada", tipo: "post", midia: { tipo: "foto", url: m("rafa-por-do-sol.jpg"), proporcao: 1.6 }, legenda: "Ela dirige, eu cuido da trilha sonora. Divisão justa.", tags: ["roadtrip", "pordosol"], local: "Everglades, Flórida", criadoEm: ha(65), curtidas: 5_130, comentarios: 233, reposts: 310 }),
+  p({ id: "duda-chaves", autor: "duda.sem.freio", tipo: "post", midia: { tipo: "foto", url: m("duda-chaves.jpg"), proporcao: 1.33 }, legenda: "Quarto 20. Pago em dinheiro. Nome na ficha: Sra. Silva.", tags: ["motel", "fuga", "roadtrip"], local: "Homestead, Flórida", criadoEm: ha(240), curtidas: 11_870, comentarios: 840, reposts: 1_120 }),
+  p({ id: "duda-florida", autor: "duda.sem.freio", tipo: "post", midia: { tipo: "foto", url: m("duda-florida.jpg"), proporcao: 1.4 }, legenda: "Dia 1. Ele perguntou se precisava de passaporte.", tags: ["roadtrip", "florida"], criadoEm: ha(2_600), curtidas: 6_010, comentarios: 402, reposts: 515 }),
+  p({ id: "reel-rafa-fuga", autor: "rafa.na.estrada", tipo: "reel", midia: { tipo: "video", url: m("reel-rafa-fuga.mp4") }, legenda: "POV: você pegou um carrinho de golfe \"emprestado\" e o segurança tem outro.", tags: ["carrinhodegolfe", "fuga", "flagra"], local: "Key Biscayne, Flórida", criadoEm: ha(35), curtidas: 12_300, comentarios: 640, reposts: 1_480, visualizacoes: 210_000, audio: "Perseguição lenta · rafa.na.estrada" }),
+  p({ id: "reel-rafa-carrinho", autor: "rafa.na.estrada", tipo: "reel", midia: { tipo: "video", url: m("reel-rafa-carrinho.mp4") }, legenda: "Devolvi. Quase inteiro. A cesta era assim quando eu peguei.", tags: ["carrinhodegolfe", "flagra"], criadoEm: ha(420), curtidas: 7_900, comentarios: 380, reposts: 620, visualizacoes: 120_000, audio: "som original · rafa.na.estrada" }),
+
   p({ id: "jacare-piscina", autor: "vizinha_do_302", tipo: "post", midia: { tipo: "foto", url: m("jacare-piscina.jpg"), proporcao: 1.53 }, legenda: "Desci pra nadar e já tinha gente na piscina 🐊 o síndico não atende o interfone", tags: ["jacare", "condominio", "bicho"], local: "Fort Lauderdale, Flórida", criadoEm: ha(6), curtidas: 28_430, comentarios: 1_912, reposts: 3_104 }),
   p({ id: "guaxinim", autor: "lixeira.cam", tipo: "post", midia: { tipo: "foto", url: m("guaxinim.jpg"), proporcao: 1.2 }, legenda: "Flagrei o responsável pelo lixo revirado toda manhã. Ele nem disfarçou.", tags: ["guaxinim", "bicho", "flagra"], local: "Orlando, Flórida", criadoEm: ha(25), curtidas: 51_870, comentarios: 3_420, reposts: 6_011 }),
   p({ id: "galo-bar", autor: "bar.do.porto", tipo: "post", midia: { tipo: "foto", url: m("galo-bar.jpg"), proporcao: 1.5 }, legenda: "Cliente mais fiel da casa. Chega às 7h, não paga e ainda traz o filho.", tags: ["galo", "bar", "bicho"], local: "Key West, Flórida", criadoEm: ha(48), curtidas: 12_905, comentarios: 640, reposts: 870 }),
@@ -56,12 +67,19 @@ export const POSTS: Post[] = [
 
 /** Reposts de quem você segue: é assim que um post de alguém que você não segue chega até você. */
 export const REPOSTS: Repost[] = [
+  { postId: "duda-mapa", por: "rafa.na.estrada", em: ha(10) },
+  { postId: "duda-chaves", por: "rafa.na.estrada", em: ha(200) },
   { postId: "jacare-ciclovia", por: "capivara.news", em: ha(40) },
   { postId: "guaxinim", por: "vizinha_do_302", em: ha(15) },
   { postId: "golfe", por: "ocean.drive.diario", em: ha(90) },
 ];
 
 export const STORIES: Story[] = [
+  // Vários stories da mesma pessoa ficam em sequência; o anel só fica cinza quando você vê todos.
+  { id: "duda-1", autor: "duda.sem.freio", midia: m("duda-motel.jpg"), criadoEm: ha(50), texto: "dia 3 longe de casa 🌴", visualizacoes: 9_820 },
+  { id: "duda-2", autor: "duda.sem.freio", midia: m("duda-mapa.jpg"), criadoEm: ha(40), enquete: { pergunta: "Próxima parada?", opcoes: ["Key West", "Miami"], votos: [1_840, 2_210] }, visualizacoes: 9_100 },
+  { id: "duda-3", autor: "duda.sem.freio", midia: m("rafa-parabrisa.jpg"), criadoEm: ha(20), texto: "o Rafa dirigindo. rezem por nós 🙏", visualizacoes: 8_430 },
+  { id: "rafa-1", autor: "rafa.na.estrada", midia: m("rafa-carrinho.jpg"), criadoEm: ha(30), texto: "peguei emprestado (vou devolver)", visualizacoes: 7_200 },
   { id: "s1", autor: "capivara.news", midia: m("capivara.jpg"), criadoEm: ha(30) },
   { id: "s2", autor: "galos.de.key.west", midia: m("galo-rua.jpg"), criadoEm: ha(80) },
   { id: "s3", autor: "ocean.drive.diario", midia: m("por-do-sol.jpg"), criadoEm: ha(120) },
@@ -82,6 +100,14 @@ const c = (postId: string, autor: string, texto: string, min: number, curtidas: 
 });
 
 export const COMENTARIOS: Comentario[] = [
+  c("duda-mapa", "rafa.na.estrada", "que final? 👀", 20, 3_920),
+  c("duda-mapa", "duda.sem.freio", "@rafa.na.estrada o final é você lavando a louça do motel", 19, 5_610, "duda-mapa-rafa.na.estrada-20"),
+  c("duda-mapa", "rafa.na.estrada", "@duda.sem.freio isso não estava no contrato", 18, 4_280, "duda-mapa-rafa.na.estrada-20"),
+  c("duda-mapa", "capivara.news", "acompanhando essa novela de perto", 15, 2_100),
+  c("duda-chaves", "rafa.na.estrada", "Sr. Silva presente", 230, 1_870),
+  c("reel-rafa-fuga", "duda.sem.freio", "eu falei pra pegar o azul, o azul é mais rápido", 30, 2_640),
+  c("reel-rafa-fuga", "radar_da_orla", "perseguição registrada a 14 km/h", 28, 1_310),
+  c("rafa-por-do-sol", "duda.sem.freio", "trilha sonora: a mesma música 40 vezes", 60, 1_990),
   c("jacare-piscina", "bar.do.porto", "Manda ele pra cá que a gente serve um drink", 4, 2_310),
   c("jacare-piscina", "vizinha_do_302", "Ele não tem cara de quem paga a conta", 3, 1_180, "jacare-piscina-bar.do.porto-4"),
   c("jacare-piscina", "meteoro.logo", "Com esse calor eu entendo ele", 5, 840),

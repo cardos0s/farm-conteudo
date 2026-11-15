@@ -16,11 +16,12 @@ export function Reels({ inicio, onComentarios, onCompartilhar, onPerfil }: Props
   useEffect(() => {
     acoes.recalcularReels();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const ordem = reels.map((r) => r.chave).join(",");
   useEffect(() => {
     if (!inicio || !lista.current) return;
     const i = reels.findIndex((r) => r.chave === inicio);
     if (i >= 0) lista.current.scrollTo({ top: i * lista.current.clientHeight });
-  }, [inicio]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [inicio, ordem]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className="tela reels" ref={lista}>
       <header className="reels-topo">

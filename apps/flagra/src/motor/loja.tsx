@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
 import { apagarMeus, carregarMeus, salvarMeu } from "./armazenamento";
 import { COMENTARIOS, EU, NOTIFICACOES, POSTS, REPOSTS, SEGUINDO_INICIAL, STORIES, USUARIOS } from "./dados";
 import { PESOS, pontuar, pontuarReel, type Nota, type Sinais } from "./ranking";
-import type { Comentario, Evento, Notificacao, Post, Usuario } from "./tipos";
+import type { Comentario, Evento, Notificacao, Post, Story, Usuario } from "./tipos";
 
 // O "back-end" da demo. Cada ação faz o que um servidor faria (grava, atualiza contador, notifica,
 // registra sinal para o ranking) e deixa um Evento explicando os passos — é o que o Raio-X mostra.
@@ -18,6 +18,9 @@ type Estado = {
   comentarios: Comentario[];
   curtidasComentario: Record<string, boolean>;
   storiesVistos: Record<string, boolean>;
+  votos: Record<string, 0 | 1>;
+  /** Curtidas extras de um post "bombando" (simulação do modo demo). */
+  impulso: Record<string, number>;
   notificacoes: Notificacao[];
   curtidasRecebidas: Record<string, number>;
   eventos: Evento[];
@@ -38,6 +41,8 @@ const inicial = (): Estado => ({
   comentarios: [],
   curtidasComentario: {},
   storiesVistos: {},
+  votos: {},
+  impulso: {},
   notificacoes: [],
   curtidasRecebidas: {},
   eventos: [],
@@ -71,6 +76,10 @@ function useLojaInterna() {
   const [e, setE] = useState<Estado>(carregar);
   const [meus, setMeus] = useState<Post[]>([]);
   const [raioX, setRaioX] = useState(false);
+  /** Post em destaque no modo demo (o Raio-X dele abre sozinho). */
+  const [destaque, setDestaque] = useState<string>();
+  /** Com o modo demo ligado, o cartão da demo mostra os eventos e o painel do Raio-X fica escondido. */
+  const [modoDemo, setModoDemo] = useState(false);
   const estado = useRef(e);
   estado.current = e;
 
@@ -93,9 +102,9 @@ function useLojaInterna() {
   /** Contadores como o app mostra: valor do banco + o que você fez agora. */
   const contagem = useCallback(
     (p: Post) => ({
-      curtidas: p.curtidas + (p.meu ? e.curtidasRecebidas[p.id] ?? 0 : 0) + (e.curtidos[p.id] ? 1 : 0),
-      comentarios: p.comentarios + e.comentarios.filter((c) => c.postId === p.id).length,
-      reposts: p.reposts + (e.repostados[p.id] ? 1 : 0),
+      curtidas: p.curtidas + (p.meu ? e.curtidasRecebidas[p.id] ?? 0 : 0) + (e.curtidos[p.id] ? 1 : 0) + (e.impulso[p.id] ?? 0),
+      comentarios: p.comentarios + e.comentarios.filter((c) => c.postId === p.id).length + Math.round((e.impulso[p.id] ?? 0) * 0.04),
+      reposts: p.reposts + (e.repostados[p.id] ? 1 : 0) + Math.round((e.impulso[p.id] ?? 0) * 0.12),
       salvos: p.salvos + (e.salvos[p.id] ? 1 : 0),
     }),
     [e],
@@ -305,7 +314,67 @@ function useLojaInterna() {
     });
   };
 
-  const verStory = (id: string) => setE((s) => ({ ...s, storiesVistos: { ...s.storiesVistos, [id]: true } }));
+  const verStory = (st: Story) => {
+    if (estado.current.storiesVistos[st.id]) return;
+    setE((s) => ({ ...s, storiesVistos: { ...s.storiesVistos, [st.id]: true } }));
+    const resto = STORIES.filter((x) => x.autor === st.autor && x.id !== st.id && !estado.current.storiesVistos[x.id]).length;
+    registrar({
+      icone: "👁️",
+      titulo: `Story de @${st.autor} visto`,
+      passos: [
+        `grava (você, ${st.id}) em visualizacoes_story: @${st.autor} vê seu nome na lista "visto por"`,
+        resto > 0 ? `ainda faltam ${resto} story(s) de @${st.autor}: o anel continua colorido` : `você viu todos os stories de @${st.autor}: o anel fica cinza e ela vai para o fim da fila`,
+        "o story some sozinho 24 h depois de postado (o arquivo pode ir para os Destaques)",
+      ],
+    });
+  };
+
+  const votarEnquete = (st: Story, opcao: 0 | 1) => {
+    if (!st.enquete || estado.current.votos[st.id] !== undefined) return;
+    setE((s) => ({ ...s, votos: { ...s.votos, [st.id]: opcao }, afinidade: somar(s.afinidade, [st.autor], 2) }));
+    const v = [...st.enquete.votos] as [number, number];
+    v[opcao] += 1;
+    const pct = Math.round((v[opcao] / (v[0] + v[1])) * 100);
+    registrar({
+      icone: "🗳️",
+      titulo: `Voto na enquete de @${st.autor}`,
+      passos: [
+        `grava (você, ${st.id}, "${st.enquete.opcoes[opcao]}") em votos — um voto por pessoa`,
+        `soma no total da opção e devolve a porcentagem: ${st.enquete.opcoes[opcao]} ${pct}%`,
+        `@${st.autor} vê quem votou em quê`,
+        "votar é interação: afinidade com a pessoa +2, e os stories dela passam a aparecer primeiro",
+      ],
+    });
+  };
+
+  /** Simula um post "bombando": curtidas chegando rápido durante alguns segundos. */
+  const impulsionar = (p: Post, segundos = 8) => {
+    const antes = contagem(p).curtidas;
+    let total = 0;
+    const id = window.setInterval(() => {
+      const d = 400 + Math.floor(Math.random() * 900);
+      total += d;
+      setE((s) => ({ ...s, impulso: { ...s.impulso, [p.id]: (s.impulso[p.id] ?? 0) + d } }));
+    }, 250);
+    window.setTimeout(() => {
+      window.clearInterval(id);
+      registrar({
+        icone: "🚀",
+        titulo: `${p.tipo === "reel" ? "Reel" : "Post"} de @${p.autor} bombando`,
+        passos: [
+          `+${numero(total)} curtidas em ${segundos} s (${numero(antes)} → ${numero(antes + total)}), com comentários e reposts junto`,
+          "o engajamento entra na nota em escala logarítmica: sobe, mas sem atropelar todo o resto",
+          "nos Reels, reação rápida nas primeiras horas faz o vídeo ser testado com quem não segue o autor",
+        ],
+      });
+    }, segundos * 1000);
+  };
+
+  const reiniciar = () => {
+    setE(inicial());
+    setRaioX(false);
+    setDestaque(undefined);
+  };
 
   const postar = async (dados: { legenda: string; local: string; tags: string[]; arquivo: File }) => {
     const reel = dados.arquivo.type.startsWith("video");
@@ -362,6 +431,10 @@ function useLojaInterna() {
     notificacoes: [...e.notificacoes, ...NOTIFICACOES],
     raioX,
     setRaioX,
+    destaque,
+    setDestaque,
+    modoDemo,
+    setModoDemo,
     usuario,
     contagem,
     comentariosDe,
@@ -369,7 +442,7 @@ function useLojaInterna() {
       const p = porId.get(id);
       return p ? comContagem(p) : undefined;
     },
-    acoes: { curtir, comentar, curtirComentario, repostar, salvar, seguir, assistir, verStory, postar, recalcularFeed, recalcularReels, zerar },
+    acoes: { curtir, comentar, curtirComentario, repostar, salvar, seguir, assistir, verStory, votarEnquete, impulsionar, postar, recalcularFeed, recalcularReels, zerar, reiniciar },
   };
 }
 

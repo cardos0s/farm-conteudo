@@ -45,7 +45,17 @@ export type Comentario = {
 
 export type Repost = { postId: string; por: string; em: number };
 
-export type Story = { id: string; autor: string; midia: string; criadoEm: number };
+export type Story = {
+  id: string;
+  autor: string;
+  midia: string;
+  criadoEm: number;
+  /** Texto escrito por cima da foto. */
+  texto?: string;
+  /** Figurinha de enquete: duas opções e os votos que já existiam. */
+  enquete?: { pergunta: string; opcoes: [string, string]; votos: [number, number] };
+  visualizacoes?: number;
+};
 
 export type Notificacao = { id: string; de: string; tipo: "curtida" | "comentario" | "seguir" | "repost"; postId?: string; texto?: string; em: number };
 

@@ -5,8 +5,8 @@ import { tempo } from "../util";
 import { Icone } from "./Icone";
 
 /** Etiqueta sobre cada post no modo Raio-X: por que ele está nessa posição. */
-export function NotaChip({ nota, posicao }: { nota: Nota; posicao?: number }) {
-  const [aberto, setAberto] = useState(false);
+export function NotaChip({ nota, posicao, aberto: inicial = false }: { nota: Nota; posicao?: number; aberto?: boolean }) {
+  const [aberto, setAberto] = useState(inicial);
   return (
     <button className={`nota-chip ${aberto ? "aberto" : ""}`} onPointerUp={(e) => e.stopPropagation()} onClick={(e) => (e.stopPropagation(), setAberto((a) => !a))}>
       <span className="nota-topo">
@@ -31,10 +31,10 @@ export function NotaChip({ nota, posicao }: { nota: Nota; posicao?: number }) {
 
 /** Painel do Raio-X: os eventos (o que cada toque fez no "servidor") e os seus sinais. */
 export function PainelRaioX() {
-  const { estado, raioX, setRaioX, acoes } = useLoja();
+  const { estado, raioX, setRaioX, acoes, modoDemo } = useLoja();
   const [aba, setAba] = useState<"eventos" | "sinais">("eventos");
   const [min, setMin] = useState(false);
-  if (!raioX) return null;
+  if (!raioX || modoDemo) return null;
   const temas = Object.entries(estado.interesse).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).slice(0, 8);
   const pessoas = Object.entries(estado.afinidade).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).slice(0, 5);
   const maxT = Math.max(1, ...temas.map(([, v]) => v));
@@ -58,7 +58,14 @@ export function PainelRaioX() {
       </header>
       {!min && aba === "eventos" && (
         <div className="raiox-corpo">
-          {estado.eventos.length === 0 && <p className="raiox-vazio">Curta, comente, reposte ou assista a um reel: cada toque aparece aqui, passo a passo.</p>}
+          {estado.eventos.length === 0 && (
+            <p className="raiox-vazio">
+              Curta, comente, reposte ou assista a um reel: cada toque aparece aqui, passo a passo.{" "}
+              <button className="link-demo" onClick={() => window.dispatchEvent(new Event("flagra:demo"))}>
+                ▶ Rodar demo guiada
+              </button>
+            </p>
+          )}
           {estado.eventos.slice(0, 12).map((ev, i) => (
             <article key={ev.id} className={`evento ${i === 0 ? "novo" : ""}`}>
               <h4>
@@ -98,6 +105,7 @@ export function PainelRaioX() {
             </div>
           ))}
           <div className="raiox-botoes">
+            <button onClick={() => window.dispatchEvent(new Event("flagra:demo"))}>▶ Demo guiada</button>
             <button onClick={acoes.recalcularFeed}>
               <Icone nome="atualizar" tam={15} /> Recalcular feed
             </button>

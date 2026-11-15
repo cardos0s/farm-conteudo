@@ -21,7 +21,30 @@ no celular, na mesma rede, abra o endereço "Network" que o Vite mostra.
 Para a "Legenda com IA" na tela de publicar, preencha `ANTHROPIC_API_KEY` no `.env` da raiz do repositório
 (ou num `.env` em `apps/flagra/`). Sem a chave, o resto funciona.
 
-Para recomeçar a demo do zero: Raio-X → Seus sinais → **Zerar tudo**.
+Para recomeçar do zero: Raio-X → Seus sinais → **Zerar tudo**.
+
+## Demo guiada: Duda e Rafa
+
+Abra `http://localhost:5173/?demo` (ou Raio-X → Seus sinais → **Demo guiada**). Um cartão embaixo conduz
+12 passos com o casal da demo, e cada passo mostra o que aconteceu "por trás". Avance com **Próximo**
+(ou seta para a direita / espaço no computador), no seu ritmo de narração:
+
+| # | Passo | O que acontece na tela |
+|---|---|---|
+| 1 | Conheça a Duda e o Rafa | o app volta ao estado inicial: você segue o Rafa, não segue a Duda |
+| 2 | Stories | abre o 1º story da Duda (texto na foto) |
+| 3 | Enquete | 2º story, voto em "Key West", porcentagens aparecem |
+| 4 | Anel cinza | último story; fecha e a fileira rola até o anel dela, agora cinza e no fim da fila |
+| 5 | Repost | Raio-X liga e o post da Duda aparece com "rafa.na.estrada repostou" e a nota aberta |
+| 6 | Seguir | você passa a seguir a Duda |
+| 7 | Curtida | coração do toque duplo na foto, contador +1 |
+| 8 | Comentários | thread da Duda e do Rafa discutindo; você responde |
+| 9 | Repostar | você reposta o post |
+| 10 | Reels | abre o reel do Rafa e ele "bomba": curtidas, comentários e reposts subindo, nota junto |
+| 11 | O feed se reorganiza | volta ao Início, recalcula: os posts da Duda vão para o topo |
+| 12 | Fim | Raio-X ligado para explorar livre |
+
+Duda e Rafa são personagens originais desta demo (avatares ilustrados em `public/midia/avatar-*.svg`).
 
 ## O que tem
 

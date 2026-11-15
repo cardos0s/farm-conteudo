@@ -32,7 +32,7 @@ function apiLegenda(): Plugin {
       return responder(res, 503, { erro: "IA desligada: preencha ANTHROPIC_API_KEY no .env" });
     }
     try {
-      const { gerarLegenda } = await import("./server/legenda");
+      const { gerarLegenda } = await import("./server/legenda.ts");
       const pedido = JSON.parse(await lerCorpo(req));
       responder(res, 200, await gerarLegenda(pedido));
     } catch (e) {

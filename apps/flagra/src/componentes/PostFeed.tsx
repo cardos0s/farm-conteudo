@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { EU } from "../motor/dados";
 import { useLoja, type ItemFeed } from "../motor/loja";
 import { curto, longo, tempoLongo } from "../util";
@@ -11,7 +11,7 @@ type Props = { item: ItemFeed; posicao?: number; onComentarios: () => void; onCo
 /** Um post do feed: cabeçalho, mídia (toque duplo curte), ações, curtidas, legenda e comentários. */
 export function PostFeed({ item, posicao, onComentarios, onCompartilhar, onPerfil }: Props) {
   const { post, via } = item;
-  const { estado, usuario, acoes, raioX, comentariosDe } = useLoja();
+  const { estado, usuario, acoes, raioX, comentariosDe, destaque } = useLoja();
   const autor = usuario(post.autor);
   const curtido = !!estado.curtidos[post.id];
   const salvo = !!estado.salvos[post.id];
@@ -25,6 +25,15 @@ export function PostFeed({ item, posicao, onComentarios, onCompartilhar, onPerfi
   // Quem aparece em "Curtido por": alguém que você segue, como nos apps grandes.
   const amigo = Object.keys(estado.seguindo).find((u) => estado.seguindo[u] && u !== post.autor);
   const primeiro = comentariosDe(post.id).filter((c) => !c.respostaDe).sort((a, b) => b.curtidas - a.curtidas)[0];
+
+  // O modo demo dispara o coração da curtida por evento.
+  useEffect(() => {
+    const ouvir = (ev: Event) => {
+      if ((ev as CustomEvent).detail === post.id) setCoracao(Date.now());
+    };
+    window.addEventListener("flagra:coracao", ouvir);
+    return () => window.removeEventListener("flagra:coracao", ouvir);
+  }, [post.id]);
 
   const toque = () => {
     const agora = Date.now();
@@ -41,7 +50,7 @@ export function PostFeed({ item, posicao, onComentarios, onCompartilhar, onPerfi
   };
 
   return (
-    <article className="post">
+    <article className={`post ${destaque === post.id ? "em-destaque" : ""}`} data-post={post.id}>
       {via && (
         <div className="post-repost" onClick={() => onPerfil(via)}>
           <Icone nome="repost" tam={14} /> <b>{via}</b> repostou
@@ -77,7 +86,7 @@ export function PostFeed({ item, posicao, onComentarios, onCompartilhar, onPerfi
             <Icone nome="coracaoCheio" tam={110} />
           </span>
         )}
-        {raioX && <NotaChip nota={item.nota} posicao={posicao} />}
+        {raioX && <NotaChip key={destaque === post.id ? "d" : "n"} nota={item.nota} posicao={posicao} aberto={destaque === post.id} />}
       </div>
 
       <div className="post-acoes">

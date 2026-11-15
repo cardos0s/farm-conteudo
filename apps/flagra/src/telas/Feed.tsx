@@ -20,8 +20,13 @@ type Props = {
 export function Feed({ rolagem, onComentarios, onCompartilhar, onPerfil, onStory, onAtividade, onCriar, onAtualizar }: Props) {
   const { feed, stories, estado, usuario, raioX, setRaioX, notificacoes } = useLoja();
   const novas = notificacoes.some((n) => Date.now() - n.em < 10 * 60_000);
-  // Stories não vistos primeiro, como nos apps grandes.
-  const ordem = stories.map((s, i) => ({ s, i })).sort((a, b) => Number(!!estado.storiesVistos[a.s.id]) - Number(!!estado.storiesVistos[b.s.id]));
+  // Um círculo por pessoa. Quem tem story não visto vem primeiro; tocar abre no primeiro que você ainda não viu.
+  const autores = [...new Set(stories.map((s) => s.autor))].map((autor) => {
+    const seus = stories.map((s, i) => ({ s, i })).filter((x) => x.s.autor === autor);
+    const naoVisto = seus.find((x) => !estado.storiesVistos[x.s.id]);
+    return { autor, inicio: (naoVisto ?? seus[0]).i, visto: !naoVisto };
+  });
+  const ordem = autores.sort((a, b) => Number(a.visto) - Number(b.visto));
   return (
     <div className="tela rolavel" ref={rolagem}>
       <header className="feed-topo">
@@ -50,11 +55,11 @@ export function Feed({ rolagem, onComentarios, onCompartilhar, onPerfil, onStory
           </span>
           <span>Seu story</span>
         </button>
-        {ordem.map(({ s, i }) => {
-          const u = usuario(s.autor);
+        {ordem.map(({ autor, inicio, visto }) => {
+          const u = usuario(autor);
           return (
-            <button key={s.id} className="story" onClick={() => onStory(i)}>
-              <Avatar u={u} tam={62} anel={estado.storiesVistos[s.id] ? "visto" : "novo"} />
+            <button key={autor} className="story" onClick={() => onStory(inicio)}>
+              <Avatar u={u} tam={62} anel={visto ? "visto" : "novo"} />
               <span>{u.id}</span>
             </button>
           );
