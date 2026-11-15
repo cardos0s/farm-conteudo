@@ -15,7 +15,7 @@ type Fala = { arquivo: string; texto: string; duracao: number; palavras: { p: st
 export const falas = voz as Fala[];
 
 /** Início de cada fala no vídeo (s): porteira, foto, próximos, fecho. */
-export const INICIO_FALA = [0.4, 3.2, 14.2, 20.5];
+export const INICIO_FALA = [0.2, 3.3, 14.3, 20.6];
 
 /** Instante do vídeo em que começa a k-ésima palavra que inicia com `inicio` na fala `n`. */
 export function quando(n: number, inicio: string, k = 0): number {

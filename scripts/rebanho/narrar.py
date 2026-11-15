@@ -38,7 +38,7 @@ def gerar(n):
     corpo = {
         "text": FALAS[n],
         "model_id": MODELO,
-        "voice_settings": {"stability": 0.4, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": True, "speed": 1.08},
+        "voice_settings": {"stability": 0.5, "similarity_boost": 0.9, "style": 0.0, "use_speaker_boost": True, "speed": 1.0},
         "previous_text": " ".join(FALAS[:n]) or None,
         "next_text": " ".join(FALAS[n + 1:]) or None,
     }
