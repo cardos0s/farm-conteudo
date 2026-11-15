@@ -1,5 +1,5 @@
 import React from "react";
-import { A, L, type Camera, T_CEL_DESCE, T_CEL_SOBE, limitar, prog } from "./roteiro";
+import { A, L, type Camera, T_CEL_DESCE, T_CEL_SOBE, limitar, prog, ruido } from "./roteiro";
 
 // O que quem está montado enxerga de si: pescoço, crina e orelhas do cavalo, rédeas na mão esquerda,
 // a cabeça da sela e as pernas. Origem do desenho: a nuca do cavalo.
@@ -21,11 +21,15 @@ const CRINA_D = crina();
 export const Cavalo: React.FC<{ cam: Camera; t: number }> = ({ cam, t }) => {
   const amp = limitar(cam.vel / 1.5);
   const passo = cam.dist * ((2 * Math.PI) / 1.5);
-  const nucaY = cam.hor + 640 + 12 * Math.sin(passo + 1.2) * amp;
+  const nucaY = cam.hor + 640 + 24 * Math.sin(passo + 1.2) * amp + 6 * Math.sin(t * 1.5);
   const comCelular = prog(t, T_CEL_SOBE - 0.3, 0.8) * (1 - prog(t, T_CEL_DESCE, 0.9));
   const nucaX = 440 - 150 * comCelular + 10 * Math.sin(passo / 2) * amp - limitar(cam.giroVel, -200, 200) * 0.35;
-  const orelha = (s: number) => 5 * Math.sin(t * 1.3 + s) + 9 * Math.max(0, Math.sin(t * 0.7 + s * 2)) ** 8 * Math.sin(t * 17);
-  const cabeca = 2.2 * Math.sin(passo / 2 + 0.6) * amp + 1.2 * Math.sin(t * 0.8);
+  // cada orelha escuta para um lado; de vez em quando uma sacode
+  const orelha = (s: number) => 9 * ruido(t * 1.6, s * 3) + 12 * Math.max(0, Math.sin(t * 0.7 + s * 2)) ** 8 * Math.sin(t * 17) + 7 * Math.sin(passo + s) * amp;
+  // balança a cabeça no trote, bufa e sacode ao parar, e acompanha o corpo quando a gente vira
+  const bufa = t > 6.45 ? 7 * Math.exp(-(t - 6.45) * 3.2) * Math.sin((t - 6.45) * 24) : 0;
+  const cabeca = 4.5 * Math.sin(passo / 2 + 0.6) * amp + 2.4 * ruido(t, 11) + bufa + limitar(cam.giroVel, -200, 200) * 0.035;
+  const crinaVento = 3 * Math.sin(passo + 0.3) * amp + 1.6 * Math.sin(t * 2.1) + bufa * 0.6;
   const mao = { x: -168 + 4 * Math.sin(passo) * amp, y: 392 + 5 * Math.sin(passo + 0.5) * amp };
   return (
     <svg width={L} height={A} viewBox={`0 0 ${L} ${A}`} style={{ position: "absolute", inset: 0 }}>
@@ -62,7 +66,7 @@ export const Cavalo: React.FC<{ cam: Camera; t: number }> = ({ cam, t }) => {
           ))}
           {/* topete e crina */}
           <path d="M -32,10 C -28,-40 -12,-78 2,-98 C 10,-66 30,-30 32,10 Z" fill={CRINA} />
-          <path d={CRINA_D} fill={CRINA} />
+          <g transform={`skewX(${crinaVento.toFixed(2)})`}><path d={CRINA_D} fill={CRINA} /></g>
           <path d="M 4,40 C 14,160 20,300 30,440 M 30,60 C 50,200 70,330 96,470 M -6,120 C 0,260 2,400 6,560" stroke="#3E2A1D" strokeWidth={5} fill="none" opacity={0.8} />
           {/* cabeçada e rédeas */}
           <path d="M -84,34 C -44,16 44,16 84,34" stroke={COURO} strokeWidth={15} fill="none" strokeLinecap="round" />

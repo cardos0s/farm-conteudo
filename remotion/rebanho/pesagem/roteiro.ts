@@ -78,9 +78,31 @@ export function boiAtual(t: number): number {
   return t < PESAGENS[1].giro ? 0 : t < PESAGENS[2].giro ? 1 : 2;
 }
 
-export type Camera = { x: number; y: number; z: number; guinada: number; hor: number; rolo: number; vel: number; dist: number; giroVel: number };
+export type Camera = { x: number; y: number; z: number; guinada: number; hor: number; rolo: number; vel: number; dist: number; giroVel: number; zoom: number; tremor: [number, number] };
 
 const ALTURA_OLHO = 2.3;
+/** Movimento solto, sem repetir: soma de ondas lentas. */
+export const ruido = (t: number, s: number) => (Math.sin(t * 0.83 + s) + 0.6 * Math.sin(t * 2.17 + s * 2.3) + 0.3 * Math.sin(t * 4.9 + s * 3.1)) / 1.9;
+const sino = (t: number, de: number, ate: number) => (t <= de || t >= ate ? 0 : Math.sin((Math.PI * (t - de)) / (ate - de)) ** 2);
+/** Batida que decai: 1 no instante `em`, some em ~1/k s. */
+export const batida = (t: number, em: number, k = 5) => (t < em ? 0 : Math.exp(-(t - em) * k));
+/** Instante em que o peso de cada boi termina de subir. */
+export const CHEGADAS = PESAGENS.map((p) => p.mostra + p.conta);
+/** Instantes em que os três selos carimbam a tela. */
+export const CARIMBOS = [T.tronco - 0.12, T.balanca - 0.12, T.estresse - 0.12];
+
+function guinadaGraus(t: number): number {
+  const giro = (i: 1 | 2) => {
+    const fim = PESAGENS[i].giro + DUR_GIRO;
+    // chega um pouco além e assenta, como quem vira o corpo na sela
+    return prog(t, PESAGENS[i].giro, DUR_GIRO, Easing.inOut(Easing.cubic)) + (t > fim ? 0.05 * Math.exp(-(t - fim) * 6) * Math.sin((t - fim) * 12) : 0);
+  };
+  const andando = limitar((6.4 - t) / 1.5);
+  // na chegada, uma olhada para cada lado da porteira
+  const olhada = -6 * sino(t, 0.3, 1.7) + 5 * sino(t, 1.9, 3.4) - 3 * sino(t, 3.6, 5.2);
+  return 50 * giro(1) + 50 * giro(2) - 22 * prog(t, T_CEL_DESCE, 1.6) + olhada + 1.1 * ruido(t, 1) * (1 - 0.4 * andando);
+}
+
 /** Onde está e para onde olha quem está montado, no instante t. */
 export function camera(t: number): Camera {
   // trote até a porteira (3 m/s), depois freia até parar no meio do curral
@@ -93,20 +115,24 @@ export function camera(t: number): Camera {
   const dist = z + 8;
   const amp = limitar(vel / 1.5);
   const passo = dist * ((2 * Math.PI) / 1.5);
-  const g = (i: 1 | 2) => prog(t, PESAGENS[i].giro, DUR_GIRO, Easing.inOut(Easing.cubic));
-  const guinadaGraus = 50 * g(1) + 50 * g(2) - 22 * prog(t, T_CEL_DESCE, 1.6) + 0.5 * Math.sin(t * 0.9) * (1 - amp);
   const dt = 1 / 60;
-  const giroVel = t > 0.1 ? (50 * (g(1) + g(2)) - 50 * (prog(t - dt, PESAGENS[1].giro, DUR_GIRO, Easing.inOut(Easing.cubic)) + prog(t - dt, PESAGENS[2].giro, DUR_GIRO, Easing.inOut(Easing.cubic)))) / dt : 0;
+  const giroVel = t > 0.1 ? (guinadaGraus(t) - guinadaGraus(t - dt)) / dt : 0;
   const hor = lerp(lerp(800, 400, prog(t, T_CEL_SOBE - 0.5, 1.0)), 760, prog(t, T_CEL_DESCE, 1.2));
+  const soco = CHEGADAS.reduce((s, c) => s + batida(t, c, 3.2), 0);
+  const carimbo = CARIMBOS.reduce((s, c) => s + batida(t, c, 11) * Math.sin((t - c) * 70), 0);
+  const clique = PESAGENS.reduce((s, p) => s + batida(t, p.clique, 9), 0);
   return {
-    x: 0.05 * Math.sin(passo / 2) * amp,
-    y: ALTURA_OLHO + 0.05 * Math.sin(passo) * amp + 0.006 * Math.sin(t * 1.6),
+    x: 0.06 * Math.sin(passo / 2) * amp,
+    y: ALTURA_OLHO + 0.07 * Math.sin(passo) * amp + 0.012 * Math.sin(t * 1.5),
     z,
-    guinada: guinadaGraus * grau,
-    hor: hor + 7 * Math.sin(passo + 0.8) * amp,
-    rolo: 0.7 * Math.sin(passo / 2 + 0.4) * amp,
+    guinada: guinadaGraus(t) * grau,
+    // o cavalo afunda a frente ao parar; a mão respira e treme um pouco
+    hor: hor + 13 * Math.sin(passo + 0.8) * amp + 26 * sino(t, 5.6, 6.9) + 9 * ruido(t, 4),
+    rolo: 1.1 * Math.sin(passo / 2 + 0.4) * amp + 0.45 * ruido(t, 7),
     vel,
     dist,
     giroVel,
+    zoom: 1 + 0.055 * soco + 0.012 * clique + 0.05 * prog(t, T_CEL_DESCE + 0.4, 3.6, fora),
+    tremor: [7 * carimbo, 5 * carimbo * Math.cos(t * 40)],
   };
 }

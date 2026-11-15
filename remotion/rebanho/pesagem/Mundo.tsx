@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
-import { Boi } from "./Boi";
-import { PESAGENS, prog, suave } from "./roteiro";
+import { Boi, type Jeito } from "./Boi";
+import { PESAGENS, batida, limitar, prog, suave } from "./roteiro";
 
 // A fazenda em 3D simples: chão plano, cercas e porteira como painéis verticais, bois e árvores
 // como figuras de frente para a câmera. Tudo em metros; a câmera é quem está em cima do cavalo.
@@ -93,23 +93,25 @@ const POSTES = lados.flatMap((l) => l.postes).filter((p) => !(Math.abs(Math.abs(
 const MOUROES: XZ[] = [];
 for (let z = -34; z <= -2; z += 4) MOUROES.push([-3.4, z], [3.4, z]);
 
-const BOIS_FUNDO = [
-  { x: -5.5, z: 15.5, pelagem: "branco", vira: true, esc: 1 },
+type BoiFundo = { x: number; z: number; pelagem: string; vira: boolean; esc: number; anda?: number; pasta?: boolean };
+/** `anda`: velocidade (m/s) na direção em que o boi está virado. */
+const BOIS_FUNDO: BoiFundo[] = [
+  { x: -4.4, z: 19.5, pelagem: "branco", vira: true, esc: 1, pasta: true },
   { x: 4.6, z: 19.2, pelagem: "cinza", vira: false, esc: 0.96 },
   { x: -8.2, z: 10.5, pelagem: "branco", vira: false, esc: 0.95 },
   { x: 8.3, z: 17.2, pelagem: "branco", vira: true, esc: 1.02 },
-  { x: -8.0, z: 18.4, pelagem: "caramelo", vira: true, esc: 0.92 },
-  { x: 9.0, z: 9.6, pelagem: "branco", vira: false, esc: 0.98 },
+  { x: -9.6, z: 16.8, pelagem: "caramelo", vira: false, esc: 0.92, anda: 0.42 },
+  { x: 9.8, z: 13.9, pelagem: "branco", vira: true, esc: 0.98, anda: 0.36 },
   { x: 6.0, z: 0.9, pelagem: "cinza", vira: true, esc: 0.97 },
   // soltos no pasto
-  { x: -24, z: 38, pelagem: "branco", vira: false, esc: 1 },
-  { x: -17, z: 46, pelagem: "branco", vira: true, esc: 1 },
-  { x: 22, z: 34, pelagem: "branco", vira: true, esc: 1 },
-  { x: 31, z: 26, pelagem: "cinza", vira: false, esc: 1 },
-  { x: 27, z: 9, pelagem: "branco", vira: true, esc: 1 },
-  { x: 37, z: -9, pelagem: "branco", vira: false, esc: 1 },
-  { x: 24, z: -9, pelagem: "caramelo", vira: true, esc: 1 },
-  { x: 16, z: 44, pelagem: "branco", vira: false, esc: 1 },
+  { x: -24, z: 38, pelagem: "branco", vira: false, esc: 1, pasta: true },
+  { x: -17, z: 46, pelagem: "branco", vira: true, esc: 1, anda: 0.3 },
+  { x: 22, z: 34, pelagem: "branco", vira: true, esc: 1, anda: 0.35 },
+  { x: 31, z: 26, pelagem: "cinza", vira: false, esc: 1, pasta: true },
+  { x: 27, z: 9, pelagem: "branco", vira: true, esc: 1, pasta: true },
+  { x: 37, z: -9, pelagem: "branco", vira: false, esc: 1, anda: 0.3 },
+  { x: 24, z: -9, pelagem: "caramelo", vira: true, esc: 1, pasta: true },
+  { x: 16, z: 44, pelagem: "branco", vira: false, esc: 1, pasta: true },
 ];
 const ARVORES = [
   { x: -16, z: 9, esc: 1.5, tipo: 0 },
@@ -148,11 +150,21 @@ const NUVENS = [
   { ang: 52, alt: 0.36, e: 1.15 }, { ang: 84, alt: 0.22, e: 0.85 }, { ang: 112, alt: 0.38, e: 1.2 }, { ang: 142, alt: 0.26, e: 0.9 }, { ang: 170, alt: 0.34, e: 1 },
 ];
 const SOL = -24;
+const POEIRA: { x: number; y: number; z: number; r: number; f: number }[] = [];
+{
+  const r = aleatorio(33);
+  for (let i = 0; i < 70; i++) POEIRA.push({ x: -10 + r() * 20, y: 0.2 + r() * 2.6, z: -4 + r() * 22, r: 0.012 + r() * 0.022, f: r() * 6.28 });
+}
+const BANDOS = [
+  { ang: 62, vel: -6.5, alt: 0.3, n: 6 },
+  { ang: 168, vel: -3.6, alt: 0.24, n: 4 },
+];
 
 /** Abertura da porteira (0 fechada, 1 aberta). */
-export const aberturaPorteira = (t: number) => prog(t, 0.55, 1.5, suave);
+// no fim do curso a folha bate no batente e balança um pouco
+export const aberturaPorteira = (t: number) => prog(t, 0.55, 1.5, suave) + (t > 2.05 ? 0.045 * Math.exp(-(t - 2.05) * 4.5) * Math.sin((t - 2.05) * 13) : 0);
 
-const Arvore: React.FC<{ tipo: number }> = ({ tipo }) => {
+const Arvore: React.FC<{ tipo: number; vento: number }> = ({ tipo, vento }) => {
   // unidade: 1 = 1 cm, origem no pé do tronco
   const copa = tipo === 2 ? ["#E0B02E", "#C9941F", "#F2CC52"] : tipo === 1 ? ["#3F7F3A", "#2F6530", "#5C9A47"] : ["#4E8F3F", "#3A7434", "#6BA850"];
   return (
@@ -160,7 +172,7 @@ const Arvore: React.FC<{ tipo: number }> = ({ tipo }) => {
       <ellipse cx={30} cy={0} rx={300} ry={26} fill="#22331A" opacity={0.25} />
       <path d="M -22,0 C -16,-120 -20,-200 -30,-290 L 26,-290 C 18,-200 16,-110 26,0 Z" fill="#6B4A2E" />
       <path d="M -6,-250 C -60,-300 -90,-330 -120,-350 M 6,-250 C 60,-310 80,-330 110,-360" stroke="#6B4A2E" strokeWidth={18} fill="none" strokeLinecap="round" />
-      <g>
+      <g transform={`rotate(${vento.toFixed(2)} 0 -300) skewX(${(vento * 0.8).toFixed(2)})`}>
         <ellipse cx={-130} cy={-400} rx={170} ry={120} fill={copa[1]} />
         <ellipse cx={140} cy={-410} rx={180} ry={130} fill={copa[1]} />
         <ellipse cx={0} cy={-500} rx={220} ry={160} fill={copa[0]} />
@@ -285,9 +297,22 @@ export const Mundo: React.FC<{ v: Vista; t: number; id: string; leve?: boolean }
     const s = (escala * v.f) / p.z / 100;
     add(p.z, <g key={k++} transform={`translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) scale(${(vira ? -s : s).toFixed(4)} ${s.toFixed(4)})`}>{el}</g>);
   };
-  PESAGENS.forEach((b, i) => figura(b.x, b.z, 1.04, b.vira, <Boi id={`${id}-p${i}`} t={t} pelagem={b.pelagem} semente={i + 1} brinco={String(12 + i * 7)} espelhado={b.vira} />));
-  BOIS_FUNDO.forEach((b, i) => figura(b.x, b.z, b.esc, b.vira, <Boi id={`${id}-f${i}`} t={t} pelagem={b.pelagem} semente={i + 5} simples={b.z > 30 || leve} />));
-  ARVORES.forEach((a) => figura(a.x, a.z, a.esc, false, <Arvore tipo={a.tipo} />, 900));
+  PESAGENS.forEach((b, i) => {
+    // o primeiro vem andando e para; todos erguem a cabeça quando a gente chega e levam um sustinho no flash
+    const falta = i === 0 ? Math.max(0, 4.4 - t) : 0;
+    const perto = Math.hypot(b.x - v.x, b.z - v.z);
+    const jeito: Jeito = {
+      passo: falta > 0 ? t * 5.4 : undefined,
+      atento: i === 0 ? limitar((11 - perto) / 4) : prog(t, b.giro + 0.35, 0.5),
+      susto: batida(t, b.clique, 3.5),
+    };
+    figura(b.x - 0.5 * falta * (b.vira ? -1 : 1), b.z, 1.04, b.vira, <Boi id={`${id}-p${i}`} t={t} pelagem={b.pelagem} semente={i + 1} brinco={String(12 + i * 7)} espelhado={b.vira} jeito={jeito} />);
+  });
+  BOIS_FUNDO.forEach((b, i) => {
+    const x = b.x + (b.anda ?? 0) * t * (b.vira ? -1 : 1);
+    figura(x, b.z, b.esc, b.vira, <Boi id={`${id}-f${i}`} t={t} pelagem={b.pelagem} semente={i + 5} simples={b.z > 30 || leve} jeito={{ passo: b.anda ? t * 11 * b.anda + i : undefined, pasta: b.pasta }} />);
+  });
+  ARVORES.forEach((a) => figura(a.x, a.z, a.esc, false, <Arvore tipo={a.tipo} vento={1.3 * Math.sin(t * 0.9 + a.x) + 0.6 * Math.sin(t * 2.3 + a.z)} />, 900));
   figura(CASA.x, CASA.z, 1, false, <Casa />, 1400);
   // cocho no fundo do curral
   figura(-4.5, 20.2, 1, false, (
@@ -304,11 +329,19 @@ export const Mundo: React.FC<{ v: Vista; t: number; id: string; leve?: boolean }
       if (!p || p.z > 38 || p.x < -60 || p.x > v.w + 60) continue;
       const s = (tf.e * v.f) / p.z / 100;
       add(p.z, (
-        <g key={k++} transform={`translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) scale(${s.toFixed(4)})`}>
+        <g key={k++} transform={`translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) scale(${s.toFixed(4)}) skewX(${(9 * Math.sin(t * 1.9 + tf.x * 0.7) + 4 * Math.sin(t * 4.3 + tf.z)).toFixed(1)})`}>
           <path d="M -14,0 C -16,-14 -22,-24 -28,-30 C -18,-26 -10,-16 -7,0 Z M -5,0 C -4,-20 -2,-34 4,-44 C 6,-30 6,-14 5,0 Z M 8,0 C 12,-12 18,-22 28,-27 C 22,-18 18,-8 17,0 Z" fill={tf.flor > 0.5 ? "#4F8A2E" : "#5F9A36"} />
           {tf.flor > 0.86 && <circle cx={4} cy={-46} r={5} fill="#F6D04A" />}
         </g>
       ));
+    }
+  }
+  if (!leve) {
+    // poeira fina no ar, pegando a luz
+    for (const m of POEIRA) {
+      const p = projetar(v, m.x + 0.5 * Math.sin(t * 0.4 + m.f) + 0.12 * t, m.y + 0.15 * Math.sin(t * 0.7 + m.f * 2), m.z);
+      if (!p || p.x < -20 || p.x > v.w + 20) continue;
+      add(p.z, <circle key={k++} cx={p.x} cy={p.y} r={Math.max(1.2, (m.r * v.f) / p.z)} fill="#FFF4DC" opacity={0.3 + 0.25 * Math.sin(t * 1.3 + m.f)} />);
     }
   }
   itens.sort((a, b) => b.z - a.z);
@@ -344,7 +377,7 @@ export const Mundo: React.FC<{ v: Vista; t: number; id: string; leve?: boolean }
       <rect width={v.w} height={v.h} fill={`url(#${id}-ceu)`} />
       {sol !== null && <circle cx={sol} cy={v.hor - 560 * esc} r={420 * esc} fill={`url(#${id}-sol)`} />}
       {ceu.nuvens.map((n, i) => {
-        const x = angTela(n.ang + t * 0.25);
+        const x = angTela(n.ang + t * 0.5);
         if (x === null) return null;
         const s = n.e * esc;
         return (
@@ -353,6 +386,19 @@ export const Mundo: React.FC<{ v: Vista; t: number; id: string; leve?: boolean }
             <ellipse cx={-70} cy={-28} rx={80} ry={48} />
             <ellipse cx={30} cy={-46} rx={96} ry={62} />
             <ellipse cx={110} cy={-16} rx={70} ry={38} />
+          </g>
+        );
+      })}
+      {BANDOS.map((b, i) => {
+        const x = angTela(b.ang + b.vel * t);
+        if (x === null) return null;
+        return (
+          <g key={i} transform={`translate(${x.toFixed(1)} ${(v.hor - b.alt * 1500 * esc + 14 * Math.sin(t * 0.8 + i)).toFixed(1)}) scale(${esc})`} stroke="#2E3B45" strokeWidth={4} fill="none" strokeLinecap="round">
+            {Array.from({ length: b.n }, (_, j) => {
+              const asa = 9 * Math.sin(t * 9 + j * 1.3);
+              const dx = (j % 2 ? 1 : -1) * Math.ceil(j / 2) * 46 + 6 * Math.sin(t * 1.1 + j), dy = Math.ceil(j / 2) * 24 + 5 * Math.sin(t * 1.7 + j * 2);
+              return <path key={j} d={`M ${dx - 15},${dy + asa} Q ${dx - 7},${dy - asa * 0.6} ${dx},${dy} Q ${dx + 7},${dy - asa * 0.6} ${dx + 15},${dy + asa}`} />;
+            })}
           </g>
         );
       })}

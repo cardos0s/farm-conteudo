@@ -1,6 +1,6 @@
 import React from "react";
 import { Marca } from "./Celular";
-import { A, L, PESAGENS, T, T_CEL_DESCE, T_LOTE, boiAtual, fora, lerp, limitar, mola, prog } from "./roteiro";
+import { A, CARIMBOS, L, PESAGENS, T, T_CEL_DESCE, T_LOTE, boiAtual, fora, lerp, limitar, mola, prog, quando } from "./roteiro";
 
 // Letreiros, adesivos, selos e confete por cima da cena.
 
@@ -60,15 +60,31 @@ const Adesivo: React.FC<{ x: number; y: number; tam: number; giro: number; escal
 };
 
 const SELOS = [
-  { texto: "SEM TRONCO", t: T.tronco - 0.12, giro: -4 },
-  { texto: "SEM BALANÇA", t: T.balanca - 0.12, giro: 3 },
-  { texto: "SEM ESTRESSE", t: T.estresse - 0.12, giro: -3 },
+  { texto: "SEM TRONCO", t: CARIMBOS[0]!, giro: -4 },
+  { texto: "SEM BALANÇA", t: CARIMBOS[1]!, giro: 3 },
+  { texto: "SEM ESTRESSE", t: CARIMBOS[2]!, giro: -3 },
 ];
+// o título entra palavra por palavra, junto com a fala
+const TITULO_1 = ["Bora", "pesar", "o", "gado"].map((p) => ({ p, t: quando(0, p) - 0.08 }));
+const T_TITULO_2 = quando(0, "sem") - 0.08;
+const Palavras: React.FC<{ t: number }> = ({ t }) => (
+  <>
+    {TITULO_1.map((w, i) => {
+      const e = limitar((t - w.t) / 0.12);
+      return (
+        <tspan key={i} fillOpacity={e} strokeOpacity={e}>
+          {i ? " " : ""}
+          {w.p}
+        </tspan>
+      );
+    })}
+  </>
+);
 
 export const Sobreposicoes: React.FC<{ t: number }> = ({ t }) => {
   // 1. A porteira
   const tituloSai = 1 - prog(t, 2.95, 0.3);
-  const l1 = prog(t, 0.2, 0.45, mola), l2 = prog(t, 0.5, 0.45, mola);
+  const l1 = prog(t, TITULO_1[0]!.t, 0.35, mola), l2 = prog(t, T_TITULO_2, 0.4, mola);
   const vem = prog(t, T.vem - 0.05, 0.4, mola);
   const pulo = t > T.vem ? Math.abs(Math.sin((t - T.vem) * 6.5)) * 46 * Math.exp(-(t - T.vem) * 1.1) : 0;
   // 2. A foto
@@ -107,7 +123,7 @@ export const Sobreposicoes: React.FC<{ t: number }> = ({ t }) => {
         {tituloSai > 0 && (
           <g opacity={tituloSai} transform={`translate(0 ${-(1 - tituloSai) * 80})`}>
             <g transform={`translate(540 330) scale(${l1}) rotate(-2)`} opacity={limitar(l1 * 2)}>
-              <Letra x={0} y={0} tam={104}>Bora pesar o gado</Letra>
+              <Letra x={0} y={0} tam={104}><Palavras t={t} /></Letra>
             </g>
             <g transform={`translate(540 480) scale(${l2}) rotate(-2)`} opacity={limitar(l2 * 2)}>
               <Letra x={0} y={0} tam={138} cor={AMARELO}>sem balança?</Letra>
