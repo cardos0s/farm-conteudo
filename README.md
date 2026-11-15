@@ -150,6 +150,7 @@ src/fabrica.ts      o fluxo: produzir, aprovar, agendar, publicar
 src/cli/            comandos do npm
 deploy/             cron e serviço do bot
 test/               testes (npm test)
+apps/flagra/        app de demonstração do vídeo "e se esse feed fosse um app?" (ver o README da pasta)
 ```
 
 O estado fica em `dados/` (um JSON por peça) e os vídeos em `saida/`. As duas pastas ficam fora do git.
