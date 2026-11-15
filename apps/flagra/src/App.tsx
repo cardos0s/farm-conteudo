@@ -1,166 +1,123 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { carregarMeus, salvarMeu } from "./armazenamento";
-import { Comentarios } from "./componentes/Comentarios";
-import { Criar, type NovoPost } from "./componentes/Criar";
+import React, { useRef, useState } from "react";
+import { Avatar } from "./componentes/Avatar";
+import { Compartilhar, Comentarios, VerStories } from "./componentes/Folhas";
 import { Icone } from "./componentes/Icone";
-import { PostCard } from "./componentes/PostCard";
-import { comentariosDe, POSTS } from "./dados";
-import type { Comentario, Post } from "./tipos";
+import { PainelRaioX } from "./componentes/RaioX";
+import { EU } from "./motor/dados";
+import { ProvedorLoja, useLoja } from "./motor/loja";
+import type { Post } from "./motor/tipos";
+import { Criar } from "./telas/Criar";
+import { Feed } from "./telas/Feed";
+import { Atividade, Detalhe, Explorar, Perfil } from "./telas/Outras";
+import { Reels } from "./telas/Reels";
 
-type Aba = "seguindo" | "pravoce" | "perto";
+type Aba = "inicio" | "explorar" | "reels" | "perfil";
+type Camada = { tipo: "perfil"; id: string } | { tipo: "post"; id: string } | { tipo: "atividade" };
 
-export function App() {
-  const [meus, setMeus] = useState<Post[]>([]);
-  const [aba, setAba] = useState<Aba>("pravoce");
-  const [curtidos, setCurtidos] = useState<Set<string>>(new Set());
-  const [salvos, setSalvos] = useState<Set<string>>(new Set());
-  const [extras, setExtras] = useState<Record<string, Comentario[]>>({});
-  const [abertoComentarios, setAbertoComentarios] = useState<Post>();
+function Telas() {
+  const { usuario, acoes, porId } = useLoja();
+  const [aba, setAba] = useState<Aba>("inicio");
+  const [pilha, setPilha] = useState<Camada[]>([]);
+  const [comentarios, setComentarios] = useState<Post>();
+  const [compartilhar, setCompartilhar] = useState<Post>();
+  const [story, setStory] = useState<number>();
   const [criando, setCriando] = useState(false);
-  const [mudo, setMudo] = useState(true);
+  const [reelInicio, setReelInicio] = useState<string>();
   const [aviso, setAviso] = useState<string>();
-  const feed = useRef<HTMLDivElement>(null);
-
-  useEffect(() => void carregarMeus().then(setMeus), []);
-
-  const posts = useMemo(() => {
-    const todos = [...meus, ...POSTS];
-    if (aba === "seguindo") return todos.filter((p) => p.seguindo || p.meu);
-    if (aba === "perto") return todos.filter((p) => p.meu || /, (SP|PR|RJ|MG)$/.test(p.local));
-    return todos;
-  }, [meus, aba]);
+  const rolagemFeed = useRef<HTMLDivElement>(null);
 
   const avisar = (t: string) => {
     setAviso(t);
     window.setTimeout(() => setAviso(undefined), 1800);
   };
-
-  const alternar = (set: Set<string>, id: string, forcar?: boolean) => {
-    const s = new Set(set);
-    if (forcar ?? !s.has(id)) s.add(id);
-    else s.delete(id);
-    return s;
+  const abrirPerfil = (id: string) => setPilha((p) => [...p, { tipo: "perfil", id }]);
+  const abrirPost = (p: Post) => {
+    if (p.tipo === "reel") {
+      setPilha([]);
+      setReelInicio(p.id);
+      setAba("reels");
+    } else setPilha((s) => [...s, { tipo: "post", id: p.id }]);
+  };
+  const voltar = () => setPilha((p) => p.slice(0, -1));
+  const irPara = (a: Aba) => {
+    setPilha([]);
+    if (a === "inicio" && aba === "inicio") atualizar();
+    if (a !== "reels") setReelInicio(undefined);
+    setAba(a);
+  };
+  const atualizar = () => {
+    acoes.recalcularFeed();
+    rolagemFeed.current?.scrollTo({ top: 0, behavior: "smooth" });
+    avisar("Feed atualizado com seus sinais");
   };
 
-  const compartilhar = async (p: Post) => {
-    const dados = { title: `FLAGRA: ${p.manchete}`, text: `${p.manchete} — @${p.autor} no Flagra`, url: location.href };
-    try {
-      if (navigator.share) await navigator.share(dados);
-      else {
-        await navigator.clipboard.writeText(`${dados.text} ${dados.url}`);
-        avisar("Link copiado");
-      }
-    } catch {
-      /* compartilhamento cancelado */
-    }
-  };
-
-  const postar = async (n: NovoPost) => {
-    const novo = await salvarMeu(
-      {
-        id: `meu-${Date.now()}`,
-        autor: "voce",
-        manchete: n.manchete,
-        legenda: n.legenda,
-        hashtags: n.hashtags,
-        local: n.local,
-        curtidas: 0,
-        comentarios: 0,
-        compartilhamentos: 0,
-        cena: { emoji: "📸", cores: ["#ffe14d", "#ff3b5c", "#111"] },
-        meu: true,
-      },
-      n.arquivo,
-    );
-    setMeus((m) => [novo, ...m]);
-    setAba("pravoce");
-    setCriando(false);
-    requestAnimationFrame(() => feed.current?.scrollTo({ top: 0 }));
-    avisar("Seu flagra está no ar");
-  };
+  const topo = pilha[pilha.length - 1];
+  const folhas = { onComentarios: setComentarios, onCompartilhar: setCompartilhar, onPerfil: abrirPerfil };
 
   return (
     <div className="mesa">
-      <div className="moldura">
-        <header className="topo">
-          <span className="ao-vivo">AO VIVO</span>
-          <nav className="abas">
-            {(
-              [
-                ["seguindo", "Seguindo"],
-                ["pravoce", "Pra você"],
-                ["perto", "Perto"],
-              ] as [Aba, string][]
-            ).map(([id, nome]) => (
-              <button key={id} className={aba === id ? "ativa" : ""} onClick={() => (setAba(id), feed.current?.scrollTo({ top: 0 }))}>
-                {nome}
-              </button>
-            ))}
-          </nav>
-          <Icone nome="lupa" tam={24} cor="#fff" />
-        </header>
+      <div className={`moldura ${aba === "reels" && !topo ? "escura" : ""}`}>
+        <main className="conteudo">
+          <div hidden={aba !== "inicio" || !!topo} className="aba">
+            <Feed rolagem={rolagemFeed} {...folhas} onStory={setStory} onAtividade={() => setPilha([{ tipo: "atividade" }])} onCriar={() => setCriando(true)} onAtualizar={atualizar} />
+          </div>
+          {aba === "explorar" && !topo && <Explorar onAbrir={abrirPost} />}
+          {aba === "reels" && !topo && <Reels inicio={reelInicio} {...folhas} />}
+          {aba === "perfil" && !topo && <Perfil id={EU} onAbrir={abrirPost} onCriar={() => setCriando(true)} />}
+          {topo?.tipo === "perfil" && <Perfil key={topo.id} id={topo.id} onVoltar={voltar} onAbrir={abrirPost} onCriar={() => setCriando(true)} />}
+          {topo?.tipo === "atividade" && <Atividade onVoltar={voltar} onPerfil={abrirPerfil} />}
+          {topo?.tipo === "post" &&
+            (() => {
+              const p = porId(topo.id);
+              return p ? <Detalhe post={p} onVoltar={voltar} onComentarios={() => setComentarios(p)} onCompartilhar={() => setCompartilhar(p)} onPerfil={abrirPerfil} /> : null;
+            })()}
+        </main>
 
-        <div className="feed" ref={feed}>
-          {posts.map((p) => (
-            <PostCard
-              key={p.id}
-              post={p}
-              curtido={curtidos.has(p.id)}
-              salvo={salvos.has(p.id)}
-              comentarios={p.comentarios + (extras[p.id]?.length ?? 0)}
-              mudo={mudo}
-              onCurtir={(forcar) => setCurtidos((s) => alternar(s, p.id, forcar))}
-              onSalvar={() => {
-                setSalvos((s) => alternar(s, p.id));
-                if (!salvos.has(p.id)) avisar("Salvo na sua coleção");
-              }}
-              onComentar={() => setAbertoComentarios(p)}
-              onCompartilhar={() => compartilhar(p)}
-              onMudo={() => setMudo((m) => !m)}
-            />
-          ))}
-        </div>
+        <PainelRaioX />
 
         <nav className="barra">
-          <button className="ativa">
-            <Icone nome="casa" tam={24} />
-            Início
+          <button onClick={() => irPara("inicio")} aria-label="Início">
+            <Icone nome={aba === "inicio" && !topo ? "casaCheia" : "casa"} tam={26} />
           </button>
-          <button onClick={() => avisar("Em breve")}>
-            <Icone nome="lupa" tam={24} />
-            Explorar
+          <button onClick={() => irPara("explorar")} className={aba === "explorar" && !topo ? "ativa" : ""} aria-label="Explorar">
+            <Icone nome="lupa" tam={26} />
           </button>
-          <button className="botao-mais" onClick={() => setCriando(true)} aria-label="Novo flagra">
-            <span>
-              <Icone nome="mais" tam={22} cor="#111" />
-            </span>
+          <button onClick={() => setCriando(true)} aria-label="Criar">
+            <Icone nome="mais" tam={26} />
           </button>
-          <button onClick={() => avisar("Em breve")}>
-            <Icone nome="sino" tam={24} />
-            Alertas
+          <button onClick={() => irPara("reels")} className={aba === "reels" && !topo ? "ativa" : ""} aria-label="Reels">
+            <Icone nome="reels" tam={26} />
           </button>
-          <button onClick={() => avisar("Em breve")}>
-            <Icone nome="pessoa" tam={24} />
-            Perfil
+          <button onClick={() => irPara("perfil")} className={`barra-eu ${aba === "perfil" && !topo ? "ativa" : ""}`} aria-label="Perfil">
+            <Avatar u={usuario(EU)} tam={26} />
           </button>
         </nav>
 
-        {abertoComentarios && (
-          <Comentarios
-            total={abertoComentarios.comentarios + (extras[abertoComentarios.id]?.length ?? 0)}
-            lista={[...(extras[abertoComentarios.id] ?? []), ...(abertoComentarios.meu ? [] : comentariosDe(abertoComentarios.id))]}
-            onFechar={() => setAbertoComentarios(undefined)}
-            onEnviar={(texto) =>
-              setExtras((e) => ({
-                ...e,
-                [abertoComentarios.id]: [{ autor: "voce", texto, ha: 0, curtidas: 0 }, ...(e[abertoComentarios.id] ?? [])],
-              }))
-            }
+        {comentarios && <Comentarios post={porId(comentarios.id) ?? comentarios} onFechar={() => setComentarios(undefined)} />}
+        {compartilhar && <Compartilhar post={porId(compartilhar.id) ?? compartilhar} onFechar={() => setCompartilhar(undefined)} avisar={avisar} />}
+        {story !== undefined && <VerStories inicio={story} onFechar={() => setStory(undefined)} />}
+        {criando && (
+          <Criar
+            onFechar={() => setCriando(false)}
+            onPublicado={(reel) => {
+              setCriando(false);
+              setPilha([]);
+              setAba(reel ? "reels" : "inicio");
+              rolagemFeed.current?.scrollTo({ top: 0 });
+              avisar(reel ? "Reel publicado" : "Post publicado");
+            }}
           />
         )}
-        {criando && <Criar onFechar={() => setCriando(false)} onPostar={postar} />}
         {aviso && <div className="aviso">{aviso}</div>}
       </div>
     </div>
+  );
+}
+
+export function App() {
+  return (
+    <ProvedorLoja>
+      <Telas />
+    </ProvedorLoja>
   );
 }

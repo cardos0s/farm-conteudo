@@ -7,7 +7,7 @@ import { z } from "zod";
 
 export const Legenda = z.object({
   manchete: z.string().describe("Manchete de tabloide, até 90 caracteres, sem a palavra FLAGRA (o app já mostra o selo)"),
-  legenda: z.string().describe("Legenda do post em primeira pessoa de quem filmou, 1 ou 2 frases, até 180 caracteres"),
+  legenda: z.string().describe("Legenda do post, como quem postou escreveria: primeira pessoa, 1 ou 2 frases, até 180 caracteres"),
   hashtags: z.array(z.string()).describe("3 a 5 hashtags curtas, sem o #, em minúsculas e sem espaços"),
 });
 export type Legenda = z.infer<typeof Legenda>;
@@ -18,8 +18,8 @@ export type PedidoLegenda = {
   imagem?: { tipo: "image/jpeg" | "image/png" | "image/webp"; base64: string };
 };
 
-const SISTEMA = `Você escreve os posts do Flagra, um feed vertical de momentos absurdos da vida real
-(bicho onde não devia, perseguição em carrinho de golfe, gente resolvendo a vida do jeito mais inesperado).
+const SISTEMA = `Você escreve legendas para o Flagra, uma rede social de fotos e reels com momentos absurdos da vida real
+(bicho onde não devia, carrinho de golfe no trânsito, gente resolvendo a vida do jeito mais inesperado).
 
 Tom: manchete de tabloide sensacionalista, mas engraçada e carinhosa, nunca cruel.
 - Português do Brasil, frases curtas, verbo forte no presente.
