@@ -8,6 +8,8 @@ import { AulaRecursividade } from "./aulas/recursividade/Aula";
 import { FPS as FPS_AULA2, TOTAL_QUADROS as TOTAL_AULA2 } from "./aulas/recursividade/roteiro";
 import { ReelAgentes } from "./aulas/agentes/Reel";
 import { FPS as FPS_AGENTES, TOTAL_QUADROS as TOTAL_AGENTES } from "./aulas/agentes/roteiro";
+import { ReelPesagem } from "./rebanho/pesagem/Reel";
+import { FPS as FPS_PESAGEM, TOTAL_QUADROS as TOTAL_PESAGEM } from "./rebanho/pesagem/roteiro";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
 
@@ -46,6 +48,14 @@ export const Root: React.FC = () => (
       height={1920}
       fps={FPS_AGENTES}
       durationInFrames={TOTAL_AGENTES}
+    />
+    <Composition
+      id="ReelPesagem"
+      component={ReelPesagem}
+      width={1080}
+      height={1920}
+      fps={FPS_PESAGEM}
+      durationInFrames={TOTAL_PESAGEM}
     />
   </>
 );
