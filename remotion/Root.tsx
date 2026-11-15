@@ -29,6 +29,7 @@ import { ExplicaMentePote, TOTAL as TOTAL_POT } from "./explica-mente/pote/Video
 import { ExplicaMenteMaos, TOTAL as TOTAL_MAS } from "./explica-mente/maos/Video";
 import { ExplicaMenteTroca, TOTAL as TOTAL_TRO } from "./explica-mente/troca/Video";
 import { ExplicaMenteHobby, TOTAL as TOTAL_HOB } from "./explica-mente/hobby/Video";
+import { ExplicaMentePortapov, TOTAL as TOTAL_PPV } from "./explica-mente/portapov/Video";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
 
@@ -87,5 +88,7 @@ export const Root: React.FC = () => (
     <Composition id="ExplicaMenteMaos" component={ExplicaMenteMaos} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_MAS} />
     <Composition id="ExplicaMenteTroca" component={ExplicaMenteTroca} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_TRO} />
     <Composition id="ExplicaMenteHobby" component={ExplicaMenteHobby} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_HOB} />
+    {/* versões em primeira pessoa */}
+    <Composition id="ExplicaMentePortapov" component={ExplicaMentePortapov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_PPV} />
   </>
 );

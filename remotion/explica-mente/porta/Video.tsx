@@ -12,10 +12,10 @@ import tempos from "./tempos.json";
 
 const NA_PORTA: V3 = [0.56, 0, -0.4];
 const LONGE: V3 = [-0.4, 0, -0.3];
-const MACANETA: V3 = [0.92, 0.95, -0.2];
+export const MACANETA: V3 = [0.92, 0.95, -0.2];
 const CAM: Cam = { pos: [0.1, 1.1, 4.3], alvo: [0.25, 0.86, -0.5], fov: 34 };
 
-const Porta: React.FC<{ f: number }> = ({ f }) => (
+export const Porta: React.FC<{ f: number }> = ({ f }) => (
   <>
     <Caixa t={[0.14, 2.6, 2.6]} raio={0.02} pos={[1.08, 1.3, -0.6]} cor="#F6DFC0" />
     <Caixa t={[0.08, 2.08, 1.0]} raio={0.02} pos={[1.02, 1.04, -0.5]} cor="#FFFFFF" />
