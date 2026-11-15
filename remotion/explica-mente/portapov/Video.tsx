@@ -6,7 +6,7 @@ import { Caixa } from "../Pecas";
 import { elastico, k, limitar, mix, mixV, norm, prog, soma, sub, type V3 } from "../anim";
 import { Mao } from "../colher/Objetos";
 import { Sofa } from "../coracao/Video";
-import { POPPINS, Roda, criarEpisodio, type Quadro } from "../kit/Episodio";
+import { Conceito, POPPINS, Roda, criarEpisodio, type Quadro } from "../kit/Episodio";
 import { Palco, type Cam } from "../kit/Palco";
 import { MACANETA, Porta } from "../porta/Video";
 import { CICLO, DUVIDA, REGISTRO, TEXTOS } from "./roteiro";
@@ -132,11 +132,34 @@ const Relogio: React.FC<{ p: number }> = ({ p }) => {
   );
 };
 
+/** O alarme que a dúvida dispara. `forca` 0 = quieto, 1 = tocando. */
+const Alarme: React.FC<{ f: number; forca: number; entra: number }> = ({ f, forca, entra }) => {
+  const pisca = 0.5 + 0.5 * Math.sin(f * 0.7);
+  const cor = forca > 0.5 ? MARCA.coral : "#2FB36B";
+  return (
+    <>
+      <AbsoluteFill style={{ boxShadow: `inset 0 0 ${220 * forca}px rgba(255,60,50,${0.55 * forca * pisca})` }} />
+      <div style={{ position: "absolute", top: 400, left: 0, right: 0, display: "flex", justifyContent: "center", opacity: entra }}>
+        <div style={{ position: "relative", width: 190, height: 190, transform: `scale(${entra * (1 + 0.08 * forca * pisca)}) rotate(${forca * 7 * Math.sin(f * 1.4)}deg)` }}>
+          {[0, 1].map((i) => (
+            <div key={i} style={{ position: "absolute", inset: -26 - 34 * i, borderRadius: "50%", border: `8px solid ${cor}`, opacity: forca * (i ? 1 - pisca : pisca) * 0.8 }} />
+          ))}
+          <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: cor, boxShadow: "0 12px 30px rgba(20,10,50,0.35)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg width="110" height="110" viewBox="0 0 100 100">
+              <path d="M50 12 C30 12 24 30 24 46 L24 62 L14 76 L86 76 L76 62 L76 46 C76 30 70 12 50 12 Z" fill="#FFFFFF" />
+              <circle cx="50" cy="86" r="9" fill="#FFFFFF" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
 const desenhar = (q: Quadro) => {
-  const { f, p, em } = q;
-  // diante da porta trancada; depois vira e começa a sair
+  const { f, p, em, F } = q;
+  // --- a experiência ---
   if (em(0)) return <Cena f={f} o={{ s: 0.1 * prog(p(0), 0.75, 1), vira: prog(p(0), 0.6, 0.95), duvida: 0, alivio: 0, mao: 0, andando: p(0) > 0.75 ? 1 : 0 }} />;
-  // a dúvida chega: a visão aperta, a cabeça vira de volta e a porta "puxa"
   if (em(1)) {
     const x = p(1);
     return <Cena f={f} o={{ s: mix(0.1, 0.55, prog(x, 0, 0.3)), vira: 1 - prog(x, 0.45, 0.8), duvida: prog(x, 0.15, 0.4), alivio: 0, mao: 0, andando: x < 0.3 ? 1 : 0, puxa: prog(x, 0.6, 1) }} />;
@@ -148,11 +171,64 @@ const desenhar = (q: Quadro) => {
   if (em(3)) return <Cena f={f} o={{ s: 0, vira: 0, duvida: 0.3 * (1 - prog(p(3), 0, 0.3)), alivio: prog(p(3), 0.05, 0.5), mao: 1 - prog(p(3), 0.5, 0.9), andando: 0 }} />;
   if (em(4)) {
     const x = p(4);
-    return <Cena f={f} o={{ s: mix(0, 0.4, prog(x, 0.1, 0.55)), vira: prog(x, 0, 0.2), duvida: prog(x, 0.55, 0.8), alivio: 0.6 * (1 - prog(x, 0, 0.3)), mao: 0, andando: x > 0.1 && x < 0.55 ? 1 : 0 }} ecos={prog(x, 0.7, 1) * 0.5} />;
+    return <Cena f={f} o={{ s: mix(0, 0.45, prog(x, 0.1, 0.55)), vira: prog(x, 0, 0.2), duvida: prog(x, 0.55, 0.8), alivio: 0.6 * (1 - prog(x, 0, 0.3)), mao: 0, andando: x > 0.1 && x < 0.55 ? 1 : 0 }} ecos={prog(x, 0.7, 1) * 0.5} />;
   }
-  // de novo, e de novo, cada vez mais rápido
-  if (em(5)) {
-    const x = p(5);
+  // --- a explicação ---
+  const longe = { s: 0.45, andando: 0, mao: 0, alivio: 0 };
+  // a cena para: o que está acontecendo aqui?
+  if (em(5)) return <Cena f={f} o={{ ...longe, vira: 1 - prog(p(5), 0.1, 0.6), duvida: 1 - 0.5 * prog(p(5), 0.2, 0.7), puxa: prog(p(5), 0.3, 0.9) * 0.6 }} ecos={0.5 * (1 - prog(p(5), 0.1, 0.5))} />;
+  // obsessão: a dúvida chega como um alarme
+  if (em(6)) {
+    const x = p(6);
+    return (
+      <>
+        <Cena f={f} o={{ ...longe, vira: 0, duvida: mix(0.5, 1, prog(x, 0.3, 0.5)), puxa: 0.6 }} />
+        <Conceito f={f} de={F[6].de + 22} ate={F[7].de - 4} texto="obsessão" />
+        <Alarme f={f} forca={prog(x, 0.42, 0.5)} entra={prog(x, 0.38, 0.48, elastico)} />
+      </>
+    );
+  }
+  // compulsão: checar desliga o alarme
+  if (em(7)) {
+    const x = p(7);
+    return (
+      <>
+        <Cena f={f} o={{ s: mix(0.45, 0, prog(x, 0, 0.35)), vira: 0, duvida: 1 - 0.75 * prog(x, 0.8, 0.95), alivio: 0, mao: prog(x, 0.3, 0.5), andando: x < 0.35 ? 1 : 0, puxa: 0.6 * (1 - prog(x, 0, 0.3)) }} />
+        <Conceito f={f} de={F[7].de + 4} ate={F[8].de - 4} texto="compulsão" />
+        <Alarme f={f} forca={1 - prog(x, 0.8, 0.86)} entra={1} />
+      </>
+    );
+  }
+  // funciona, mas só por um instante
+  if (em(8)) {
+    const x = p(8);
+    const volta_ = prog(x, 0.62, 0.9);
+    return (
+      <>
+        <Cena f={f} o={{ s: 0, vira: 0, duvida: 0.7 * volta_, alivio: prog(x, 0, 0.25) * (1 - volta_), mao: 1, andando: 0 }} />
+        <Alarme f={f} forca={prog(x, 0.7, 0.78)} entra={1} />
+      </>
+    );
+  }
+  // o cérebro aprende: o ciclo com os nomes
+  if (em(9)) {
+    const x = p(9);
+    const visiveis = 1 + Math.floor(prog(x, 0.04, 0.42, (v) => v) * 4);
+    return (
+      <>
+        <Cena f={f} o={{ ...volta(0.8), duvida: 0.35, alivio: 0 }} />
+        <AbsoluteFill style={{ background: "rgba(255,244,228,0.92)", opacity: prog(x, 0, 0.06) }}>
+          <Roda itens={CICLO} aceso={x < 0.45 ? Math.min(3, visiveis - 1) : x < 0.72 ? 3 : Math.floor((f / 14) % 4)} visiveis={visiveis} cores={[MARCA.coral, MARCA.coral, MARCA.roxo, "#2FB36B"]} />
+          <div style={{ position: "absolute", top: 1150, left: 0, right: 0, textAlign: "center", fontFamily: POPPINS, fontWeight: 800, fontSize: 52, lineHeight: 1.15, color: "#2FB36B", opacity: prog(x, 0.42, 0.5) }}>
+            checar trouxe alívio
+          </div>
+        </AbsoluteFill>
+      </>
+    );
+  }
+  // por isso se repete, mesmo sabendo
+  if (em(10)) {
+    const x = p(10);
     return (
       <>
         <Cena f={f * 1.5} o={volta(0.34 + x * 2.3)} ecos={0.5 + 0.5 * x} />
@@ -160,18 +236,7 @@ const desenhar = (q: Quadro) => {
       </>
     );
   }
-  if (em(6)) {
-    const x = p(6);
-    return (
-      <>
-        <Cena f={f} o={{ ...volta(0.8), duvida: 0.35, alivio: 0 }} />
-        <AbsoluteFill style={{ background: "rgba(255,244,228,0.9)", opacity: prog(x, 0, 0.08) }}>
-          <Roda itens={CICLO} aceso={Math.floor(prog(x, 0.1, 1, (v) => v) * 7.99) % 4} visiveis={5} cores={[MARCA.coral, MARCA.roxo, "#2FB36B", MARCA.coral]} />
-        </AbsoluteFill>
-      </>
-    );
-  }
-  const x = em(7) ? p(7) : 1;
+  const x = em(11) ? p(11) : 1;
   return (
     <>
       <Cena f={f} o={volta(0.3 + (f / 170) % 1)} ecos={0.4} />
