@@ -18,16 +18,17 @@ function crina(): string {
 }
 const CRINA_D = crina();
 
-export const Cavalo: React.FC<{ cam: Camera; t: number }> = ({ cam, t }) => {
+/** `comCelular` (0..1): o cavalo sai um pouco para o lado quando o celular está na mão; por padrão segue o roteiro da pesagem. */
+export const Cavalo: React.FC<{ cam: Camera; t: number; comCelular?: number; bufaEm?: number }> = ({ cam, t, comCelular: forcado, bufaEm = 6.45 }) => {
   const amp = limitar(cam.vel / 1.5);
   const passo = cam.dist * ((2 * Math.PI) / 1.5);
   const nucaY = cam.hor + 640 + 24 * Math.sin(passo + 1.2) * amp + 6 * Math.sin(t * 1.5);
-  const comCelular = prog(t, T_CEL_SOBE - 0.3, 0.8) * (1 - prog(t, T_CEL_DESCE, 0.9));
+  const comCelular = forcado ?? prog(t, T_CEL_SOBE - 0.3, 0.8) * (1 - prog(t, T_CEL_DESCE, 0.9));
   const nucaX = 440 - 150 * comCelular + 10 * Math.sin(passo / 2) * amp - limitar(cam.giroVel, -200, 200) * 0.35;
   // cada orelha escuta para um lado; de vez em quando uma sacode
   const orelha = (s: number) => 9 * ruido(t * 1.6, s * 3) + 12 * Math.max(0, Math.sin(t * 0.7 + s * 2)) ** 8 * Math.sin(t * 17) + 7 * Math.sin(passo + s) * amp;
   // balança a cabeça no trote, bufa e sacode ao parar, e acompanha o corpo quando a gente vira
-  const bufa = t > 6.45 ? 7 * Math.exp(-(t - 6.45) * 3.2) * Math.sin((t - 6.45) * 24) : 0;
+  const bufa = t > bufaEm ? 7 * Math.exp(-(t - bufaEm) * 3.2) * Math.sin((t - bufaEm) * 24) : 0;
   const cabeca = 4.5 * Math.sin(passo / 2 + 0.6) * amp + 2.4 * ruido(t, 11) + bufa + limitar(cam.giroVel, -200, 200) * 0.035;
   const crinaVento = 3 * Math.sin(passo + 0.3) * amp + 1.6 * Math.sin(t * 2.1) + bufa * 0.6;
   const mao = { x: -168 + 4 * Math.sin(passo) * amp, y: 392 + 5 * Math.sin(passo + 0.5) * amp };

@@ -2,15 +2,19 @@
 
 Violão dedilhado (Karplus-Strong), ambiente de roça (vento e passarinhos) e efeitos curtos:
 casco, porteira, clique da câmera, bipe da contagem, giro, plim do peso e carimbo.
-Uso: python3 scripts/rebanho/trilha.py   →  public/rebanho/pesagem/sons/
+Uso: python3 scripts/rebanho/trilha.py [pesagem|confinamento]   →  public/rebanho/<video>/sons/
+Os efeitos curtos ficam só em pesagem/sons e servem aos dois vídeos.
 """
 import subprocess
+import sys
 import wave
 from pathlib import Path
 import numpy as np
 
 SR = 44100
-SAIDA = Path(__file__).resolve().parents[2] / "public/rebanho/pesagem/sons"
+VIDEO = sys.argv[1] if len(sys.argv) > 1 else "pesagem"
+DUR = {"pesagem": 27.0, "confinamento": 51.0}[VIDEO]
+SAIDA = Path(__file__).resolve().parents[2] / f"public/rebanho/{VIDEO}/sons"
 rng = np.random.default_rng(12)
 
 
@@ -54,7 +58,8 @@ def musica(dur=27.0, bpm=96):
     C = dict(b=(130.81, 164.81), a=(196.0, 261.63, 329.63))
     D = dict(b=(146.83, 110.0), a=(220.0, 293.66, 369.99))
     Em = dict(b=(82.41, 123.47), a=(196.0, 246.94, 329.63))
-    compassos = [G, G, C, G, Em, C, D, G, C, G, G]
+    volta = [G, G, C, G, Em, C, D, G]
+    compassos = [volta[i % len(volta)] for i in range(int(dur / (8 * 60 / bpm / 2)) + 2)]
     colcheia = 60 / bpm / 2
     x = np.zeros(int((dur + 3) * SR))
     def tocar(freq, quando, forca, dura=2.2, brilho=0.5):
@@ -97,6 +102,19 @@ def ambiente(dur=27.0):
         inicio += rng.uniform(0.9, 2.6)
     x[: SR // 2] *= np.linspace(0, 1, SR // 2); x[-SR:] *= np.linspace(1, 0, SR)
     return x
+
+
+def trator(dur=13.0):
+    """Motor a diesel em marcha lenta, com a ração caindo no cocho; entra e sai aos poucos."""
+    t = t_(dur)
+    giro = 38 + 3 * np.sin(t * 0.7)
+    fase = 2 * np.pi * np.cumsum(giro) / SR
+    motor = sum(np.sin(fase * h) / h for h in (1, 2, 3, 4, 6)) * (0.75 + 0.25 * np.sign(np.sin(fase * 0.5)))
+    motor = passa_baixa(motor + 0.25 * rng.normal(0, 1, len(t)), 520.0)
+    racao = rng.normal(0, 1, len(t)); racao = (racao - passa_baixa(racao, 1800.0)) * (0.6 + 0.4 * np.sin(t * 9) ** 2)
+    x = motor / np.abs(motor).max() + 0.22 * racao / np.abs(racao).max()
+    env = np.minimum(1, t / 1.6) * np.minimum(1, (dur - t) / 3.5)
+    return x * env
 
 
 def casco(grave):
@@ -146,17 +164,20 @@ def carimbo():
 
 
 SAIDA.mkdir(parents=True, exist_ok=True)
-salvar("musica", musica(), 0.5)
-salvar("ambiente", ambiente(), 0.25)
-for longo in ("musica", "ambiente"):
-    # os dois longos vão em mp3 para não pesar no repositório
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(SAIDA / f"{longo}.wav"), "-b:a", "128k", str(SAIDA / f"{longo}.mp3")], check=True)
-    (SAIDA / f"{longo}.wav").unlink()
-salvar("casco-1", casco(150.0), 0.6)
-salvar("casco-2", casco(120.0), 0.6)
-salvar("porteira", porteira(), 0.6)
-salvar("clique", clique(), 0.8)
-salvar("bipe", bipe(), 0.4)
-salvar("giro", giro(), 0.5)
-salvar("plim", plim(), 0.55)
-salvar("carimbo", carimbo(), 0.7)
+longos = {"musica": (musica(DUR), 0.5), "ambiente": (ambiente(DUR), 0.25)}
+if VIDEO == "confinamento":
+    longos["trator"] = (trator(), 0.35)
+for nome, (x, pico) in longos.items():
+    # os longos vão em mp3 para não pesar no repositório
+    salvar(nome, x, pico)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(SAIDA / f"{nome}.wav"), "-b:a", "128k", str(SAIDA / f"{nome}.mp3")], check=True)
+    (SAIDA / f"{nome}.wav").unlink()
+if VIDEO == "pesagem":
+    salvar("casco-1", casco(150.0), 0.6)
+    salvar("casco-2", casco(120.0), 0.6)
+    salvar("porteira", porteira(), 0.6)
+    salvar("clique", clique(), 0.8)
+    salvar("bipe", bipe(), 0.4)
+    salvar("giro", giro(), 0.5)
+    salvar("plim", plim(), 0.55)
+    salvar("carimbo", carimbo(), 0.7)

@@ -15,7 +15,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "render:aula": "tsx src/cli/render-aula.ts",
-    "render:pesagem": "tsx src/cli/render-pesagem.ts"
+    "render:pesagem": "tsx src/cli/render-rebanho.ts pesagem",
+    "render:confinamento": "tsx src/cli/render-rebanho.ts confinamento"
   },
   "engines": {
     "node": ">=20"

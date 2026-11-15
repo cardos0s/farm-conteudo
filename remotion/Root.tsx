@@ -10,6 +10,8 @@ import { ReelAgentes } from "./aulas/agentes/Reel";
 import { FPS as FPS_AGENTES, TOTAL_QUADROS as TOTAL_AGENTES } from "./aulas/agentes/roteiro";
 import { ReelPesagem } from "./rebanho/pesagem/Reel";
 import { FPS as FPS_PESAGEM, TOTAL_QUADROS as TOTAL_PESAGEM } from "./rebanho/pesagem/roteiro";
+import { ReelConfinamento } from "./rebanho/confinamento/Reel";
+import { FPS as FPS_CONF, TOTAL_QUADROS as TOTAL_CONF } from "./rebanho/confinamento/roteiro";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
 
@@ -56,6 +58,14 @@ export const Root: React.FC = () => (
       height={1920}
       fps={FPS_PESAGEM}
       durationInFrames={TOTAL_PESAGEM}
+    />
+    <Composition
+      id="ReelConfinamento"
+      component={ReelConfinamento}
+      width={1080}
+      height={1920}
+      fps={FPS_CONF}
+      durationInFrames={TOTAL_CONF}
     />
   </>
 );

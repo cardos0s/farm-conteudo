@@ -25,8 +25,8 @@ export type Jeito = {
   passo?: number;
   /** 0..1: cabeça erguida, prestando atenção em quem chegou */
   atento?: number;
-  /** cabeça baixa, pastando */
-  pasta?: boolean;
+  /** cabeça baixa, pastando ou comendo no cocho (true, ou 0..1 para baixar aos poucos) */
+  pasta?: boolean | number;
   /** 0..1: sustinho (flash da foto) */
   susto?: number;
 };
@@ -40,10 +40,10 @@ export const Boi: React.FC<{ id: string; t: number; pelagem?: string; semente?: 
   const rabo = 10 * Math.sin(t * 2.3 + f) + 6 * Math.sin(t * 5.1 + f * 2) + 22 * Math.max(0, Math.sin(t * 0.8 + f * 4)) ** 10 * Math.sin(t * 13) + susto * 18;
   const orelha = 9 * Math.max(0, Math.sin(t * 1.9 + f * 3)) ** 6 * Math.sin(t * 22) - susto * 16;
   const pisca = Math.sin(t * 0.9 + f) > 0.985 ? 0.15 : 1;
-  const mastiga = jeito.pasta ? 0 : 1.1 * Math.sin(t * 6.4 + f) * (Math.sin(t * 0.45 + f * 2) > -0.2 ? 1 : 0);
-  const cabeca = jeito.pasta
-    ? 52 + 5 * Math.sin(t * 1.7 + f) + 3 * Math.sin(t * 4.1 + f)
-    : 3 * Math.sin(t * 0.7 + f) + mastiga - 11 * (jeito.atento ?? 0) - 7 * susto + (andando ? 3 * Math.sin(fase * 2) : 0);
+  const baixa = typeof jeito.pasta === "number" ? jeito.pasta : jeito.pasta ? 1 : 0;
+  const mastiga = baixa > 0.5 ? 0 : 1.1 * Math.sin(t * 6.4 + f) * (Math.sin(t * 0.45 + f * 2) > -0.2 ? 1 : 0);
+  const erguida = 3 * Math.sin(t * 0.7 + f) + mastiga - 11 * (jeito.atento ?? 0) - 7 * susto + (andando ? 3 * Math.sin(fase * 2) : 0);
+  const cabeca = erguida + (52 + 5 * Math.sin(t * 1.7 + f) + 3 * Math.sin(t * 4.1 + f) - erguida) * baixa;
   // andando: pares diagonais; parado: troca o peso de vez em quando
   const balanco = andando ? 15 * Math.sin(fase) : 0;
   const troca = andando ? 0 : 5 * Math.max(0, Math.sin(t * 0.55 + f * 5)) ** 12;

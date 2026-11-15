@@ -6,8 +6,8 @@ import { PESAGENS, batida, limitar, prog, suave } from "./roteiro";
 // como figuras de frente para a câmera. Tudo em metros; a câmera é quem está em cima do cavalo.
 
 export type Vista = { x: number; y: number; z: number; guinada: number; f: number; cx: number; hor: number; w: number; h: number };
-type XZ = readonly [number, number];
-type P3 = readonly [number, number, number];
+export type XZ = readonly [number, number];
+export type P3 = readonly [number, number, number];
 
 const PERTO = 0.4;
 const paraCam = (v: Vista, X: number, Z: number): [number, number] => {
@@ -22,7 +22,7 @@ export function projetar(v: Vista, X: number, Y: number, Z: number): { x: number
 const pts = (ps: { x: number; y: number }[]) => ps.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
 
 /** Polígono no chão (y = 0), recortado no plano próximo da câmera. */
-function chao(v: Vista, poli: XZ[]): string | null {
+export function chao(v: Vista, poli: XZ[]): string | null {
   const cam = poli.map(([X, Z]) => paraCam(v, X, Z));
   const fora: [number, number][] = [];
   for (let i = 0; i < cam.length; i++) {
@@ -39,7 +39,7 @@ function chao(v: Vista, poli: XZ[]): string | null {
 }
 
 /** Faixa vertical (tábua de cerca) entre dois pontos do chão, da altura h0 até h1. */
-function faixa(v: Vista, a: XZ, b: XZ, h0: number, h1: number): { d: string; z: number } | null {
+export function faixa(v: Vista, a: XZ, b: XZ, h0: number, h1: number): { d: string; z: number } | null {
   const ca = paraCam(v, a[0], a[1]), cb = paraCam(v, b[0], b[1]);
   if (ca[1] < PERTO && cb[1] < PERTO) return null;
   let A = ca, B = cb;
@@ -50,14 +50,14 @@ function faixa(v: Vista, a: XZ, b: XZ, h0: number, h1: number): { d: string; z: 
   if (Math.max(q[0]!.x, q[1]!.x) < -200 || Math.min(q[0]!.x, q[1]!.x) > v.w + 200) return null;
   return { d: pts(q), z: (A[1] + B[1]) / 2 };
 }
-function quad(v: Vista, q: P3[]): { d: string; z: number } | null {
+export function quad(v: Vista, q: P3[]): { d: string; z: number } | null {
   const pr = q.map(([X, Y, Z]) => projetar(v, X, Y, Z));
   if (pr.some((p) => !p)) return null;
   const ok = pr as { x: number; y: number; z: number }[];
   return { d: pts(ok), z: ok.reduce((s, p) => s + p.z, 0) / ok.length };
 }
 
-function aleatorio(semente: number) {
+export function aleatorio(semente: number) {
   let a = semente >>> 0;
   return () => {
     a = (a + 0x6d2b79f5) | 0;
@@ -164,7 +164,7 @@ const BANDOS = [
 // no fim do curso a folha bate no batente e balança um pouco
 export const aberturaPorteira = (t: number) => prog(t, 0.55, 1.5, suave) + (t > 2.05 ? 0.045 * Math.exp(-(t - 2.05) * 4.5) * Math.sin((t - 2.05) * 13) : 0);
 
-const Arvore: React.FC<{ tipo: number; vento: number }> = ({ tipo, vento }) => {
+export const Arvore: React.FC<{ tipo: number; vento: number }> = ({ tipo, vento }) => {
   // unidade: 1 = 1 cm, origem no pé do tronco
   const copa = tipo === 2 ? ["#E0B02E", "#C9941F", "#F2CC52"] : tipo === 1 ? ["#3F7F3A", "#2F6530", "#5C9A47"] : ["#4E8F3F", "#3A7434", "#6BA850"];
   return (

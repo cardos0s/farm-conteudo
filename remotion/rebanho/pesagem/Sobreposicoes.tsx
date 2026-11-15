@@ -7,7 +7,7 @@ import { A, CARIMBOS, L, PESAGENS, T, T_CEL_DESCE, T_LOTE, boiAtual, fora, lerp,
 const VERDE = "#2F5D3A", VERDE_ESC = "#16301D", CREME = "#FFF8EA", LARANJA = "#B5651D", AMARELO = "#FFD166";
 const TITULO = "'Roboto Slab', Georgia, serif", CORPO = "Inter, Arial, sans-serif";
 
-const Letra: React.FC<{ x: number; y: number; tam: number; cor?: string; borda?: number; children: React.ReactNode; ancora?: "middle" | "start" | "end" }> = ({ x, y, tam, cor = CREME, borda = 0.2, children, ancora = "middle" }) => (
+export const Letra: React.FC<{ x: number; y: number; tam: number; cor?: string; borda?: number; children: React.ReactNode; ancora?: "middle" | "start" | "end" }> = ({ x, y, tam, cor = CREME, borda = 0.2, children, ancora = "middle" }) => (
   <>
     <text x={x} y={y + tam * 0.07} textAnchor={ancora} fontFamily={TITULO} fontWeight={800} fontSize={tam} fill={VERDE_ESC} stroke={VERDE_ESC} strokeWidth={tam * borda} strokeLinejoin="round" opacity={0.55}>
       {children}
@@ -28,7 +28,7 @@ function aleatorio(semente: number) {
   };
 }
 const CORES_CONFETE = ["#2F5D3A", "#F4EFE6", "#FFD166", "#E07A2F", "#7BE08A", "#FFFFFF"];
-const Confete: React.FC<{ t: number; de: number; semente: number; x?: number; y?: number }> = ({ t, de, semente, x = 540, y = 360 }) => {
+export const Confete: React.FC<{ t: number; de: number; semente: number; x?: number; y?: number }> = ({ t, de, semente, x = 540, y = 360 }) => {
   const dt = t - de;
   if (dt < 0 || dt > 2.6) return null;
   const r = aleatorio(semente);
@@ -45,7 +45,7 @@ const Confete: React.FC<{ t: number; de: number; semente: number; x?: number; y?
   );
 };
 
-const Adesivo: React.FC<{ x: number; y: number; tam: number; giro: number; escala: number; fundo?: string; cor?: string; children: string; opacidade?: number }> = ({ x, y, tam, giro, escala, fundo = LARANJA, cor = CREME, children, opacidade = 1 }) => {
+export const Adesivo: React.FC<{ x: number; y: number; tam: number; giro: number; escala: number; fundo?: string; cor?: string; children: string; opacidade?: number }> = ({ x, y, tam, giro, escala, fundo = LARANJA, cor = CREME, children, opacidade = 1 }) => {
   const w = children.length * tam * 0.6 + tam * 1.3, h = tam * 1.75;
   return (
     <g transform={`translate(${x} ${y}) rotate(${giro}) scale(${escala})`} opacity={opacidade}>

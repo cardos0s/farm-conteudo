@@ -10,7 +10,7 @@ const VERDE = "#2F5D3A", CREME = "#F4EFE6", LARANJA = "#B5651D", TEXTO = "#1F2A1
 const TITULO = "'Roboto Slab', Georgia, serif", CORPO = "Inter, Arial, sans-serif";
 const PELE = "#C98F6B", PELE_ESC = "#A66F4E";
 
-const Cantos: React.FC<{ cx: number; cy: number; w: number; h: number; cor: string; esp: number }> = ({ cx, cy, w, h, cor, esp }) => {
+export const Cantos: React.FC<{ cx: number; cy: number; w: number; h: number; cor: string; esp: number }> = ({ cx, cy, w, h, cor, esp }) => {
   const c = Math.min(w, h) * 0.2, x0 = cx - w / 2, x1 = cx + w / 2, y0 = cy - h / 2, y1 = cy + h / 2;
   const d = `M ${x0},${y0 + c} L ${x0},${y0} L ${x0 + c},${y0} M ${x1 - c},${y0} L ${x1},${y0} L ${x1},${y0 + c} M ${x1},${y1 - c} L ${x1},${y1} L ${x1 - c},${y1} M ${x0 + c},${y1} L ${x0},${y1} L ${x0},${y1 - c}`;
   return (
@@ -101,7 +101,7 @@ const TelaCamera: React.FC<{ cam: Camera; t: number }> = ({ cam, t }) => {
   );
 };
 
-const TelaAbertura: React.FC = () => (
+export const TelaAbertura: React.FC = () => (
   <div style={{ position: "absolute", inset: 0, background: VERDE, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 18 }}>
     <Marca tamanho={150} />
     <div style={{ fontFamily: TITULO, fontWeight: 800, fontSize: 76, color: CREME }}>Rebanho</div>
@@ -158,6 +158,41 @@ const TelaLote: React.FC<{ t: number }> = ({ t }) => {
   );
 };
 
+/** O aparelho na mão direita (palma e braço por trás, dedos na frente); `children` é o que aparece na tela (472x1012). */
+export const Aparelho: React.FC<{ x: number; topo: number; giro: number; escala: number; toque?: number; children: React.ReactNode }> = ({ x, topo, giro, escala, toque = 0, children }) => (
+  <div style={{ position: "absolute", left: x, top: topo, width: 0, height: 0, transform: `rotate(${giro}deg) scale(${escala})`, transformOrigin: "0 520px" }}>
+    <svg width={900} height={1500} viewBox="-300 0 900 1500" style={{ position: "absolute", left: -300, top: 0, overflow: "visible" }}>
+      <defs>
+        <pattern id="cel-xadrez" width="56" height="56" patternUnits="userSpaceOnUse" patternTransform="rotate(28)">
+          <rect width="56" height="56" fill="#2F5D3A" />
+          <rect width="56" height="14" fill="#F4EFE6" opacity="0.28" />
+          <rect width="14" height="56" fill="#F4EFE6" opacity="0.28" />
+          <rect y="28" width="56" height="5" fill="#16301D" opacity="0.5" />
+          <rect x="28" width="5" height="56" fill="#16301D" opacity="0.5" />
+        </pattern>
+      </defs>
+      <path d="M 150,1080 L 400,1010 L 640,1700 L 300,1700 Z" fill="url(#cel-xadrez)" />
+      <path d="M 138,1066 L 408,990 L 420,1030 L 150,1104 Z" fill="#244A2E" />
+      <path d="M -200,620 C -260,700 -250,930 -120,1050 C 20,1150 300,1120 380,1010 C 420,900 380,700 300,640 Z" fill={PELE} />
+    </svg>
+    <div style={{ position: "absolute", left: -250, top: 0, width: 500, height: 1040, borderRadius: 66, background: "#14161A", boxShadow: "0 30px 80px rgba(0,0,0,0.45), inset 0 0 0 3px #3A3D44" }}>
+      <div style={{ position: "absolute", left: 14, top: 14, width: LT, height: AT, borderRadius: 54, overflow: "hidden", background: "#000" }}>
+        {children}
+        <div style={{ position: "absolute", left: LT / 2 - 56, top: 12, width: 112, height: 26, borderRadius: 13, background: "#000" }} />
+      </div>
+    </div>
+    <svg width={900} height={1500} viewBox="-300 0 900 1500" style={{ position: "absolute", left: -300, top: 0, overflow: "visible" }}>
+      {[0, 1, 2, 3].map((i) => (
+        <rect key={i} x={-290} y={596 + i * 92} width={74 - i * 3} height={78} rx={36} fill={PELE} stroke={PELE_ESC} strokeWidth={3} />
+      ))}
+      <g transform={`rotate(${-toque * 16} 300 900)`}>
+        <path d="M 330,940 C 340,860 320,760 262,690 C 240,668 206,676 204,706 C 204,740 232,790 236,850 C 238,900 250,940 280,960 Z" fill={PELE} stroke={PELE_ESC} strokeWidth={3} />
+        <path d="M 216,700 C 222,690 244,690 252,704 C 246,716 226,718 216,700 Z" fill="#E7C3A8" opacity={0.8} />
+      </g>
+    </svg>
+  </div>
+);
+
 export const Celular: React.FC<{ cam: Camera; t: number }> = ({ cam, t }) => {
   const sobe = prog(t, T_CEL_SOBE, 0.65, mola);
   const lote = prog(t, T_LOTE - 0.1, 0.6);
@@ -170,43 +205,10 @@ export const Celular: React.FC<{ cam: Camera; t: number }> = ({ cam, t }) => {
   const abre = prog(t, T_CEL_SOBE + 0.5, 0.35);
   const toque = PESAGENS.reduce((s, p) => s + (t > p.clique - 0.18 && t < p.clique + 0.12 ? Math.sin(((t - p.clique + 0.18) / 0.3) * Math.PI) : 0), 0);
   return (
-    <div style={{ position: "absolute", left: x, top: topo, width: 0, height: 0, transform: `rotate(${giro}deg) scale(${escala})`, transformOrigin: "0 520px" }}>
-      {/* palma e braço por trás do aparelho */}
-      <svg width={900} height={1500} viewBox="-300 0 900 1500" style={{ position: "absolute", left: -300, top: 0, overflow: "visible" }}>
-        <defs>
-          <pattern id="cel-xadrez" width="56" height="56" patternUnits="userSpaceOnUse" patternTransform="rotate(28)">
-            <rect width="56" height="56" fill="#2F5D3A" />
-            <rect width="56" height="14" fill="#F4EFE6" opacity="0.28" />
-            <rect width="14" height="56" fill="#F4EFE6" opacity="0.28" />
-            <rect y="28" width="56" height="5" fill="#16301D" opacity="0.5" />
-            <rect x="28" width="5" height="56" fill="#16301D" opacity="0.5" />
-          </pattern>
-        </defs>
-        <path d="M 150,1080 L 400,1010 L 640,1700 L 300,1700 Z" fill="url(#cel-xadrez)" />
-        <path d="M 138,1066 L 408,990 L 420,1030 L 150,1104 Z" fill="#244A2E" />
-        <path d="M -200,620 C -260,700 -250,930 -120,1050 C 20,1150 300,1120 380,1010 C 420,900 380,700 300,640 Z" fill={PELE} />
-      </svg>
-      {/* aparelho */}
-      <div style={{ position: "absolute", left: -250, top: 0, width: 500, height: 1040, borderRadius: 66, background: "#14161A", boxShadow: "0 30px 80px rgba(0,0,0,0.45), inset 0 0 0 3px #3A3D44" }}>
-        <div style={{ position: "absolute", left: 14, top: 14, width: LT, height: AT, borderRadius: 54, overflow: "hidden", background: "#000" }}>
-          {lote < 1 && <TelaCamera cam={cam} t={t} />}
-          {abre < 1 && <div style={{ position: "absolute", inset: 0, opacity: 1 - abre }}><TelaAbertura /></div>}
-          {lote > 0 && <div style={{ position: "absolute", inset: 0, transform: `translateX(${(1 - lote) * LT}px)` }}><TelaLote t={t} /></div>}
-          <div style={{ position: "absolute", left: LT / 2 - 56, top: 12, width: 112, height: 26, borderRadius: 13, background: "#000" }} />
-        </div>
-      </div>
-      {/* dedos na frente */}
-      <svg width={900} height={1500} viewBox="-300 0 900 1500" style={{ position: "absolute", left: -300, top: 0, overflow: "visible" }}>
-        {[0, 1, 2, 3].map((i) => (
-          <g key={i}>
-            <rect x={-290} y={596 + i * 92} width={74 - i * 3} height={78} rx={36} fill={PELE} stroke={PELE_ESC} strokeWidth={3} />
-          </g>
-        ))}
-        <g transform={`rotate(${-toque * 16} 300 900)`}>
-          <path d="M 330,940 C 340,860 320,760 262,690 C 240,668 206,676 204,706 C 204,740 232,790 236,850 C 238,900 250,940 280,960 Z" fill={PELE} stroke={PELE_ESC} strokeWidth={3} />
-          <path d="M 216,700 C 222,690 244,690 252,704 C 246,716 226,718 216,700 Z" fill="#E7C3A8" opacity={0.8} />
-        </g>
-      </svg>
-    </div>
+    <Aparelho x={x} topo={topo} giro={giro} escala={escala} toque={toque}>
+      {lote < 1 && <TelaCamera cam={cam} t={t} />}
+      {abre < 1 && <div style={{ position: "absolute", inset: 0, opacity: 1 - abre }}><TelaAbertura /></div>}
+      {lote > 0 && <div style={{ position: "absolute", inset: 0, transform: `translateX(${(1 - lote) * LT}px)` }}><TelaLote t={t} /></div>}
+    </Aparelho>
   );
 };
