@@ -50,20 +50,20 @@ const r = aleatorio(23);
 const bois: BoiP[] = [];
 // cria: vaca com o bezerro ao pé
 for (let i = 0; i < 9; i++) {
-  const x = -(6 + r() * 30), z = -4 + r() * 42, vira = r() < 0.5, lado = vira ? -1 : 1;
+  const x = -(5.5 + r() * 15), z = -2 + r() * 40, vira = r() < 0.5, lado = vira ? -1 : 1;
   bois.push({ x, z, pelagem: r() < 0.75 ? "branco" : "cinza", vira, esc: 0.96 + r() * 0.08, semente: r() * 9, pasta: r() < 0.6 ? 1 : 0 });
   const mama = r() < 0.4;
   bois.push({ x: x - lado * (mama ? 0.5 : 1.5 + r()), z: z + (mama ? -0.25 : 0.6 - r()), pelagem: r() < 0.5 ? "caramelo" : "branco", vira: mama ? !vira : vira, esc: 0.46 + r() * 0.08, semente: r() * 9, pasta: mama ? 0.35 : r() < 0.5 ? 1 : 0 });
 }
 // recria: garrotes crescendo no pasto
 for (let i = 0; i < 14; i++) {
-  const anda = r() < 0.25 ? 0.3 : 0, vira = r() < 0.5, x0 = 6 + r() * 34;
+  const anda = r() < 0.25 ? 0.3 : 0, vira = r() < 0.5, x0 = 5.5 + r() * 18;
   bois.push({ x: anda ? (t) => x0 + anda * t * (vira ? -1 : 1) : x0, z: 14 + r() * 62, pelagem: r() < 0.7 ? "branco" : r() < 0.5 ? "cinza" : "caramelo", vira, esc: 0.74 + r() * 0.08, semente: r() * 9, pasta: anda ? 0 : r() < 0.7 ? 1 : 0, passo: anda ? (t) => t * 11 * anda + i : undefined });
 }
 // engorda: bois grandes no cocho
-const COCHOS = [{ x: -10, z: 58 }, { x: -22, z: 66 }, { x: -9, z: 78 }, { x: -30, z: 84 }];
+const COCHOS = [{ x: -8.5, z: 54 }, { x: -17, z: 61 }, { x: -9, z: 70 }, { x: -20, z: 78 }];
 for (const c of COCHOS) for (const s of [-1, 1]) for (let j = 0; j < 2; j++) bois.push({ x: c.x + s * (2.5 + j * 0.2), z: c.z + (j ? 0.5 : -0.4), pelagem: r() < 0.8 ? "branco" : "cinza", vira: s > 0, esc: 1.1 + r() * 0.06, semente: r() * 9, pasta: r() < 0.75 ? 0.75 : 0 });
-for (let i = 0; i < 5; i++) bois.push({ x: -(8 + r() * 38), z: 50 + r() * 44, vira: r() < 0.5, esc: 1.1, semente: r() * 9 });
+for (let i = 0; i < 5; i++) bois.push({ x: -(6 + r() * 22), z: 49 + r() * 40, vira: r() < 0.5, esc: 1.1, semente: r() * 9 });
 export const cena: CenaPasto = {
   piquetes: [
     { x0: -52, x1: -EST, z0: -40, z1: Z_ENG, capim: 0.22 }, { x0: EST, x1: 52, z0: -40, z1: 120, capim: 0.26 },

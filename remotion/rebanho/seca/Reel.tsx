@@ -78,7 +78,7 @@ export function ReelSeca() {
           <Tx x={150} y={-70} tam={48} o={prog(t, T.grama + 0.3, 0.3)}>por kg de peso vivo</Tx>
           <Tx x={150} y={-22} tam={32} cor={SUAVE} titulo={false} peso={700} o={prog(t, T.grama + 0.3, 0.3)}>por dia, mais ou menos</Tx>
           <line x1={-430} x2={430} y1={24} y2={24} stroke="#E4DED2" strokeWidth={5} />
-          <g opacity={limitar(pulo(t, T.boi400 - 0.1) * 2)}><Tx x={-250} y={120} tam={68}>boi de 400 kg</Tx></g>
+          <g opacity={limitar(pulo(t, T.boi400 - 0.1) * 2)}><Tx x={-225} y={118} tam={58}>boi de 400 kg</Tx></g>
           <Seta x={30} y={98} cor={LARANJA} e={pulo(t, T.g400 - 0.3)} />
           <g transform={`translate(270 98) scale(${pulo(t, T.g400 - 0.1)})`}><Tx x={0} y={24} tam={78} cor={LARANJA}>400 g/dia</Tx></g>
         </Painel>

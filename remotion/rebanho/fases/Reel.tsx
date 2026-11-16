@@ -71,7 +71,7 @@ export function ReelFases() {
 
         {chips([{ p: "ao pé da vaca", t: T.mamando - 0.9, x: 290 }, { p: "mamando", t: T.mamando, x: 760, f: LARANJA }, { p: "aprendendo a pastar", t: T.pastar, y: 730, f: VERDE }], fimDe(1))}
         {chips([{ p: "desmama: 7 a 8 meses", t: T.meses, f: LARANJA, tam: 54 }], fimDe(2))}
-        {t > T.duzentos - 0.15 && t < fimDe(2) + 0.3 && <g opacity={1 - prog(t, fimDe(2), 0.25)} transform={`translate(540 800) scale(${carimbo(t, T.duzentos - 0.1)}) rotate(-2)`}><Letra x={0} y={0} tam={170} cor={AMARELO} borda={0.14}>meta: 200 kg</Letra></g>}
+        {t > T.duzentos - 0.15 && t < fimDe(2) + 0.3 && <g opacity={1 - prog(t, fimDe(2), 0.25)} transform={`translate(540 800) scale(${carimbo(t, T.duzentos - 0.1)}) rotate(-2)`}><Letra x={0} y={0} tam={104} cor={AMARELO} borda={0.14}>meta: 200 kg</Letra></g>}
         {chips([{ p: "osso", t: T.partes[0]!, x: 200, tam: 56 }, { p: "músculo", t: T.partes[1]!, x: 500, f: LARANJA, tam: 56 }, { p: "carcaça", t: T.partes[2]!, x: 850, f: VERDE, tam: 56 }, { p: "no pasto, com suplemento", t: T.pasto, y: 730 }], fimDe(3))}
         {chips([{ p: "a fase mais longa", t: T.longa, f: LARANJA, tam: 56 }, { p: "fome na seca = boi atrasado", t: T.garrote + 0.6, y: 730, f: "#8E3B2A" }], fimDe(4))}
         {chips([{ p: "entra com 380 kg", t: T.trezentos, tam: 56, f: VERDE }, { p: "ganhar peso rápido", t: T.rapido, y: 730, x: 310, f: LARANJA, tam: 46 }, { p: "acabamento de gordura", t: T.gordura, y: 850, x: 640, tam: 46 }], fimDe(5))}
