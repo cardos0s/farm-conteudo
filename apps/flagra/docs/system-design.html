@@ -1,0 +1,566 @@
+<title>Flagra por dentro</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  /* Layout: uma coluna de leitura (68ch) com figuras que se abrem até 980px; cada seção é um pedaço do app. */
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --ink: #10131a;
+    --muted: #596171;
+    --line: #d8dce3;
+    --accent: #c81f63;
+    --accent-soft: #fbe5ee;
+    --brand: linear-gradient(90deg, #ffc93c, #ff6a3d 35%, #ee2a7b 65%, #a52fd9);
+    --display: "Archivo Black", "Inter", system-ui, sans-serif;
+    --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e1015; --surface: #161922; --ink: #eceff4; --muted: #9ca3b2; --line: #2b303c; --accent: #ff5f9c; --accent-soft: #3b1527; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e1015; --surface: #161922; --ink: #eceff4; --muted: #9ca3b2; --line: #2b303c; --accent: #ff5f9c; --accent-soft: #3b1527; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink); font: 16px/1.6 var(--body);
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  main { max-width: 980px; margin: 0 auto; padding-block: 40px 80px; }
+  .texto { max-width: 68ch; }
+  h1, h2 { font-family: var(--display); font-weight: 400; letter-spacing: -0.01em; text-wrap: balance; line-height: 1.1; }
+  h1 { font-size: clamp(40px, 7vw, 64px); margin: 12px 0 14px; }
+  h2 { font-size: clamp(26px, 4vw, 34px); margin: 0 0 12px; }
+  h3 { font-size: 17px; margin: 22px 0 6px; }
+  p { margin: 0 0 14px; }
+  .marca { height: 6px; width: 120px; border-radius: 3px; background: var(--brand); }
+  .lead { font-size: 19px; color: var(--muted); max-width: 60ch; }
+  .tese { margin-top: 20px; padding: 14px 16px; border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 10px 10px 0; max-width: 68ch; }
+  nav.indice { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 8px; }
+  nav.indice a { font: 600 13px/1 var(--body); color: var(--ink); text-decoration: none; padding: 9px 12px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface); }
+  nav.indice a:hover, nav.indice a:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+  section { padding-top: 56px; scroll-margin-top: 16px; }
+  .rotulo { font: 600 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  figure { margin: 22px 0 18px; }
+  .quadro { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; overflow-x: auto; color: var(--ink); }
+  .quadro svg { display: block; width: 100%; min-width: 640px; height: auto; font-family: var(--body); }
+  figcaption { font-size: 14px; color: var(--muted); margin-top: 10px; max-width: 72ch; }
+  ul, ol { padding-left: 22px; margin: 0 0 14px; }
+  li { margin: 4px 0; }
+  code, .mono { font-family: var(--mono); font-size: .88em; }
+  code { background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
+  .tabela { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); margin: 16px 0; }
+  table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font: 600 12px/1.2 var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  tr:last-child td { border-bottom: 0; }
+  td.num { font-variant-numeric: tabular-nums; font-family: var(--mono); white-space: nowrap; }
+  .duas { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 16px 0; }
+  .duas > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .duas h3 { margin-top: 0; }
+  .roteiro { counter-reset: r; list-style: none; padding: 0; display: grid; gap: 10px; }
+  .roteiro li { counter-increment: r; display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin: 0; }
+  .roteiro li::before { content: counter(r); font: 400 18px/1.4 var(--display); color: var(--accent); }
+  .roteiro b { display: block; }
+  footer { margin-top: 64px; color: var(--muted); font-size: 13px; }
+  @media (prefers-reduced-motion: no-preference) { nav.indice a { transition: border-color .15s, color .15s; } }
+</style>
+
+<main>
+  <div class="marca" aria-hidden="true"></div>
+  <h1>Flagra por dentro</h1>
+  <p class="lead">O que acontece no servidor quando alguém posta uma foto, curte, comenta, reposta, vê um story ou assiste a um reel. É o desenho que a demo simula no navegador.</p>
+  <p class="tese">Quase tudo aqui existe por um motivo só: as pessoas <b>leem muito mais do que escrevem</b>. Cada post é aberto milhares de vezes e cada curtida é contada por muita gente ao mesmo tempo. Então o sistema faz o trabalho pesado na hora de escrever para que ler seja barato.</p>
+
+  <nav class="indice" aria-label="Seções">
+    <a href="#mapa">O mapa</a>
+    <a href="#postar">Postar</a>
+    <a href="#feed">Montar o feed</a>
+    <a href="#interacoes">Curtir, comentar, repostar</a>
+    <a href="#stories">Stories</a>
+    <a href="#reels">Reels</a>
+    <a href="#numeros">Números</a>
+    <a href="#demo">O que a demo simula</a>
+  </nav>
+
+  <!-- ─────────────── MAPA ─────────────── -->
+  <section id="mapa">
+    <div class="rotulo">Visão geral</div>
+    <h2>O mapa</h2>
+    <div class="texto">
+      <p>O app conversa com dois lugares diferentes. Fotos e vídeos vêm de uma <b>CDN</b>, uma rede de servidores espalhados pelo mundo que guarda cópias perto de quem assiste. Todo o resto (o feed, as curtidas, os comentários) passa por uma <b>API</b> que distribui cada pedido para um serviço pequeno, dono de uma parte do app.</p>
+      <p>Os serviços não chamam uns aos outros a cada toque. Eles publicam <b>eventos</b> numa fila ("post criado", "curtida", "assistiu 6 s") e quem se interessa consome no seu ritmo. É isso que deixa uma curtida responder na hora mesmo quando o contador, a notificação e o ranking ainda estão processando.</p>
+    </div>
+    <figure>
+      <div class="quadro">
+        <svg viewBox="0 0 960 470" role="img" aria-label="Arquitetura geral: o app baixa mídia da CDN e chama a API; a API distribui para oito serviços que publicam e consomem eventos numa fila e guardam dados em cinco tipos de armazenamento.">
+          <defs>
+            <marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+            <marker id="m1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--accent)"/></marker>
+          </defs>
+          <!-- App -->
+          <rect x="20" y="232" width="140" height="64" rx="12" style="fill:var(--surface)" stroke="currentColor" stroke-width="1.6"/>
+          <text x="90" y="260" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">App</text>
+          <text x="90" y="279" text-anchor="middle" font-size="11" fill="currentColor" opacity=".7">celular</text>
+          <!-- CDN -->
+          <rect x="210" y="60" width="150" height="50" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+          <text x="285" y="81" text-anchor="middle" font-size="13" font-weight="600" fill="currentColor">CDN</text>
+          <text x="285" y="98" text-anchor="middle" font-size="11" fill="currentColor" opacity=".7">cópias perto de você</text>
+          <path d="M90 232 V85 H208" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#m1)"/>
+          <text x="98" y="160" font-size="11" fill="currentColor" opacity=".75">fotos e vídeos</text>
+          <!-- Gateway -->
+          <rect x="210" y="232" width="150" height="64" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+          <text x="285" y="258" text-anchor="middle" font-size="13" font-weight="600" fill="currentColor">API</text>
+          <text x="285" y="276" text-anchor="middle" font-size="11" fill="currentColor" opacity=".7">login, limite de pedidos</text>
+          <line x1="160" y1="264" x2="208" y2="264" stroke="currentColor" stroke-width="1.4" marker-end="url(#m1)"/>
+          <!-- Serviços -->
+          <rect x="400" y="120" width="380" height="244" rx="14" fill="none" stroke="currentColor" stroke-opacity=".45" stroke-dasharray="5 5"/>
+          <text x="414" y="140" font-size="11" font-weight="600" fill="currentColor" opacity=".7">SERVIÇOS</text>
+          <line x1="360" y1="264" x2="398" y2="264" stroke="currentColor" stroke-width="1.4" marker-end="url(#m1)"/>
+          <g fill="currentColor">
+            <rect x="412" y="150" width="174" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="424" y="168" font-size="13" font-weight="600">Mídia</text><text x="424" y="184" font-size="11" opacity=".7">upload e conversão</text>
+            <rect x="594" y="150" width="174" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="606" y="168" font-size="13" font-weight="600">Posts</text><text x="606" y="184" font-size="11" opacity=".7">cria e publica</text>
+            <rect x="412" y="202" width="174" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="424" y="220" font-size="13" font-weight="600">Social</text><text x="424" y="236" font-size="11" opacity=".7">quem segue quem</text>
+            <rect x="594" y="202" width="174" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="606" y="220" font-size="13" font-weight="600">Interações</text><text x="606" y="236" font-size="11" opacity=".7">curtir, comentar, repostar</text>
+            <rect x="412" y="254" width="174" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="424" y="272" font-size="13" font-weight="600">Feed</text><text x="424" y="288" font-size="11" opacity=".7">fan-out e ranking</text>
+            <rect x="594" y="254" width="174" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="606" y="272" font-size="13" font-weight="600">Stories</text><text x="606" y="288" font-size="11" opacity=".7">24 h, vistos, enquete</text>
+            <rect x="412" y="306" width="174" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="424" y="324" font-size="13" font-weight="600">Reels</text><text x="424" y="340" font-size="11" opacity=".7">recomendação</text>
+            <rect x="594" y="306" width="174" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="606" y="324" font-size="13" font-weight="600">Notificações</text><text x="606" y="340" font-size="11" opacity=".7">agrupa e envia push</text>
+          </g>
+          <!-- Fila -->
+          <rect x="400" y="398" width="380" height="46" rx="10" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="1.6"/>
+          <text x="590" y="418" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--accent)">Fila de eventos</text>
+          <text x="590" y="434" text-anchor="middle" font-size="11" fill="currentColor" opacity=".8">post.criado · curtida · comentario · visualizacao</text>
+          <line x1="560" y1="364" x2="560" y2="396" style="stroke:var(--accent)" stroke-width="1.4" marker-end="url(#m1a)"/>
+          <text x="552" y="385" text-anchor="end" font-size="11" fill="currentColor" opacity=".75">publicam</text>
+          <line x1="620" y1="398" x2="620" y2="366" style="stroke:var(--accent)" stroke-width="1.4" marker-end="url(#m1a)"/>
+          <text x="628" y="385" font-size="11" fill="currentColor" opacity=".75">consomem</text>
+          <!-- Dados -->
+          <rect x="812" y="110" width="138" height="334" rx="14" fill="none" stroke="currentColor" stroke-opacity=".45" stroke-dasharray="5 5"/>
+          <text x="824" y="130" font-size="11" font-weight="600" fill="currentColor" opacity=".7">DADOS</text>
+          <line x1="780" y1="244" x2="810" y2="244" stroke="currentColor" stroke-width="1.4" marker-end="url(#m1)"/>
+          <text x="795" y="236" text-anchor="middle" font-size="10" fill="currentColor" opacity=".7">lê/grava</text>
+          <g fill="currentColor">
+            <rect x="822" y="140" width="118" height="50" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="832" y="160" font-size="12.5" font-weight="600">Arquivos</text><text x="832" y="177" font-size="10.5" opacity=".7">fotos e vídeos</text>
+            <rect x="822" y="198" width="118" height="50" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="832" y="218" font-size="12.5" font-weight="600">Relacional</text><text x="832" y="235" font-size="10.5" opacity=".7">usuários, posts</text>
+            <rect x="822" y="256" width="118" height="50" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="832" y="276" font-size="12.5" font-weight="600">Wide-column</text><text x="832" y="293" font-size="10.5" opacity=".7">timelines, curtidas</text>
+            <rect x="822" y="314" width="118" height="50" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="832" y="334" font-size="12.5" font-weight="600">Cache</text><text x="832" y="351" font-size="10.5" opacity=".7">contadores, vistos</text>
+            <rect x="822" y="372" width="118" height="50" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="832" y="392" font-size="12.5" font-weight="600">Vetores</text><text x="832" y="409" font-size="10.5" opacity=".7">gosto, Reels</text>
+          </g>
+          <!-- CDN busca na origem -->
+          <path d="M881 140 V86 H362" fill="none" stroke="currentColor" stroke-opacity=".6" stroke-width="1.2" stroke-dasharray="4 4" marker-end="url(#m1)"/>
+          <text x="620" y="78" text-anchor="middle" font-size="11" fill="currentColor" opacity=".75">a CDN busca o original uma vez e guarda a cópia</text>
+          <!-- push -->
+          <path d="M400 356 H120 V298" fill="none" stroke="currentColor" stroke-opacity=".6" stroke-width="1.2" stroke-dasharray="4 4" marker-end="url(#m1)"/>
+          <text x="260" y="350" text-anchor="middle" font-size="11" fill="currentColor" opacity=".75">push no celular</text>
+        </svg>
+      </div>
+      <figcaption>Mídia e dados andam por caminhos separados. A fila no meio é o que desacopla os serviços: quem grava não espera quem processa.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ─────────────── POSTAR ─────────────── -->
+  <section id="postar">
+    <div class="rotulo">Post e reel</div>
+    <h2>Postar uma foto ou um vídeo</h2>
+    <div class="texto">
+      <p>O arquivo nunca passa pelos servidores da API. O app pede uma <b>URL assinada</b> (um endereço de upload que vale por poucos minutos) e manda o arquivo direto para o armazenamento. Assim um vídeo de 200 MB não ocupa um servidor que deveria estar respondendo feeds.</p>
+      <p>Quando o arquivo chega, um evento acorda os <b>workers de conversão</b>: eles geram a miniatura, três tamanhos de foto (para tela pequena, média e grande) e, no vídeo, várias qualidades cortadas em pedaços de poucos segundos (HLS). O player troca de qualidade sozinho conforme a internet. Só então o post sai de <code>processando</code> para <code>publicado</code> e o evento <code>post.criado</code> entra na fila.</p>
+    </div>
+    <figure>
+      <div class="quadro">
+        <svg viewBox="0 0 960 236" role="img" aria-label="Fluxo de upload: o app pede URL assinada à API, envia o arquivo direto ao armazenamento, workers convertem, a CDN serve e o post é publicado, gerando o evento post.criado.">
+          <defs>
+            <marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+            <marker id="m2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--accent)"/></marker>
+          </defs>
+          <g fill="currentColor">
+            <rect x="20" y="48" width="150" height="56" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-width="1.6"/>
+            <text x="95" y="72" text-anchor="middle" font-size="13" font-weight="700">App</text><text x="95" y="90" text-anchor="middle" font-size="11" opacity=".7">escolhe a mídia</text>
+            <rect x="210" y="48" width="150" height="56" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="285" y="72" text-anchor="middle" font-size="13" font-weight="600">Serviço de Mídia</text><text x="285" y="90" text-anchor="middle" font-size="11" opacity=".7">assina a URL</text>
+            <rect x="400" y="48" width="150" height="56" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="475" y="72" text-anchor="middle" font-size="13" font-weight="600">Armazenamento</text><text x="475" y="90" text-anchor="middle" font-size="11" opacity=".7">arquivo original</text>
+            <rect x="590" y="48" width="150" height="56" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="665" y="72" text-anchor="middle" font-size="13" font-weight="600">Workers</text><text x="665" y="90" text-anchor="middle" font-size="11" opacity=".7">miniatura, tamanhos, HLS</text>
+            <rect x="780" y="48" width="150" height="56" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="855" y="72" text-anchor="middle" font-size="13" font-weight="600">CDN</text><text x="855" y="90" text-anchor="middle" font-size="11" opacity=".7">pronto para tocar</text>
+            <rect x="590" y="160" width="150" height="56" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="665" y="184" text-anchor="middle" font-size="13" font-weight="600">Serviço de Posts</text><text x="665" y="202" text-anchor="middle" font-size="11" opacity=".7">status: publicado</text>
+            <rect x="780" y="160" width="150" height="56" rx="10" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="1.6"/>
+            <text x="855" y="184" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--accent)">Fila</text><text x="855" y="202" text-anchor="middle" font-size="11" opacity=".8">post.criado</text>
+          </g>
+          <line x1="170" y1="66" x2="208" y2="66" stroke="currentColor" stroke-width="1.4" marker-end="url(#m2)"/>
+          <line x1="210" y1="88" x2="172" y2="88" stroke="currentColor" stroke-width="1.4" marker-end="url(#m2)"/>
+          <text x="190" y="60" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".8">1</text>
+          <text x="190" y="102" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".8">2</text>
+          <path d="M95 48 V22 H475 V46" fill="none" style="stroke:var(--accent)" stroke-width="1.8" marker-end="url(#m2a)"/>
+          <text x="285" y="16" text-anchor="middle" font-size="11.5" font-weight="600" style="fill:var(--accent)">3 · o arquivo vai direto, sem passar pela API</text>
+          <line x1="550" y1="76" x2="588" y2="76" stroke="currentColor" stroke-width="1.4" marker-end="url(#m2)"/>
+          <text x="569" y="68" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".8">4</text>
+          <line x1="740" y1="76" x2="778" y2="76" stroke="currentColor" stroke-width="1.4" marker-end="url(#m2)"/>
+          <text x="759" y="68" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".8">5</text>
+          <line x1="665" y1="104" x2="665" y2="158" stroke="currentColor" stroke-width="1.4" marker-end="url(#m2)"/>
+          <text x="673" y="136" font-size="10.5" fill="currentColor" opacity=".8">6 versões prontas</text>
+          <line x1="740" y1="188" x2="778" y2="188" stroke="currentColor" stroke-width="1.4" marker-end="url(#m2)"/>
+          <text x="759" y="180" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".8">7</text>
+          <text x="20" y="150" font-size="11" fill="currentColor" opacity=".75">1 pede URL de upload · 2 recebe a URL (vale 15 min)</text>
+          <text x="20" y="168" font-size="11" fill="currentColor" opacity=".75">4 armazenamento avisa "arquivo novo" · 5 versões vão para a CDN</text>
+          <text x="20" y="186" font-size="11" fill="currentColor" opacity=".75">6 post publicado · 7 evento entra na fila (fan-out, notificações)</text>
+        </svg>
+      </div>
+      <figcaption>A seta grossa é a decisão importante: o arquivo pesado nunca encosta na API. Foto e reel seguem o mesmo caminho; o reel só gera mais versões.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ─────────────── FEED ─────────────── -->
+  <section id="feed">
+    <div class="rotulo">Feed</div>
+    <h2>Montar o feed</h2>
+    <div class="texto">
+      <p>Quando você abre o app, o feed precisa aparecer em menos de meio segundo. Existem dois jeitos de juntar os posts de quem você segue, e a diferença está em <b>quando</b> o trabalho é feito.</p>
+    </div>
+    <figure>
+      <div class="quadro">
+        <svg viewBox="0 0 960 316" role="img" aria-label="Comparação: no fan-out na escrita, um post vira uma gravação em cada timeline de seguidor e abrir o app é uma consulta; no fan-out na leitura, postar é uma gravação e abrir o app junta posts de todas as contas seguidas.">
+          <defs>
+            <marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+            <marker id="m3a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--accent)"/></marker>
+          </defs>
+          <text x="20" y="22" font-size="13" font-weight="700" fill="currentColor">Fan-out na escrita (push)</text>
+          <text x="500" y="22" font-size="13" font-weight="700" fill="currentColor">Fan-out na leitura (pull)</text>
+          <line x1="480" y1="8" x2="480" y2="306" stroke="currentColor" stroke-opacity=".2"/>
+          <!-- push -->
+          <g fill="currentColor">
+            <rect x="20" y="96" width="120" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="80" y="123" text-anchor="middle" font-size="12.5" font-weight="600">@duda posta</text>
+            <rect x="180" y="96" width="110" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="235" y="116" text-anchor="middle" font-size="12.5" font-weight="600">worker</text><text x="235" y="131" text-anchor="middle" font-size="10.5" opacity=".7">de fan-out</text>
+            <rect x="330" y="40" width="130" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="395" y="67" text-anchor="middle" font-size="12" font-weight="600">timeline do @rafa</text>
+            <rect x="330" y="96" width="130" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="395" y="123" text-anchor="middle" font-size="12" font-weight="600">+ 48 mil timelines</text>
+            <rect x="330" y="152" width="130" height="44" rx="8" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="1.4"/>
+            <text x="395" y="179" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--accent)">sua timeline</text>
+            <rect x="330" y="236" width="130" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-width="1.6"/>
+            <text x="395" y="263" text-anchor="middle" font-size="12" font-weight="600">você abre o app</text>
+          </g>
+          <line x1="140" y1="118" x2="178" y2="118" stroke="currentColor" stroke-width="1.4" marker-end="url(#m3)"/>
+          <line x1="290" y1="118" x2="328" y2="62" style="stroke:var(--accent)" stroke-width="1.6" marker-end="url(#m3a)"/>
+          <line x1="290" y1="118" x2="328" y2="118" style="stroke:var(--accent)" stroke-width="1.6" marker-end="url(#m3a)"/>
+          <line x1="290" y1="118" x2="328" y2="174" style="stroke:var(--accent)" stroke-width="1.6" marker-end="url(#m3a)"/>
+          <text x="236" y="168" text-anchor="middle" font-size="10.5" style="fill:var(--accent)">grava o id do post</text>
+          <text x="236" y="182" text-anchor="middle" font-size="10.5" style="fill:var(--accent)">em cada seguidor</text>
+          <line x1="395" y1="236" x2="395" y2="198" stroke="currentColor" stroke-width="1.4" marker-end="url(#m3)"/>
+          <text x="403" y="222" font-size="10.5" fill="currentColor" opacity=".8">1 consulta</text>
+          <text x="20" y="300" font-size="11.5" fill="currentColor" opacity=".85">postar: 48 mil gravações · abrir o app: 1 consulta</text>
+          <!-- pull -->
+          <g fill="currentColor">
+            <rect x="500" y="40" width="140" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="570" y="67" text-anchor="middle" font-size="12" font-weight="600">posts da @duda</text>
+            <rect x="500" y="96" width="140" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="570" y="123" text-anchor="middle" font-size="12" font-weight="600">posts do @rafa</text>
+            <rect x="500" y="152" width="140" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="570" y="179" text-anchor="middle" font-size="12" font-weight="600">+ 200 contas</text>
+            <rect x="700" y="96" width="130" height="44" rx="8" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="1.4"/>
+            <text x="765" y="116" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--accent)">junta e ordena</text><text x="765" y="131" text-anchor="middle" font-size="10.5" opacity=".8">na hora</text>
+            <rect x="700" y="236" width="130" height="44" rx="8" style="fill:var(--surface)" stroke="currentColor" stroke-width="1.6"/>
+            <text x="765" y="263" text-anchor="middle" font-size="12" font-weight="600">você abre o app</text>
+          </g>
+          <line x1="640" y1="62" x2="698" y2="112" style="stroke:var(--accent)" stroke-width="1.6" marker-end="url(#m3a)"/>
+          <line x1="640" y1="118" x2="698" y2="118" style="stroke:var(--accent)" stroke-width="1.6" marker-end="url(#m3a)"/>
+          <line x1="640" y1="174" x2="698" y2="124" style="stroke:var(--accent)" stroke-width="1.6" marker-end="url(#m3a)"/>
+          <line x1="765" y1="236" x2="765" y2="142" stroke="currentColor" stroke-width="1.4" marker-end="url(#m3)"/>
+          <text x="773" y="196" font-size="10.5" fill="currentColor" opacity=".8">200 consultas</text>
+          <text x="500" y="300" font-size="11.5" fill="currentColor" opacity=".85">postar: 1 gravação · abrir o app: 1 consulta por conta seguida</text>
+        </svg>
+      </div>
+      <figcaption>As setas coloridas mostram onde o trabalho acontece. No push ele é feito uma vez, quando alguém posta. No pull ele se repete toda vez que alguém abre o app.</figcaption>
+    </figure>
+    <div class="texto">
+      <p>Como abrir o app é muito mais comum do que postar, o padrão é o <b>push</b>: cada pessoa tem uma <b>timeline</b> pronta, uma lista com os ids dos posts novos de quem ela segue, guardada em cache. O problema são as contas gigantes: um post de quem tem 50 milhões de seguidores viraria 50 milhões de gravações. Por isso os apps grandes usam o <b>híbrido</b>: contas normais fazem push e as muito grandes ficam fora do fan-out. Os posts delas são buscados e misturados na hora da leitura.</p>
+      <h3>Depois de juntar, ordenar</h3>
+      <p>A timeline traz algumas centenas de candidatos, incluindo os que chegaram por repost. Cada um recebe uma nota e o feed mostra os maiores primeiro, em páginas de 10 a 20 posts (a próxima página só é buscada quando você rola). Nos apps grandes a nota vem de um modelo de machine learning que prevê a chance de você curtir, comentar ou passar direto. Na demo ela é uma conta que dá para ler:</p>
+      <p class="mono" style="background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px">nota = afinidade × interesse × engajamento × frescor</p>
+      <ul>
+        <li><b>Afinidade</b>: o quanto você interage com quem postou (seguir é a base; curtir, comentar e votar somam).</li>
+        <li><b>Interesse</b>: o quanto você reage aos temas do post.</li>
+        <li><b>Engajamento</b>: o quanto o post está indo bem com todo mundo, em escala logarítmica para mil e um milhão não ficarem a mil vezes de distância.</li>
+        <li><b>Frescor</b>: cai pela metade a cada 12 horas.</li>
+      </ul>
+      <p>A ordem não muda enquanto você rola. Ela é recalculada quando você volta para o topo ou abre o app de novo, senão o post que você estava lendo pularia de lugar.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────── INTERAÇÕES ─────────────── -->
+  <section id="interacoes">
+    <div class="rotulo">Curtida, comentário, repost</div>
+    <h2>Um toque, vários trabalhos</h2>
+    <div class="texto">
+      <p>O jeito ingênuo de contar curtidas é somar 1 numa coluna do post a cada toque. Num post bombando, com milhares de curtidas por segundo, todo mundo tentaria mudar a <b>mesma linha</b> do banco ao mesmo tempo, e a fila de espera travaria o resto. Por isso a curtida faz só uma coisa na hora e deixa o resto para a fila.</p>
+    </div>
+    <figure>
+      <div class="quadro">
+        <svg viewBox="0 0 960 268" role="img" aria-label="Caminho de uma curtida: o toque chega ao serviço de interações, que grava a linha única e publica um evento; três consumidores tratam contador, notificação e ranking.">
+          <defs>
+            <marker id="m4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+            <marker id="m4a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--accent)"/></marker>
+          </defs>
+          <g fill="currentColor">
+            <rect x="20" y="120" width="120" height="48" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-width="1.6"/>
+            <text x="80" y="140" text-anchor="middle" font-size="13" font-weight="700">toque duplo</text><text x="80" y="157" text-anchor="middle" font-size="10.5" opacity=".7">no app</text>
+            <rect x="180" y="120" width="140" height="48" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="250" y="140" text-anchor="middle" font-size="13" font-weight="600">Interações</text><text x="250" y="157" text-anchor="middle" font-size="10.5" opacity=".7">responde em ms</text>
+            <rect x="370" y="36" width="180" height="48" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="460" y="56" text-anchor="middle" font-size="13" font-weight="600">tabela curtidas</text><text x="460" y="73" text-anchor="middle" font-size="10.5" opacity=".7">(post, usuário) é única</text>
+            <rect x="370" y="120" width="180" height="48" rx="10" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="1.6"/>
+            <text x="460" y="140" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--accent)">Fila</text><text x="460" y="157" text-anchor="middle" font-size="10.5" opacity=".8">evento "curtida"</text>
+            <rect x="600" y="36" width="170" height="48" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="685" y="56" text-anchor="middle" font-size="13" font-weight="600">Contador</text><text x="685" y="73" text-anchor="middle" font-size="10.5" opacity=".7">soma em lote a cada 1 s</text>
+            <rect x="600" y="120" width="170" height="48" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="685" y="140" text-anchor="middle" font-size="13" font-weight="600">Notificações</text><text x="685" y="157" text-anchor="middle" font-size="10.5" opacity=".7">"e outras 20 pessoas"</text>
+            <rect x="600" y="204" width="170" height="48" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="685" y="224" text-anchor="middle" font-size="13" font-weight="600">Ranking</text><text x="685" y="241" text-anchor="middle" font-size="10.5" opacity=".7">atualiza os sinais</text>
+            <rect x="810" y="36" width="130" height="48" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="875" y="56" text-anchor="middle" font-size="12.5" font-weight="600">cache</text><text x="875" y="73" text-anchor="middle" font-size="10.5" opacity=".7">número que você vê</text>
+            <rect x="810" y="120" width="130" height="48" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="875" y="140" text-anchor="middle" font-size="12.5" font-weight="600">push</text><text x="875" y="157" text-anchor="middle" font-size="10.5" opacity=".7">celular do autor</text>
+            <rect x="810" y="204" width="130" height="48" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="875" y="224" text-anchor="middle" font-size="12.5" font-weight="600">features</text><text x="875" y="241" text-anchor="middle" font-size="10.5" opacity=".7">próximo feed</text>
+          </g>
+          <line x1="140" y1="144" x2="178" y2="144" stroke="currentColor" stroke-width="1.4" marker-end="url(#m4)"/>
+          <path d="M250 120 V60 H368" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#m4)"/>
+          <text x="258" y="96" font-size="10.5" fill="currentColor" opacity=".8">grava</text>
+          <line x1="320" y1="144" x2="368" y2="144" style="stroke:var(--accent)" stroke-width="1.6" marker-end="url(#m4a)"/>
+          <text x="344" y="136" text-anchor="middle" font-size="10.5" style="fill:var(--accent)">publica</text>
+          <line x1="550" y1="144" x2="598" y2="66" style="stroke:var(--accent)" stroke-width="1.6" marker-end="url(#m4a)"/>
+          <line x1="550" y1="144" x2="598" y2="144" style="stroke:var(--accent)" stroke-width="1.6" marker-end="url(#m4a)"/>
+          <line x1="550" y1="144" x2="598" y2="222" style="stroke:var(--accent)" stroke-width="1.6" marker-end="url(#m4a)"/>
+          <line x1="770" y1="60" x2="808" y2="60" stroke="currentColor" stroke-width="1.4" marker-end="url(#m4)"/>
+          <line x1="770" y1="144" x2="808" y2="144" stroke="currentColor" stroke-width="1.4" marker-end="url(#m4)"/>
+          <line x1="770" y1="228" x2="808" y2="228" stroke="currentColor" stroke-width="1.4" marker-end="url(#m4)"/>
+        </svg>
+      </div>
+      <figcaption>Na hora do toque, só uma gravação. O contador, a notificação e o ranking vêm depois, cada um no seu ritmo, a partir do mesmo evento.</figcaption>
+    </figure>
+    <div class="duas">
+      <div>
+        <h3>Curtida</h3>
+        <p>A linha <code>(post, usuário)</code> tem chave única, então curtir duas vezes não conta duas. O número na tela vem do cache, somado em lote. Por isso ele às vezes "pula" de 28,4 mil para 28,6 mil: ele é <b>quase</b> exato, e tudo bem.</p>
+      </div>
+      <div>
+        <h3>Comentário</h3>
+        <p>Cada comentário guarda <code>resposta_de</code>, que aponta para o comentário pai e forma a thread. Antes de aparecer, passa por um filtro de spam e ofensa. A lista é ordenada: os seus primeiro, depois os de quem você segue e os mais curtidos.</p>
+      </div>
+      <div>
+        <h3>Repost</h3>
+        <p>O post não é copiado. Grava só <code>(você, post)</code> e dispara um fan-out para os <b>seus</b> seguidores. O feed deles evita repetição: se o mesmo post chega duas vezes, aparece uma vez com "fulano repostou". Repost é o sinal mais forte de que vale espalhar.</p>
+      </div>
+    </div>
+    <h3>Onde cada coisa mora</h3>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>Dado</th><th>Chave</th><th>Onde</th><th>Por quê</th></tr></thead>
+        <tbody>
+          <tr><td>usuários, posts</td><td class="mono">id</td><td>relacional</td><td>poucos por segundo, precisa de consistência</td></tr>
+          <tr><td>seguidores</td><td class="mono">(seguidor, seguido)</td><td>relacional + cache</td><td>lido em todo fan-out</td></tr>
+          <tr><td>timelines</td><td class="mono">usuário → ids de posts</td><td>cache (com cópia em wide-column)</td><td>lido a cada abertura do app</td></tr>
+          <tr><td>curtidas</td><td class="mono">(post, usuário)</td><td>wide-column</td><td>bilhões de linhas, escrita constante</td></tr>
+          <tr><td>contadores</td><td class="mono">post → números</td><td>cache, salvo em lote</td><td>evita a linha quente</td></tr>
+          <tr><td>comentários</td><td class="mono">(post, id), resposta_de</td><td>wide-column</td><td>lidos por post, em ordem</td></tr>
+          <tr><td>stories</td><td class="mono">(autor, id), expira_em</td><td>wide-column com validade</td><td>apagam sozinhos em 24 h</td></tr>
+          <tr><td>vistos de story</td><td class="mono">quem viu → ids</td><td>cache com validade de 24 h</td><td>decide a cor do anel</td></tr>
+          <tr><td>visualizações de reel</td><td class="mono">evento com tempo assistido</td><td>fila → base de análise</td><td>alimenta a recomendação</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─────────────── STORIES ─────────────── -->
+  <section id="stories">
+    <div class="rotulo">Stories</div>
+    <h2>Stories: tudo tem prazo</h2>
+    <div class="texto">
+      <p>O story é um post com validade. Ele é gravado com <code>expira_em = agora + 24 h</code> e o banco apaga a linha sozinho quando o prazo vence. A regra do armazenamento faz o mesmo com o arquivo, a menos que ele tenha sido salvo nos Destaques.</p>
+      <p>A <b>bandeja</b> no topo do app é montada para cada pessoa: quem tem story que você ainda não viu vem primeiro, em ordem de afinidade. O anel cinza vem de um conjunto <code>vistos(você)</code> no cache, com validade de 24 h. Quando todos os stories de alguém estão nele, o anel apaga. Ao abrir um story, o app já baixa o próximo para não ter espera.</p>
+    </div>
+    <figure>
+      <div class="quadro">
+        <svg viewBox="0 0 960 212" role="img" aria-label="Linha do tempo de um story de 24 horas: postado na hora zero, visto e votado nas primeiras horas, expira às 24 horas e só continua existindo se for para os Destaques.">
+          <defs>
+            <marker id="m5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+          </defs>
+          <rect x="60" y="96" width="760" height="14" rx="7" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="1.2"/>
+          <line x1="820" y1="103" x2="930" y2="103" stroke="currentColor" stroke-opacity=".5" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#m5)"/>
+          <text x="875" y="92" text-anchor="middle" font-size="11" fill="currentColor" opacity=".75">Destaques</text>
+          <text x="875" y="126" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".6">(se salvar)</text>
+          <g fill="currentColor" font-size="11" opacity=".75">
+            <line x1="60" y1="116" x2="60" y2="124" stroke="currentColor"/><text x="60" y="140" text-anchor="middle">0 h</text>
+            <line x1="250" y1="116" x2="250" y2="124" stroke="currentColor"/><text x="250" y="140" text-anchor="middle">6 h</text>
+            <line x1="440" y1="116" x2="440" y2="124" stroke="currentColor"/><text x="440" y="140" text-anchor="middle">12 h</text>
+            <line x1="630" y1="116" x2="630" y2="124" stroke="currentColor"/><text x="630" y="140" text-anchor="middle">18 h</text>
+            <line x1="820" y1="116" x2="820" y2="124" stroke="currentColor"/><text x="820" y="140" text-anchor="middle">24 h</text>
+          </g>
+          <g fill="currentColor">
+            <circle cx="60" cy="103" r="7" style="fill:var(--accent)"/>
+            <line x1="60" y1="94" x2="60" y2="62" stroke="currentColor" stroke-opacity=".4"/>
+            <text x="66" y="38" font-size="12" font-weight="600">posta</text><text x="66" y="54" font-size="10.5" opacity=".7">expira_em = +24 h</text>
+            <circle cx="123" cy="103" r="5" style="fill:var(--surface);stroke:var(--accent)" stroke-width="2"/>
+            <line x1="123" y1="110" x2="123" y2="160" stroke="currentColor" stroke-opacity=".4"/>
+            <text x="129" y="172" font-size="12" font-weight="600">você vê</text><text x="129" y="188" font-size="10.5" opacity=".7">entra em vistos(você) → anel cinza</text>
+            <circle cx="155" cy="103" r="5" style="fill:var(--surface);stroke:var(--accent)" stroke-width="2"/>
+            <line x1="155" y1="94" x2="200" y2="62" stroke="currentColor" stroke-opacity=".4"/>
+            <text x="204" y="38" font-size="12" font-weight="600">vota na enquete</text><text x="204" y="54" font-size="10.5" opacity=".7">um voto por pessoa, total no cache</text>
+            <circle cx="820" cy="103" r="7" fill="currentColor"/>
+            <line x1="820" y1="94" x2="760" y2="62" stroke="currentColor" stroke-opacity=".4"/>
+            <text x="560" y="38" font-size="12" font-weight="600">expira</text><text x="560" y="54" font-size="10.5" opacity=".7">some da bandeja, linha e arquivo apagados</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption>A maior parte da atividade acontece nas primeiras horas. Às 24 h o banco e o armazenamento apagam o story sozinhos, sem nenhum serviço precisar lembrar.</figcaption>
+    </figure>
+    <div class="texto">
+      <p>Quem postou vê a lista "visto por", que é a mesma gravação lida pelo outro lado. Responder a um story vira uma mensagem direta. Votar na enquete, mandar reação ou responder conta como interação e aumenta a afinidade, e é por isso que os stories de quem você responde aparecem primeiro na bandeja.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────── REELS ─────────────── -->
+  <section id="reels">
+    <div class="rotulo">Reels</div>
+    <h2>Reels: recomendação, não seguidores</h2>
+    <div class="texto">
+      <p>O feed mostra principalmente quem você segue. Os Reels mostram principalmente o que o sistema <b>acha</b> que vai prender você, venha de quem vier. O problema vira busca: achar 10 vídeos bons entre bilhões em poucas dezenas de milissegundos. A resposta é um funil.</p>
+    </div>
+    <figure>
+      <div class="quadro">
+        <svg viewBox="0 0 960 300" role="img" aria-label="Funil dos Reels: de bilhões de vídeos para cerca de 2 mil candidatos, 500 pontuados pelo modelo e 10 escolhidos com diversidade; o tempo assistido volta como sinal.">
+          <defs>
+            <marker id="m6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+            <marker id="m6a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--accent)"/></marker>
+          </defs>
+          <g fill="currentColor">
+            <rect x="20" y="70" width="170" height="150" rx="12" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="105" y="136" text-anchor="middle" font-size="13" font-weight="700">Acervo</text><text x="105" y="156" text-anchor="middle" font-size="11" opacity=".7">bilhões de vídeos</text>
+            <rect x="240" y="92" width="170" height="106" rx="12" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="325" y="138" text-anchor="middle" font-size="13" font-weight="700">Candidatos</text><text x="325" y="158" text-anchor="middle" font-size="11" opacity=".7">~2 mil</text>
+            <rect x="460" y="110" width="170" height="70" rx="12" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="1.6"/>
+            <text x="545" y="140" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--accent)">Ranking</text><text x="545" y="158" text-anchor="middle" font-size="11" opacity=".8">~500 pontuados</text>
+            <rect x="680" y="122" width="150" height="46" rx="12" style="fill:var(--surface)" stroke="currentColor" stroke-opacity=".6"/>
+            <text x="755" y="142" text-anchor="middle" font-size="13" font-weight="700">Re-ranking</text><text x="755" y="158" text-anchor="middle" font-size="11" opacity=".7">10 próximos</text>
+            <rect x="868" y="122" width="72" height="46" rx="10" style="fill:var(--surface)" stroke="currentColor" stroke-width="1.6"/>
+            <text x="904" y="150" text-anchor="middle" font-size="12.5" font-weight="700">App</text>
+          </g>
+          <line x1="190" y1="145" x2="238" y2="145" stroke="currentColor" stroke-width="1.4" marker-end="url(#m6)"/>
+          <line x1="410" y1="145" x2="458" y2="145" stroke="currentColor" stroke-width="1.4" marker-end="url(#m6)"/>
+          <line x1="630" y1="145" x2="678" y2="145" stroke="currentColor" stroke-width="1.4" marker-end="url(#m6)"/>
+          <line x1="830" y1="145" x2="866" y2="145" stroke="currentColor" stroke-width="1.4" marker-end="url(#m6)"/>
+          <g fill="currentColor" font-size="10.5" opacity=".75">
+            <text x="325" y="232" text-anchor="middle">de quem você segue,</text>
+            <text x="325" y="246" text-anchor="middle">parecidos com o que viu até o fim,</text>
+            <text x="325" y="260" text-anchor="middle">em alta perto de você</text>
+            <text x="545" y="212" text-anchor="middle">modelo prevê: assistir até o fim,</text>
+            <text x="545" y="226" text-anchor="middle">curtir, compartilhar, pular</text>
+            <text x="755" y="200" text-anchor="middle">nada de 3 do mesmo autor</text>
+            <text x="755" y="214" text-anchor="middle">seguidos; mistura novidade</text>
+          </g>
+          <path d="M904 122 V30 H545 V108" fill="none" style="stroke:var(--accent)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#m6a)"/>
+          <text x="724" y="22" text-anchor="middle" font-size="11.5" font-weight="600" style="fill:var(--accent)">tempo assistido volta como sinal em segundos</text>
+        </svg>
+      </div>
+      <figcaption>Cada etapa é mais cara e olha menos vídeos que a anterior. A seta de volta é o que faz os Reels "aprenderem" você em poucos minutos de uso.</figcaption>
+    </figure>
+    <div class="texto">
+      <ul>
+        <li><b>Candidatos</b>: cada vídeo e cada pessoa viram um vetor de números, o "gosto" numa forma comparável. Achar vídeos perto do seu vetor é uma busca por vizinhos próximos, que devolve milhares em milissegundos.</li>
+        <li><b>Ranking</b>: um modelo maior pontua cada candidato. O sinal mais forte não é a curtida, é o <b>tempo assistido</b>: ver até o fim, ver duas vezes, pular nos primeiros 2 segundos.</li>
+        <li><b>Re-ranking</b>: regras de bom senso por cima da nota, como diversidade de autores e temas e espaço para vídeos novos serem testados.</li>
+        <li><b>Entrega</b>: o vídeo é cortado em pedaços e o app já baixa o começo dos 2 ou 3 próximos. É por isso que o próximo reel começa sem carregar.</li>
+        <li><b>Sinal</b>: enquanto você assiste, o app manda eventos com o tempo visto a cada poucos segundos. Eles chegam ao armazenamento de sinais quase em tempo real e mudam o próximo lote.</li>
+      </ul>
+      <p>Um reel novo é mostrado primeiro para um grupo pequeno. Se esse grupo assiste até o fim e reage, ele é testado com um grupo maior, e assim por diante. É isso que faz um vídeo de alguém com poucos seguidores "bombar", como o do Rafa na demo.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────── NÚMEROS ─────────────── -->
+  <section id="numeros">
+    <div class="rotulo">Conta de guardanapo</div>
+    <h2>Números de exemplo</h2>
+    <div class="texto">
+      <p>Números <b>hipotéticos</b>, para ter noção de escala. Não são dados de nenhum app real. A conta parte de um app médio com 100 milhões de pessoas ativas por dia.</p>
+    </div>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>O quê</th><th>Suposição</th><th>Resultado</th></tr></thead>
+        <tbody>
+          <tr><td>Abrir o feed</td><td>100 mi pessoas × 10 vezes por dia</td><td class="num">≈ 11,6 mil/s (pico ≈ 35 mil/s)</td></tr>
+          <tr><td>Curtidas</td><td>100 mi × 20 por dia</td><td class="num">≈ 23 mil/s</td></tr>
+          <tr><td>Posts novos</td><td>10 mi por dia</td><td class="num">≈ 116/s</td></tr>
+          <tr><td>Fan-out</td><td>10 mi posts × 200 seguidores em média</td><td class="num">≈ 23 mil gravações/s</td></tr>
+          <tr><td>Mídia de posts</td><td>10 mi × 2 MB (3 tamanhos)</td><td class="num">≈ 20 TB/dia</td></tr>
+          <tr><td>Stories</td><td>50 mi × 1,5 MB, apagados em 24 h</td><td class="num">≈ 75 TB vivos</td></tr>
+          <tr><td>Reels</td><td>2 mi × 30 MB (várias qualidades)</td><td class="num">≈ 60 TB/dia</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="texto">
+      <p>Abrir o feed acontece 100 vezes mais que postar. É essa diferença que justifica o fan-out na escrita, as timelines prontas no cache e a CDN.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────── DEMO ─────────────── -->
+  <section id="demo">
+    <div class="rotulo">Ligação com o app</div>
+    <h2>O que a demo simula</h2>
+    <div class="texto">
+      <p>Na demo tudo roda no navegador, mas cada passo que o Raio-X mostra corresponde a uma peça deste desenho.</p>
+    </div>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>No Raio-X</th><th>No sistema de verdade</th></tr></thead>
+        <tbody>
+          <tr><td>grava (você, post) na tabela curtidas</td><td>serviço de Interações, banco wide-column com chave única</td></tr>
+          <tr><td>contador 8.420 → 8.421</td><td>consumidor da fila soma em lote no cache</td></tr>
+          <tr><td>notificação para @duda</td><td>serviço de Notificações agrupa e manda push</td></tr>
+          <tr><td>sinal: #roadtrip +1, afinidade +1</td><td>armazenamento de sinais lido pelo ranking</td></tr>
+          <tr><td>"rafa.na.estrada repostou"</td><td>fan-out do repost para os seguidores do Rafa, sem repetir no feed</td></tr>
+          <tr><td>nota = afinidade × interesse × engajamento × frescor</td><td>modelo de ranking sobre centenas de candidatos da timeline</td></tr>
+          <tr><td>feed recalculado</td><td>nova leitura da timeline e nova ordenação</td></tr>
+          <tr><td>fan-out para 312 seguidores</td><td>worker de fan-out gravando nas timelines</td></tr>
+          <tr><td>story visto, anel cinza</td><td>conjunto vistos(você) no cache, válido por 24 h</td></tr>
+          <tr><td>voto na enquete</td><td>um voto por pessoa e total somado no cache</td></tr>
+          <tr><td>assistiu 5,2 s (65%)</td><td>evento de visualização na fila, sinal mais forte dos Reels</td></tr>
+          <tr><td>reel bombando</td><td>engajamento rápido faz o vídeo ser testado com mais gente</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Ordem sugerida para o vídeo</h3>
+    <ol class="roteiro">
+      <li><div><b>O mapa</b>Mídia vem da CDN, o resto passa pela API, e os serviços conversam por eventos.</div></li>
+      <li><div><b>Postar</b>O arquivo vai direto para o armazenamento, é convertido e só então o post é publicado.</div></li>
+      <li><div><b>O feed</b>Push contra pull, o híbrido para contas gigantes e a nota de cada post.</div></li>
+      <li><div><b>Uma curtida</b>Uma gravação na hora; contador, notificação e ranking pela fila.</div></li>
+      <li><div><b>Stories</b>Validade de 24 h, bandeja por afinidade e o conjunto de vistos que pinta o anel de cinza.</div></li>
+      <li><div><b>Reels</b>O funil de recomendação e o tempo assistido como sinal principal. Termina no app com o reel do Rafa bombando.</div></li>
+    </ol>
+  </section>
+
+  <footer>Flagra é um app de demonstração. Os números desta página são hipotéticos e servem só para dar noção de escala.</footer>
+</main>
