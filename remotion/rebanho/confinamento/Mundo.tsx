@@ -125,7 +125,7 @@ const Fabrica: React.FC = () => (
   </g>
 );
 
-const Bebedouro: React.FC<{ t: number }> = ({ t }) => (
+export const Bebedouro: React.FC<{ t: number }> = ({ t }) => (
   <g>
     <ellipse cx={0} cy={2} rx={130} ry={16} fill="#2B1D10" opacity={0.25} />
     <path d="M -110,-58 L 110,-58 L 98,0 L -98,0 Z" fill={CONCRETO} />

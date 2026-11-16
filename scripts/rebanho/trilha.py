@@ -2,7 +2,7 @@
 
 Violão dedilhado (Karplus-Strong), ambiente de roça (vento e passarinhos) e efeitos curtos:
 casco, porteira, clique da câmera, bipe da contagem, giro, plim do peso e carimbo.
-Uso: python3 scripts/rebanho/trilha.py [pesagem|confinamento]   →  public/rebanho/<video>/sons/
+Uso: python3 scripts/rebanho/trilha.py [pesagem|confinamento|comum]   →  public/rebanho/<video>/sons/
 Os efeitos curtos ficam só em pesagem/sons e servem aos dois vídeos.
 """
 import subprocess
@@ -13,7 +13,8 @@ import numpy as np
 
 SR = 44100
 VIDEO = sys.argv[1] if len(sys.argv) > 1 else "pesagem"
-DUR = {"pesagem": 27.0, "confinamento": 51.0}[VIDEO]
+# "comum": trilha longa dos Reels explicativos, cortada no fim de cada vídeo
+DUR = {"pesagem": 27.0, "confinamento": 51.0, "comum": 100.0}[VIDEO]
 SAIDA = Path(__file__).resolve().parents[2] / f"public/rebanho/{VIDEO}/sons"
 rng = np.random.default_rng(12)
 

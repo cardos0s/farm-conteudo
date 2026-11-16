@@ -12,6 +12,14 @@ import { ReelPesagem } from "./rebanho/pesagem/Reel";
 import { FPS as FPS_PESAGEM, TOTAL_QUADROS as TOTAL_PESAGEM } from "./rebanho/pesagem/roteiro";
 import { ReelConfinamento } from "./rebanho/confinamento/Reel";
 import { FPS as FPS_CONF, TOTAL_QUADROS as TOTAL_CONF } from "./rebanho/confinamento/roteiro";
+import { ReelRotacionado } from "./rebanho/rotacionado/Reel";
+import { R as R_ROT } from "./rebanho/rotacionado/roteiro";
+import { ReelArroba } from "./rebanho/arroba/Reel";
+import { R as R_ARR } from "./rebanho/arroba/roteiro";
+import { ReelFases } from "./rebanho/fases/Reel";
+import { R as R_FAS } from "./rebanho/fases/roteiro";
+import { ReelSeca } from "./rebanho/seca/Reel";
+import { R as R_SEC } from "./rebanho/seca/roteiro";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
 
@@ -67,5 +75,9 @@ export const Root: React.FC = () => (
       fps={FPS_CONF}
       durationInFrames={TOTAL_CONF}
     />
+    <Composition id="ReelRotacionado" component={ReelRotacionado} width={1080} height={1920} fps={30} durationInFrames={R_ROT.quadros} />
+    <Composition id="ReelArroba" component={ReelArroba} width={1080} height={1920} fps={30} durationInFrames={R_ARR.quadros} />
+    <Composition id="ReelFases" component={ReelFases} width={1080} height={1920} fps={30} durationInFrames={R_FAS.quadros} />
+    <Composition id="ReelSeca" component={ReelSeca} width={1080} height={1920} fps={30} durationInFrames={R_SEC.quadros} />
   </>
 );

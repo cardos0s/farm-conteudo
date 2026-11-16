@@ -16,7 +16,8 @@
     "test": "vitest run",
     "render:aula": "tsx src/cli/render-aula.ts",
     "render:pesagem": "tsx src/cli/render-rebanho.ts pesagem",
-    "render:confinamento": "tsx src/cli/render-rebanho.ts confinamento"
+    "render:confinamento": "tsx src/cli/render-rebanho.ts confinamento",
+    "render:rebanho": "tsx src/cli/render-rebanho.ts"
   },
   "engines": {
     "node": ">=20"

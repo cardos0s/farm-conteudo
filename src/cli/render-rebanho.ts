@@ -11,6 +11,10 @@ import { renderMedia, selectComposition } from "@remotion/renderer";
 const REELS: Record<string, { id: string; arquivo: string }> = {
   pesagem: { id: "ReelPesagem", arquivo: "reel-pesagem-sem-balanca.mp4" },
   confinamento: { id: "ReelConfinamento", arquivo: "reel-confinamento-por-dentro.mp4" },
+  rotacionado: { id: "ReelRotacionado", arquivo: "reel-pasto-rotacionado.mp4" },
+  arroba: { id: "ReelArroba", arquivo: "reel-do-peso-vivo-a-arroba.mp4" },
+  fases: { id: "ReelFases", arquivo: "reel-cria-recria-engorda.mp4" },
+  seca: { id: "ReelSeca", arquivo: "reel-suplementacao-na-seca.mp4" },
 };
 const nome = process.argv[2] ?? "pesagem";
 const reel = REELS[nome];
