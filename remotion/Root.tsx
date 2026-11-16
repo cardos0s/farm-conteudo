@@ -8,6 +8,8 @@ import { AulaRecursividade } from "./aulas/recursividade/Aula";
 import { FPS as FPS_AULA2, TOTAL_QUADROS as TOTAL_AULA2 } from "./aulas/recursividade/roteiro";
 import { ReelAgentes } from "./aulas/agentes/Reel";
 import { FPS as FPS_AGENTES, TOTAL_QUADROS as TOTAL_AGENTES } from "./aulas/agentes/roteiro";
+import { ReelSystemDesign } from "./aulas/systemdesign/Reel";
+import { FPS as FPS_SD, TOTAL_QUADROS as TOTAL_SD } from "./aulas/systemdesign/roteiro";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
 
@@ -47,5 +49,6 @@ export const Root: React.FC = () => (
       fps={FPS_AGENTES}
       durationInFrames={TOTAL_AGENTES}
     />
+    <Composition id="ReelSystemDesign" component={ReelSystemDesign} width={1080} height={1920} fps={FPS_SD} durationInFrames={TOTAL_SD} />
   </>
 );

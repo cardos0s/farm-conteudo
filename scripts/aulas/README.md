@@ -6,6 +6,7 @@ Pipeline usado nos vídeos de **Algoritmos e Estruturas de Dados**:
 |---|---|---|
 | 1 · Complexidade de algoritmos | `complexidade/` | `AulaComplexidade` |
 | 2 · Recursividade e complexidade | `recursividade/` | `AulaRecursividade` |
+| Reel · System design do feed (Flagra) | `systemdesign/` | `ReelSystemDesign` (1080x1920, sem câmera; tempos em `roteiro.ts`) |
 
 Os vídeos brutos e os renders não vão para o git: ficam numa pasta de trabalho fora do repositório e em `saida/`.
 O passo a passo abaixo usa a aula 1 como exemplo; para outra aula, troque `complexidade` pelo nome da pasta.
