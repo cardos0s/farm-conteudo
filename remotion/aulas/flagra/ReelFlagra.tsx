@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, getStaticFiles, OffthreadVideo, Sequence, staticFile } from "remotion";
+import { AbsoluteFill, Audio, getStaticFiles, OffthreadVideo, Sequence, staticFile } from "remotion";
 import "../../lousa/fontes";
 import { Ret } from "../../lousa/Esboco";
 import { FONTE_LOUSA } from "../../lousa/fontes";
@@ -10,6 +10,7 @@ import { useT } from "../../lousa/tempo";
 import { Coracao } from "../systemdesign/cenas/Comeco";
 import { ReelSystemDesign } from "../systemdesign/Reel";
 import { T as T_SD, TELA } from "../systemdesign/roteiro";
+import { FALAS } from "./narracao";
 
 // Reel completo do Flagra (1080x1920): trecho do trailer com a pergunta, o system design no canvas
 // e a demo do app gravada da tela, com um fecho.
@@ -148,9 +149,24 @@ function Fecho() {
   );
 }
 
+/** Falas geradas pela ElevenLabs (scripts/flagra/narrar.mjs); as que ainda não existem ficam de fora. */
+function Narracao() {
+  const arquivos = new Set(getStaticFiles().map((f) => f.name));
+  return (
+    <>
+      {FALAS.filter((f) => arquivos.has(`flagra/narracao/${f.id}.mp3`)).map((f) => (
+        <Sequence key={f.id} from={s(f.em)} layout="none">
+          <Audio src={staticFile(`flagra/narracao/${f.id}.mp3`)} />
+        </Sequence>
+      ))}
+    </>
+  );
+}
+
 export function ReelFlagra() {
   return (
     <AbsoluteFill style={{ background: "#fdfdfc" }}>
+      <Narracao />
       <Sequence from={s(INICIO.trailer)} durationInFrames={s(PARTES.trailer)}>
         <Trailer />
       </Sequence>

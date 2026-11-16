@@ -14,3 +14,23 @@ cd saida/quadros-demo && ffmpeg -f concat -safe 0 -i lista.txt -vf "scale=780:16
 
    Se a duração mudar, atualize `PARTES.app` em `remotion/aulas/flagra/ReelFlagra.tsx`.
 3. **Explicação**: os inícios de cada parte ficam em `remotion/aulas/systemdesign/roteiro.ts`.
+
+## Narração (ElevenLabs)
+
+O texto de cada fala e o segundo em que ela entra ficam em `remotion/aulas/flagra/narracao.ts`.
+
+1. No `.env` da raiz: `ELEVENLABS_API_KEY` e `ELEVENLABS_VOICE_ID` (Voices → a voz → Copy voice ID).
+2. Gere as falas (só refaz as que mudaram):
+
+```bash
+node scripts/flagra/narrar.mjs
+```
+
+   No fim aparece uma tabela com a duração de cada fala e um aviso onde ela invade a próxima. Encurte o texto ou mude o `em` dela e rode de novo.
+3. Renderize: as falas que existirem em `public/flagra/narracao/` entram sozinhas.
+
+```bash
+npx remotion render remotion/index.ts ReelFlagra saida/reel-flagra.mp4
+```
+
+Os áudios ficam fora do git.
