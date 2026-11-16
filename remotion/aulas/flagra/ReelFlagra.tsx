@@ -23,7 +23,7 @@ const s = (seg: number) => Math.round(seg * FPS);
 export const PARTES = {
   trailer: 6,
   explicacao: T_SD.fim, // a explicação até a visão geral (o fecho próprio dela fica de fora)
-  app: 58.3, // duração de public/flagra/demo.mp4 (gerado por scripts/flagra/gravar-demo.cjs)
+  app: 58.4, // duração de public/flagra/demo.mp4 (gerado por scripts/flagra/gravar-demo.cjs)
   fecho: 5,
 };
 

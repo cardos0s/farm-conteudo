@@ -27,13 +27,6 @@
     "licenca_url": "https://creativecommons.org/licenses/by-sa/2.0/",
     "fonte": "https://www.flickr.com/photos/72362382@N04/8220934131"
   },
-  "capivara": {
-    "titulo": "Capybara",
-    "autor": "lorentey",
-    "licenca": "CC BY 2.0",
-    "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
-    "fonte": "https://www.flickr.com/photos/25246181@N00/5592629831"
-  },
   "iguana": {
     "titulo": "Iguana Tree - Restaurante Las Iguanas - Costa Rica",
     "autor": "David Berkowitz",
@@ -62,20 +55,6 @@
     "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
     "fonte": "https://www.flickr.com/photos/25726561@N06/5714014019"
   },
-  "motel": {
-    "titulo": "Fantasy Inn Motel Hialeah TV and Air Conditioned!",
-    "autor": "Phillip Pessar",
-    "licenca": "CC BY 2.0",
-    "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
-    "fonte": "https://www.flickr.com/photos/25955895@N03/6737897611"
-  },
-  "por-do-sol": {
-    "titulo": "Miami Beach Sunset 6",
-    "autor": "Ryan J. Quick",
-    "licenca": "CC BY 2.0",
-    "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
-    "fonte": "https://www.flickr.com/photos/79837063@N00/6023504391"
-  },
   "peixe-boi-2": {
     "titulo": "Endangered Florida manatee (Trichechus manatus), Crystal River National Wildlife Refuge, Florida",
     "autor": "USFWS Endangered Species",
@@ -89,13 +68,6 @@
     "licenca": "CC BY 2.0",
     "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
     "fonte": "https://www.flickr.com/photos/23206546@N04/20174325293"
-  },
-  "motel-neon": {
-    "titulo": "Motel Sign",
-    "autor": "Phillip Pessar",
-    "licenca": "CC BY 2.0",
-    "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
-    "fonte": "https://www.flickr.com/photos/25955895@N03/6596179911"
   },
   "galo-rua": {
     "titulo": "Why did the chicken cross the road?",
@@ -159,5 +131,96 @@
     "licenca": "CC BY 2.0",
     "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
     "fonte": "https://www.flickr.com/photos/24431382@N03/5714162990"
+  },
+  "neon-colony": {
+    "titulo": "Ocean Drive.",
+    "autor": "Tiomax80",
+    "licenca": "CC BY 2.0",
+    "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
+    "fonte": "https://www.flickr.com/photos/69062568@N02/8315552344"
+  },
+  "neon-placa": {
+    "titulo": "Ocean Drive Neon - Breakwater Hotel",
+    "autor": "mattk1979",
+    "licenca": "CC BY-SA 2.0",
+    "licenca_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "fonte": "https://www.flickr.com/photos/24879135@N04/5916876752"
+  },
+  "neon-laranja": {
+    "titulo": "Ocean Drive Neon - Hotel Victor",
+    "autor": "mattk1979",
+    "licenca": "CC BY-SA 2.0",
+    "licenca_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "fonte": "https://www.flickr.com/photos/24879135@N04/5916315155"
+  },
+  "neon-rua": {
+    "titulo": "Miami Ocean Drive Night",
+    "autor": "patrickcam",
+    "licenca": "CC BY 2.0",
+    "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
+    "fonte": "https://www.flickr.com/photos/89011323@N03/8127624633"
+  },
+  "rafa-esportivo": {
+    "titulo": "The New Edition.",
+    "autor": "Ricky Flores",
+    "licenca": "CC BY 2.0",
+    "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
+    "fonte": "https://www.flickr.com/photos/8985668@N03/23298028742"
+  },
+  "lancha": {
+    "titulo": "Miami",
+    "autor": "James Willamor",
+    "licenca": "CC BY-SA 2.0",
+    "licenca_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "fonte": "https://www.flickr.com/photos/81464596@N00/3523787977"
+  },
+  "aerobarco": {
+    "titulo": "Corps' Chief of Engineers Visits Everglades June 2010",
+    "autor": "JaxStrong",
+    "licenca": "CC BY 2.0",
+    "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
+    "fonte": "https://www.flickr.com/photos/40175145@N02/4708554649"
+  },
+  "salva-vidas": {
+    "titulo": "Lifeguard Station South Beach",
+    "autor": "Phillip Pessar",
+    "licenca": "CC BY 2.0",
+    "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
+    "fonte": "https://www.flickr.com/photos/25955895@N03/9224329097"
+  },
+  "viatura-rosa": {
+    "titulo": "City Of Miami Beach Pink Police Car",
+    "autor": "Phillip Pessar",
+    "licenca": "CC BY 2.0",
+    "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
+    "fonte": "https://www.flickr.com/photos/25955895@N03/8271073626"
+  },
+  "viatura": {
+    "titulo": "as seen on James Bond Movie",
+    "autor": "Prayitno / Thank you for (12 millions +) view",
+    "licenca": "CC BY 2.0",
+    "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
+    "fonte": "https://www.flickr.com/photos/34128007@N04/8722774370"
+  },
+  "ponte-noite": {
+    "titulo": "Night Bridge",
+    "autor": "CityscapeGUY",
+    "licenca": "CC BY 2.0",
+    "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
+    "fonte": "https://www.flickr.com/photos/117317408@N03/13444724095"
+  },
+  "skyline-sol": {
+    "titulo": "Miami Downtown",
+    "autor": "Piutus",
+    "licenca": "CC BY 2.0",
+    "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
+    "fonte": "https://www.flickr.com/photos/90673887@N00/29962401"
+  },
+  "skyline-cidade": {
+    "titulo": "warm blues | miami | florida.",
+    "autor": "alyssaBLACK.",
+    "licenca": "CC BY-SA 2.0",
+    "licenca_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "fonte": "https://www.flickr.com/photos/91997239@N08/24365966702"
   }
 }

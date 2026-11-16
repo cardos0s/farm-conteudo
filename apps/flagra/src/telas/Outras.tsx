@@ -151,7 +151,7 @@ export function Perfil({ id, onVoltar, onAbrir, onCriar }: { id: string; onVolta
                   </a>
                 </li>
               ))}
-              <li className="nota">Pessoas e histórias do app são fictícias. Fotos via Openverse/Flickr.</li>
+              <li className="nota">Pessoas e histórias do app são fictícias. Fotos via Openverse/Flickr, com cores ajustadas para o app (tom de fim de tarde) e recortes.</li>
             </ul>
           </section>
         </div>

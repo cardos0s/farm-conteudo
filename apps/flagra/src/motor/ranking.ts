@@ -6,7 +6,7 @@ import type { Post } from "./tipos";
 //   nota = afinidade × interesse × engajamento × frescor
 //
 // - afinidade: o quanto você interage com quem postou (seguir conta, curtir e comentar contam mais)
-// - interesse: o quanto você reage aos temas do post (jacaré, capivara, neon...)
+// - interesse: o quanto você reage aos temas do post (jacaré, neon, praia...)
 // - engajamento: o quanto o post está bombando com todo mundo (comentário e repost valem mais que curtida)
 // - frescor: post novo vale mais; a nota cai pela metade a cada 12 horas
 
