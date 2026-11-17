@@ -53,7 +53,7 @@ export const FALAS: Fala[] = [
   { id: "14-repost", em: app(17.7), texto: "Eu não sigo a Duda. Esse post chegou porque o Rafa repostou." },
   { id: "15-seguir", em: app(22.2), texto: "Agora eu sigo." },
   { id: "16-curtida", em: app(25.7), texto: "Curti: uma linha no banco, mais um no contador e uma notificação pra ela." },
-  { id: "17-comentarios", em: app(29.7), texto: "Nos comentários, os dois estão discutindo. E eu entro na conversa." },
+  { id: "17-comentarios", em: app(30.7), texto: "Nos comentários, os dois estão discutindo. E eu entro na conversa." },
   { id: "18-repostar", em: app(35.2), texto: "Reposto, e o post vai pro feed de quem me segue." },
   { id: "19-reels", em: app(38.7), texto: "Nos reels, o vídeo do Rafa está bombando. Olha a nota subindo." },
   { id: "20-feed", em: app(47.7), texto: "Com tudo isso, o ranking recalcula e a Duda vai pro topo do meu feed." },

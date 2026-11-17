@@ -34,3 +34,16 @@ npx remotion render remotion/index.ts ReelFlagra saida/reel-flagra.mp4
 ```
 
 Os áudios ficam fora do git.
+
+### Narração gravada de uma vez (um MP3 só)
+
+Se a narração vier num arquivo único com as 21 falas em sequência:
+
+```bash
+ffmpeg -i narracao.mp3 -ac 1 -ar 16000 -f f32le trabalho/narracao/gta_vi.f32
+ffmpeg -i narracao.mp3 -af loudnorm=I=-14:TP=-1.5:LRA=11 -ac 1 -ar 44100 trabalho/narracao/normalizado.wav
+python3 scripts/flagra/transcrever-narracao.py trabalho/narracao/gta_vi.f32 trabalho/narracao/palavras.json
+python3 scripts/flagra/cortar-narracao.py trabalho public/flagra/narracao
+```
+
+Confira na transcrição onde cada fala começa e atualize `inicios` em `cortar-narracao.py` antes de cortar.
