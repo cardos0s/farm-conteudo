@@ -4,14 +4,13 @@
 
 export type Fala = { id: string; em: number; texto: string };
 
-const EXPLICACAO = 6; // início da explicação no Reel
-const APP = 90.5; // início da demo do app no Reel
+const EXPLICACAO = 5.1; // início da explicação no Reel (logo depois da abertura gravada)
+const APP = 89.6; // início da demo do app no Reel
 const app = (s: number) => APP + s;
 const sd = (s: number) => EXPLICACAO + s;
 
 export const FALAS: Fala[] = [
-  // trailer
-  { id: "01-pergunta", em: 0.8, texto: "E se esse feed do GTA 6 fosse um app de verdade?" },
+  // a pergunta de abertura já vem falada no vídeo da abertura (public/flagra/trailer.mp4)
   // explicação (os segundos batem com remotion/aulas/systemdesign/roteiro.ts)
   { id: "02-abertura", em: sd(0.3), texto: "Eu construí um. E vou te mostrar o que acontece por trás de cada toque." },
   {
@@ -57,5 +56,5 @@ export const FALAS: Fala[] = [
   { id: "18-repostar", em: app(35.2), texto: "Reposto, e o post vai pro feed de quem me segue." },
   { id: "19-reels", em: app(38.7), texto: "Nos reels, o vídeo do Rafa está bombando. Olha a nota subindo." },
   { id: "20-feed", em: app(47.7), texto: "Com tudo isso, o ranking recalcula e a Duda vai pro topo do meu feed." },
-  { id: "21-fecho", em: 149.3, texto: "É isso que roda quando você curte." },
+  { id: "21-fecho", em: 148.4, texto: "É isso que roda quando você curte." },
 ];
