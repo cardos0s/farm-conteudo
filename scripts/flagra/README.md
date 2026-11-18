@@ -2,7 +2,7 @@
 
 Composição `ReelFlagra` (1080x1920): trecho do trailer com a pergunta → system design no canvas → demo do app → fecho.
 
-1. **Trailer**: coloque o seu trecho vertical em `public/flagra/trailer.mp4` (fica sem som no vídeo). Sem o arquivo, aparece um quadro indicando onde ele entra.
+1. **Abertura**: o seu vídeo vertical, do jeito que saiu do celular, em `public/flagra/trailer.mp4` (fora do git). Ele não é convertido nem filtrado.
 2. **Demo do app** (`public/flagra/demo.mp4`, já incluída). Para gravar de novo depois de mudar o app:
 
 ```bash
@@ -47,3 +47,11 @@ python3 scripts/flagra/cortar-narracao.py trabalho public/flagra/narracao
 ```
 
 Confira na transcrição onde cada fala começa e atualize `inicios` em `cortar-narracao.py` antes de cortar.
+
+## Vídeo final
+
+```bash
+node scripts/flagra/montar-final.mjs
+```
+
+Gera `saida/reel-flagra.mp4` no formato da abertura (HEVC 10 bits, BT.2020 HLG, 29,97 fps). A abertura entra sem filtro nenhum; o resto é renderizado pelo Remotion e convertido para HLG com o branco no nível da abertura, e o volume da narração desce para casar com o dela. Renderizar só pelo estúdio/`npx remotion render` gera um arquivo SDR em H.264, em que a abertura HDR perde cor.
