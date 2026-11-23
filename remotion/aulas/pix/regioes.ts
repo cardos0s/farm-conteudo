@@ -8,8 +8,8 @@ export const TELA: Tela = { w: 1080, h: 1920 };
 /** Retângulo da tela onde as regiões do canvas aparecem (acima da legenda). */
 export const ALVO: Pagina = { x: 0, y: 150, w: 1080, h: 1080 };
 
-/** Painel da legenda (à esquerda, longe dos botões do Reels, e acima do texto do post). */
-export const LEGENDA = { x: 40, y: 1262, w: 860, h: 322 };
+/** Painel da legenda: centralizado, acima do texto do post. */
+export const LEGENDA = { x: 110, y: 1262, w: 860, h: 322 };
 
 const regiao = (x: number, y: number): Pagina => ({ x, y, w: 1080, h: 1080 });
 

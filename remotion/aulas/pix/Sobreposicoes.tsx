@@ -25,7 +25,7 @@ function Frase({ texto, de, ate }: { texto: string; de: number; ate?: number }) 
   return (
     <g opacity={alfa}>
       {linhas.map((linha, li) => (
-        <text key={li} x={LEGENDA.x + 36} y={y0 + li * TAM * 1.3} fontFamily={FONTE_UI} fontWeight={700} fontSize={TAM} style={{ whiteSpace: "pre" }}>
+        <text key={li} x={LEGENDA.x + LEGENDA.w / 2} y={y0 + li * TAM * 1.3} textAnchor="middle" fontFamily={FONTE_UI} fontWeight={700} fontSize={TAM} style={{ whiteSpace: "pre" }}>
           {analisar(linha).flatMap((p, pi) =>
             p.txt.split(/(?<= )/).map((palavra, wi) => {
               const q = progresso(t, de + n++ * 0.045, 0.22);
