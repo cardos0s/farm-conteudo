@@ -134,6 +134,12 @@ npm run render:aula
 
 Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/complexidade/`. O passo a passo completo (baixar do Drive, converter o HDR do iPhone, transcrever, cortar, renderizar) está em `scripts/aulas/README.md`; os componentes da lousa ficam em `remotion/lousa/`.
 
+```bash
+npm run render:aula -- pix
+```
+
+Renderiza o Reel **Um Pix, 30 minutos** (1080×1920, 90 s) em `saida/aulas/pix/`. Não depende de gravação: a história e as quatro soluções (máquina de estados, reconciliação, observabilidade e contingência) acontecem no canvas e o texto do post entra como legenda. Sai sem áudio; a música entra no app na hora de postar. Os tempos e as frases ficam em `remotion/aulas/pix/roteiro.ts`.
+
 ## Estrutura
 
 ```

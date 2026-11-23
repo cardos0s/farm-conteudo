@@ -7,19 +7,21 @@ import { renderMedia, selectComposition } from "@remotion/renderer";
 
 // Renderiza uma aula (1920x1080) e junta com a voz já tratada.
 // Os vídeos 1440p dos clipes precisam estar em public/aulas/<aula>/ (ver scripts/aulas/README.md).
-// Uso: npm run render:aula -- [aula] [voz.wav] [saida.mp4]     (aula: complexidade | recursividade | agentes)
+// Uso: npm run render:aula -- [aula] [voz.wav] [saida.mp4]     (aula: complexidade | recursividade | agentes | pix)
+// O Reel do Pix não tem gravação nem voz: sai direto, sem áudio (a música entra no app na hora de postar).
 
-const AULAS: Record<string, { id: string; arquivo: string }> = {
+const AULAS: Record<string, { id: string; arquivo: string; mudo?: boolean }> = {
   complexidade: { id: "AulaComplexidade", arquivo: "aula-1-complexidade.mp4" },
   recursividade: { id: "AulaRecursividade", arquivo: "aula-2-recursividade.mp4" },
   agentes: { id: "ReelAgentes", arquivo: "reel-orquestracao-de-agentes.mp4" },
+  pix: { id: "ReelPix", arquivo: "reel-um-pix-30-minutos.mp4", mudo: true },
 };
 const nome = process.argv[2] ?? "complexidade";
 const aula = AULAS[nome];
 if (!aula) throw new Error(`Aula desconhecida: "${nome}". Opções: ${Object.keys(AULAS).join(", ")}`);
 const voz = process.argv[3] ?? `saida/aulas/${nome}/voz.wav`;
 const destino = process.argv[4] ?? `saida/aulas/${nome}/${aula.arquivo}`;
-const soVideo = destino.replace(/\.mp4$/, "-sem-audio.mp4");
+const soVideo = aula.mudo ? destino : destino.replace(/\.mp4$/, "-sem-audio.mp4");
 const navegador = process.env.REMOTION_CHROME || null;
 
 await mkdir(path.dirname(destino), { recursive: true });
@@ -55,6 +57,11 @@ await renderMedia({
     }
   },
 });
+
+if (aula.mudo) {
+  console.log(`ok: ${destino}`);
+  process.exit(0);
+}
 
 execFileSync(
   "ffmpeg",
