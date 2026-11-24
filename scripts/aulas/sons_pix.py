@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""Gera a trilha e os efeitos sonoros do Reel do Pix, sintetizados do zero (sem amostras de terceiros).
+"""Gera a música do Reel do Pix, sintetizada do zero (sem amostras de terceiros).
 
 Saída em public/aulas/pix/sons/ (fora do git):
   musica.wav  faixa original (lo-fi/eletrônica, 96 BPM) com a estrutura do vídeo:
               intro com pads (0–8 s), batida quando o canvas entra (8 s), tensão no problema,
               groove completo nas soluções, pausa com subida na "escala" e final resolvido.
-  *.wav       efeitos curtos (whoosh, impacto, rabisco, bipe, toque de pagamento, erro…),
-              posicionados no vídeo por remotion/aulas/pix/Sons.tsx.
+Os efeitos sonoros vêm do SFX Kit (CC0): ver scripts/aulas/baixar_sfx_pix.py.
 
 Uso: python3 scripts/aulas/sons_pix.py
 """
@@ -118,49 +117,7 @@ def estereo(x, pan=0.0):
     return np.stack([x * np.cos(a), x * np.sin(a)], axis=1)
 
 
-# ---------------------------------------------------------------- efeitos
-
-def whoosh(d=0.6, forte=1.0, subindo=True, pan=(-0.6, 0.6)):
-    n = int(d * SR)
-    x = ruido_varrido(d, 300 if subindo else 2500, 2500 if subindo else 300, 1500 if subindo else 9000, 9000 if subindo else 1500)
-    t = np.arange(n) / n
-    env = np.sin(np.pi * t) ** 1.6
-    x = x * env * forte
-    panv = np.linspace(pan[0], pan[1], n)
-    a = (panv + 1) * np.pi / 4
-    return np.stack([x * np.cos(a), x * np.sin(a)], axis=1)
-
-
-def impacto(grave=48, d=2.2):
-    t = tempo(d)
-    f = grave + 70 * np.exp(-t / 0.05)
-    corpo = np.sin(2 * np.pi * np.cumsum(f) / SR) * envelope(len(t), 0.003, 0.5)
-    ataque = filtro_fft(rng.standard_normal(len(t)), lo=80, hi=2500) * envelope(len(t), 0.001, 0.06) * 0.6
-    cauda = filtro_fft(rng.standard_normal(len(t)), lo=200, hi=4000) * envelope(len(t), 0.05, 0.6) * 0.08
-    return reverb(estereo(corpo + ataque + cauda), tamanho=2.0, queda=0.7, mistura=0.35)
-
-
-def brilho(d=1.2):
-    n = int(d * SR)
-    x = np.zeros(n)
-    for _ in range(14):
-        ini = int(rng.uniform(0, 0.55) * SR)
-        f = rng.uniform(2200, 6500)
-        k = tempo(rng.uniform(0.3, 0.6))
-        nota = np.sin(2 * np.pi * f * k) * np.exp(-k / 0.12) * rng.uniform(0.3, 1.0)
-        fim = min(n, ini + len(nota))
-        x[ini:fim] += nota[: fim - ini]
-    return reverb(estereo(x * np.linspace(1, 0.6, n)), tamanho=1.2, queda=0.35, mistura=0.5)
-
-
-def luz(d=0.9):
-    """Inchaço de ar (o vazamento de luz)."""
-    x = ruido_varrido(d, 600, 2000, 3000, 12000)
-    t = np.linspace(0, 1, len(x))
-    x *= np.sin(np.pi * t) ** 2
-    tom = sum(np.sin(2 * np.pi * hz(m) * tempo(d)) for m in (81, 88, 93)) * np.sin(np.pi * t) ** 3 * 0.08
-    return reverb(estereo(x + tom), tamanho=1.5, queda=0.5, mistura=0.4)
-
+# ---------------------------------------------------------------- efeito usado na música
 
 def subida(d=1.5):
     t = tempo(d)
@@ -169,101 +126,6 @@ def subida(d=1.5):
     f = 180 * (6 ** p)
     tom = np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.15 * p**2
     return estereo(fades(x + tom, 0.01, 0.03))
-
-
-def risco(variante=0, d=0.42):
-    """Lápis/caneta no papel: ruído agudo em traços curtos."""
-    r = np.random.default_rng(100 + variante)
-    n = int(d * SR)
-    x = filtro_fft(r.standard_normal(n), lo=1800, hi=7000)
-    env = np.zeros(n)
-    pos = 0.0
-    while pos < d - 0.05:
-        dur = r.uniform(0.05, 0.11)
-        a, b = int(pos * SR), int(min(d, pos + dur) * SR)
-        env[a:b] = np.sin(np.linspace(0, np.pi, b - a)) * r.uniform(0.6, 1.0)
-        pos += dur + r.uniform(0.0, 0.03)
-    return estereo(fades(x * env * 0.8), r.uniform(-0.3, 0.3))
-
-
-def pop(tom=1.0):
-    t = tempo(0.12)
-    f = 900 * tom * np.exp(-t / 0.03) + 380 * tom
-    x = np.sin(2 * np.pi * np.cumsum(f) / SR) * envelope(len(t), 0.001, 0.035)
-    clique = filtro_fft(rng.standard_normal(len(t)), lo=2000) * envelope(len(t), 0.0005, 0.004) * 0.3
-    return estereo(fades(x + clique))
-
-
-def teclas(d=0.6, variante=0):
-    r = np.random.default_rng(300 + variante)
-    n = int(d * SR)
-    x = np.zeros(n)
-    pos = 0.0
-    while pos < d - 0.03:
-        k = tempo(0.025)
-        f0 = r.uniform(1700, 2600)
-        c = (filtro_fft(r.standard_normal(len(k)), lo=1500, hi=9000) * 0.6 + np.sin(2 * np.pi * f0 * k) * 0.4) * np.exp(-k / 0.006)
-        a = int(pos * SR)
-        x[a : a + len(c)] += c[: max(0, min(len(c), n - a))] * r.uniform(0.5, 1.0)
-        pos += r.uniform(0.045, 0.09)
-    return estereo(x, r.uniform(-0.2, 0.2))
-
-
-def bipe(f=1320, d=0.09):
-    t = tempo(d)
-    return estereo(fades(np.sin(2 * np.pi * f * t) * 0.8 + np.sin(2 * np.pi * 2 * f * t) * 0.1, 0.003, 0.02))
-
-
-def desliga():
-    t = tempo(0.7)
-    f = 620 * np.exp(-t / 0.18) + 60
-    x = np.sin(2 * np.pi * np.cumsum(f) / SR) * envelope(len(t), 0.005, 0.25)
-    baque = np.sin(2 * np.pi * 70 * tempo(0.25)) * envelope(int(0.25 * SR), 0.002, 0.06)
-    x[: len(baque)] += baque * 0.8
-    return reverb(estereo(fades(x)), tamanho=0.8, queda=0.2, mistura=0.2)
-
-
-def sino(notas=(88, 95), d=1.4, separacao=0.11):
-    """Toque de "pago" (duas notas de sino, FM)."""
-    n = int(d * SR)
-    x = np.zeros(n)
-    for i, m in enumerate(notas):
-        f = hz(m)
-        k = tempo(d - i * separacao)
-        env = np.exp(-k / 0.45)
-        nota = np.sin(2 * np.pi * f * k + 1.6 * env * np.sin(2 * np.pi * f * 2.0 * k)) * env
-        a = int(i * separacao * SR)
-        x[a : a + len(nota)] += nota[: n - a]
-    return reverb(estereo(fades(x, 0.002, 0.05)), tamanho=1.2, queda=0.35, mistura=0.3)
-
-
-def erro():
-    x = np.zeros(int(0.42 * SR))
-    for i in range(2):
-        t = tempo(0.13)
-        onda = np.sign(np.sin(2 * np.pi * 155 * t)) * 0.5 + np.sin(2 * np.pi * 310 * t) * 0.3
-        nota = filtro_fft(onda, hi=1800) * envelope(len(t), 0.004, 0.08)
-        a = int(i * 0.17 * SR)
-        x[a : a + len(nota)] += nota
-    return estereo(fades(x))
-
-
-def tique_taque(d=2.6, intervalo=0.5):
-    x = np.zeros(int(d * SR))
-    for i in range(int(d / intervalo)):
-        k = tempo(0.03)
-        f = 3200 if i % 2 == 0 else 2300
-        c = (np.sin(2 * np.pi * f * k) * 0.6 + filtro_fft(rng.standard_normal(len(k)), lo=1500) * 0.4) * np.exp(-k / 0.005)
-        a = int(i * intervalo * SR)
-        x[a : a + len(c)] += c
-    return reverb(estereo(x), tamanho=0.5, queda=0.12, mistura=0.25)
-
-
-def nota_adesiva():
-    t = tempo(0.25)
-    papel = filtro_fft(rng.standard_normal(len(t)), lo=500, hi=5000) * envelope(len(t), 0.001, 0.025)
-    baque = np.sin(2 * np.pi * 110 * t) * envelope(len(t), 0.001, 0.05) * 0.7
-    return estereo(fades(papel + baque))
 
 
 # ---------------------------------------------------------------- música
@@ -449,32 +311,6 @@ def musica():
 
 def main():
     os.makedirs(DEST, exist_ok=True)
-    efeitos = {
-        "whoosh": whoosh(0.6),
-        "whoosh_curto": whoosh(0.35, pan=(0.5, -0.5)),
-        "whoosh_descendo": whoosh(0.7, subindo=False),
-        "impacto": impacto(),
-        "boom": impacto(grave=38, d=2.8),
-        "brilho": brilho(),
-        "luz": luz(),
-        "subida": subida(1.4),
-        "pop": pop(1.0),
-        "pop_agudo": pop(1.35),
-        "pop_grave": pop(0.75),
-        "teclas": teclas(0.6, 0),
-        "teclas_longo": teclas(1.0, 1),
-        "bipe": bipe(),
-        "desliga": desliga(),
-        "pago": sino(),
-        "pago_suave": sino((83, 88), d=1.0),
-        "erro": erro(),
-        "tique_taque": tique_taque(),
-        "nota": nota_adesiva(),
-    }
-    for i in range(4):
-        efeitos[f"risco{i}"] = risco(i)
-    for nome, sinal in efeitos.items():
-        salvar(nome, sinal, pico_db=-1.0)
     salvar("musica", musica(), pico_db=-1.0)
     print("ok:", DEST)
 

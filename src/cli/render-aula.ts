@@ -1,5 +1,5 @@
 import { execFileSync, spawnSync } from "node:child_process";
-import { mkdir } from "node:fs/promises";
+import { mkdir, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { bundle } from "@remotion/bundler";
@@ -22,7 +22,7 @@ const aula = AULAS[nome];
 if (!aula) throw new Error(`Aula desconhecida: "${nome}". Opções: ${Object.keys(AULAS).join(", ")}`);
 const voz = process.argv[3] ?? `saida/aulas/${nome}/voz.wav`;
 const destino = process.argv[4] ?? `saida/aulas/${nome}/${aula.arquivo}`;
-const soVideo = aula.audioProprio ? destino.replace(/\.mp4$/, "-bruto.mp4") : destino.replace(/\.mp4$/, "-sem-audio.mp4");
+const soVideo = destino.replace(/\.mp4$/, "-sem-audio.mp4");
 const navegador = process.env.REMOTION_CHROME || null;
 
 await mkdir(path.dirname(destino), { recursive: true });
@@ -41,10 +41,8 @@ await renderMedia({
   serveUrl,
   codec: "h264",
   outputLocation: soVideo,
-  // aulas: só o vídeo (a voz tratada entra depois); Reel do Pix: o áudio da própria composição
-  muted: !aula.audioProprio,
-  audioCodec: "aac",
-  audioBitrate: "192k",
+  // só o vídeo: a voz tratada (aulas) ou o áudio da composição (Reel do Pix) entra depois
+  muted: true,
   crf: 17,
   x264Preset: "medium",
   imageFormat: "jpeg",
@@ -63,16 +61,25 @@ await renderMedia({
 });
 
 if (aula.audioProprio) {
-  // Volume padrão dos Reels (~-14 LUFS): mede, aplica o ganho que falta e limita os picos.
-  // O limitador fica em 0,6 porque o AAC passa uns 1,5 dB do limite nos estalos dos efeitos.
-  const medida = spawnSync("ffmpeg", ["-hide_banner", "-i", soVideo, "-vn", "-af", "ebur128=framelog=quiet", "-f", "null", "-"], { encoding: "utf8" }).stderr;
+  // O áudio da composição sai à parte, em WAV (sem perdas), para o ganho ser aplicado antes da
+  // única compressão em AAC. Volume de Reels (-16 LUFS): mede, aplica o ganho que falta e limita só
+  // os excessos, para os golpes dos efeitos (boom, tambor) continuarem marcados.
+  const trilha = destino.replace(/\.mp4$/, "-trilha.wav");
+  await renderMedia({ composition, serveUrl, codec: "wav", outputLocation: trilha, browserExecutable: navegador });
+  const medida = spawnSync("ffmpeg", ["-hide_banner", "-i", trilha, "-af", "ebur128=framelog=quiet", "-f", "null", "-"], { encoding: "utf8" }).stderr;
   const integrada = Number(/\bI:\s+(-?[\d.]+) LUFS/.exec(medida)?.[1] ?? "-16");
-  const ganho = (-14 - integrada + 0.5).toFixed(2);
+  const ganho = (-16 - integrada + 0.3).toFixed(2);
   execFileSync(
     "ffmpeg",
-    ["-v", "error", "-y", "-i", soVideo, "-c:v", "copy", "-af", `aresample=48000,volume=${ganho}dB,alimiter=limit=0.6:attack=3:release=60:level=false`, "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", destino],
+    [
+      "-v", "error", "-y", "-i", soVideo, "-i", trilha, "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy",
+      "-af", `aresample=48000,volume=${ganho}dB,alimiter=limit=0.75:attack=3:release=60:level=false`,
+      "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", destino,
+    ],
     { stdio: "inherit" },
   );
+  await rm(soVideo);
+  await rm(trilha);
   console.log(`áudio: ${integrada} LUFS → ganho de ${ganho} dB`);
   console.log(`ok: ${destino}`);
   process.exit(0);

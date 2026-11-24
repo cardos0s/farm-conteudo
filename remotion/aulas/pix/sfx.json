@@ -1,0 +1,252 @@
+{
+  "whoosh_suave": {
+    "nome": "Whoosh, slow and soft",
+    "duracao": 1.049,
+    "sync": 0.452
+  },
+  "whoosh_forte": {
+    "nome": "Whoosh, medium and hard",
+    "duracao": 0.55,
+    "sync": 0.201
+  },
+  "whoosh_entrada": {
+    "nome": "Whoosh, slow and hard",
+    "duracao": 1.016,
+    "sync": 0.403
+  },
+  "whoosh_troca": {
+    "nome": "Whoosh, medium and soft",
+    "duracao": 0.543,
+    "sync": 0.229
+  },
+  "whoosh_rapido": {
+    "nome": "Whoosh, fast and medium",
+    "duracao": 0.252,
+    "sync": 0.096
+  },
+  "zip_forte": {
+    "nome": "Zip in, hard",
+    "duracao": 0.284,
+    "sync": 0.188
+  },
+  "zip_medio": {
+    "nome": "Zip in, medium",
+    "duracao": 0.349,
+    "sync": 0.233
+  },
+  "zip_sai": {
+    "nome": "Zip out, hard",
+    "duracao": 0.199,
+    "sync": 0.011
+  },
+  "swish": {
+    "nome": "Swish, hard",
+    "duracao": 0.175,
+    "sync": 0.054
+  },
+  "tambor": {
+    "nome": "Cinematic drum hit, big",
+    "duracao": 2.178,
+    "sync": 0.011
+  },
+  "tambor_enorme": {
+    "nome": "Cinematic drum hit, massive",
+    "duracao": 3.335,
+    "sync": 0.034
+  },
+  "brilho": {
+    "nome": "Shimmer, medium, sparkle",
+    "duracao": 1.105,
+    "sync": 0.011
+  },
+  "riser_1s": {
+    "nome": "Riser, 1 s, strong",
+    "duracao": 1.216,
+    "sync": 0.984
+  },
+  "reverso": {
+    "nome": "Reverse whoosh, medium and strong",
+    "duracao": 0.836,
+    "sync": 0.682
+  },
+  "boom": {
+    "nome": "Boom hit, strong",
+    "duracao": 1.693,
+    "sync": 0.047
+  },
+  "boom_medio": {
+    "nome": "Boom hit, medium",
+    "duracao": 1.301,
+    "sync": 0.038
+  },
+  "boom_queda": {
+    "nome": "Boom drop, strong",
+    "duracao": 4.293,
+    "sync": 0.095
+  },
+  "baixo_808": {
+    "nome": "808-style bass, long",
+    "duracao": 2.554,
+    "sync": 0.011
+  },
+  "tique_rapido": {
+    "nome": "Fast ticking",
+    "duracao": 2.534,
+    "sync": 0.0
+  },
+  "relogio": {
+    "nome": "Clock ticking",
+    "duracao": 3.037,
+    "sync": 0.0
+  },
+  "desliga": {
+    "nome": "Power down",
+    "duracao": 0.882,
+    "sync": 0.0
+  },
+  "murcha": {
+    "nome": "Failure, deflate",
+    "duracao": 0.541,
+    "sync": 0.002
+  },
+  "womp": {
+    "nome": "Failure, wobble",
+    "duracao": 0.535,
+    "sync": 0.0
+  },
+  "nope": {
+    "nome": "Failure, knock",
+    "duracao": 0.318,
+    "sync": 0.0
+  },
+  "cartao": {
+    "nome": "Card payment tap",
+    "duracao": 0.274,
+    "sync": 0.113
+  },
+  "caixa": {
+    "nome": "Cash register",
+    "duracao": 0.912,
+    "sync": 0.093
+  },
+  "ding_ding": {
+    "nome": "Success, ding-ding",
+    "duracao": 0.987,
+    "sync": 0.0
+  },
+  "alarme": {
+    "nome": "Security breach",
+    "duracao": 0.924,
+    "sync": 0.0
+  },
+  "negado": {
+    "nome": "Access denied",
+    "duracao": 0.35,
+    "sync": 0.0
+  },
+  "pop_grande": {
+    "nome": "Pop in, large",
+    "duracao": 0.112,
+    "sync": 0.011
+  },
+  "pop_medio": {
+    "nome": "Pop in, medium",
+    "duracao": 0.06,
+    "sync": 0.011
+  },
+  "pop_pequeno": {
+    "nome": "Pop in, small",
+    "duracao": 0.04,
+    "sync": 0.01
+  },
+  "bolha_ok": {
+    "nome": "Success, bubble",
+    "duracao": 0.636,
+    "sync": 0.045
+  },
+  "lapis": {
+    "nome": "Pencil writing",
+    "duracao": 1.191,
+    "sync": 0.0
+  },
+  "caneta": {
+    "nome": "Pen writing",
+    "duracao": 1.328,
+    "sync": 0.0
+  },
+  "marcador": {
+    "nome": "Whiteboard marker writing",
+    "duracao": 1.341,
+    "sync": 0.0
+  },
+  "digitando": {
+    "nome": "Typing, quick, medium",
+    "duracao": 1.656,
+    "sync": 0.0
+  },
+  "digitando_curto": {
+    "nome": "Typing, steady, short",
+    "duracao": 0.788,
+    "sync": 0.0
+  },
+  "enter": {
+    "nome": "Return key, firm",
+    "duracao": 0.09,
+    "sync": 0.009
+  },
+  "processando": {
+    "nome": "Process, clear",
+    "duracao": 1.098,
+    "sync": 0.071
+  },
+  "scan": {
+    "nome": "Scan, subtle",
+    "duracao": 0.841,
+    "sync": 0.0
+  },
+  "mensagem": {
+    "nome": "Message arriving, clear",
+    "duracao": 0.607,
+    "sync": 0.041
+  },
+  "mensagem_suave": {
+    "nome": "Message arriving, soft",
+    "duracao": 0.423,
+    "sync": 0.046
+  },
+  "sucesso": {
+    "nome": "Success, clear",
+    "duracao": 0.606,
+    "sync": 0.0
+  },
+  "sucesso_suave": {
+    "nome": "Success, soft",
+    "duracao": 0.53,
+    "sync": 0.0
+  },
+  "numero": {
+    "nome": "Number landing",
+    "duracao": 0.233,
+    "sync": 0.011
+  },
+  "impacto": {
+    "nome": "Impact, medium, on a hard surface",
+    "duracao": 0.162,
+    "sync": 0.01
+  },
+  "assinatura": {
+    "nome": "Logo sting, minimal, short",
+    "duracao": 1.263,
+    "sync": 0.1
+  },
+  "assinatura_brilho": {
+    "nome": "Logo sting, bright, short",
+    "duracao": 1.53,
+    "sync": 0.139
+  },
+  "enviado": {
+    "nome": "Message sent, clear",
+    "duracao": 0.568,
+    "sync": 0.052
+  }
+}
