@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill } from "remotion";
+import { AbsoluteFill, Sequence } from "remotion";
 import "../../lousa/fontes";
 import { enquadrar, Lousa, vistaEm, type Enquadre } from "../../lousa/Lousa";
 import { FUNDO_LOUSA } from "../../lousa/paleta";
@@ -13,12 +13,13 @@ import { CenaObservabilidade } from "./cenas/Observabilidade";
 import { CenaProblema } from "./cenas/Problema";
 import { CenaReconciliacao } from "./cenas/Reconciliacao";
 import { ALVO, R, TELA, TUDO } from "./regioes";
-import { PARTES } from "./roteiro";
+import { IntroParaguai } from "./Intro";
+import { FPS, INTRO, PARTES } from "./roteiro";
 import { Sobreposicoes } from "./Sobreposicoes";
 
 // Reel (1080x1920): "Um Pix, 30 minutos e uma falha que poderia ter sido evitada".
-// Sem gravação: a história e as quatro soluções acontecem no canvas pontilhado e o texto do post
-// entra como legenda no painel de baixo.
+// Abre com cortes rápidos da viagem; depois, a história (desenhada) e as quatro soluções acontecem
+// no canvas pontilhado e o texto do post entra como legenda no painel de baixo.
 
 const v = (r: typeof TUDO) => enquadrar(r, ALVO);
 const quando = (rotulo: string) => PARTES.find((p) => p.rotulo === rotulo)!.t;
@@ -38,6 +39,20 @@ export const quadros: Enquadre[] = [
 ];
 
 export function ReelPix() {
+  return (
+    <AbsoluteFill style={{ background: FUNDO_LOUSA }}>
+      <Sequence durationInFrames={INTRO * FPS}>
+        <IntroParaguai />
+      </Sequence>
+      {/* dentro da Sequence, o tempo do canvas recomeça do zero */}
+      <Sequence from={INTRO * FPS}>
+        <Canvas />
+      </Sequence>
+    </AbsoluteFill>
+  );
+}
+
+function Canvas() {
   const t = useT();
   const vista = vistaEm(t, quadros, TELA);
   return (

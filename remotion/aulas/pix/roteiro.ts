@@ -1,10 +1,14 @@
 // Reel "Um Pix, 30 minutos e uma falha que poderia ter sido evitada" (1080x1920, sem gravação).
-// Não há fala: o texto do post entra como legenda embaixo e o canvas ilustra cada parte.
-// Todos os tempos são segundos do vídeo final.
+// Abre com cortes rápidos da viagem (Intro.tsx); depois, o texto do post entra como legenda
+// embaixo e o canvas ilustra cada parte.
+// Os tempos do canvas e das legendas contam a partir do fim da intro.
 
 export const FPS = 30;
+/** Duração da intro com os cortes da viagem (s). */
+export const INTRO = 5;
+/** Duração da parte do canvas (s). */
 export const FIM = 90;
-export const TOTAL_QUADROS = FIM * FPS;
+export const TOTAL_QUADROS = (INTRO + FIM) * FPS;
 
 /** Partes do vídeo (a etiqueta aparece na barra da legenda). */
 export const PARTES = [
@@ -25,7 +29,7 @@ export const LEGENDAS: { de: number; ate?: number; texto: string }[] = [
   { de: 6.0, texto: "Black Friday, no Paraguai.\nO Pix ia expirar em *{2 segundos}…" },
   { de: 10.1, texto: "…e o celular *{descarregou}." },
   { de: 13.0, texto: "Liguei de novo, gerei uma\nnova cobrança e *{paguei}." },
-  { de: 19.3, texto: "Só que o pedido ficou com\n*{duas tentativas}: uma não paga\ne outra paga." },
+  { de: 19.3, texto: "O sistema viu uma\n*{transação duplicada}: uma\nnão paga e outra paga." },
   { de: 24.8, texto: "Funcionários, extrato bancário,\ndocumentos… quase *{meia hora}." },
   { de: 29.0, texto: "O cliente virou parte\ndo processo de *{suporte}." },
   { de: 32.8, texto: "*{Máquina de estados}: cada\ntentativa tem o próprio estado,\nseparado do estado do pedido." },

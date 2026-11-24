@@ -138,7 +138,15 @@ Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/
 npm run render:aula -- pix
 ```
 
-Renderiza o Reel **Um Pix, 30 minutos** (1080×1920, 90 s) em `saida/aulas/pix/`. Não depende de gravação: a história e as quatro soluções (máquina de estados, reconciliação, observabilidade e contingência) acontecem no canvas e o texto do post entra como legenda. Sai sem áudio; a música entra no app na hora de postar. Os tempos e as frases ficam em `remotion/aulas/pix/roteiro.ts`.
+Renderiza o Reel **Um Pix, 30 minutos** (1080×1920, 95 s) em `saida/aulas/pix/`. Abre com 5 s de cortes rápidos da viagem e texto grande ("aproveitei a Black Friday no Paraguai… e isso aconteceu"); depois a história é desenhada à mão no canvas, seguida das quatro soluções (máquina de estados, reconciliação, observabilidade e contingência), com o texto do post como legenda. O áudio é só o som ambiente da intro; a música entra no app na hora de postar.
+
+Os vídeos da intro ficam fora do git, em `public/aulas/pix/paraguai/`. Para prepará-los (vertical, H.264 e mesmo volume):
+
+```bash
+scripts/aulas/preparar_intro.sh pix placas=<arquivo> impressora=<arquivo> bateria=<arquivo>
+```
+
+A ordem e o trecho de cada corte ficam em `remotion/aulas/pix/Intro.tsx`; os tempos e as frases do resto, em `remotion/aulas/pix/roteiro.ts`.
 
 ## Estrutura
 

@@ -1,18 +1,15 @@
 import React from "react";
-import { Check, Seta, Xis } from "../../../lousa/Esboco";
+import { Seta } from "../../../lousa/Esboco";
 import { ui } from "../../../lousa/Janelas";
 import { NaPagina } from "../../../lousa/Lousa";
 import { cor } from "../../../lousa/paleta";
 import { Texto } from "../../../lousa/Texto";
-import { CelularPix } from "../pecas";
 import { R } from "../regioes";
+import { Bateria, Boneco, CelularEsboco } from "./desenhos";
 
-// A história: o Pix a 2 segundos de expirar, o celular apaga, uma nova cobrança e o pagamento.
+// A história, desenhada à mão: o Pix a 2 segundos de expirar, o celular apaga,
+// uma nova cobrança e o pagamento.
 
-const W = 300;
-const Y = 170;
-const X1 = 110;
-const X2 = 670;
 const APAGA = 10.1;
 
 export function CenaHistoria() {
@@ -21,28 +18,30 @@ export function CenaHistoria() {
       <Texto x={60} y={96} tam={56} de={5.9} dur={0.6}>
         Black Friday · Paraguai
       </Texto>
-      {/* faltando 2 s para expirar (o contador chega em 00:02 quando o celular apaga) */}
-      <CelularPix x={X1} y={Y} w={W} de={6.2} cobranca={1} valor="R$ 389,90" expiraEm={APAGA - 6.2 + 1.6} bateria={1} apaga={APAGA} />
-      <Texto x={X1 + W / 2} y={850} tam={46} ancora="middle" de={6.6} dur={0.5}>
-        cobrança 1
-      </Texto>
-      <Texto x={X1 + W + 30} y={300} tam={40} cor={cor.vermelho} de={10.4} dur={0.6} girar={-4}>
-        {"0%"}
-      </Texto>
-      <Xis x={X1 + W / 2} y={905} s={34} de={11.2} />
+      <Boneco x={115} y={430} s={1.4} braco="frente" de={6.0} />
 
-      <Seta desde={[X1 + W + 24, 520]} para={[X2 - 24, 520]} via={[(X1 + W + X2) / 2, 490]} cor={cor.cinza} de={13.0} dur={0.6} />
-      <Texto x={(X1 + W + X2) / 2} y={590} tam={34} cor={cor.cinza} ancora="middle" de={13.2} dur={0.5}>
-        de novo
+      {/* Pix 1: a contagem chega em 00:02 e o celular apaga */}
+      <CelularEsboco x={250} y={290} w={250} h={450} de={6.3} titulo="Pix 1" expira={4.8} apaga={APAGA} />
+      <Bateria x={290} y={204} nivel={0.06} de={6.8} />
+      <Texto x={398} y={236} tam={38} cor={cor.vermelho} de={7.0} dur={0.2} ate={APAGA}>
+        1%
       </Texto>
-      <CelularPix x={X2} y={Y} w={W} de={13.3} cobranca={2} valor="R$ 389,90" expiraEm={900} bateria={4} paga={{ de: 15.2, ok: 16.6 }} />
-      <Texto x={X2 + W / 2} y={850} tam={46} ancora="middle" de={13.7} dur={0.5}>
-        cobrança 2
+      <Texto x={398} y={236} tam={38} cor={cor.vermelho} de={APAGA + 0.1} dur={0.2}>
+        0%
       </Texto>
-      <Check x={X2 + W / 2 - 18} y={912} s={38} de={16.8} />
+      <Texto x={375} y={820} tam={58} cor={cor.vermelho} ancora="middle" girar={-3} de={APAGA + 0.2} dur={0.5}>
+        descarregou!
+      </Texto>
 
-      <Texto x={540} y={1010} tam={58} cor={ui.rosa} ancora="middle" de={17.4} dur={0.8}>
-        1 pedido, 2 cobranças
+      {/* Pix 2 */}
+      <Seta desde={[515, 330]} para={[690, 330]} via={[602, 290]} cor={cor.cinza} de={13.0} dur={0.5} />
+      <Texto x={602} y={268} tam={32} cor={cor.cinza} ancora="middle" de={13.1} dur={0.4}>
+        liguei de novo
+      </Texto>
+      <CelularEsboco x={705} y={290} w={250} h={450} de={13.3} titulo="Pix 2" paga={{ de: 15.2, ok: 16.6 }} />
+
+      <Texto x={540} y={975} tam={70} cor={ui.rosa} ancora="middle" de={17.4} dur={0.8}>
+        1 compra, 2 Pix
       </Texto>
     </NaPagina>
   );
