@@ -8,7 +8,7 @@ import { renderMedia, selectComposition } from "@remotion/renderer";
 // Renderiza uma aula (1920x1080) e junta com a voz já tratada.
 // Os vídeos 1440p dos clipes precisam estar em public/aulas/<aula>/ (ver scripts/aulas/README.md).
 // Uso: npm run render:aula -- [aula] [voz.wav] [saida.mp4]     (aula: complexidade | recursividade | agentes | pix)
-// O Reel do Pix não tem voz: sai direto, só com o som ambiente dos cortes da intro (a música entra no app).
+// O Reel do Pix não tem voz: sai direto, sem áudio (a música entra no app na hora de postar).
 
 const AULAS: Record<string, { id: string; arquivo: string; semVoz?: boolean }> = {
   complexidade: { id: "AulaComplexidade", arquivo: "aula-1-complexidade.mp4" },
@@ -40,10 +40,7 @@ await renderMedia({
   serveUrl,
   codec: "h264",
   outputLocation: soVideo,
-  // sem voz, o áudio da própria composição (som ambiente dos vídeos) vai junto
-  muted: !aula.semVoz,
-  audioCodec: "aac",
-  audioBitrate: "192k",
+  muted: true,
   crf: 17,
   x264Preset: "medium",
   imageFormat: "jpeg",

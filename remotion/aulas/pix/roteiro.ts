@@ -5,7 +5,7 @@
 
 export const FPS = 30;
 /** Duração da intro com os cortes da viagem (s). */
-export const INTRO = 5;
+export const INTRO = 7;
 /** Duração da parte do canvas (s). */
 export const FIM = 90;
 export const TOTAL_QUADROS = (INTRO + FIM) * FPS;
