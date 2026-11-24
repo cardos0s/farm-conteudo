@@ -16,6 +16,7 @@ import { ALVO, R, TELA, TUDO } from "./regioes";
 import { IntroParaguai } from "./Intro";
 import { FPS, INTRO, PARTES } from "./roteiro";
 import { Sobreposicoes } from "./Sobreposicoes";
+import { Sons } from "./Sons";
 
 // Reel (1080x1920): "Um Pix, 30 minutos e uma falha que poderia ter sido evitada".
 // Abre com cortes rápidos da viagem; depois, a história (desenhada) e as quatro soluções acontecem
@@ -48,6 +49,7 @@ export function ReelPix() {
       <Sequence from={INTRO * FPS}>
         <Canvas />
       </Sequence>
+      <Sons />
     </AbsoluteFill>
   );
 }

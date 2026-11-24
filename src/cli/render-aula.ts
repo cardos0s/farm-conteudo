@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { mkdir } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -8,20 +8,21 @@ import { renderMedia, selectComposition } from "@remotion/renderer";
 // Renderiza uma aula (1920x1080) e junta com a voz já tratada.
 // Os vídeos 1440p dos clipes precisam estar em public/aulas/<aula>/ (ver scripts/aulas/README.md).
 // Uso: npm run render:aula -- [aula] [voz.wav] [saida.mp4]     (aula: complexidade | recursividade | agentes | pix)
-// O Reel do Pix não tem voz: sai direto, sem áudio (a música entra no app na hora de postar).
+// O Reel do Pix não tem voz: sai direto, com a música e os efeitos da própria composição
+// (gere antes com: python3 scripts/aulas/sons_pix.py).
 
-const AULAS: Record<string, { id: string; arquivo: string; semVoz?: boolean }> = {
+const AULAS: Record<string, { id: string; arquivo: string; audioProprio?: boolean }> = {
   complexidade: { id: "AulaComplexidade", arquivo: "aula-1-complexidade.mp4" },
   recursividade: { id: "AulaRecursividade", arquivo: "aula-2-recursividade.mp4" },
   agentes: { id: "ReelAgentes", arquivo: "reel-orquestracao-de-agentes.mp4" },
-  pix: { id: "ReelPix", arquivo: "reel-um-pix-30-minutos.mp4", semVoz: true },
+  pix: { id: "ReelPix", arquivo: "reel-um-pix-30-minutos.mp4", audioProprio: true },
 };
 const nome = process.argv[2] ?? "complexidade";
 const aula = AULAS[nome];
 if (!aula) throw new Error(`Aula desconhecida: "${nome}". Opções: ${Object.keys(AULAS).join(", ")}`);
 const voz = process.argv[3] ?? `saida/aulas/${nome}/voz.wav`;
 const destino = process.argv[4] ?? `saida/aulas/${nome}/${aula.arquivo}`;
-const soVideo = aula.semVoz ? destino : destino.replace(/\.mp4$/, "-sem-audio.mp4");
+const soVideo = aula.audioProprio ? destino.replace(/\.mp4$/, "-bruto.mp4") : destino.replace(/\.mp4$/, "-sem-audio.mp4");
 const navegador = process.env.REMOTION_CHROME || null;
 
 await mkdir(path.dirname(destino), { recursive: true });
@@ -40,7 +41,10 @@ await renderMedia({
   serveUrl,
   codec: "h264",
   outputLocation: soVideo,
-  muted: true,
+  // aulas: só o vídeo (a voz tratada entra depois); Reel do Pix: o áudio da própria composição
+  muted: !aula.audioProprio,
+  audioCodec: "aac",
+  audioBitrate: "192k",
   crf: 17,
   x264Preset: "medium",
   imageFormat: "jpeg",
@@ -58,7 +62,18 @@ await renderMedia({
   },
 });
 
-if (aula.semVoz) {
+if (aula.audioProprio) {
+  // Volume padrão dos Reels (~-14 LUFS): mede, aplica o ganho que falta e limita os picos.
+  // O limitador fica em 0,6 porque o AAC passa uns 1,5 dB do limite nos estalos dos efeitos.
+  const medida = spawnSync("ffmpeg", ["-hide_banner", "-i", soVideo, "-vn", "-af", "ebur128=framelog=quiet", "-f", "null", "-"], { encoding: "utf8" }).stderr;
+  const integrada = Number(/\bI:\s+(-?[\d.]+) LUFS/.exec(medida)?.[1] ?? "-16");
+  const ganho = (-14 - integrada + 0.5).toFixed(2);
+  execFileSync(
+    "ffmpeg",
+    ["-v", "error", "-y", "-i", soVideo, "-c:v", "copy", "-af", `aresample=48000,volume=${ganho}dB,alimiter=limit=0.6:attack=3:release=60:level=false`, "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", destino],
+    { stdio: "inherit" },
+  );
+  console.log(`áudio: ${integrada} LUFS → ganho de ${ganho} dB`);
   console.log(`ok: ${destino}`);
   process.exit(0);
 }
