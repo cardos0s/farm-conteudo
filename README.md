@@ -138,7 +138,7 @@ Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/
 npm run render:aula -- pix
 ```
 
-Renderiza o Reel **Um Pix, 30 minutos** (1080×1920, 97 s) em `saida/aulas/pix/`. Abre com 7 s de cortes da viagem (sem som) e um jogo de fontes ("aproveitei a Black Friday, direto do Paraguai… e isso aconteceu"); depois a história é desenhada à mão no canvas, seguida das quatro soluções (máquina de estados, reconciliação, observabilidade e contingência), com o texto do post como legenda. Sai sem áudio; a música entra no app na hora de postar.
+Renderiza o Reel **Um Pix, 30 minutos** (1080×1920, 98 s) em `saida/aulas/pix/`. Abre com 8 s de tomadas da viagem no estilo vlog de cinema (sem som): faixa que abre no meio, tela dividida em três, título "BLACK *friday* no Paraguai" em serifada alta com manuscrita por cima e vazamento de luz até "E ISSO *aconteceu…*"; depois a história é desenhada à mão no canvas, seguida das quatro soluções (máquina de estados, reconciliação, observabilidade e contingência), com o texto do post como legenda. Sai sem áudio; a música entra no app na hora de postar.
 
 Os vídeos da intro ficam fora do git, em `public/aulas/pix/paraguai/`. Para prepará-los (vertical e H.264):
 
