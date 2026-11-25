@@ -1,11 +1,22 @@
+import { createContext, createElement, useContext, type ReactNode } from "react";
 import { Easing, useCurrentFrame, useVideoConfig } from "remotion";
 
 // Os elementos da lousa usam segundos do vídeo final (tempo absoluto), não quadros.
+// Um MapaDeTempo pode remapear esse tempo (ex.: para as animações seguirem uma narração gravada
+// depois): os desenhos continuam marcados no tempo "de projeto" e o mapa diz qual instante de
+// projeto aparece em cada segundo do vídeo.
+
+const MapaContexto = createContext<((t: number) => number) | null>(null);
+
+export function MapaDeTempo({ mapa, children }: { mapa: (t: number) => number; children: ReactNode }) {
+  return createElement(MapaContexto.Provider, { value: mapa }, children);
+}
 
 export function useT(): number {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  return frame / fps;
+  const mapa = useContext(MapaContexto);
+  return mapa ? mapa(frame / fps) : frame / fps;
 }
 
 export const suave = Easing.bezier(0.45, 0, 0.25, 1);

@@ -134,7 +134,7 @@ BPM = 96
 BATIDA = 60 / BPM  # 0,625 s
 COMPASSO = 4 * BATIDA  # 2,5 s
 ORIGEM = 0.5  # o compasso 3 cai em 8,0 s, quando o canvas entra
-DURACAO = 98.0
+DURACAO = 93.2  # duração do Reel com a narração (remotion/aulas/pix/roteiro.ts)
 
 # acordes (midi) e baixo
 A = [((53, 57, 60, 64), 41), ((55, 59, 62, 64), 43), ((57, 60, 64, 67), 45), ((52, 55, 59, 62), 40)]  # Fmaj7 G6 Am7 Em7
@@ -145,16 +145,14 @@ def secao(c):
     """O que toca em cada compasso."""
     if c <= 2:
         return "intro"
-    if c <= 9:
-        return "historia"
-    if c <= 15:
-        return "problema"
-    if c <= 31:
-        return "solucoes"
-    if c <= 33:
-        return "pausa"
-    if c == 34:
-        return "volta"
+    if c <= 7:
+        return "historia"  # 8,0–20,5 s
+    if c <= 12:
+        return "problema"  # 20,5–33,0 s ("Só que o sistema da loja…" em 20,8 s)
+    if c <= 29:
+        return "solucoes"  # 33,0–75,5 s ("Primeiro" em 34,2 s)
+    if c <= 32:
+        return "pausa"  # 75,5–83,0 s ("Agora imagina…"; "operacional" em 81,9 s)
     return "final"
 
 
@@ -292,7 +290,7 @@ def musica():
                 soma("harmonia", dedilhado(hz(m)), t0 + i * BATIDA / 2 + (swing if i % 2 else 0), pan=-0.35 if i % 2 else 0.35, ganho=0.33)
 
     # subidas na entrada do canvas e antes do "operacional"
-    for ini, d in ((6.4, 1.6), (84.6, 1.6)):
+    for ini, d in ((6.4, 1.6), (80.3, 1.6)):  # a 2ª termina no "operacional" (81,9 s)
         s = subida(d)
         a = int(ini * SR)
         mix["harmonia"][a : a + len(s)] += s * 0.9

@@ -3,7 +3,7 @@ import { AbsoluteFill, Sequence } from "remotion";
 import "../../lousa/fontes";
 import { enquadrar, Lousa, vistaEm, type Enquadre } from "../../lousa/Lousa";
 import { FUNDO_LOUSA } from "../../lousa/paleta";
-import { useT } from "../../lousa/tempo";
+import { MapaDeTempo, useT } from "../../lousa/tempo";
 import { CenaContingencia } from "./cenas/Contingencia";
 import { CenaEscala } from "./cenas/Escala";
 import { CenaEstados } from "./cenas/Estados";
@@ -14,13 +14,14 @@ import { CenaProblema } from "./cenas/Problema";
 import { CenaReconciliacao } from "./cenas/Reconciliacao";
 import { ALVO, R, TELA, TUDO } from "./regioes";
 import { IntroParaguai } from "./Intro";
-import { FPS, INTRO, PARTES } from "./roteiro";
+import { FPS, INTRO, PARTES, projeto } from "./roteiro";
 import { Sobreposicoes } from "./Sobreposicoes";
 import { Sons } from "./Sons";
 
 // Reel (1080x1920): "Um Pix, 30 minutos e uma falha que poderia ter sido evitada".
-// Abre com cortes rápidos da viagem; depois, a história (desenhada) e as quatro soluções acontecem
-// no canvas pontilhado e o texto do post entra como legenda no painel de baixo.
+// Abre com tomadas da viagem; depois, a história (desenhada) e as quatro soluções acontecem no
+// canvas pontilhado, sincronizadas com a narração (mapa de tempo em roteiro.ts), e a fala entra como
+// legenda no painel de baixo.
 
 const v = (r: typeof TUDO) => enquadrar(r, ALVO);
 const quando = (rotulo: string) => PARTES.find((p) => p.rotulo === rotulo)!.t;
@@ -45,9 +46,11 @@ export function ReelPix() {
       <Sequence durationInFrames={INTRO * FPS}>
         <IntroParaguai />
       </Sequence>
-      {/* dentro da Sequence, o tempo do canvas recomeça do zero */}
+      {/* dentro da Sequence, o tempo do canvas recomeça do zero e segue a narração (mapa de tempo) */}
       <Sequence from={INTRO * FPS}>
-        <Canvas />
+        <MapaDeTempo mapa={projeto}>
+          <Canvas />
+        </MapaDeTempo>
       </Sequence>
       <Sons />
     </AbsoluteFill>

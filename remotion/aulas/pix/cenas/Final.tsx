@@ -45,17 +45,17 @@ export function CenaFinal() {
         <Texto x={150} y={220} tam={62} de={82.4} dur={0.7}>
           o básico bem feito
         </Texto>
-        <Texto x={150} y={315} tam={62} de={83.1} dur={0.6}>
+        <Texto x={150} y={315} tam={62} de={85.0} dur={0.6}>
           é um sistema que sabe
         </Texto>
-        <Texto x={150} y={455} tam={104} cor={ui.rosa} de={83.8} dur={0.8}>
+        <Texto x={150} y={455} tam={104} cor={ui.rosa} de={85.8} dur={0.8}>
           se recuperar
         </Texto>
       </Nota>
       {RESUMO.map((r, i) => (
-        <Chip key={r} x={i % 2 === 0 ? 300 : 780} y={680 + Math.floor(i / 2) * 90} texto={r} fundo="#f3f0ff" cor={ui.violeta} tam={30} de={84.8 + i * 0.3} />
+        <Chip key={r} x={i % 2 === 0 ? 300 : 780} y={680 + Math.floor(i / 2) * 90} texto={r} fundo="#f3f0ff" cor={ui.violeta} tam={30} de={86.6 + i * 0.3} />
       ))}
-      <Texto x={540} y={950} tam={50} ancora="middle" de={86.6} dur={0.9}>
+      <Texto x={540} y={950} tam={50} ancora="middle" de={88.6} dur={0.9}>
         e você, já passou por isso?
       </Texto>
     </NaPagina>

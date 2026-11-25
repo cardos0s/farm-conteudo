@@ -1,20 +1,23 @@
 import React from "react";
 import { Audio, interpolate, Sequence, staticFile } from "remotion";
-import { FIM, FPS, INTRO, PARTES } from "./roteiro";
+import { FIM_REAL, FPS, INICIO_VOZ_CANVAS, INTRO, PARTES, real } from "./roteiro";
 import sfx from "./sfx.json";
 
-// Trilha e efeitos sonoros do Reel, no estilo de edição de Reels: poucos sons, bem marcados.
+// Narração, trilha e efeitos sonoros do Reel. Efeitos no estilo de edição de Reels: poucos sons, bem marcados.
+// - Narração: public/aulas/pix/narracao.wav (fora do git; scripts/aulas/tratar_narracao_pix.sh),
+//   em três pedaços (ver VOZ).
 // - Música: original, gerada por scripts/aulas/sons_pix.py (public/aulas/pix/sons/musica.wav).
 // - Efeitos: SFX Kit (CC0), baixados por scripts/aulas/baixar_sfx_pix.py (public/aulas/pix/sfx/).
 // Cada efeito é posicionado pelo seu ponto de sincronia (sfx.json): o golpe do tambor, o pico do
 // whoosh ou a chegada do reverse whoosh caem exatamente no instante marcado aqui.
-// Tempos: intro em segundos do vídeo; canvas em segundos do canvas, com c(t).
+// Tempos: intro em segundos do vídeo; canvas no tempo de projeto, com c(t), que passa pelo mapa de
+// tempo da narração (roteiro.ts) e devolve o segundo do vídeo.
 
 type Chave = keyof typeof sfx;
 /** [instante na tela (s do vídeo), efeito, volume] */
 type Deixa = [number, Chave, number];
 
-const c = (t: number) => INTRO + t;
+const c = (t: number) => INTRO + real(t);
 
 const DEIXAS: Deixa[] = [
   // ---- intro (vlog)
@@ -36,7 +39,7 @@ const DEIXAS: Deixa[] = [
 
   // ---- a história
   [c(6.1), "lapis", 0.35], // desenhando
-  [c(7.6), "tique_rapido", 0.5], // a contagem correndo
+  [c(7.0), "tique_rapido", 0.5], // a contagem correndo (acaba quando o celular apaga)
   [c(10.1), "desliga", 1.3], // apagou
   [c(10.5), "murcha", 0.55], // "descarregou!"
   [c(13.1), "whoosh_rapido", 0.45], // "liguei de novo"
@@ -46,10 +49,10 @@ const DEIXAS: Deixa[] = [
 
   // ---- o problema
   [c(19.5), "marcador", 0.3],
-  [c(20.6), "nope", 0.5], // não pago
-  [c(21.0), "ding_ding", 0.45], // pago
-  [c(23.0), "boom_medio", 0.7], // transação duplicada?!
-  [c(23.1), "alarme", 0.45],
+  [c(21.0), "boom_medio", 0.7], // transação duplicada?!
+  [c(21.1), "alarme", 0.45],
+  [c(22.0), "nope", 0.5], // não pago
+  [c(22.7), "ding_ding", 0.45], // pago
   [c(24.9), "pop_grande", 0.4], // funcionários
   [c(25.15), "pop_grande", 0.35],
   [c(26.7), "relogio", 0.55], // o tempo passando
@@ -97,18 +100,18 @@ const DEIXAS: Deixa[] = [
   [c(79.0), "boom_queda", 0.5],
 
   // ---- final
-  [c(83.8), "assinatura_brilho", 0.6], // "se recuperar"
-  ...[0, 1, 2, 3].map((i): Deixa => [c(84.8 + i * 0.3), "pop_medio", 0.35]),
-  [c(86.7), "enviado", 0.45], // "e você, já passou por isso?"
+  [c(85.8), "assinatura_brilho", 0.6], // "se recuperar"
+  ...[0, 1, 2, 3].map((i): Deixa => [c(86.6 + i * 0.3), "pop_medio", 0.35]),
+  [c(88.7), "enviado", 0.45], // "e você, já passou por isso?"
 ];
 
 /** Trocas de câmera do canvas: um whoosh baixinho no meio do movimento. */
 const TROCAS: Deixa[] = PARTES.slice(1).map((p) => [c(p.t - 0.1), p.rotulo === "em escala" ? "whoosh_entrada" : "whoosh_troca", 0.3]);
 
-const TOTAL = INTRO + FIM;
+const TOTAL = INTRO + FIM_REAL;
 
 /** Momentos em que a música abaixa por um instante para o efeito aparecer (ducking). */
-const DESTAQUES = [3.2, 5.45, 5.95, c(10.1), c(16.6), c(23.0), c(29.3), c(45.2), c(51.0), c(79.0), c(83.8)];
+const DESTAQUES = [3.2, 5.45, 5.95, c(10.1), c(16.6), c(21.0), c(29.3), c(45.2), c(51.0), c(79.0), c(85.8)];
 /** Quanto a música deixa passar no instante t (1 = normal; cai para ~0,4 nos destaques). */
 function abaixa(t: number) {
   let g = 1;
@@ -124,13 +127,33 @@ function abaixa(t: number) {
  */
 const GANHO_EFEITOS = 0.7;
 
+/**
+ * Narração em três pedaços (s do arquivo): "Aproveitei a Black Friday no Paraguai" com o "Black"
+ * no título BLACK (3,2 s), "E isso aconteceu" no "E ISSO" (5,45 s) e o resto corrido desde o
+ * começo do canvas.
+ */
+const VOZ: { de: number; ate?: number; em: number }[] = [
+  { de: 0, ate: 2.1, em: 3.2 - 0.68 },
+  { de: 2.15, ate: 3.75, em: 5.45 - (2.5 - 2.15) }, // o "E" começa de fato em 2,50 s
+  { de: INICIO_VOZ_CANVAS, em: INTRO },
+];
+
 export function Sons() {
   return (
     <>
+      {VOZ.map((v, i) => (
+        <Sequence key={`voz${i}`} from={Math.round(v.em * FPS)} layout="none">
+          <Audio
+            src={staticFile("aulas/pix/narracao.wav")}
+            trimBefore={Math.round(v.de * FPS)}
+            trimAfter={v.ate !== undefined ? Math.round(v.ate * FPS) : undefined}
+          />
+        </Sequence>
+      ))}
       {/* música por baixo de tudo: abaixa nos destaques e some aos poucos no fim */}
       <Audio
         src={staticFile("aulas/pix/sons/musica.wav")}
-        volume={(f) => interpolate(f / FPS, [0, TOTAL - 2, TOTAL], [0.09, 0.09, 0], { extrapolateRight: "clamp" }) * abaixa(f / FPS)}
+        volume={(f) => interpolate(f / FPS, [0, TOTAL - 2, TOTAL], [0.12, 0.12, 0], { extrapolateRight: "clamp" }) * abaixa(f / FPS)}
       />
       {[...DEIXAS, ...TROCAS].map(([t, chave, vol], i) => (
         // começa antes do instante para que o ponto de sincronia do som caia em `t`

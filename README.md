@@ -138,22 +138,26 @@ Renderiza a **Aula 1: Complexidade de algoritmos** (1920×1080) em `saida/aulas/
 npm run render:aula -- pix
 ```
 
-Renderiza o Reel **Um Pix, 30 minutos** (1080×1920, 98 s) em `saida/aulas/pix/`. Abre com 8 s de tomadas da viagem no estilo vlog de cinema (sem som): faixa que abre no meio, tela dividida em três, título "BLACK *friday* no Paraguai" em serifada alta com manuscrita por cima e vazamento de luz até "E ISSO *aconteceu…*"; depois a história é desenhada à mão no canvas, seguida das quatro soluções (máquina de estados, reconciliação, observabilidade e contingência), com o texto do post como legenda. A música é original (lo-fi a 96 BPM, sintetizada por `scripts/aulas/sons_pix.py`). Os efeitos, no estilo de edição de Reels (boom, 808, caixa registradora, alarme, riser…), vêm do [SFX Kit](https://github.com/wyzowl/sfx-kit) (CC0, sem necessidade de crédito). Tudo é sincronizado com as animações em `remotion/aulas/pix/Sons.tsx`.
+Renderiza o Reel **Um Pix, 30 minutos** (1080×1920, 93 s, narrado) em `saida/aulas/pix/`. Abre com 8 s de tomadas da viagem no estilo vlog de cinema: faixa que abre no meio, tela dividida em três, título "BLACK *friday* no Paraguai" em serifada alta com manuscrita por cima e vazamento de luz até "E ISSO *aconteceu…*". Depois a história é desenhada à mão no canvas, seguida das quatro soluções (máquina de estados, reconciliação, observabilidade e contingência), com a fala como legenda.
 
-Os vídeos da intro ficam fora do git, em `public/aulas/pix/paraguai/`. Para prepará-los (vertical e H.264):
+As animações do canvas foram desenhadas num tempo "de projeto" e seguem a narração por um mapa de tempo: `ANCORAS` em `remotion/aulas/pix/roteiro.ts` prende instantes do projeto às palavras faladas (o "descarregou" cai no celular apagando, o "operacional" no tambor, e assim por diante). Os efeitos sonoros e as legendas passam pelo mesmo mapa.
+
+A música é original (lo-fi a 96 BPM, sintetizada por `scripts/aulas/sons_pix.py`). Os efeitos, no estilo de edição de Reels (boom, 808, caixa registradora, alarme, riser…), vêm do [SFX Kit](https://github.com/wyzowl/sfx-kit) (CC0, sem necessidade de crédito). A mixagem fica em `remotion/aulas/pix/Sons.tsx`, e o render ajusta o volume final para -16 LUFS.
+
+Os arquivos de mídia ficam fora do git, em `public/aulas/pix/`. Para prepará-los:
 
 ```bash
+# vídeos da intro (vertical e H.264)
 scripts/aulas/preparar_intro.sh pix placas=<arquivo> impressora=<arquivo> bateria=<arquivo>
-```
-
-Antes do primeiro render, gere a música (Python 3 com numpy) e baixe os efeitos:
-
-```bash
+# narração: tratamento e transcrição com o tempo de cada palavra (faster-whisper; o modelo vem do Hugging Face)
+scripts/aulas/tratar_narracao_pix.sh <narracao.mp3>
+python3 scripts/aulas/transcrever_narracao.py <narracao.mp3> remotion/aulas/pix/edicao/narracao.json
+# música (Python 3 com numpy) e efeitos
 python3 scripts/aulas/sons_pix.py
 python3 scripts/aulas/baixar_sfx_pix.py
 ```
 
-A ordem e o trecho de cada corte ficam em `remotion/aulas/pix/Intro.tsx`; os tempos e as frases do resto, em `remotion/aulas/pix/roteiro.ts`.
+A ordem e o trecho de cada tomada ficam em `remotion/aulas/pix/Intro.tsx`; as cenas, as legendas e o mapa de tempo, em `remotion/aulas/pix/roteiro.ts`. Se a narração for regravada, transcreva de novo e atualize as âncoras.
 
 ## Estrutura
 
