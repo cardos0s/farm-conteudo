@@ -11,6 +11,7 @@ import { CenaAdapter, CenaDecorator, CenaFacade } from "./cenas/Estruturais";
 import { CenaConexao, CenaFinal } from "./cenas/Final";
 import { ALVO, GRADE, R, TELA } from "./regioes";
 import { FPS, GANCHO, INTRO, PARTES, projeto } from "./roteiro";
+import { GanchoSobreposicao } from "./Gancho";
 import { Sobreposicoes } from "./Sobreposicoes";
 import { Sons } from "./Sons";
 
@@ -44,10 +45,11 @@ export const quadros: Enquadre[] = [
 export function ReelPatterns() {
   return (
     <AbsoluteFill style={{ background: FUNDO_LOUSA }}>
-      {/* prévia do gancho (no render final entra a gravação original em HDR) */}
+      {/* prévia do gancho (no render final entra a gravação original em HDR, com a edição composta por cima) */}
       <Sequence durationInFrames={Math.round(INTRO * FPS)}>
         <AbsoluteFill style={{ background: "#000" }}>
           <OffthreadVideo src={staticFile(GANCHO.arquivo)} trimBefore={Math.round(GANCHO.de * FPS)} muted style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <GanchoSobreposicao />
         </AbsoluteFill>
       </Sequence>
       <Sequence from={Math.round(INTRO * FPS)}>
@@ -58,6 +60,11 @@ export function ReelPatterns() {
       <Sons />
     </AbsoluteFill>
   );
+}
+
+/** Só a edição do gancho, com fundo transparente (vira PNG no render final). */
+export function ReelPatternsGancho() {
+  return <GanchoSobreposicao />;
 }
 
 function Canvas() {

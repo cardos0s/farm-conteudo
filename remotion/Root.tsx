@@ -10,8 +10,8 @@ import { ReelAgentes } from "./aulas/agentes/Reel";
 import { FPS as FPS_AGENTES, TOTAL_QUADROS as TOTAL_AGENTES } from "./aulas/agentes/roteiro";
 import { ReelPix } from "./aulas/pix/Reel";
 import { FPS as FPS_PIX, TOTAL_QUADROS as TOTAL_PIX } from "./aulas/pix/roteiro";
-import { ReelPatterns } from "./aulas/patterns/Reel";
-import { FPS as FPS_PATTERNS, TOTAL_QUADROS as TOTAL_PATTERNS } from "./aulas/patterns/roteiro";
+import { ReelPatterns, ReelPatternsGancho } from "./aulas/patterns/Reel";
+import { FPS as FPS_PATTERNS, INTRO as INTRO_PATTERNS, TOTAL_QUADROS as TOTAL_PATTERNS } from "./aulas/patterns/roteiro";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
 
@@ -66,6 +66,14 @@ export const Root: React.FC = () => (
       height={1920}
       fps={FPS_PATTERNS}
       durationInFrames={TOTAL_PATTERNS}
+    />
+    <Composition
+      id="ReelPatternsGancho"
+      component={ReelPatternsGancho}
+      width={1080}
+      height={1920}
+      fps={FPS_PATTERNS}
+      durationInFrames={Math.round(INTRO_PATTERNS * FPS_PATTERNS)}
     />
   </>
 );

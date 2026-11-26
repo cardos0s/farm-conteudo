@@ -1,6 +1,7 @@
 import React from "react";
 import { Audio, interpolate, Sequence, staticFile } from "remotion";
 import sfx from "../comum/sfx.json";
+import { MOMENTOS_GANCHO as G } from "./Gancho";
 import { FIM_REAL, FPS, GANCHO, INTRO, PARTES, real } from "./roteiro";
 
 // Voz do gancho, música e efeitos do Reel de design patterns.
@@ -16,6 +17,12 @@ type Deixa = [number, Chave, number];
 const c = (t: number) => INTRO + real(t);
 
 const DEIXAS: Deixa[] = [
+  // ---- gancho (a voz continua por baixo)
+  [G.entraCartao, "whoosh_forte", 0.5], // entra o cartão
+  [G.design, "tambor", 0.6], // DESIGN
+  [G.patterns, "impacto", 0.7], // PATTERNS
+  [G.saiCartao, "whoosh_rapido", 0.45], // volta para você
+  [G.ia, "brilho", 0.5], // "IA?"
   [INTRO, "whoosh_entrada", 0.6], // corte do gancho para o canvas
 
   // ---- gancho no canvas

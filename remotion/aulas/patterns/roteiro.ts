@@ -1,5 +1,5 @@
 // Reel "Design patterns na era da IA" (2160x3840, HDR HLG como a gravação do iPhone).
-// Abre com o gancho gravado (IMG_3755, sem alteração de resolução nem de cor) e segue no canvas:
+// Abre com o gancho gravado (IMG_3755, sem alteração de resolução nem de cor fora do título) e segue no canvas:
 // contexto do Gang of Four, os 9 padrões (3 por categoria), a ponte com a IA e o fechamento.
 //
 // Tempo de projeto x tempo real: as cenas foram desenhadas num tempo "de projeto". Quando a narração
@@ -8,8 +8,16 @@
 
 export const FPS = 30;
 
-/** Trecho usado da gravação do gancho (s do arquivo original). */
-export const GANCHO = { arquivo: "aulas/patterns/gancho.mov", de: 1.0, ate: 5.9 };
+/**
+ * Trecho usado da gravação do gancho (s do arquivo original): de logo antes de "Quais" (1,36 s)
+ * até logo depois de "IA?" (5,0 s), sem os silêncios.
+ */
+export const GANCHO = { arquivo: "aulas/patterns/gancho.mov", de: 1.3, ate: 5.15 };
+/**
+ * Trecho em que a mão passa na frente da lente (s do arquivo original): a imagem é coberta pelo
+ * cartão "DESIGN PATTERNS" (Gancho.tsx) e a voz continua.
+ */
+export const CARTAO = { de: 2.25, ate: 3.95 };
 /** Duração do gancho no vídeo final (s). */
 export const INTRO = GANCHO.ate - GANCHO.de;
 /** Fim do canvas no tempo de projeto (s). */
