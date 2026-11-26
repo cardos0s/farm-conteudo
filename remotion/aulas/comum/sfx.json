@@ -248,5 +248,55 @@
     "nome": "Message sent, clear",
     "duracao": 0.568,
     "sync": 0.052
+  },
+  "scan_forte": {
+    "nome": "Scan, clear",
+    "duracao": 0.837,
+    "sync": 0.0
+  },
+  "barra": {
+    "nome": "Bar growing",
+    "duracao": 0.35,
+    "sync": 0.328
+  },
+  "contagem": {
+    "nome": "Count-up, medium",
+    "duracao": 1.222,
+    "sync": 0.0
+  },
+  "conquista": {
+    "nome": "Success, flourish",
+    "duracao": 0.535,
+    "sync": 0.0
+  },
+  "brilho_longo": {
+    "nome": "Shimmer, long, soft",
+    "duracao": 1.923,
+    "sync": 0.01
+  },
+  "assinatura_tech": {
+    "nome": "Logo sting, tech, short",
+    "duracao": 3.143,
+    "sync": 0.155
+  },
+  "vira": {
+    "nome": "Flip, quick",
+    "duracao": 0.178,
+    "sync": 0.155
+  },
+  "materializa": {
+    "nome": "Materialise",
+    "duracao": 1.209,
+    "sync": 0.026
+  },
+  "bloqueio": {
+    "nome": "Failure, thud",
+    "duracao": 0.982,
+    "sync": 0.0
+  },
+  "risco": {
+    "nome": "Highlighter",
+    "duracao": 0.381,
+    "sync": 0.0
   }
 }

@@ -1,13 +1,13 @@
 import React from "react";
 import { Audio, interpolate, Sequence, staticFile } from "remotion";
 import { FIM_REAL, FPS, INICIO_VOZ_CANVAS, INTRO, PARTES, real } from "./roteiro";
-import sfx from "./sfx.json";
+import sfx from "../comum/sfx.json";
 
 // Narração, trilha e efeitos sonoros do Reel. Efeitos no estilo de edição de Reels: poucos sons, bem marcados.
 // - Narração: public/aulas/pix/narracao.wav (fora do git; scripts/aulas/tratar_narracao_pix.sh),
 //   em três pedaços (ver VOZ).
 // - Música: original, gerada por scripts/aulas/sons_pix.py (public/aulas/pix/sons/musica.wav).
-// - Efeitos: SFX Kit (CC0), baixados por scripts/aulas/baixar_sfx_pix.py (public/aulas/pix/sfx/).
+// - Efeitos: SFX Kit (CC0), baixados por scripts/aulas/baixar_sfx.py (public/sfx/).
 // Cada efeito é posicionado pelo seu ponto de sincronia (sfx.json): o golpe do tambor, o pico do
 // whoosh ou a chegada do reverse whoosh caem exatamente no instante marcado aqui.
 // Tempos: intro em segundos do vídeo; canvas no tempo de projeto, com c(t), que passa pelo mapa de
@@ -158,7 +158,7 @@ export function Sons() {
       {[...DEIXAS, ...TROCAS].map(([t, chave, vol], i) => (
         // começa antes do instante para que o ponto de sincronia do som caia em `t`
         <Sequence key={i} from={Math.max(0, Math.round((t - sfx[chave].sync) * FPS))} layout="none">
-          <Audio src={staticFile(`aulas/pix/sfx/${chave}.wav`)} volume={Math.min(1, vol * GANHO_EFEITOS)} />
+          <Audio src={staticFile(`sfx/${chave}.wav`)} volume={Math.min(1, vol * GANHO_EFEITOS)} />
         </Sequence>
       ))}
     </>

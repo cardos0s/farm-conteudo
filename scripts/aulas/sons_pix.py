@@ -5,7 +5,8 @@ Saída em public/aulas/pix/sons/ (fora do git):
   musica.wav  faixa original (lo-fi/eletrônica, 96 BPM) com a estrutura do vídeo:
               intro com pads (0–8 s), batida quando o canvas entra (8 s), tensão no problema,
               groove completo nas soluções, pausa com subida na "escala" e final resolvido.
-Os efeitos sonoros vêm do SFX Kit (CC0): ver scripts/aulas/baixar_sfx_pix.py.
+Os efeitos sonoros vêm do SFX Kit (CC0): ver scripts/aulas/baixar_sfx.py.
+Outros Reels reaproveitam a mesma faixa com outra estrutura: musica(duracao, secao, subidas).
 
 Uso: python3 scripts/aulas/sons_pix.py
 """
@@ -223,7 +224,11 @@ def chiado(d):
     return x
 
 
-def musica():
+SUBIDAS = ((6.4, 1.6), (80.3, 1.6))  # a 2ª termina no "operacional" (81,9 s)
+
+
+def musica(DURACAO=DURACAO, secao=secao, SUBIDAS=SUBIDAS):
+    """`secao(c)` diz o que toca no compasso c; `SUBIDAS` são (início, duração) das subidas."""
     n = int(DURACAO * SR)
     mix = {k: np.zeros((n, 2)) for k in ("harmonia", "bateria", "baixo")}
 
@@ -290,7 +295,7 @@ def musica():
                 soma("harmonia", dedilhado(hz(m)), t0 + i * BATIDA / 2 + (swing if i % 2 else 0), pan=-0.35 if i % 2 else 0.35, ganho=0.33)
 
     # subidas na entrada do canvas e antes do "operacional"
-    for ini, d in ((6.4, 1.6), (80.3, 1.6)):  # a 2ª termina no "operacional" (81,9 s)
+    for ini, d in SUBIDAS:
         s = subida(d)
         a = int(ini * SR)
         mix["harmonia"][a : a + len(s)] += s * 0.9

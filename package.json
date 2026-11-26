@@ -14,7 +14,8 @@
     "checar": "tsx src/cli/checar-config.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "render:aula": "tsx src/cli/render-aula.ts"
+    "render:aula": "tsx src/cli/render-aula.ts",
+    "render:patterns": "tsx src/cli/render-patterns.ts"
   },
   "engines": {
     "node": ">=20"

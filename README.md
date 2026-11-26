@@ -154,10 +154,18 @@ scripts/aulas/tratar_narracao_pix.sh <narracao.mp3>
 python3 scripts/aulas/transcrever_narracao.py <narracao.mp3> remotion/aulas/pix/edicao/narracao.json
 # música (Python 3 com numpy) e efeitos
 python3 scripts/aulas/sons_pix.py
-python3 scripts/aulas/baixar_sfx_pix.py
+python3 scripts/aulas/baixar_sfx.py
 ```
 
 A ordem e o trecho de cada tomada ficam em `remotion/aulas/pix/Intro.tsx`; as cenas, as legendas e o mapa de tempo, em `remotion/aulas/pix/roteiro.ts`. Se a narração for regravada, transcreva de novo e atualize as âncoras.
+
+```bash
+npm run render:patterns
+```
+
+Renderiza o Reel **Design patterns na era da IA** (2160×3840, ~160 s) em `saida/aulas/patterns/`, no mesmo formato da gravação do iPhone: HEVC 10 bits, HDR HLG (BT.2020). Abre com o gancho gravado, com a resolução e a cor originais (sem tone mapping), e segue no canvas com o contexto do Gang of Four, os 9 padrões (Singleton, Factory Method, Builder, Adapter, Decorator, Facade, Strategy, Observer e Chain of Responsibility, cada um com código e diagrama), a ponte com a IA e o fechamento. O canvas é renderizado em 4K e convertido para HLG com o branco no nível de referência (75%), para não estourar ao lado da gravação.
+
+Antes do primeiro render: copie a gravação para `public/aulas/patterns/gancho.mov` (sem converter), gere a música com `python3 scripts/aulas/musica_patterns.py` e baixe os efeitos com `python3 scripts/aulas/baixar_sfx.py`. As cenas, as legendas e o mapa de tempo ficam em `remotion/aulas/patterns/roteiro.ts`; quando a narração for gravada, ela é sincronizada pelas âncoras, como no Reel do Pix.
 
 ## Estrutura
 

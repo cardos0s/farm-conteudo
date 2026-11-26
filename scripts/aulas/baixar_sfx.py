@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Baixa os efeitos sonoros do Reel do Pix do pacote SFX Kit (github.com/wyzowl/sfx-kit, licença CC0).
+"""Baixa os efeitos sonoros dos Reels do pacote SFX Kit (github.com/wyzowl/sfx-kit, licença CC0).
 
-Para cada efeito usado no vídeo, baixa o WAV, confere o sha256 publicado no pacote e grava em
-public/aulas/pix/sfx/<chave>.wav (fora do git). Também gera remotion/aulas/pix/sfx.json com a
-duração e o ponto de sincronia de cada som (o instante do som que deve cair no momento da tela),
-usado por remotion/aulas/pix/Sons.tsx.
+Para cada efeito usado nos vídeos, baixa o WAV, confere o sha256 publicado no pacote e grava em
+public/sfx/<chave>.wav (fora do git). Também gera remotion/aulas/comum/sfx.json com a duração e o
+ponto de sincronia de cada som (o instante do som que deve cair no momento da tela), usado pelos
+Sons.tsx de cada Reel.
 
-Uso: python3 scripts/aulas/baixar_sfx_pix.py
+Uso: python3 scripts/aulas/baixar_sfx.py
 """
 import hashlib
 import json
@@ -15,8 +15,8 @@ import urllib.request
 
 BASE = "https://raw.githubusercontent.com/wyzowl/sfx-kit/HEAD/"
 RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DEST = os.path.join(RAIZ, "public", "aulas", "pix", "sfx")
-MAPA = os.path.join(RAIZ, "remotion", "aulas", "pix", "sfx.json")
+DEST = os.path.join(RAIZ, "public", "sfx")
+MAPA = os.path.join(RAIZ, "remotion", "aulas", "comum", "sfx.json")
 
 # chave usada no vídeo -> nome do som no SFX Kit
 ESCOLHA = {
@@ -70,6 +70,17 @@ ESCOLHA = {
     "assinatura": "Logo sting, minimal, short",
     "assinatura_brilho": "Logo sting, bright, short",
     "enviado": "Message sent, clear",
+    # Reel de design patterns
+    "scan_forte": "Scan, clear",
+    "barra": "Bar growing",
+    "contagem": "Count-up, medium",
+    "conquista": "Success, flourish",
+    "brilho_longo": "Shimmer, long, soft",
+    "assinatura_tech": "Logo sting, tech, short",
+    "vira": "Flip, quick",
+    "materializa": "Materialise",
+    "bloqueio": "Failure, thud",
+    "risco": "Highlighter",
 }
 
 
