@@ -11,18 +11,26 @@ import { FPS, GANCHO, INTRO, TOTAL_QUADROS } from "../../remotion/aulas/patterns
 // (sem tone mapping); o canvas é renderizado em 4K e convertido de SDR para HLG com o branco no
 // nível de referência do HLG (75%, BT.2408), para não estourar ao lado da gravação.
 // Antes: python3 scripts/aulas/musica_patterns.py && python3 scripts/aulas/baixar_sfx.py
-// Uso: npm run render:patterns [-- saida.mp4]
+// Uso: npm run render:patterns [-- saida.mp4] [--so-juntar]
+//   --so-juntar: reaproveita o canvas 4K e o áudio já renderizados (refaz só a etapa final)
 
-const destino = process.argv[2] ?? "saida/aulas/patterns/reel-design-patterns-na-era-da-ia.mp4";
+const args = process.argv.slice(2);
+const soJuntar = args.includes("--so-juntar");
+const destino = args.find((a) => !a.startsWith("--")) ?? "saida/aulas/patterns/reel-design-patterns-na-era-da-ia.mp4";
 const pasta = path.dirname(destino);
 const canvas = path.join(pasta, "canvas-sdr.mp4");
 const trilha = path.join(pasta, "trilha.wav");
 const navegador = process.env.REMOTION_CHROME || null;
 const inicioCanvas = Math.round(INTRO * FPS);
 
-/** SDR (BT.709) → HLG (BT.2020): branco do SDR em ~75% do sinal HLG (-2,30 stops na luz linear). */
+/**
+ * SDR (BT.709) → HLG (BT.2020): branco do SDR em ~75% do sinal HLG (-2,30 stops na luz linear).
+ * O Remotion grava o canvas em faixa completa e com etiquetas de cor incompletas (bt470bg,
+ * "unknown"); setparams diz ao zscale o que o conteúdo realmente é: BT.709, faixa completa.
+ */
 const SDR_PARA_HLG =
-  "zscale=tin=bt709:min=bt709:pin=bt709:rin=tv:t=linear:npl=100,format=gbrpf32le,exposure=exposure=-2.3045," +
+  "setparams=range=pc:color_primaries=bt709:color_trc=bt709:colorspace=bt709," +
+  "zscale=t=linear:npl=100,format=gbrpf32le,exposure=exposure=-2.3045," +
   "zscale=p=bt2020:t=arib-std-b67:m=bt2020nc:r=tv:npl=1000,format=yuv420p10le";
 
 await mkdir(pasta, { recursive: true });
@@ -32,7 +40,7 @@ const composition = await selectComposition({ serveUrl, id: "ReelPatterns", brow
 // 1. canvas em 4K (sem o trecho do gancho, que vem da gravação original)
 const inicio = Date.now();
 let ultimo = -1;
-await renderMedia({
+if (!soJuntar) await renderMedia({
   composition,
   serveUrl,
   codec: "h264",
@@ -56,7 +64,7 @@ await renderMedia({
 });
 
 // 2. áudio do vídeo inteiro (voz do gancho, música e efeitos), sem perdas
-await renderMedia({ composition, serveUrl, codec: "wav", outputLocation: trilha, browserExecutable: navegador });
+if (!soJuntar) await renderMedia({ composition, serveUrl, codec: "wav", outputLocation: trilha, browserExecutable: navegador });
 const medida = spawnSync("ffmpeg", ["-hide_banner", "-i", trilha, "-af", "ebur128=framelog=quiet", "-f", "null", "-"], { encoding: "utf8" }).stderr;
 const integrada = Number(/\bI:\s+(-?[\d.]+) LUFS/.exec(medida)?.[1] ?? "-16");
 const ganho = (-16 - integrada + 0.3).toFixed(2);
