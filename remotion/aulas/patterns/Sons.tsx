@@ -2,10 +2,11 @@ import React from "react";
 import { Audio, interpolate, Sequence, staticFile } from "remotion";
 import sfx from "../comum/sfx.json";
 import { MOMENTOS_GANCHO as G } from "./Gancho";
-import { FIM_REAL, FPS, GANCHO, INTRO, PARTES, real } from "./roteiro";
+import { ATRASO_VOZ, FIM_REAL, FPS, GANCHO, INTRO, PARTES, real } from "./roteiro";
 
 // Voz do gancho, música e efeitos do Reel de design patterns.
 // - Gancho: o áudio da própria gravação (public/aulas/patterns/gancho.mov).
+// - Narração do canvas: public/aulas/patterns/narracao.mp3 (fora do git), desde o corte para o canvas.
 // - Música: original, gerada por scripts/aulas/musica_patterns.py (public/aulas/patterns/musica.wav).
 // - Efeitos: SFX Kit (CC0), baixados por scripts/aulas/baixar_sfx.py (public/sfx/).
 // Tempos do canvas no tempo de projeto, com c(t) (passa pelo mapa de tempo da narração).
@@ -128,17 +129,19 @@ function abaixa(t: number) {
 
 /** Ganho geral dos efeitos (volumes acima de 1 nas deixas servem para sons baixos por natureza). */
 const GANHO_EFEITOS = 0.7;
-/**
- * Música: baixinha sob a voz do gancho; no canvas, mais presente enquanto não há narração.
- * Quando a narração entrar, baixe MUSICA_CANVAS para ~0,12 (como no Reel do Pix).
- */
+/** Música baixinha sob a voz, no gancho e na narração (~18 dB abaixo da fala, como no Reel do Pix). */
 const MUSICA_GANCHO = 0.05;
-const MUSICA_CANVAS = 0.2;
+const MUSICA_CANVAS = 0.11;
+/** A voz do gancho foi gravada ~6 dB mais alta que a narração: fica no mesmo nível. */
+const VOZ_GANCHO = 0.55;
 
 export function Sons() {
   return (
     <>
-      <Audio src={staticFile(GANCHO.arquivo)} trimBefore={Math.round(GANCHO.de * FPS)} trimAfter={Math.round(GANCHO.ate * FPS)} />
+      <Audio src={staticFile(GANCHO.arquivo)} trimBefore={Math.round(GANCHO.de * FPS)} trimAfter={Math.round(GANCHO.ate * FPS)} volume={VOZ_GANCHO} />
+      <Sequence from={Math.round((INTRO + ATRASO_VOZ) * FPS)} layout="none">
+        <Audio src={staticFile("aulas/patterns/narracao.mp3")} />
+      </Sequence>
       <Audio
         src={staticFile("aulas/patterns/musica.wav")}
         volume={(f) =>

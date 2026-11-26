@@ -1,0 +1,1796 @@
+{
+ "duracao": 172.199,
+ "palavras": [
+  {
+   "p": "Será",
+   "de": 0.0,
+   "ate": 0.3
+  },
+  {
+   "p": "que",
+   "de": 0.3,
+   "ate": 0.5
+  },
+  {
+   "p": "Singleton,",
+   "de": 0.5,
+   "ate": 1.18
+  },
+  {
+   "p": "Factory,",
+   "de": 1.48,
+   "ate": 1.94
+  },
+  {
+   "p": "Strategy",
+   "de": 2.22,
+   "ate": 2.64
+  },
+  {
+   "p": "e",
+   "de": 2.64,
+   "ate": 3.02
+  },
+  {
+   "p": "os",
+   "de": 3.02,
+   "ate": 3.22
+  },
+  {
+   "p": "outros",
+   "de": 3.22,
+   "ate": 3.5
+  },
+  {
+   "p": "design",
+   "de": 3.5,
+   "ate": 3.88
+  },
+  {
+   "p": "patterns",
+   "de": 3.88,
+   "ate": 4.3
+  },
+  {
+   "p": "clássicos",
+   "de": 4.3,
+   "ate": 4.96
+  },
+  {
+   "p": "ainda",
+   "de": 4.96,
+   "ate": 5.36
+  },
+  {
+   "p": "fazem",
+   "de": 5.36,
+   "ate": 5.78
+  },
+  {
+   "p": "sentido",
+   "de": 5.78,
+   "ate": 6.3
+  },
+  {
+   "p": "na",
+   "de": 6.3,
+   "ate": 6.54
+  },
+  {
+   "p": "era",
+   "de": 6.54,
+   "ate": 6.74
+  },
+  {
+   "p": "da",
+   "de": 6.74,
+   "ate": 6.88
+  },
+  {
+   "p": "inteligência",
+   "de": 6.88,
+   "ate": 7.36
+  },
+  {
+   "p": "artificial?",
+   "de": 7.36,
+   "ate": 7.74
+  },
+  {
+   "p": "A",
+   "de": 8.12,
+   "ate": 8.6
+  },
+  {
+   "p": "resposta",
+   "de": 8.6,
+   "ate": 9.06
+  },
+  {
+   "p": "é",
+   "de": 9.06,
+   "ate": 9.36
+  },
+  {
+   "p": "sim,",
+   "de": 9.36,
+   "ate": 9.74
+  },
+  {
+   "p": "e",
+   "de": 9.78,
+   "ate": 10.3
+  },
+  {
+   "p": "provavelmente",
+   "de": 10.3,
+   "ate": 11.06
+  },
+  {
+   "p": "você",
+   "de": 11.06,
+   "ate": 11.38
+  },
+  {
+   "p": "vai",
+   "de": 11.38,
+   "ate": 11.54
+  },
+  {
+   "p": "utilizá",
+   "de": 11.54,
+   "ate": 12.0
+  },
+  {
+   "p": "-los",
+   "de": 12.0,
+   "ate": 12.14
+  },
+  {
+   "p": "ainda",
+   "de": 12.14,
+   "ate": 12.54
+  },
+  {
+   "p": "mais.",
+   "de": 12.54,
+   "ate": 12.92
+  },
+  {
+   "p": "Em",
+   "de": 13.16,
+   "ate": 13.7
+  },
+  {
+   "p": "1994,",
+   "de": 13.7,
+   "ate": 14.64
+  },
+  {
+   "p": "o",
+   "de": 15.42,
+   "ate": 15.46
+  },
+  {
+   "p": "Gang",
+   "de": 15.46,
+   "ate": 15.7
+  },
+  {
+   "p": "of",
+   "de": 15.7,
+   "ate": 15.96
+  },
+  {
+   "p": "Four",
+   "de": 15.96,
+   "ate": 16.24
+  },
+  {
+   "p": "publicou",
+   "de": 16.24,
+   "ate": 16.8
+  },
+  {
+   "p": "um",
+   "de": 16.8,
+   "ate": 16.92
+  },
+  {
+   "p": "dos",
+   "de": 16.92,
+   "ate": 17.04
+  },
+  {
+   "p": "livros",
+   "de": 17.04,
+   "ate": 17.36
+  },
+  {
+   "p": "mais",
+   "de": 17.36,
+   "ate": 17.74
+  },
+  {
+   "p": "importantes",
+   "de": 17.74,
+   "ate": 18.34
+  },
+  {
+   "p": "da",
+   "de": 18.34,
+   "ate": 18.54
+  },
+  {
+   "p": "engenharia",
+   "de": 18.54,
+   "ate": 18.96
+  },
+  {
+   "p": "de",
+   "de": 18.96,
+   "ate": 19.12
+  },
+  {
+   "p": "software,",
+   "de": 19.12,
+   "ate": 19.54
+  },
+  {
+   "p": "catalogando",
+   "de": 19.96,
+   "ate": 20.44
+  },
+  {
+   "p": "23",
+   "de": 20.44,
+   "ate": 21.02
+  },
+  {
+   "p": "padrões",
+   "de": 21.02,
+   "ate": 21.54
+  },
+  {
+   "p": "de",
+   "de": 21.54,
+   "ate": 21.66
+  },
+  {
+   "p": "projeto",
+   "de": 21.66,
+   "ate": 22.16
+  },
+  {
+   "p": "divididos",
+   "de": 22.16,
+   "ate": 22.74
+  },
+  {
+   "p": "em",
+   "de": 22.74,
+   "ate": 22.96
+  },
+  {
+   "p": "três",
+   "de": 22.96,
+   "ate": 23.22
+  },
+  {
+   "p": "categorias,",
+   "de": 23.22,
+   "ate": 23.94
+  },
+  {
+   "p": "criacionais,",
+   "de": 24.36,
+   "ate": 25.1
+  },
+  {
+   "p": "estruturais",
+   "de": 25.42,
+   "ate": 26.18
+  },
+  {
+   "p": "e",
+   "de": 26.18,
+   "ate": 26.44
+  },
+  {
+   "p": "comportamentais.",
+   "de": 26.44,
+   "ate": 27.46
+  },
+  {
+   "p": "Mas",
+   "de": 27.46,
+   "ate": 28.18
+  },
+  {
+   "p": "como",
+   "de": 28.18,
+   "ate": 28.44
+  },
+  {
+   "p": "esses",
+   "de": 28.44,
+   "ate": 28.62
+  },
+  {
+   "p": "padrões",
+   "de": 28.62,
+   "ate": 29.06
+  },
+  {
+   "p": "se",
+   "de": 29.06,
+   "ate": 29.24
+  },
+  {
+   "p": "encaixam",
+   "de": 29.24,
+   "ate": 29.72
+  },
+  {
+   "p": "nessa",
+   "de": 29.72,
+   "ate": 29.9
+  },
+  {
+   "p": "nova",
+   "de": 29.9,
+   "ate": 30.18
+  },
+  {
+   "p": "realidade?",
+   "de": 30.18,
+   "ate": 30.58
+  },
+  {
+   "p": "Padrões",
+   "de": 31.34,
+   "ate": 31.78
+  },
+  {
+   "p": "criacionais.",
+   "de": 31.78,
+   "ate": 32.66
+  },
+  {
+   "p": "Responsáveis",
+   "de": 32.84,
+   "ate": 33.68
+  },
+  {
+   "p": "pela",
+   "de": 33.68,
+   "ate": 33.96
+  },
+  {
+   "p": "criação",
+   "de": 33.96,
+   "ate": 34.58
+  },
+  {
+   "p": "e",
+   "de": 34.58,
+   "ate": 34.82
+  },
+  {
+   "p": "instanciação",
+   "de": 34.82,
+   "ate": 35.66
+  },
+  {
+   "p": "de",
+   "de": 35.66,
+   "ate": 35.78
+  },
+  {
+   "p": "objetos.",
+   "de": 35.78,
+   "ate": 36.32
+  },
+  {
+   "p": "Singleton.",
+   "de": 36.82,
+   "ate": 37.38
+  },
+  {
+   "p": "Imagine",
+   "de": 37.72,
+   "ate": 38.2
+  },
+  {
+   "p": "que",
+   "de": 38.2,
+   "ate": 38.36
+  },
+  {
+   "p": "sua",
+   "de": 38.36,
+   "ate": 38.52
+  },
+  {
+   "p": "aplicação",
+   "de": 38.52,
+   "ate": 39.0
+  },
+  {
+   "p": "precise",
+   "de": 39.0,
+   "ate": 39.48
+  },
+  {
+   "p": "compartilhar",
+   "de": 39.48,
+   "ate": 40.16
+  },
+  {
+   "p": "uma",
+   "de": 40.16,
+   "ate": 40.34
+  },
+  {
+   "p": "única",
+   "de": 40.34,
+   "ate": 40.82
+  },
+  {
+   "p": "instância",
+   "de": 40.82,
+   "ate": 41.34
+  },
+  {
+   "p": "de",
+   "de": 41.34,
+   "ate": 41.5
+  },
+  {
+   "p": "um",
+   "de": 41.5,
+   "ate": 41.58
+  },
+  {
+   "p": "cliente",
+   "de": 41.58,
+   "ate": 42.0
+  },
+  {
+   "p": "de",
+   "de": 42.0,
+   "ate": 42.12
+  },
+  {
+   "p": "IA",
+   "de": 42.12,
+   "ate": 42.4
+  },
+  {
+   "p": "ThreadSafe,",
+   "de": 42.4,
+   "ate": 43.22
+  },
+  {
+   "p": "evitando",
+   "de": 43.4,
+   "ate": 44.06
+  },
+  {
+   "p": "instanciações",
+   "de": 44.06,
+   "ate": 44.74
+  },
+  {
+   "p": "desnecessárias.",
+   "de": 44.74,
+   "ate": 45.56
+  },
+  {
+   "p": "Factory",
+   "de": 46.02,
+   "ate": 46.54
+  },
+  {
+   "p": "Method.",
+   "de": 46.54,
+   "ate": 46.9
+  },
+  {
+   "p": "Quando",
+   "de": 47.28,
+   "ate": 47.62
+  },
+  {
+   "p": "precisamos",
+   "de": 47.62,
+   "ate": 48.2
+  },
+  {
+   "p": "instanciar",
+   "de": 48.2,
+   "ate": 48.86
+  },
+  {
+   "p": "diferentes",
+   "de": 48.86,
+   "ate": 49.4
+  },
+  {
+   "p": "provedores",
+   "de": 49.4,
+   "ate": 50.02
+  },
+  {
+   "p": "de",
+   "de": 50.02,
+   "ate": 50.2
+  },
+  {
+   "p": "IA",
+   "de": 50.2,
+   "ate": 50.48
+  },
+  {
+   "p": "sem",
+   "de": 50.48,
+   "ate": 51.02
+  },
+  {
+   "p": "acoplar",
+   "de": 51.02,
+   "ate": 51.56
+  },
+  {
+   "p": "a",
+   "de": 51.56,
+   "ate": 51.68
+  },
+  {
+   "p": "aplicação",
+   "de": 51.68,
+   "ate": 52.2
+  },
+  {
+   "p": "às",
+   "de": 52.2,
+   "ate": 52.4
+  },
+  {
+   "p": "suas",
+   "de": 52.4,
+   "ate": 52.58
+  },
+  {
+   "p": "implementações",
+   "de": 52.58,
+   "ate": 53.26
+  },
+  {
+   "p": "concretas.",
+   "de": 53.26,
+   "ate": 54.0
+  },
+  {
+   "p": "Builder.",
+   "de": 54.0,
+   "ate": 54.92
+  },
+  {
+   "p": "Para",
+   "de": 55.04,
+   "ate": 55.34
+  },
+  {
+   "p": "construir",
+   "de": 55.34,
+   "ate": 55.8
+  },
+  {
+   "p": "agentes",
+   "de": 55.8,
+   "ate": 56.26
+  },
+  {
+   "p": "complexos,",
+   "de": 56.26,
+   "ate": 57.04
+  },
+  {
+   "p": "configurando",
+   "de": 57.14,
+   "ate": 57.64
+  },
+  {
+   "p": "ferramentas,",
+   "de": 57.64,
+   "ate": 58.42
+  },
+  {
+   "p": "instruções,",
+   "de": 58.56,
+   "ate": 59.22
+  },
+  {
+   "p": "modelos,",
+   "de": 59.52,
+   "ate": 60.1
+  },
+  {
+   "p": "memória",
+   "de": 60.3,
+   "ate": 60.76
+  },
+  {
+   "p": "e",
+   "de": 60.76,
+   "ate": 60.98
+  },
+  {
+   "p": "políticas",
+   "de": 60.98,
+   "ate": 61.46
+  },
+  {
+   "p": "de",
+   "de": 61.46,
+   "ate": 61.68
+  },
+  {
+   "p": "segurança",
+   "de": 61.68,
+   "ate": 62.12
+  },
+  {
+   "p": "de",
+   "de": 62.12,
+   "ate": 62.36
+  },
+  {
+   "p": "forma",
+   "de": 62.36,
+   "ate": 62.66
+  },
+  {
+   "p": "incremental.",
+   "de": 62.66,
+   "ate": 63.32
+  },
+  {
+   "p": "Padrões",
+   "de": 63.86,
+   "ate": 64.42
+  },
+  {
+   "p": "estruturais.",
+   "de": 64.42,
+   "ate": 65.24
+  },
+  {
+   "p": "Responsáveis",
+   "de": 65.48,
+   "ate": 66.26
+  },
+  {
+   "p": "pela",
+   "de": 66.26,
+   "ate": 66.54
+  },
+  {
+   "p": "composição",
+   "de": 66.54,
+   "ate": 67.36
+  },
+  {
+   "p": "e",
+   "de": 67.36,
+   "ate": 67.62
+  },
+  {
+   "p": "integração",
+   "de": 67.62,
+   "ate": 68.32
+  },
+  {
+   "p": "entre",
+   "de": 68.32,
+   "ate": 68.58
+  },
+  {
+   "p": "componentes.",
+   "de": 68.58,
+   "ate": 69.32
+  },
+  {
+   "p": "Adapter.",
+   "de": 69.74,
+   "ate": 70.14
+  },
+  {
+   "p": "Cada",
+   "de": 70.58,
+   "ate": 70.88
+  },
+  {
+   "p": "provedor",
+   "de": 70.88,
+   "ate": 71.38
+  },
+  {
+   "p": "de",
+   "de": 71.38,
+   "ate": 71.54
+  },
+  {
+   "p": "IA",
+   "de": 71.54,
+   "ate": 71.78
+  },
+  {
+   "p": "possui",
+   "de": 71.78,
+   "ate": 72.26
+  },
+  {
+   "p": "uma",
+   "de": 72.26,
+   "ate": 72.42
+  },
+  {
+   "p": "API",
+   "de": 72.42,
+   "ate": 72.78
+  },
+  {
+   "p": "diferente.",
+   "de": 72.78,
+   "ate": 73.3
+  },
+  {
+   "p": "Com",
+   "de": 73.74,
+   "ate": 74.0
+  },
+  {
+   "p": "Adapter,",
+   "de": 74.0,
+   "ate": 74.52
+  },
+  {
+   "p": "conseguimos",
+   "de": 74.66,
+   "ate": 75.22
+  },
+  {
+   "p": "trabalhar",
+   "de": 75.22,
+   "ate": 75.56
+  },
+  {
+   "p": "com",
+   "de": 75.56,
+   "ate": 75.86
+  },
+  {
+   "p": "uma",
+   "de": 75.86,
+   "ate": 76.0
+  },
+  {
+   "p": "interface",
+   "de": 76.0,
+   "ate": 76.44
+  },
+  {
+   "p": "padronizada,",
+   "de": 76.44,
+   "ate": 77.34
+  },
+  {
+   "p": "independentemente",
+   "de": 77.54,
+   "ate": 78.46
+  },
+  {
+   "p": "do",
+   "de": 78.46,
+   "ate": 78.64
+  },
+  {
+   "p": "modelo",
+   "de": 78.64,
+   "ate": 78.94
+  },
+  {
+   "p": "utilizado.",
+   "de": 78.94,
+   "ate": 79.58
+  },
+  {
+   "p": "Decorator.",
+   "de": 79.58,
+   "ate": 80.62
+  },
+  {
+   "p": "Permite",
+   "de": 80.78,
+   "ate": 81.3
+  },
+  {
+   "p": "adicionar",
+   "de": 81.3,
+   "ate": 81.84
+  },
+  {
+   "p": "observabilidade,",
+   "de": 81.84,
+   "ate": 82.92
+  },
+  {
+   "p": "cache,",
+   "de": 83.16,
+   "ate": 83.54
+  },
+  {
+   "p": "contabilização",
+   "de": 83.84,
+   "ate": 84.42
+  },
+  {
+   "p": "de",
+   "de": 84.42,
+   "ate": 84.7
+  },
+  {
+   "p": "tokens",
+   "de": 84.7,
+   "ate": 85.08
+  },
+  {
+   "p": "e",
+   "de": 85.08,
+   "ate": 85.36
+  },
+  {
+   "p": "validações",
+   "de": 85.36,
+   "ate": 86.12
+  },
+  {
+   "p": "sem",
+   "de": 86.12,
+   "ate": 86.58
+  },
+  {
+   "p": "modificar",
+   "de": 86.58,
+   "ate": 87.12
+  },
+  {
+   "p": "a",
+   "de": 87.12,
+   "ate": 87.28
+  },
+  {
+   "p": "implementação",
+   "de": 87.28,
+   "ate": 87.84
+  },
+  {
+   "p": "principal.",
+   "de": 87.84,
+   "ate": 88.36
+  },
+  {
+   "p": "Facade.",
+   "de": 88.78,
+   "ate": 89.34
+  },
+  {
+   "p": "Em",
+   "de": 89.64,
+   "ate": 89.84
+  },
+  {
+   "p": "vez",
+   "de": 89.84,
+   "ate": 89.98
+  },
+  {
+   "p": "de",
+   "de": 89.98,
+   "ate": 90.12
+  },
+  {
+   "p": "expor",
+   "de": 90.12,
+   "ate": 90.46
+  },
+  {
+   "p": "toda",
+   "de": 90.46,
+   "ate": 90.82
+  },
+  {
+   "p": "a",
+   "de": 90.82,
+   "ate": 90.96
+  },
+  {
+   "p": "complexidade",
+   "de": 90.96,
+   "ate": 91.6
+  },
+  {
+   "p": "de",
+   "de": 91.6,
+   "ate": 91.78
+  },
+  {
+   "p": "uma",
+   "de": 91.78,
+   "ate": 91.88
+  },
+  {
+   "p": "arquitetura",
+   "de": 91.88,
+   "ate": 92.38
+  },
+  {
+   "p": "multi",
+   "de": 92.38,
+   "ate": 92.72
+  },
+  {
+   "p": "-agente,",
+   "de": 92.72,
+   "ate": 93.18
+  },
+  {
+   "p": "você",
+   "de": 93.38,
+   "ate": 93.68
+  },
+  {
+   "p": "oferece",
+   "de": 93.68,
+   "ate": 94.12
+  },
+  {
+   "p": "uma",
+   "de": 94.12,
+   "ate": 94.26
+  },
+  {
+   "p": "interface",
+   "de": 94.26,
+   "ate": 94.7
+  },
+  {
+   "p": "simplificada",
+   "de": 94.7,
+   "ate": 95.66
+  },
+  {
+   "p": "para",
+   "de": 95.66,
+   "ate": 95.88
+  },
+  {
+   "p": "a",
+   "de": 95.88,
+   "ate": 96.0
+  },
+  {
+   "p": "aplicação",
+   "de": 96.0,
+   "ate": 96.34
+  },
+  {
+   "p": "consumir.",
+   "de": 96.34,
+   "ate": 96.96
+  },
+  {
+   "p": "Padrões",
+   "de": 97.32,
+   "ate": 97.78
+  },
+  {
+   "p": "comportamentais.",
+   "de": 97.78,
+   "ate": 98.88
+  },
+  {
+   "p": "Responsáveis",
+   "de": 99.12,
+   "ate": 99.82
+  },
+  {
+   "p": "pela",
+   "de": 99.82,
+   "ate": 100.12
+  },
+  {
+   "p": "comunicação",
+   "de": 100.12,
+   "ate": 100.82
+  },
+  {
+   "p": "e",
+   "de": 100.82,
+   "ate": 101.2
+  },
+  {
+   "p": "distribuição",
+   "de": 101.2,
+   "ate": 101.92
+  },
+  {
+   "p": "de",
+   "de": 101.92,
+   "ate": 102.14
+  },
+  {
+   "p": "responsabilidades.",
+   "de": 102.14,
+   "ate": 103.14
+  },
+  {
+   "p": "Strategy.",
+   "de": 103.14,
+   "ate": 104.02
+  },
+  {
+   "p": "Podemos",
+   "de": 104.34,
+   "ate": 104.82
+  },
+  {
+   "p": "alternar",
+   "de": 104.82,
+   "ate": 105.36
+  },
+  {
+   "p": "entre",
+   "de": 105.36,
+   "ate": 105.58
+  },
+  {
+   "p": "diferentes",
+   "de": 105.58,
+   "ate": 106.14
+  },
+  {
+   "p": "modelos",
+   "de": 106.14,
+   "ate": 106.76
+  },
+  {
+   "p": "ou",
+   "de": 106.76,
+   "ate": 107.02
+  },
+  {
+   "p": "estratégias",
+   "de": 107.02,
+   "ate": 107.74
+  },
+  {
+   "p": "de",
+   "de": 107.74,
+   "ate": 107.84
+  },
+  {
+   "p": "inferência",
+   "de": 107.84,
+   "ate": 108.38
+  },
+  {
+   "p": "durante",
+   "de": 108.38,
+   "ate": 108.64
+  },
+  {
+   "p": "a",
+   "de": 108.64,
+   "ate": 108.82
+  },
+  {
+   "p": "execução,",
+   "de": 108.82,
+   "ate": 109.3
+  },
+  {
+   "p": "considerando",
+   "de": 109.54,
+   "ate": 110.2
+  },
+  {
+   "p": "custo,",
+   "de": 110.2,
+   "ate": 110.78
+  },
+  {
+   "p": "latência",
+   "de": 110.96,
+   "ate": 111.52
+  },
+  {
+   "p": "e",
+   "de": 111.52,
+   "ate": 111.74
+  },
+  {
+   "p": "complexidade",
+   "de": 111.74,
+   "ate": 112.56
+  },
+  {
+   "p": "da",
+   "de": 112.56,
+   "ate": 112.74
+  },
+  {
+   "p": "tarefa.",
+   "de": 112.74,
+   "ate": 113.22
+  },
+  {
+   "p": "Observer.",
+   "de": 113.54,
+   "ate": 114.08
+  },
+  {
+   "p": "Quando",
+   "de": 114.4,
+   "ate": 114.64
+  },
+  {
+   "p": "um",
+   "de": 114.64,
+   "ate": 114.78
+  },
+  {
+   "p": "agente",
+   "de": 114.78,
+   "ate": 115.12
+  },
+  {
+   "p": "executa",
+   "de": 115.12,
+   "ate": 115.58
+  },
+  {
+   "p": "uma",
+   "de": 115.58,
+   "ate": 115.68
+  },
+  {
+   "p": "tarefa,",
+   "de": 115.68,
+   "ate": 116.18
+  },
+  {
+   "p": "outros",
+   "de": 116.5,
+   "ate": 116.76
+  },
+  {
+   "p": "componentes",
+   "de": 116.76,
+   "ate": 117.4
+  },
+  {
+   "p": "podem",
+   "de": 117.4,
+   "ate": 117.62
+  },
+  {
+   "p": "ser",
+   "de": 117.62,
+   "ate": 117.84
+  },
+  {
+   "p": "notificados",
+   "de": 117.84,
+   "ate": 118.62
+  },
+  {
+   "p": "sobre",
+   "de": 118.62,
+   "ate": 118.9
+  },
+  {
+   "p": "eventos,",
+   "de": 118.9,
+   "ate": 119.48
+  },
+  {
+   "p": "resultados",
+   "de": 119.64,
+   "ate": 120.24
+  },
+  {
+   "p": "ou",
+   "de": 120.24,
+   "ate": 120.64
+  },
+  {
+   "p": "mudanças",
+   "de": 120.64,
+   "ate": 121.16
+  },
+  {
+   "p": "de",
+   "de": 121.16,
+   "ate": 121.3
+  },
+  {
+   "p": "estado.",
+   "de": 121.3,
+   "ate": 121.68
+  },
+  {
+   "p": "Chain",
+   "de": 122.1,
+   "ate": 122.32
+  },
+  {
+   "p": "of",
+   "de": 122.32,
+   "ate": 122.54
+  },
+  {
+   "p": "Responsibility.",
+   "de": 122.54,
+   "ate": 123.3
+  },
+  {
+   "p": "Uma",
+   "de": 123.54,
+   "ate": 123.84
+  },
+  {
+   "p": "requisição",
+   "de": 123.84,
+   "ate": 124.46
+  },
+  {
+   "p": "pode",
+   "de": 124.46,
+   "ate": 124.74
+  },
+  {
+   "p": "passar",
+   "de": 124.74,
+   "ate": 125.08
+  },
+  {
+   "p": "por",
+   "de": 125.08,
+   "ate": 125.28
+  },
+  {
+   "p": "diferentes",
+   "de": 125.28,
+   "ate": 125.84
+  },
+  {
+   "p": "handlers",
+   "de": 125.84,
+   "ate": 126.38
+  },
+  {
+   "p": "responsáveis",
+   "de": 126.38,
+   "ate": 127.08
+  },
+  {
+   "p": "pela",
+   "de": 127.08,
+   "ate": 127.32
+  },
+  {
+   "p": "segurança,",
+   "de": 127.32,
+   "ate": 127.92
+  },
+  {
+   "p": "validação",
+   "de": 128.18,
+   "ate": 128.88
+  },
+  {
+   "p": "e",
+   "de": 128.88,
+   "ate": 129.12
+  },
+  {
+   "p": "processamento,",
+   "de": 129.12,
+   "ate": 129.96
+  },
+  {
+   "p": "podendo",
+   "de": 130.18,
+   "ate": 130.62
+  },
+  {
+   "p": "ser",
+   "de": 130.62,
+   "ate": 130.82
+  },
+  {
+   "p": "interrompida",
+   "de": 130.82,
+   "ate": 131.52
+  },
+  {
+   "p": "ou",
+   "de": 131.52,
+   "ate": 131.86
+  },
+  {
+   "p": "encaminhada.",
+   "de": 131.86,
+   "ate": 132.5
+  },
+  {
+   "p": "E",
+   "de": 132.5,
+   "ate": 132.96
+  },
+  {
+   "p": "o",
+   "de": 132.96,
+   "ate": 133.06
+  },
+  {
+   "p": "mais",
+   "de": 133.06,
+   "ate": 133.28
+  },
+  {
+   "p": "interessante",
+   "de": 133.28,
+   "ate": 133.82
+  },
+  {
+   "p": "é",
+   "de": 133.82,
+   "ate": 134.2
+  },
+  {
+   "p": "que",
+   "de": 134.2,
+   "ate": 134.34
+  },
+  {
+   "p": "vários",
+   "de": 134.34,
+   "ate": 134.76
+  },
+  {
+   "p": "padrões",
+   "de": 134.76,
+   "ate": 135.2
+  },
+  {
+   "p": "utilizados",
+   "de": 135.2,
+   "ate": 135.82
+  },
+  {
+   "p": "atualmente",
+   "de": 135.82,
+   "ate": 136.42
+  },
+  {
+   "p": "em",
+   "de": 136.42,
+   "ate": 136.56
+  },
+  {
+   "p": "sistemas",
+   "de": 136.56,
+   "ate": 136.92
+  },
+  {
+   "p": "de",
+   "de": 136.92,
+   "ate": 137.1
+  },
+  {
+   "p": "inteligência",
+   "de": 137.1,
+   "ate": 137.56
+  },
+  {
+   "p": "artificial",
+   "de": 137.56,
+   "ate": 138.0
+  },
+  {
+   "p": "podem",
+   "de": 138.0,
+   "ate": 138.72
+  },
+  {
+   "p": "ser",
+   "de": 138.72,
+   "ate": 138.96
+  },
+  {
+   "p": "implementados",
+   "de": 138.96,
+   "ate": 139.68
+  },
+  {
+   "p": "combinando",
+   "de": 139.68,
+   "ate": 140.2
+  },
+  {
+   "p": "conceitos",
+   "de": 140.2,
+   "ate": 140.74
+  },
+  {
+   "p": "que",
+   "de": 140.74,
+   "ate": 140.96
+  },
+  {
+   "p": "já",
+   "de": 140.96,
+   "ate": 141.24
+  },
+  {
+   "p": "conhecemos",
+   "de": 141.24,
+   "ate": 141.94
+  },
+  {
+   "p": "da",
+   "de": 141.94,
+   "ate": 142.08
+  },
+  {
+   "p": "engenharia",
+   "de": 142.08,
+   "ate": 142.5
+  },
+  {
+   "p": "de",
+   "de": 142.5,
+   "ate": 142.64
+  },
+  {
+   "p": "software",
+   "de": 142.64,
+   "ate": 143.02
+  },
+  {
+   "p": "tradicional.",
+   "de": 143.02,
+   "ate": 143.58
+  },
+  {
+   "p": "Antes",
+   "de": 143.78,
+   "ate": 144.32
+  },
+  {
+   "p": "de",
+   "de": 144.32,
+   "ate": 144.5
+  },
+  {
+   "p": "estudar",
+   "de": 144.5,
+   "ate": 144.88
+  },
+  {
+   "p": "arquiteturas",
+   "de": 144.88,
+   "ate": 145.46
+  },
+  {
+   "p": "multi",
+   "de": 145.46,
+   "ate": 145.74
+  },
+  {
+   "p": "-agentes,",
+   "de": 145.74,
+   "ate": 146.32
+  },
+  {
+   "p": "RAG,",
+   "de": 146.6,
+   "ate": 146.96
+  },
+  {
+   "p": "frameworks",
+   "de": 147.14,
+   "ate": 147.54
+  },
+  {
+   "p": "de",
+   "de": 147.54,
+   "ate": 147.76
+  },
+  {
+   "p": "inteligência",
+   "de": 147.76,
+   "ate": 148.22
+  },
+  {
+   "p": "artificial",
+   "de": 148.22,
+   "ate": 148.74
+  },
+  {
+   "p": "ou",
+   "de": 148.74,
+   "ate": 149.24
+  },
+  {
+   "p": "qualquer",
+   "de": 149.24,
+   "ate": 149.64
+  },
+  {
+   "p": "tecnologia",
+   "de": 149.64,
+   "ate": 150.2
+  },
+  {
+   "p": "que",
+   "de": 150.2,
+   "ate": 150.44
+  },
+  {
+   "p": "esteja",
+   "de": 150.44,
+   "ate": 150.72
+  },
+  {
+   "p": "em",
+   "de": 150.72,
+   "ate": 150.84
+  },
+  {
+   "p": "alta,",
+   "de": 150.84,
+   "ate": 151.14
+  },
+  {
+   "p": "estude",
+   "de": 151.66,
+   "ate": 151.94
+  },
+  {
+   "p": "os",
+   "de": 151.94,
+   "ate": 152.12
+  },
+  {
+   "p": "fundamentos",
+   "de": 152.12,
+   "ate": 152.86
+  },
+  {
+   "p": "da",
+   "de": 152.86,
+   "ate": 152.98
+  },
+  {
+   "p": "engenharia",
+   "de": 152.98,
+   "ate": 153.4
+  },
+  {
+   "p": "de",
+   "de": 153.4,
+   "ate": 153.54
+  },
+  {
+   "p": "software.",
+   "de": 153.54,
+   "ate": 153.96
+  },
+  {
+   "p": "Os",
+   "de": 153.96,
+   "ate": 154.46
+  },
+  {
+   "p": "modelos",
+   "de": 154.46,
+   "ate": 154.92
+  },
+  {
+   "p": "mudam.",
+   "de": 154.92,
+   "ate": 155.3
+  },
+  {
+   "p": "Os",
+   "de": 155.44,
+   "ate": 155.72
+  },
+  {
+   "p": "frameworks",
+   "de": 155.72,
+   "ate": 156.14
+  },
+  {
+   "p": "mudam.",
+   "de": 156.14,
+   "ate": 156.72
+  },
+  {
+   "p": "Mas",
+   "de": 156.82,
+   "ate": 157.1
+  },
+  {
+   "p": "os",
+   "de": 157.1,
+   "ate": 157.26
+  },
+  {
+   "p": "princípios",
+   "de": 157.26,
+   "ate": 157.9
+  },
+  {
+   "p": "que",
+   "de": 157.9,
+   "ate": 158.02
+  },
+  {
+   "p": "nos",
+   "de": 158.02,
+   "ate": 158.16
+  },
+  {
+   "p": "permitem",
+   "de": 158.16,
+   "ate": 158.62
+  },
+  {
+   "p": "construir",
+   "de": 158.62,
+   "ate": 159.08
+  },
+  {
+   "p": "software",
+   "de": 159.08,
+   "ate": 159.62
+  },
+  {
+   "p": "extensível,",
+   "de": 159.62,
+   "ate": 160.42
+  },
+  {
+   "p": "desacoplado,",
+   "de": 160.6,
+   "ate": 161.38
+  },
+  {
+   "p": "seguro",
+   "de": 161.56,
+   "ate": 161.98
+  },
+  {
+   "p": "e",
+   "de": 161.98,
+   "ate": 162.2
+  },
+  {
+   "p": "escalável",
+   "de": 162.2,
+   "ate": 162.9
+  },
+  {
+   "p": "continuam",
+   "de": 162.9,
+   "ate": 163.7
+  },
+  {
+   "p": "relevantes.",
+   "de": 163.7,
+   "ate": 164.44
+  },
+  {
+   "p": "A",
+   "de": 164.58,
+   "ate": 165.06
+  },
+  {
+   "p": "era",
+   "de": 165.06,
+   "ate": 165.24
+  },
+  {
+   "p": "da",
+   "de": 165.24,
+   "ate": 165.38
+  },
+  {
+   "p": "inteligência",
+   "de": 165.38,
+   "ate": 165.86
+  },
+  {
+   "p": "artificial",
+   "de": 165.86,
+   "ate": 166.3
+  },
+  {
+   "p": "não",
+   "de": 166.3,
+   "ate": 166.78
+  },
+  {
+   "p": "tornou",
+   "de": 166.78,
+   "ate": 167.28
+  },
+  {
+   "p": "os",
+   "de": 167.28,
+   "ate": 167.4
+  },
+  {
+   "p": "fundamentos",
+   "de": 167.4,
+   "ate": 167.96
+  },
+  {
+   "p": "obsoletos.",
+   "de": 167.96,
+   "ate": 168.62
+  },
+  {
+   "p": "Tornou",
+   "de": 168.82,
+   "ate": 169.4
+  },
+  {
+   "p": "a",
+   "de": 169.4,
+   "ate": 169.58
+  },
+  {
+   "p": "falta",
+   "de": 169.58,
+   "ate": 169.96
+  },
+  {
+   "p": "deles",
+   "de": 169.96,
+   "ate": 170.4
+  },
+  {
+   "p": "ainda",
+   "de": 170.4,
+   "ate": 170.92
+  },
+  {
+   "p": "mais",
+   "de": 170.92,
+   "ate": 171.32
+  },
+  {
+   "p": "evidente.",
+   "de": 171.32,
+   "ate": 172.02
+  }
+ ],
+ "texto": "Será que Singleton, Factory, Strategy e os outros design patterns clássicos ainda fazem sentido na era da inteligência artificial? A resposta é sim, e provavelmente você vai utilizá -los ainda mais. Em 1994, o Gang of Four publicou um dos livros mais importantes da engenharia de software, catalogando 23 padrões de projeto divididos em três categorias, criacionais, estruturais e comportamentais. Mas como esses padrões se encaixam nessa nova realidade? Padrões criacionais. Responsáveis pela criação e instanciação de objetos. Singleton. Imagine que sua aplicação precise compartilhar uma única instância de um cliente de IA ThreadSafe, evitando instanciações desnecessárias. Factory Method. Quando precisamos instanciar diferentes provedores de IA sem acoplar a aplicação às suas implementações concretas. Builder. Para construir agentes complexos, configurando ferramentas, instruções, modelos, memória e políticas de segurança de forma incremental. Padrões estruturais. Responsáveis pela composição e integração entre componentes. Adapter. Cada provedor de IA possui uma API diferente. Com Adapter, conseguimos trabalhar com uma interface padronizada, independentemente do modelo utilizado. Decorator. Permite adicionar observabilidade, cache, contabilização de tokens e validações sem modificar a implementação principal. Facade. Em vez de expor toda a complexidade de uma arquitetura multi -agente, você oferece uma interface simplificada para a aplicação consumir. Padrões comportamentais. Responsáveis pela comunicação e distribuição de responsabilidades. Strategy. Podemos alternar entre diferentes modelos ou estratégias de inferência durante a execução, considerando custo, latência e complexidade da tarefa. Observer. Quando um agente executa uma tarefa, outros componentes podem ser notificados sobre eventos, resultados ou mudanças de estado. Chain of Responsibility. Uma requisição pode passar por diferentes handlers responsáveis pela segurança, validação e processamento, podendo ser interrompida ou encaminhada. E o mais interessante é que vários padrões utilizados atualmente em sistemas de inteligência artificial podem ser implementados combinando conceitos que já conhecemos da engenharia de software tradicional. Antes de estudar arquiteturas multi -agentes, RAG, frameworks de inteligência artificial ou qualquer tecnologia que esteja em alta, estude os fundamentos da engenharia de software. Os modelos mudam. Os frameworks mudam. Mas os princípios que nos permitem construir software extensível, desacoplado, seguro e escalável continuam relevantes. A era da inteligência artificial não tornou os fundamentos obsoletos. Tornou a falta deles ainda mais evidente."
+}
