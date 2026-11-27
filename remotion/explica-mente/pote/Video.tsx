@@ -64,7 +64,7 @@ const SetasFirmeza: React.FC<{ forca: number }> = ({ forca }) => (
 type Est = { firma: number; torce: number; abre: number; setaPote?: number; setaTampa?: number; setasFirma?: number };
 
 /** `firma` 0..1 leva a outra mão ao pote; `torce` é o vai e vem da mão de cima; `abre` solta e tira a tampa. */
-const Cena: React.FC<{ f: number; e: Est; cam?: Cam }> = ({ f, e, cam = CAM }) => {
+export const Cena: React.FC<{ f: number; e: Est; cam?: Cam }> = ({ f, e, cam = CAM }) => {
   const torcao = 0.75 * Math.sin(e.torce);
   const giroPote = torcao * (1 - e.firma);
   const tampa = e.firma * (torcao * (1 - e.abre) + 2.6 * e.abre);

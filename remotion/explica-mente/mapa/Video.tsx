@@ -10,7 +10,7 @@ import tempos from "./tempos.json";
 const CAM: Cam = { pos: [0, 9.2, 6.65], alvo: [0, 0, 0.2], fov: 34 };
 const CINZA = "#C9C6D0";
 
-const LUGARES = {
+export const LUGARES = {
   casa: { pos: [0, 0, 1.3] as V3, nome: "Casa" },
   onibus: { pos: [-0.85, 0, 0.2] as V3, nome: "Ônibus" },
   mercado: { pos: [0.75, 0, 0.15] as V3, nome: "Mercado" },
@@ -79,8 +79,8 @@ const Cidade: React.FC<{ fora: Partial<Record<Lugar, number>> }> = ({ fora }) =>
   );
 };
 
-const DIRETO: V3[] = [LUGARES.casa.pos, [-0.7, 0, 0.85], LUGARES.onibus.pos, [-0.15, 0, -0.9], LUGARES.trabalho.pos];
-const DESVIO: V3[] = [LUGARES.casa.pos, [1.4, 0, 1.1], [1.62, 0, 0.0], [1.5, 0, -1.2], LUGARES.trabalho.pos];
+export const DIRETO: V3[] = [LUGARES.casa.pos, [-0.7, 0, 0.85], LUGARES.onibus.pos, [-0.15, 0, -0.9], LUGARES.trabalho.pos];
+export const DESVIO: V3[] = [LUGARES.casa.pos, [1.4, 0, 1.1], [1.62, 0, 0.0], [1.5, 0, -1.2], LUGARES.trabalho.pos];
 
 const noCaminho = (pts: V3[], t: number): V3 => {
   const x = Math.max(0, Math.min(1, t)) * (pts.length - 1);
@@ -89,7 +89,7 @@ const noCaminho = (pts: V3[], t: number): V3 => {
 };
 
 /** Trajeto pontilhado até `ate` (0..1) e o marcador da pessoa. */
-const Trajeto: React.FC<{ pts: V3[]; ate: number; cor: string; pino?: boolean }> = ({ pts, ate, cor: c, pino = true }) => {
+export const Trajeto: React.FC<{ pts: V3[]; ate: number; cor: string; pino?: boolean }> = ({ pts, ate, cor: c, pino = true }) => {
   const N = 26;
   const p = noCaminho(pts, ate);
   return (
@@ -112,14 +112,14 @@ const Trajeto: React.FC<{ pts: V3[]; ate: number; cor: string; pino?: boolean }>
 };
 
 /** Área que a rotina ainda alcança. */
-const Zona: React.FC<{ raio: number; forca: number }> = ({ raio, forca }) => (
+export const Zona: React.FC<{ raio: number; forca: number }> = ({ raio, forca }) => (
   <mesh position={[LUGARES.casa.pos[0], 0.03, LUGARES.casa.pos[2] - raio * 0.6]} rotation={[-Math.PI / 2, 0, 0]}>
     <ringGeometry args={[raio * 0.965, raio, 80]} />
     <meshBasicMaterial color="#4B2BBF" transparent opacity={forca} depthWrite={false} />
   </mesh>
 );
 
-const Rotulos: React.FC<{ fora: Partial<Record<Lugar, number>>; opacidade?: number }> = ({ fora, opacidade = 1 }) => (
+export const Rotulos: React.FC<{ fora: Partial<Record<Lugar, number>>; opacidade?: number }> = ({ fora, opacidade = 1 }) => (
   <>
     {(Object.keys(LUGARES) as Lugar[]).map((l) => {
       const s = projetar(CAM, [LUGARES[l].pos[0], l === "trabalho" ? 1.7 : 1.0, LUGARES[l].pos[2] - 0.5]);
@@ -133,7 +133,7 @@ const Rotulos: React.FC<{ fora: Partial<Record<Lugar, number>>; opacidade?: numb
   </>
 );
 
-const Mapa: React.FC<{ fora: Partial<Record<Lugar, number>>; children?: React.ReactNode }> = ({ fora, children }) => (
+export const Mapa: React.FC<{ fora: Partial<Record<Lugar, number>>; children?: React.ReactNode }> = ({ fora, children }) => (
   <Palco cam={CAM} sala={false}>
     <Cidade fora={fora} />
     {children}

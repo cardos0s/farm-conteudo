@@ -14,7 +14,7 @@ import tempos from "./tempos.json";
 const CAM: Cam = { pos: [0.08, 1.05, 3.3], alvo: [0.1, 0.75, -0.8], fov: 34 };
 const NO_SUPORTE: V3 = [0.6, 0.1, -0.45];
 
-const Violao: React.FC<{ pos: V3; rot: V3 }> = ({ pos, rot }) => (
+export const Violao: React.FC<{ pos: V3; rot: V3 }> = ({ pos, rot }) => (
   <group position={pos} rotation={[rot[0], rot[1], rot[2], "YXZ"]}>
     <Esfera r={1} escala={[0.2, 0.17, 0.06]} pos={[0, 0.17, 0]} cor="#D99B5B" />
     <Esfera r={1} escala={[0.15, 0.13, 0.058]} pos={[0, 0.4, 0]} cor="#D99B5B" />
@@ -70,7 +70,7 @@ const Cena: React.FC<{ f: number; modo: "olha" | "toca" | "passa"; t?: number; l
 
 // ---------- calendário ----------
 type Dia = 0 | 1 | 2; // 0 = sem dia, 1 = tocou, 2 = não tocou
-const Calendario: React.FC<{ dias: Dia[]; mostra: number; destaque?: [number, number]; titulo: string }> = ({ dias, mostra, destaque, titulo }) => (
+export const Calendario: React.FC<{ dias: Dia[]; mostra: number; destaque?: [number, number]; titulo: string }> = ({ dias, mostra, destaque, titulo }) => (
   <div style={{ position: "absolute", top: 236, left: 60, right: 60, background: "#FFFFFF", borderRadius: 44, padding: "34px 36px 40px", boxShadow: "0 16px 40px rgba(36,26,74,0.2)" }}>
     <div style={{ fontFamily: POPPINS, fontWeight: 800, fontSize: 44, color: MARCA.tinta, textAlign: "center", marginBottom: 18 }}>{titulo}</div>
     <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 12 }}>
@@ -100,9 +100,9 @@ const Calendario: React.FC<{ dias: Dia[]; mostra: number; destaque?: [number, nu
 const T: Dia = 1;
 const N: Dia = 2;
 /** Um mês em que o violão vai ficando de lado. */
-const MES_MUDANCA: Dia[] = [T, T, N, T, T, T, T, T, N, T, T, N, T, N, N, T, N, N, N, N, N, N, N, N, N, N, N, N];
+export const MES_MUDANCA: Dia[] = [T, T, N, T, T, T, T, T, N, T, T, N, T, N, N, T, N, N, N, N, N, N, N, N, N, N, N, N];
 /** Um mês comum, com um dia ruim no meio. */
-const MES_DIA_RUIM: Dia[] = [T, T, N, T, T, T, T, T, T, T, N, T, T, T, T, N, T, T, T, T, T, T, T, T, N, T, T, T];
+export const MES_DIA_RUIM: Dia[] = [T, T, N, T, T, T, T, T, T, T, N, T, T, T, T, N, T, T, T, T, T, T, T, T, N, T, T, T];
 
 const desenhar = (q: Quadro) => {
   const { f, p, em, F } = q;

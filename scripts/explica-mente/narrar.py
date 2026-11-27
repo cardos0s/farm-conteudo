@@ -33,5 +33,16 @@ req = urllib.request.Request(
     data=json.dumps({"text": texto, "model_id": modelo}).encode(),
     headers={"xi-api-key": os.environ["ELEVENLABS_API_KEY"], "content-type": "application/json"},
 )
-open(saida, "wb").write(urllib.request.urlopen(req, timeout=300).read())
+# tenta algumas vezes e só grava o arquivo quando o áudio chegou inteiro
+import time
+
+for tentativa in range(4):
+    try:
+        dados = urllib.request.urlopen(req, timeout=300).read()
+        break
+    except Exception as erro:  # noqa: BLE001
+        if tentativa == 3:
+            sys.exit(f"ElevenLabs não respondeu: {erro}")
+        time.sleep(20 * (tentativa + 1))
+open(saida, "wb").write(dados)
 print(f"ok: {saida} ({len(textos)} falas, {len(texto)} caracteres)")

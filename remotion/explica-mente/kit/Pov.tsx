@@ -138,3 +138,11 @@ export const Barulho: React.FC<{ f: number; forca: number; x?: number; y?: numbe
     </AbsoluteFill>
   );
 };
+
+/** Só o efeito de aperto e alívio da visão, para pôr por cima de uma cena que já tem o próprio palco. */
+export const Aperto: React.FC<{ tensao?: number; alivio?: number }> = ({ tensao = 0, alivio = 0 }) => (
+  <>
+    <AbsoluteFill style={{ background: `radial-gradient(ellipse at 50% 42%, rgba(20,10,50,0) ${62 - 34 * tensao}%, rgba(20,10,50,${0.25 + 0.6 * tensao}) 100%)`, opacity: 1 - alivio * 0.9 }} />
+    <AbsoluteFill style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(255,246,214,0.55), rgba(255,246,214,0) 70%)", opacity: alivio }} />
+  </>
+);

@@ -13,6 +13,8 @@ export const TEXTOS = [
   "Um primeiro passo claro mostra: abre o caderno na página doze.",
   "Feito o primeiro, o segundo costuma vir mais fácil.",
   "O que dá pra testar: uma instrução inicial clara, em vez do pedido inteiro.",
+  "Vale também deixar o material já separado, e o lugar sem distrações.",
+  "Assim, sobra menos coisa pra decidir antes de começar.",
   "E anotar o que fez a tarefa começar.",
 ];
 export const PARAGRAFOS = [0, 1, 4, 5, 7, 9, 12, 13];

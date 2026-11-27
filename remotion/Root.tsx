@@ -39,6 +39,11 @@ import { ExplicaMenteCoracaopov, TOTAL as TOTAL_CORACAOPOV } from "./explica-men
 import { ExplicaMenteMaopov, TOTAL as TOTAL_MAOPOV } from "./explica-mente/maopov/Video";
 import { ExplicaMenteCamisetapov, TOTAL as TOTAL_CAMISETAPOV } from "./explica-mente/camisetapov/Video";
 import { ExplicaMenteLicaopov, TOTAL as TOTAL_LICAOPOV } from "./explica-mente/licaopov/Video";
+import { ExplicaMenteMapapov, TOTAL as TOTAL_MAPAPOV } from "./explica-mente/mapapov/Video";
+import { ExplicaMentePotepov, TOTAL as TOTAL_POTEPOV } from "./explica-mente/potepov/Video";
+import { ExplicaMenteMaospov, TOTAL as TOTAL_MAOSPOV } from "./explica-mente/maospov/Video";
+import { ExplicaMenteTrocapov, TOTAL as TOTAL_TROCAPOV } from "./explica-mente/trocapov/Video";
+import { ExplicaMenteHobbypov, TOTAL as TOTAL_HOBBYPOV } from "./explica-mente/hobbypov/Video";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
 
@@ -98,6 +103,11 @@ export const Root: React.FC = () => (
     <Composition id="ExplicaMenteTroca" component={ExplicaMenteTroca} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_TRO} />
     <Composition id="ExplicaMenteHobby" component={ExplicaMenteHobby} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_HOB} />
     {/* versões em primeira pessoa */}
+    <Composition id="ExplicaMenteHobbypov" component={ExplicaMenteHobbypov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_HOBBYPOV} />
+    <Composition id="ExplicaMenteTrocapov" component={ExplicaMenteTrocapov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_TROCAPOV} />
+    <Composition id="ExplicaMenteMaospov" component={ExplicaMenteMaospov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_MAOSPOV} />
+    <Composition id="ExplicaMentePotepov" component={ExplicaMentePotepov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_POTEPOV} />
+    <Composition id="ExplicaMenteMapapov" component={ExplicaMenteMapapov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_MAPAPOV} />
     <Composition id="ExplicaMenteLicaopov" component={ExplicaMenteLicaopov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_LICAOPOV} />
     <Composition id="ExplicaMenteCamisetapov" component={ExplicaMenteCamisetapov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_CAMISETAPOV} />
     <Composition id="ExplicaMenteMaopov" component={ExplicaMenteMaopov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_MAOPOV} />

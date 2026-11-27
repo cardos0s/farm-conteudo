@@ -13,6 +13,8 @@ export const TEXTOS = [
   "Por isso, em vez de pensar na roupa inteira, vale olhar onde ela encosta: nuca, ombros, cintura.",
   "O que dá pra fazer: perguntar, ou observar, qual parte incomoda.",
   "E não forçar a roupa.",
+  "Às vezes, a saída é simples: cortar a etiqueta, escolher outro tecido, ou vestir do avesso.",
+  "E o que resolve pra uma pessoa pode não resolver pra outra.",
   "Um detalhe assim já ajuda a equipe.",
 ];
 export const PARAGRAFOS = [0, 1, 4, 5, 7, 10, 11, 13];

@@ -12,6 +12,8 @@ export const TEXTOS = [
   "É por isso que dá pra abotoar a camisa conversando, ou levar o garfo à boca sem errar.",
   "Isso aqui é só um jeito de entender o sentido corporal. Não é um teste.",
   "No dia a dia, vale observar em que parte da tarefa a pessoa precisa olhar pra mão.",
+  "Quando esse sentido não ajuda tanto, a pessoa pode compensar olhando mais: pros pés na escada, pras mãos ao abotoar.",
+  "Isso cansa, e deixa a tarefa mais lenta.",
   "É uma observação útil pra levar pra equipe.",
 ];
 export const PARAGRAFOS = [0, 1, 3, 4, 5, 8, 10, 11, 12];

@@ -14,7 +14,7 @@ import tempos from "./tempos.json";
 const CAM_JOGO: Cam = { pos: [0.45, 0.78, 3.7], alvo: [0.5, 0.5, -0.45], fov: 34 };
 
 /** Jogando videogame, de perfil para a TV. `ligada` 0 = tela apagada; `encerra` 0..1 estica a mão para desligar. */
-const Jogo: React.FC<{ f: number; ligada: number; encerra?: number; cam?: Cam; largura?: number; altura?: number }> = ({ f, ligada, encerra = 0, cam = CAM_JOGO, largura, altura }) => {
+export const Jogo: React.FC<{ f: number; ligada: number; encerra?: number; cam?: Cam; largura?: number; altura?: number }> = ({ f, ligada, encerra = 0, cam = CAM_JOGO, largura, altura }) => {
   const p = sentado(LIA, [0.0, 0, -0.45], Math.PI / 2, 0.27, f);
   const aperta = 0.012 * Math.sin(f * 0.9) * ligada;
   const controle: V3 = [0.2, 0.45, -0.45];
@@ -45,7 +45,7 @@ const Jogo: React.FC<{ f: number; ligada: number; encerra?: number; cam?: Cam; l
 };
 
 /** Pegando a toalha no gancho. */
-const Toalha: React.FC<{ f: number; pega: number; cam: Cam; largura?: number; altura?: number }> = ({ f, pega, cam, largura, altura }) => {
+export const Toalha: React.FC<{ f: number; pega: number; cam: Cam; largura?: number; altura?: number }> = ({ f, pega, cam, largura, altura }) => {
   const gancho: V3 = [0.35, 0.95, -1.6];
   const p = emPe(LIA, [0.05, 0, -1.15], 0.5, f);
   const mao: V3 = mixV(p.maoE, [gancho[0] - 0.03, gancho[1] - 0.1, gancho[2] + 0.12], pega);
@@ -60,7 +60,7 @@ const Toalha: React.FC<{ f: number; pega: number; cam: Cam; largura?: number; al
 };
 
 /** Na banheira, com espuma. */
-const Banho: React.FC<{ f: number; cam: Cam; largura?: number; altura?: number }> = ({ f, cam, largura, altura }) => {
+export const Banho: React.FC<{ f: number; cam: Cam; largura?: number; altura?: number }> = ({ f, cam, largura, altura }) => {
   const p = sentado(LIA, [0, 0, -0.95], 0, 0.12, f);
   const pose: Pose = { ...p, maoE: [0.2, 0.62 + 0.04 * Math.sin(f * 0.2), -0.75], maoD: [-0.2, 0.5, -0.8], sorriso: 1, peE: [0.08, 0.1, -0.7], peD: [-0.08, 0.1, -0.7] };
   return (
@@ -77,13 +77,13 @@ const Banho: React.FC<{ f: number; cam: Cam; largura?: number; altura?: number }
   );
 };
 
-const CAM_Q1: Cam = { pos: [0.3, 0.6, 2.7], alvo: [0.42, 0.42, -0.45], fov: 15 };
-const CAM_Q2: Cam = { pos: [0.2, 0.85, 2.0], alvo: [0.2, 0.8, -1.3], fov: 14 };
-const CAM_Q3: Cam = { pos: [0, 0.75, 2.6], alvo: [0, 0.6, -0.9], fov: 15 };
+export const CAM_Q1: Cam = { pos: [0.3, 0.6, 2.7], alvo: [0.42, 0.42, -0.45], fov: 15 };
+export const CAM_Q2: Cam = { pos: [0.2, 0.85, 2.0], alvo: [0.2, 0.8, -1.3], fov: 14 };
+export const CAM_Q3: Cam = { pos: [0, 0.75, 2.6], alvo: [0, 0.6, -0.9], fov: 15 };
 const CAM_BANHO: Cam = { pos: [0, 0.9, 2.5], alvo: [0, 0.55, -0.9], fov: 34 };
 
 /** A linha do pedido: jogo, banho, e o trecho escondido no meio. */
-const Linha: React.FC<{ meio: number; entra: number }> = ({ meio, entra }) => (
+export const Linha: React.FC<{ meio: number; entra: number }> = ({ meio, entra }) => (
   <div style={{ position: "absolute", top: 236, left: 50, right: 50, display: "flex", alignItems: "center", justifyContent: "center", gap: 14, opacity: entra, fontFamily: POPPINS, fontWeight: 800, fontSize: 44 }}>
     <div style={{ background: MARCA.roxo, color: "#FFFFFF", borderRadius: 30, padding: "22px 34px 18px" }}>Jogo</div>
     <div style={{ width: 40 + 380 * meio, height: 92, borderRadius: 30, border: `6px dashed ${MARCA.coral}`, boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "center", color: MARCA.coral, overflow: "hidden", whiteSpace: "nowrap" }}>{meio > 0.6 ? "? ? ?" : ""}</div>

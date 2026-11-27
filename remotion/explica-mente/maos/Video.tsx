@@ -29,11 +29,11 @@ const balancando = (f: number, onde: Onde, humor: number): Pose => {
   };
 };
 
-const MAOS_SOM: Cam = { pos: [-0.16, 0.5, 0.42], alvo: [-0.16, 0.5, -0.58], fov: 36 };
-const MAOS_LIQ: Cam = { pos: [0.08, 0.5, 0.44], alvo: [0.08, 0.5, -0.56], fov: 36 };
+export const MAOS_SOM: Cam = { pos: [-0.16, 0.5, 0.42], alvo: [-0.16, 0.5, -0.58], fov: 36 };
+export const MAOS_LIQ: Cam = { pos: [0.08, 0.5, 0.44], alvo: [0.08, 0.5, -0.56], fov: 36 };
 const misturar = (a: Cam, b: Cam, t: number): Cam => ({ pos: mixV(a.pos, b.pos, t), alvo: mixV(a.alvo, b.alvo, t), fov: mix(a.fov, b.fov, t) });
 
-const Cena: React.FC<{ f: number; onde: Onde; cam: Cam; contexto: number }> = ({ f, onde, cam, contexto }) => (
+export const Cena: React.FC<{ f: number; onde: Onde; cam: Cam; contexto: number }> = ({ f, onde, cam, contexto }) => (
   <Palco cam={cam}>
     <Balcao />
     <CaixaDeSom pulsa={onde === "som" ? contexto * Math.abs(Math.sin(f * 0.33)) : 0} />

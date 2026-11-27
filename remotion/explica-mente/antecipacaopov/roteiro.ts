@@ -13,6 +13,8 @@ export const TEXTOS = [
   "Olhando só o gesto, parece que não tem motivo. Voltando a cena, o motivo aparece.",
   "O que dá pra testar: avisar antes, mostrar o que vai acontecer, e por quanto tempo.",
   "E observar o que acontece antes do gesto, não só o gesto.",
+  "O objetivo não é esconder o aparelho. É dar previsibilidade pra quem vai ouvir.",
+  "E, se der, oferecer uma saída: ir pra outro cômodo, ou usar um abafador.",
   "Esse antes é o que vale registrar.",
 ];
 export const PARAGRAFOS = [0, 2, 4, 5, 7, 9, 11, 13];
