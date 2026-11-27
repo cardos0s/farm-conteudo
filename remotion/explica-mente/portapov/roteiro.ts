@@ -9,15 +9,19 @@ export const TEXTOS = [
   "A dúvida que invade tem nome: obsessão. Ela chega como um alarme, e traz ansiedade.",
   "Checar é a compulsão: o que a pessoa faz pra desligar o alarme.",
   "Funciona. Mas só por um instante.",
-  "E o cérebro aprende: foi checar que trouxe o alívio. Na próxima dúvida, ele pede a checagem de novo.",
+  "Como checar trouxe alívio, na próxima dúvida a vontade é checar de novo.",
   "Por isso o ciclo se repete, mesmo quando a pessoa sabe que a porta está trancada.",
-  "Checar uma vez não define TOC. O que pesa é o tempo que isso toma, e o sofrimento que causa.",
-  "Se for o caso, vale procurar avaliação profissional, e contar isso pra quem acompanha.",
+  "Não é falta de memória, nem de força de vontade. Esses pensamentos não se controlam só querendo.",
+  "Todo mundo confere as coisas de vez em quando. Isso não é TOC.",
+  "O sinal de atenção é quando toma mais de uma hora do dia, causa sofrimento e atrapalha a rotina.",
+  "E tem tratamento: psicoterapia, medicação, ou os dois. Vale procurar um profissional de saúde.",
+  "Pra quem acompanha, ajuda contar quanto tempo isso está tomando.",
 ];
 
-export const PARAGRAFOS = [0, 1, 2, 4, 5, 6, 9, 11, 12];
+export const PARAGRAFOS = [0, 1, 2, 4, 5, 6, 9, 11, 12, 15];
 
 export const REGISTRO = "Perde tempo voltando à porta mesmo depois de checar.";
 
 export const DUVIDA = "E se eu não tranquei?";
 export const CICLO = ["Obsessão", "Ansiedade", "Compulsão", "Alívio curto"];
+export const SINAIS = ["Conferir de vez em quando é comum", "Atenção: mais de 1 hora por dia, com sofrimento", "Tem tratamento: psicoterapia, medicação ou os dois"];

@@ -22,8 +22,13 @@ const Camera: React.FC<{ cam: Cam }> = ({ cam }) => {
 };
 
 /** Cena 3D padrão dos episódios: câmera, luzes e (se quiser) a sala. */
-export const Palco: React.FC<{ cam: Cam; largura?: number; altura?: number; sala?: V3 | false; children?: React.ReactNode }> = ({ cam, largura = LARGURA, altura = ALTURA, sala = [0, 0, 0], children }) => (
-  <ThreeCanvas width={largura} height={altura} shadows flat camera={{ fov: cam.fov, position: cam.pos }} style={{ backgroundColor: "#FFF0DA" }}>
+/**
+ * Cena 3D padrão dos episódios: câmera, luzes e (se quiser) a sala.
+ * `escala` desenha o 3D menor e amplia (render mais rápido, imagem um pouco mais suave).
+ */
+export const Palco: React.FC<{ cam: Cam; largura?: number; altura?: number; sala?: V3 | false; escala?: number; children?: React.ReactNode }> = ({ cam, largura = LARGURA, altura = ALTURA, sala = [0, 0, 0], escala = 1, children }) => (
+  <div style={{ width: largura * escala, height: altura * escala, transform: `scale(${1 / escala})`, transformOrigin: "0 0" }}>
+  <ThreeCanvas width={Math.round(largura * escala)} height={Math.round(altura * escala)} shadows flat camera={{ fov: cam.fov, position: cam.pos }} style={{ backgroundColor: "#FFF0DA" }}>
     <Camera cam={cam} />
     <color attach="background" args={["#FFF0DA"]} />
     <hemisphereLight args={["#FFFFFF", "#F3D9B5", 1.55]} />
@@ -50,6 +55,7 @@ export const Palco: React.FC<{ cam: Cam; largura?: number; altura?: number; sala
     )}
     {children}
   </ThreeCanvas>
+  </div>
 );
 
 /** Onde um ponto do mundo aparece na tela (em pixels), para colocar rótulos 2D sobre a cena. */

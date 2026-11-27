@@ -15,7 +15,7 @@ const X_A = -0.3;
 const X_B = 0.3;
 const CAM: Cam = { pos: [0, 0.9, 2.7], alvo: [0, 0.56, -0.6], fov: 34 };
 
-const CaixaDePapelao: React.FC<{ pos: V3; rot?: number }> = ({ pos, rot = 0 }) => (
+export const CaixaDePapelao: React.FC<{ pos: V3; rot?: number }> = ({ pos, rot = 0 }) => (
   <group position={pos} rotation={[rot, 0, rot * 0.5]}>
     <Caixa t={[0.27, 0.24, 0.27]} raio={0.012} pos={[0, 0.12, 0]} cor="#D9A566" rug={0.9} />
     <Caixa t={[0.275, 0.05, 0.08]} raio={0.004} pos={[0, 0.222, 0]} cor="#F3DDB0" sombra={false} />
@@ -66,7 +66,7 @@ const Cena: React.FC<{ f: number; t: number; tipo: Tipo; qual: "A" | "B"; cam?: 
 };
 
 /** As duas barras: a força que o corpo preparou e o peso que a caixa tinha de verdade. */
-const Barras: React.FC<{ esperada: number; real: number; mostraReal: number; entra: number; iguais?: number }> = ({ esperada, real, mostraReal, entra, iguais = 0 }) => {
+export const Barras: React.FC<{ esperada: number; real: number; mostraReal: number; entra: number; iguais?: number }> = ({ esperada, real, mostraReal, entra, iguais = 0 }) => {
   const barra = (rotulo: string, v: number, cor: string, op: number) => (
     <div style={{ opacity: op }}>
       <div style={{ fontFamily: POPPINS, fontWeight: 800, fontSize: 38, color: MARCA.tinta, marginBottom: 8 }}>{rotulo}</div>

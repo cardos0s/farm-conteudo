@@ -9,7 +9,8 @@ import { Sofa } from "../coracao/Video";
 import { Conceito, POPPINS, Roda, criarEpisodio, type Quadro } from "../kit/Episodio";
 import { Palco, type Cam } from "../kit/Palco";
 import { MACANETA, Porta } from "../porta/Video";
-import { CICLO, DUVIDA, REGISTRO, TEXTOS } from "./roteiro";
+import { Explica } from "../kit/Pov";
+import { CICLO, DUVIDA, REGISTRO, SINAIS, TEXTOS } from "./roteiro";
 import tempos from "./tempos.json";
 
 const OLHOS = 1.5;
@@ -184,7 +185,7 @@ const desenhar = (q: Quadro) => {
       <>
         <Cena f={f} o={{ ...longe, vira: 0, duvida: mix(0.5, 1, prog(x, 0.3, 0.5)), puxa: 0.6 }} />
         <Conceito f={f} de={F[6].de + 22} ate={F[7].de - 4} texto="obsessão" />
-        <Alarme f={f} forca={prog(x, 0.42, 0.5)} entra={prog(x, 0.38, 0.48, elastico)} />
+        <Alarme f={f} forca={1} entra={prog(x, 0.38, 0.48, elastico)} />
       </>
     );
   }
@@ -236,11 +237,28 @@ const desenhar = (q: Quadro) => {
       </>
     );
   }
-  const x = em(11) ? p(11) : 1;
+  // não é falta de memória nem de vontade
+  if (em(11))
+    return (
+      <>
+        <Cena f={f} o={volta(0.3 + ((f / 170) % 1))} ecos={0.4} />
+        <Relogio p={0.5 + 0.5 * p(11)} />
+      </>
+    );
+  // quando é sinal de atenção, e que tem tratamento
+  if (em(12) || em(13) || em(14)) {
+    const ativo = em(12) ? 0 : em(13) ? 1 : 2;
+    return (
+      <>
+        <Cena f={f} o={{ ...volta(0.8), duvida: 0.3, alivio: 0 }} />
+        <Explica titulo="TOC" passos={SINAIS} quantos={ativo + (em(12) ? p(12) * 3 : 1)} ativo={ativo} entra={em(12) ? prog(p(12), 0, 0.1) : 1} />
+      </>
+    );
+  }
   return (
     <>
-      <Cena f={f} o={volta(0.3 + (f / 170) % 1)} ecos={0.4} />
-      <Relogio p={0.5 + 0.5 * x} />
+      <Cena f={f} o={volta(0.3 + ((f / 170) % 1))} ecos={0.3} />
+      <Relogio p={1} />
     </>
   );
 };

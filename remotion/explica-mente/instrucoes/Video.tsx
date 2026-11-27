@@ -37,7 +37,7 @@ const Icone: React.FC<{ i: number; cor: string }> = ({ i, cor }) => (
 );
 
 /** `presente` 1 = na cabeça, 0 = sumiu (vira contorno tracejado). */
-const Cartao: React.FC<{ i: number; presente: number; feito?: number; entra?: number; grande?: boolean; fixado?: boolean }> = ({ i, presente, feito = 0, entra = 1, grande, fixado }) => {
+export const Cartao: React.FC<{ i: number; presente: number; feito?: number; entra?: number; grande?: boolean; fixado?: boolean }> = ({ i, presente, feito = 0, entra = 1, grande, fixado }) => {
   const cores = [MARCA.coral, "#3D9BE9", MARCA.menta];
   const L = grande ? 420 : 312;
   return (
@@ -59,7 +59,7 @@ const Cartao: React.FC<{ i: number; presente: number; feito?: number; entra?: nu
   );
 };
 
-const Fileira: React.FC<{ presentes: number[]; feitos?: number[]; entradas?: number[]; fixado?: boolean; opacidade?: number }> = ({ presentes, feitos = [0, 0, 0], entradas = [1, 1, 1], fixado, opacidade = 1 }) => (
+export const Fileira: React.FC<{ presentes: number[]; feitos?: number[]; entradas?: number[]; fixado?: boolean; opacidade?: number }> = ({ presentes, feitos = [0, 0, 0], entradas = [1, 1, 1], fixado, opacidade = 1 }) => (
   <div style={{ position: "absolute", top: 232, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 20, opacity: opacidade, ...(fixado ? { top: 214, left: 30, right: 30, padding: "40px 0 34px", background: "#E9C79A", borderRadius: 40, boxShadow: "inset 0 0 0 12px #C99861" } : {}) }}>
     {[0, 1, 2].map((i) => (
       <Cartao key={i} i={i} presente={presentes[i]} feito={feitos[i]} entra={entradas[i]} fixado={fixado} />
@@ -69,13 +69,13 @@ const Fileira: React.FC<{ presentes: number[]; feitos?: number[]; entradas?: num
 
 // ---------- cena 3D ----------
 const INICIO: V3 = [0.05, 0, -0.25];
-const TENIS_NO_CHAO: V3 = [-0.28, 0, -0.1];
+export const TENIS_NO_CHAO: V3 = [-0.28, 0, -0.1];
 const JUNTO_DO_TENIS: V3 = [-0.14, 0, -0.26];
-const SAPATEIRA: V3 = [0.5, 0, -0.95];
+export const SAPATEIRA: V3 = [0.5, 0, -0.95];
 const JUNTO_DA_SAPATEIRA: V3 = [0.38, 0, -0.55];
 const CAM: Cam = { pos: [0, 1.0, 3.7], alvo: [0.05, 0.6, -0.4], fov: 34 };
 
-const Sapateira: React.FC = () => (
+export const Sapateira: React.FC = () => (
   <group position={SAPATEIRA}>
     <Caixa t={[0.5, 0.04, 0.34]} raio={0.012} pos={[0, 0.02, 0]} cor="#2EC4B6" />
     <Caixa t={[0.5, 0.26, 0.04]} raio={0.012} pos={[0, 0.13, -0.15]} cor="#2EC4B6" />
