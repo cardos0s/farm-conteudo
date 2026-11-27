@@ -134,7 +134,7 @@ const Relogio: React.FC<{ p: number }> = ({ p }) => {
 };
 
 /** O alarme que a dúvida dispara. `forca` 0 = quieto, 1 = tocando. */
-const Alarme: React.FC<{ f: number; forca: number; entra: number }> = ({ f, forca, entra }) => {
+export const Alarme: React.FC<{ f: number; forca: number; entra: number }> = ({ f, forca, entra }) => {
   const pisca = 0.5 + 0.5 * Math.sin(f * 0.7);
   const cor = forca > 0.5 ? MARCA.coral : "#2FB36B";
   return (

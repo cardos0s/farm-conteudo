@@ -14,7 +14,7 @@ const CAM: Cam = { pos: [0.03, 0.62, 1.95], alvo: [0, 0.07, -0.1], fov: 34 };
 const CADERNO: V3 = [0, 0, 0.04];
 
 /** Caderno na mesa. `abre` 0..1 vira a capa; `pagina` 0..1 folheia até a página certa. */
-const Caderno: React.FC<{ abre: number; pagina: number; escrito: number }> = ({ abre, pagina, escrito }) => (
+export const Caderno: React.FC<{ abre: number; pagina: number; escrito: number }> = ({ abre, pagina, escrito }) => (
   <group position={CADERNO}>
     <Caixa t={[0.21, 0.014, 0.27]} raio={0.004} pos={[0, 0.007, 0]} cor="#FFFDF6" />
     {[0, 1, 2, 3, 4].map((i) => (
@@ -70,7 +70,7 @@ const Cena: React.FC<{ f: number; e: Est; cam?: Cam }> = ({ f, e, cam = CAM }) =
 const TRAVADA: Est = { abre: 0, pagina: 0, escreve: 0, travada: 1 };
 
 /** Balão de pensamento com a conta resolvida. */
-const Conta: React.FC<{ p: number }> = ({ p }) => (
+export const Conta: React.FC<{ p: number }> = ({ p }) => (
   <div style={{ position: "absolute", top: 236, left: 60, transform: `scale(${Math.max(0.001, p)})`, transformOrigin: "30% 100%", background: "#FFFFFF", borderRadius: 50, padding: "26px 44px 20px", boxShadow: "0 14px 36px rgba(36,26,74,0.22)", fontFamily: POPPINS, fontWeight: 800, fontSize: 84, color: MARCA.tinta, display: "flex", alignItems: "center", gap: 22 }}>
     7 + 5 = 12
     <span style={{ width: 76, height: 76, borderRadius: "50%", background: "#2FB36B", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
@@ -82,7 +82,7 @@ const Conta: React.FC<{ p: number }> = ({ p }) => (
 );
 
 /** O primeiro passo como um botão grande; o resto só aparece depois. */
-const Botao: React.FC<{ n: number; texto: string; p: number; apertado: number; topo: number }> = ({ n, texto, p, apertado, topo }) => (
+export const Botao: React.FC<{ n: number; texto: string; p: number; apertado: number; topo: number }> = ({ n, texto, p, apertado, topo }) => (
   <div style={{ position: "absolute", top: topo, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
     <div style={{ transform: `scale(${Math.max(0.001, p) * (1 - 0.06 * apertado)})`, background: apertado > 0.5 ? "#2FB36B" : MARCA.roxo, color: "#FFFFFF", borderRadius: 50, padding: "26px 54px 22px 30px", fontFamily: POPPINS, fontWeight: 800, fontSize: 56, display: "flex", alignItems: "center", gap: 24, boxShadow: `0 ${16 - 10 * apertado}px 0 rgba(36,26,74,0.35)` }}>
       <span style={{ width: 80, height: 80, borderRadius: "50%", background: MARCA.sol, color: MARCA.tinta, display: "flex", alignItems: "center", justifyContent: "center" }}>{n}</span>

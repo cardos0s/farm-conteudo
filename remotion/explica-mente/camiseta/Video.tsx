@@ -10,7 +10,7 @@ import { PONTOS, REGISTRO, TEXTOS } from "./roteiro";
 import tempos from "./tempos.json";
 
 const CAM: Cam = { pos: [0, 0.85, 2.7], alvo: [0, 0.62, -0.5], fov: 34 };
-const ARARA = { y: 1.02, z: -0.75 };
+export const ARARA = { y: 1.02, z: -0.75 };
 const COR = LIA.cores.blusa;
 
 /** Camiseta no cabide. `detalhes` mostra a etiqueta rígida e a costura em relevo. */
@@ -39,7 +39,7 @@ const Camiseta: React.FC<{ x: number; detalhes?: boolean; brilho?: number; f: nu
   </group>
 );
 
-const Arara: React.FC<{ f: number; detalhes?: boolean; brilho?: number }> = ({ f, detalhes, brilho }) => (
+export const Arara: React.FC<{ f: number; detalhes?: boolean; brilho?: number }> = ({ f, detalhes, brilho }) => (
   <>
     <Seg a={[-0.62, 0, ARARA.z]} b={[-0.62, ARARA.y, ARARA.z]} r={0.018} cor="#FFFFFF" />
     <Seg a={[0.62, 0, ARARA.z]} b={[0.62, ARARA.y, ARARA.z]} r={0.018} cor="#FFFFFF" />

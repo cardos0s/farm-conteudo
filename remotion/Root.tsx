@@ -35,6 +35,10 @@ import { ExplicaMenteInstrucoespov, TOTAL as TOTAL_INSTRUCOESPOV } from "./expli
 import { ExplicaMenteCaixapov, TOTAL as TOTAL_CAIXAPOV } from "./explica-mente/caixapov/Video";
 import { ExplicaMenteAntecipacaopov, TOTAL as TOTAL_ANTECIPACAOPOV } from "./explica-mente/antecipacaopov/Video";
 import { ExplicaMenteQuartopov, TOTAL as TOTAL_QUARTOPOV } from "./explica-mente/quartopov/Video";
+import { ExplicaMenteCoracaopov, TOTAL as TOTAL_CORACAOPOV } from "./explica-mente/coracaopov/Video";
+import { ExplicaMenteMaopov, TOTAL as TOTAL_MAOPOV } from "./explica-mente/maopov/Video";
+import { ExplicaMenteCamisetapov, TOTAL as TOTAL_CAMISETAPOV } from "./explica-mente/camisetapov/Video";
+import { ExplicaMenteLicaopov, TOTAL as TOTAL_LICAOPOV } from "./explica-mente/licaopov/Video";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
 
@@ -94,6 +98,10 @@ export const Root: React.FC = () => (
     <Composition id="ExplicaMenteTroca" component={ExplicaMenteTroca} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_TRO} />
     <Composition id="ExplicaMenteHobby" component={ExplicaMenteHobby} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_HOB} />
     {/* versões em primeira pessoa */}
+    <Composition id="ExplicaMenteLicaopov" component={ExplicaMenteLicaopov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_LICAOPOV} />
+    <Composition id="ExplicaMenteCamisetapov" component={ExplicaMenteCamisetapov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_CAMISETAPOV} />
+    <Composition id="ExplicaMenteMaopov" component={ExplicaMenteMaopov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_MAOPOV} />
+    <Composition id="ExplicaMenteCoracaopov" component={ExplicaMenteCoracaopov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_CORACAOPOV} />
     <Composition id="ExplicaMenteQuartopov" component={ExplicaMenteQuartopov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_QUARTOPOV} />
     <Composition id="ExplicaMenteAntecipacaopov" component={ExplicaMenteAntecipacaopov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_ANTECIPACAOPOV} />
     <Composition id="ExplicaMenteCaixapov" component={ExplicaMenteCaixapov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_CAIXAPOV} />
