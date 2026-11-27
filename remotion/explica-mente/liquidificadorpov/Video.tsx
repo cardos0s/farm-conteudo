@@ -30,8 +30,8 @@ const Cena: React.FC<{ f: number; e: Est }> = ({ f, e }) => {
         <MaoPov cam={cam} alvo={soma(SOM, [0.05, 0.36, 0.05])} quanto={e.botao ?? 0} fecha={0.35} />
         <MaoPov cam={cam} alvo={soma(SOM, [-0.06, 0.37, 0.05])} quanto={e.volume ?? 0} fecha={0.55} />
         {/* minhas mãos indo tapar os ouvidos */}
-        <MaoPov cam={cam} alvo={diante(cam, 0.085, 0.0, 0.3)} quanto={e.ouvidos} fecha={0.25} palma={[-1, 0, 0]} />
-        <MaoPov cam={cam} alvo={diante(cam, -0.085, 0.0, 0.3)} lado={-1} quanto={e.ouvidos} fecha={0.25} palma={[1, 0, 0]} />
+        <MaoPov cam={cam} alvo={diante(cam, 0.125, 0.0, 0.3)} quanto={e.ouvidos} fecha={0.25} palma={[-1, 0, 0]} />
+        <MaoPov cam={cam} alvo={diante(cam, -0.125, 0.0, 0.3)} lado={-1} quanto={e.ouvidos} fecha={0.25} palma={[1, 0, 0]} />
       </Visao>
       <Barulho f={f} forca={e.ligado * (1 - 0.45 * e.ouvidos)} x={liq.x} y={liq.y} />
     </>

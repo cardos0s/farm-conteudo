@@ -31,6 +31,10 @@ import { ExplicaMenteTroca, TOTAL as TOTAL_TRO } from "./explica-mente/troca/Vid
 import { ExplicaMenteHobby, TOTAL as TOTAL_HOB } from "./explica-mente/hobby/Video";
 import { ExplicaMentePortapov, TOTAL as TOTAL_PPV } from "./explica-mente/portapov/Video";
 import { ExplicaMenteLiquidificadorpov, TOTAL as TOTAL_LIQUIDIFICADORPOV } from "./explica-mente/liquidificadorpov/Video";
+import { ExplicaMenteInstrucoespov, TOTAL as TOTAL_INSTRUCOESPOV } from "./explica-mente/instrucoespov/Video";
+import { ExplicaMenteCaixapov, TOTAL as TOTAL_CAIXAPOV } from "./explica-mente/caixapov/Video";
+import { ExplicaMenteAntecipacaopov, TOTAL as TOTAL_ANTECIPACAOPOV } from "./explica-mente/antecipacaopov/Video";
+import { ExplicaMenteQuartopov, TOTAL as TOTAL_QUARTOPOV } from "./explica-mente/quartopov/Video";
 import { exemplos } from "./exemplos";
 import { Reel } from "./Reel";
 
@@ -90,6 +94,10 @@ export const Root: React.FC = () => (
     <Composition id="ExplicaMenteTroca" component={ExplicaMenteTroca} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_TRO} />
     <Composition id="ExplicaMenteHobby" component={ExplicaMenteHobby} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_HOB} />
     {/* versões em primeira pessoa */}
+    <Composition id="ExplicaMenteQuartopov" component={ExplicaMenteQuartopov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_QUARTOPOV} />
+    <Composition id="ExplicaMenteAntecipacaopov" component={ExplicaMenteAntecipacaopov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_ANTECIPACAOPOV} />
+    <Composition id="ExplicaMenteCaixapov" component={ExplicaMenteCaixapov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_CAIXAPOV} />
+    <Composition id="ExplicaMenteInstrucoespov" component={ExplicaMenteInstrucoespov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_INSTRUCOESPOV} />
     <Composition id="ExplicaMenteLiquidificadorpov" component={ExplicaMenteLiquidificadorpov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_LIQUIDIFICADORPOV} />
     <Composition id="ExplicaMentePortapov" component={ExplicaMentePortapov} width={1080} height={1920} fps={FPS_EM} durationInFrames={TOTAL_PPV} />
   </>

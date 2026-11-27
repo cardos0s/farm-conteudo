@@ -10,12 +10,12 @@ import { AMPLA, CONCRETA, DUVIDAS, REGISTRO, TEXTOS } from "./roteiro";
 import tempos from "./tempos.json";
 
 const INICIO: V3 = [0.05, 0, -0.4];
-const ROUPA: V3 = [-0.3, 0.02, 0.05];
-const CESTO: V3 = [0.48, 0, -0.62];
+export const ROUPA: V3 = [-0.3, 0.02, 0.05];
+export const CESTO: V3 = [0.48, 0, -0.62];
 const CAM: Cam = { pos: [0, 1.0, 3.7], alvo: [0.05, 0.6, -0.4], fov: 34 };
 const CAMINHO = { inicio: INICIO, objeto: ROUPA, juntoDoObjeto: [-0.16, 0, -0.14] as V3, juntoDoDestino: [0.3, 0, -0.3] as V3, destino: [CESTO[0], 0.22, CESTO[2]] as V3 };
 
-const Roupa: React.FC<{ pos: V3 }> = ({ pos }) => (
+export const Roupa: React.FC<{ pos: V3 }> = ({ pos }) => (
   <group position={pos}>
     <Esfera r={1} escala={[0.12, 0.035, 0.1]} cor="#FF5A8A" rug={0.95} />
     <Esfera r={1} escala={[0.05, 0.03, 0.045]} pos={[0.12, 0, 0.03]} cor="#FF5A8A" rug={0.95} />
@@ -23,7 +23,7 @@ const Roupa: React.FC<{ pos: V3 }> = ({ pos }) => (
   </group>
 );
 
-const Quarto: React.FC<{ seta: number }> = ({ seta }) => (
+export const Quarto: React.FC<{ seta: number }> = ({ seta }) => (
   <>
     {/* cama */}
     <Caixa t={[0.95, 0.26, 0.6]} raio={0.05} pos={[-0.42, 0.13, -1.32]} cor="#8E6BE8" />
@@ -70,7 +70,7 @@ const POSICOES = [
   [700, 524],
   [36, 664],
 ];
-const Nuvem: React.FC<{ quantas: number; opacidade?: number; f: number }> = ({ quantas, opacidade = 1, f }) => (
+export const Nuvem: React.FC<{ quantas: number; opacidade?: number; f: number }> = ({ quantas, opacidade = 1, f }) => (
   <>
     {DUVIDAS.map((t, i) => {
       const p = prog(quantas, i, i + 0.6, elastico);

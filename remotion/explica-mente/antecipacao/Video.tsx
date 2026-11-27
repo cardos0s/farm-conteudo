@@ -11,11 +11,11 @@ import { LINHA, REGISTRO, TEXTOS } from "./roteiro";
 import tempos from "./tempos.json";
 
 const ARMARIO: V3 = [0.56, 1.2, -1.5];
-const DENTRO: V3 = [0.56, 0.98, -1.5];
-const FORA: V3 = [0.56, 1.0, -1.08];
+export const DENTRO: V3 = [0.56, 0.98, -1.5];
+export const FORA: V3 = [0.56, 1.0, -1.08];
 const CAM: Cam = { ...CAM_LIQ, pos: [0.3, 0.95, 2.9], alvo: [0.3, 0.72, -0.9] };
 
-const Armario: React.FC<{ abre: number }> = ({ abre }) => (
+export const Armario: React.FC<{ abre: number }> = ({ abre }) => (
   <>
     <Caixa t={[0.56, 0.56, 0.36]} raio={0.02} pos={ARMARIO} cor="#FFFFFF" />
     <Caixa t={[0.48, 0.48, 0.02]} raio={0.005} pos={[ARMARIO[0], ARMARIO[1], ARMARIO[2] + 0.175]} cor="#5A4A6B" sombra={false} />
